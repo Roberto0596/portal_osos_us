@@ -1,0 +1,223 @@
+.login-form {
+    width: 340px;
+    margin: 50px auto;
+}
+.login-form form {
+    margin-bottom: 15px;
+    background: #f7f7f7;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+.login-form h2 {
+    margin: 0 0 15px;
+}
+.form-control, .btn {
+    min-height: 38px;
+    border-radius: 2px;
+}
+.btn {        
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.nav-custom
+{
+    background: orange;
+}
+
+.nav-custom > .navbar-nav > .nav-item > a:link, a:visited
+{
+    color: white !important;
+}
+
+.nav-custom > .navbar-nav > .nav-item > a:hover
+{
+    color: green !important;
+}
+
+.back
+{
+    /*background: url(../img/temple/back.jpg);*/
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 5%;
+}
+
+.back2
+{
+    background: url(../img/temple/unisierra_fondo_coloreado.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    padding-top: 5%;
+}
+
+.content
+{
+    width: 100%
+    min-height: 100vh;
+    height: 100vh;
+}
+
+header
+{
+    position: fixed;
+    width: 100%;
+    z-index: 100000;
+}
+
+.container-custom
+{
+    width: 100%;
+    max-width: 1200px;
+    height: 340px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
+
+.container-custom .card2
+{
+    width: 330px;
+    height: 340px;
+    border-radius: 8px;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.25;
+        background: orange;
+}
+
+.container .card2:hover
+{
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgba(0,0,0,0.2);
+}
+
+.card-image-rob
+{
+    width: 100%;
+    height: 200px;
+}
+
+.titulo-cards
+{
+    text-align: left;
+    color: white;
+    margin: 10px;
+    font-weight: 600;
+}
+
+.parrafo
+{
+    text-align: left;
+    margin: 10px;
+    /*color: black;*/
+    font-weight: 300;
+}
+
+#hero
+{
+    width: 100%;
+    height: 678px;
+    background-image: url(../img/temple/back.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    background-position: center;
+}
+
+.title h1
+{
+    font-size: 60px;;
+    font-weight: 700;
+    color: white;
+}
+
+.title span
+{
+    font-size: 30px;
+    color: white;
+}
+
+.title
+{
+    padding-top: 30vh;
+}
+
+.contenedor
+{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+}
+
+.osos_alfa
+{
+    width: 10%;
+    position: fixed;
+    top: 75vh;
+    left: 5%;
+}
+
+.card-custom
+{
+    margin-top: 10vh;
+    border-radius: 20px;
+}
+
+.button-custom
+{
+    color: white;
+    border-radius: 18px;
+    background: #fd7e14 !important;
+    font-size: 20px;
+}
+
+.button-custom:hover
+{
+    color: white;
+}
+
+.col-custom
+{
+    align-items: center;
+    display: grid;
+}
+
+.feed
+{
+    height: 40vh;
+    background: rgba(255, 255, 255, 0.50);
+    border-radius: 20px;
+    margin-top: 15vh;
+}
+
+
+.feed_content
+{
+    padding: 10%;
+    width: 100%;
+    height: 100%;
+    color: black;
+}
+
+.feed-header h1
+{
+    font-size: 40px;
+}
+
+.feed-body p
+{
+    font-size: 20px;
+}
