@@ -43,7 +43,36 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.js') }}"></script>
     
 </head>
-<body>
+<body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     @yield('content')
+    <script>
+        $(document).ready(function () 
+        {
+            @if (session()->get('messages'))
+
+                <?php
+                    $fm = explode('|', session()->get('messages'));
+                    if (count($fm) > 1) 
+                    {
+                        $ftype = $fm[0];
+                        $fmessage = $fm[1];
+                    }
+                ?>
+                var timeout = setTimeout(() => 
+                {
+                    swal.close()
+                }, 3000);
+                swal.fire({
+                    title: "{{ $fmessage }}",
+                    text: "",
+                    type: '{{$ftype}}',
+                    buttons: "Aceptar"
+                }).then((value) => {
+                    clearTimeout(timeout);
+                });
+                        
+            @endif
+        });
+    </script>
 </body>
 </html>
