@@ -1,17 +1,25 @@
 .login-form {
-    width: 340px;
-    margin: 50px auto;
+    width: 350px;
+    margin-right: 4rem ;
+    margin-top: 20vh;
+    float: right;
+
 }
 .login-form form {
     margin-bottom: 15px;
     background: #f7f7f7;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
     padding: 30px;
+    border-radius: 20px;
+    
+}
+.login-form a{
+    color: black;
 }
 .login-form h2 {
     margin: 0 0 15px;
 }
-.form-control, .btn {
+.form-control {
     min-height: 38px;
     border-radius: 2px;
 }
@@ -61,7 +69,7 @@
 
 .content
 {
-    width: 100%
+    width: 100%;
     min-height: 100vh;
     height: 100vh;
 }
@@ -200,7 +208,9 @@ header
     height: 40vh;
     background: rgba(255, 255, 255, 0.50);
     border-radius: 20px;
-    margin-top: 15vh;
+    margin-top: 20vh;
+    margin-left: 4vh;
+    width: 50%;
 }
 
 
@@ -220,4 +230,37 @@ header
 .feed-body p
 {
     font-size: 20px;
+}
+
+.bienvenida{
+    margin: 1.6%;
+    width: 30%;
+    float: left;
+    
+}
+.bienvenida h2{
+color: white;
+
+}
+
+.boton{
+    width: 50%;
+    margin: auto;
+    background-color: #fd7e14;
+    border-radius: 2px;
+    border: #fd7e14;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
+
+}
+
+.imagen-fondo{
+    
+    background-image: url("../img/temple/fondo.png");
+    background-size: cover;
+   
+}
+
+.recuperar{
+    color: black;
+    margin: auto;
 }
