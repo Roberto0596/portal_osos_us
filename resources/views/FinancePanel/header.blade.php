@@ -14,8 +14,8 @@
 
         <a href="#" class = "dropdown-toggle" data-toggle="dropdown"> 
 
-            <img src="{{ asset(Auth::guard('alumn')->user()->photo) }}" class="user-image">                       
-            <span class = "hidden-xs" style="color: white !important;">{{ Auth::guard('alumn')->user()->email }}</span>
+            <img src="{{ asset(Auth::guard('finance')->user()->photo) }}" class="user-image">                       
+            <span class = "hidden-xs" style="color: white !important;">{{ Auth::guard('finance')->user()->email }}</span>
 
         </a>
 

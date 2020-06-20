@@ -17,7 +17,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::guard('alumn')->user()->name }}</a>
+                <a href="#" class="d-block">{{ Auth::guard('finance')->user()->name }}</a>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{route('alumn.user')}}" class="nav-link">
+                    <a href="" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Mi cuenta

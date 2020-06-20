@@ -51,6 +51,11 @@ return [
             'driver' => 'session',
             'provider' => 'alumns',
         ],
+
+        'finance' => [
+            'driver' => 'session',
+            'provider' => 'finance_users',
+        ],
     ],
 
     /*
@@ -79,6 +84,11 @@ return [
         'alumns' => [
             'driver' => 'eloquent',
             'model' => App\Models\Alumns\User::class,
+        ],
+
+        'finance_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Finance\FinanceUser::class,
         ],
 
         // 'users' => [

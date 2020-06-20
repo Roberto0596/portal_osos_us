@@ -87,7 +87,9 @@
 				</div>
 
 
-				<form action="" style="width: 80%; margin-right: auto; margin-left: auto">
+				<form method="post" action="{{route('alumn.users.registerAlumn', $item)}}" style="width: 80%; margin-right: auto; margin-left: auto">
+
+					{{ csrf_field() }}
 
 					<div class="card-body">
 
@@ -119,7 +121,7 @@
 
 								  	<label class="field a-field a-field_a2">
 
-									    <input class="field__input a-field__input" placeholder="Ingrese su apellido" id="lastName" name="lastName" required>
+									    <input class="field__input a-field__input" placeholder="Ingrese su apellido" id="lastname" name="lastname" required>
 
 									    <span class="a-field__label-wrap">
 
@@ -159,7 +161,7 @@
 
 								  	<label class="field a-field a-field_a2">
 
-									    <input type="email" class="field__input a-field__input" placeholder="Ingrese una contraseña" id="password" name="password" required>
+									    <input type="password" class="field__input a-field__input" placeholder="Ingrese una contraseña" id="password" name="password" required>
 
 									    <span class="a-field__label-wrap">
 
