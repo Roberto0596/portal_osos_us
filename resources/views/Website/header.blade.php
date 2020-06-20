@@ -10,7 +10,7 @@
 	        <a class="nav-link" href="{{route('home')}}">Inicio</a>
 	      </li>
 	      <li class="nav-item active">
-	        <a class="nav-link" href="{{route('home')}}">Plan de estudios</a>
+	        <a class="nav-link" href="{{route('alumn.home')}}">Plan de estudios</a>
 	      </li>
 	    </ul>
 	  </div>

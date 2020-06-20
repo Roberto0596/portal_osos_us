@@ -10,6 +10,7 @@ class HomeController extends Controller
 {
 	public function index()
 	{
+        session()->flash("messages","info|El registro fue exitoso");
 		return view('Alumn.home.index');
 	}
 

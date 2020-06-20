@@ -47,7 +47,7 @@
 
                 <div class="container-custom">
 
-                    <a href="{{route('register')}}">
+                    <a href="">
 
                         <div class="card2">
 

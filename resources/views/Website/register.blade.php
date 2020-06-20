@@ -10,6 +10,10 @@
 
 			<div class="row">
 
+				<div class="col-md-12 osos-title">
+					<h1>Se un Oso Unisierra</h1>
+				</div>
+
 				<div class="col-md-12">
 
 					<div class="feed">
@@ -82,7 +86,8 @@
 
 				</div>
 
-				<form action="">
+
+				<form action="" style="width: 80%; margin-right: auto; margin-left: auto">
 
 					<div class="card-body">
 
@@ -181,6 +186,7 @@
 					</div>
 
 				</form>
+
 
 			</div>
 

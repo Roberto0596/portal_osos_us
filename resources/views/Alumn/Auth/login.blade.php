@@ -2,36 +2,66 @@
 
 @section('content')
 
-<div class="login-form">
+<div class="imagen-fondo">
 
-    <form action="" method="post">
+    @include('Website.header')
 
-        {{ csrf_field() }}
+    <div class="bienvenida">
+        <h2>
+            Bienvenido oso, tenemos estas noticias para ti!
+        </h2>
+    </div>
+    <div class="login-form">
 
-        <h2 class="text-center">Bienvenido</h2>  
+        <form action="" method="post">
 
-        <div class="form-group">
+             {{ csrf_field() }}
 
-            <input type="email" class="form-control" placeholder="e-mail" name="email" required="required">
+            <h2 class="text-center">Iniciar sesión</h2>  
 
-        </div>
+            <div class="form-group">
 
-        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Correo" required="required" name="email">
 
-            <input type="password" class="form-control" placeholder="Password" name="password" required>
+             </div>
 
-        </div>
+            <div class="form-group">
 
-        <div class="form-group">
+                <input type="password" class="form-control" placeholder="Contraseña" required="required" name="password">
 
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            </div>
 
-        </div>
+            <div class="form-group">
 
-    </form>
+                <button type="submit" class="btn btn-primary btn-block boton">Entrar</button>
 
-    
+            </div>
+        </form> 
+    </div>
+
+    <div class="feed2">
+
+		<div class="feed_content">
+
+			<div class="feed-header">
+				<h1>encabezado2</h1>
+			</div>
+
+			<div class="feed-body">
+				<p>Parrafo</p>
+			</div>
+
+		</div>
+						
+	</div>
 
 </div>
+
+
+
+
+
+
+
 
 @stop
