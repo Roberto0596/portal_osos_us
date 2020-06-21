@@ -25,6 +25,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	        'as' => 'users.registerAlumn'
 	    ]);
 
+	    Route::get('/account/first_step',[
+	        'uses' => 'UserController@steps', 
+	        'as' => 'users.first_step'
+	    ]);
+
+	    Route::post('/account/postStep/{step}',[
+	        'uses' => 'UserController@postSteps', 
+	        'as' => 'users.postStep'
+	    ]);
+
   		Route::group(['middleware' => ['alumn.user']
 		], function()
 		{
@@ -36,7 +46,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		    Route::get('/user', [
 		        'uses' => 'UserController@index', 
 		        'as' => 'user'
-		    ]);
+		    ])->middleware('candidate');
 
 		});
   	});
