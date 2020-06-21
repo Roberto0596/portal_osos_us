@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Website;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Alumns\User;
 use Input;
 
 class WebsiteController extends Controller
 {
 	public function index()
 	{
-		return view('Website.register');
+		return view('Website.register')->with(["item"=> new User()]);
 	}
     public function edit($id)
     {

@@ -1,7 +1,7 @@
 .login-form {
     width: 350px;
     margin-right: 4rem ;
-    margin-top: 20vh;
+    margin-top: 31vh;
     float: right;
 
 }
@@ -215,12 +215,12 @@ header
 
 .feed2  
 {
-    height: 40vh;
+    height: 45vh;
     background: rgba(255, 255, 255, 0.50);
     border-radius: 20px;
-    margin-top: 20vh;
-    margin-left: 4vh;
-    width: 50%;
+    margin-top: 5vh;
+    
+    width: 100%;
 }
 
 
@@ -243,14 +243,17 @@ header
 }
 
 .bienvenida{
-    margin: 1.6%;
-    width: 30%;
+    margin-top: 15vh;
+    margin-left: 3%;
+    width: 50%;
     float: left;
+    
     
 }
 .bienvenida h2{
-color: white;
-
+    color: white;
+    width: 70%;
+    
 }
 
 .boton{
@@ -266,7 +269,11 @@ color: white;
 .imagen-fondo{
     
     background-image: url("../img/temple/fondo.png");
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
+    background-position: center;
    height: 100vh;
 }
 
