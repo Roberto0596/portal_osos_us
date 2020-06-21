@@ -179,12 +179,15 @@
 
 					</div>
 						
-					<div class="card-footer">
-						<div class="row">
-							<div class="col-md-12 col-custom">
-								<button class="btn btn-warning button-custom">Ser aspirante</button>
-							</div>
+					<div class="row footer-custom">
+
+						<div class="col-md-12 col-custom">
+
+							<button class="btn btn-warning button-custom">Ser aspirante</button>
+							<span class="text-center">-O-</span>
+							<button class="btn btn-success radius">Ya soy estudiante</button>
 						</div>
+
 					</div>
 
 				</form>
