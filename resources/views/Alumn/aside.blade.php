@@ -49,10 +49,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
                         <p>
-                            Formulario
+                            Inscripción
                         </p>
                     </a>
                 </li>
