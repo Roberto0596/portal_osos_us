@@ -13,7 +13,13 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 
 	    Route::post('/sign-in',[
 	        'uses' => 'AuthController@postLogin', 
-	    ]);
+		]);
+
+		Route::get('/form',[
+			'uses' => 'FormController@index', 
+			'as' => 'form'
+		]);
+		 
 
 	    Route::get('/sign-out', [
 	        'uses' => 'AuthController@logout', 
