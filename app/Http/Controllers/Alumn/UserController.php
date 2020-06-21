@@ -70,12 +70,21 @@ class UserController extends Controller
         }
         else if ($step==2)
         {
+            //validamos que no haya ninguna sesion abierta, si la hay la cerramos
+            if (Auth::guard("alumn")->check())
+            {
+                Auth::guard('alumn')->logout();
+                session()->flush();
+            }
+            
             //paso dos, primero validamos que no este registrado el correo en la base de datos, para ello hacemos una consulta y validamos que este vacia.
             $email = $request->input("email");
             $validate = User::where("email","=",$email)->get();
 
-            if (!$validate->isEmpty()) {
-                return view('Alumn.account.steps')->with(["step"=>1,"error"=>"Ya estas registrado en el sistema"]);
+            if (!$validate->isEmpty()) 
+            {
+                session()->flash("messages","info|Ya estas registrado, intenta ingresar");
+                return redirect()->route("alumn.home");
             }
 
             //creamos el nuevo usuario que cuardaremos en la base de datos.
@@ -91,13 +100,6 @@ class UserController extends Controller
             $user->password = bcrypt($password);
             $user->id_alumno = $data["alumnoid"];
             $user->save();
-
-            //validamos que no haya ninguna sesion abierta, si la hay la cerramos
-            if (Auth::guard("alumn")->check())
-            {
-                Auth::guard('alumn')->logout();
-                session()->flush();
-            }
 
             $credentials = $request->only('email', 'password');
 

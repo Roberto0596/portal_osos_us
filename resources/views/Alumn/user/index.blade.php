@@ -85,7 +85,8 @@
               <ul class="nav nav-pills">
 
                 <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Noticias</a></li>
-                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Editar</a></li>
+                <li style="margin-top: 10px;margin-left: 5%;">Recuerda que el cambio de estos datos, no alteran tu registro de la universidad</li>
 
               </ul>
 

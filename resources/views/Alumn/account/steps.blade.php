@@ -6,7 +6,7 @@
 
     <div class="flex-content">
 
-        <div class="card"  style="width: 40%;height: 40vh;">
+        <div class="card"  style="width: 40%;height: 55vh;">
 
             @if($step==1) 
 
