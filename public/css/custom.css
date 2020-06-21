@@ -13,6 +13,19 @@
     border-radius: 20px;
     
 }
+
+.footer-custom
+{
+    margin-bottom: 5vh;
+    margin-top: -15px;
+}
+
+.radius
+{
+    border-radius: 20px;
+    /*font-size: 20px !important;*/
+}
+
 .login-form a{
     color: black;
 }
@@ -62,16 +75,18 @@
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
-    height: 100%;
+/*    height: 100%;*/
     width: 100%;
     padding-top: 5%;
+    display : flex
 }
 
-.content
+.content-custom
 {
     width: 100%;
     min-height: 100vh;
-    height: 100vh;
+    /*height: 100vh;*/
+    display: flex;
 }
 
 header
@@ -180,7 +195,7 @@ header
 
 .card-custom
 {
-    margin-top: 10vh;
+    margin-top: 5vh;
     border-radius: 20px;
 }
 
@@ -189,7 +204,7 @@ header
     color: white;
     border-radius: 18px;
     background: #fd7e14 !important;
-    font-size: 20px;
+    /*font-size: 20px;*/
 }
 
 .button-custom:hover
@@ -292,5 +307,47 @@ header
 .osos-title h1
 {
     padding-left: 1%;
+}
+
+.scroll-perfil
+{
+    height: 65vh;
+    overflow-y: scroll;
+}
+
+.scroll-perfil p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+/* Tamaño del scroll */
+.scroll-perfil::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+ /* Estilos barra (thumb) de scroll */
+.scroll-perfil::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.scroll-perfil::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}
+
+.scroll-perfil::-webkit-scrollbar-thumb:hover {
+  background: #b3b3b3;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+ /* Estilos track de scroll */
+.scroll-perfil::-webkit-scrollbar-track {
+  background: #e1e1e1;
+  border-radius: 4px;
+}
+
+.scroll-perfil::-webkit-scrollbar-track:hover, 
+.scroll-perfil::-webkit-scrollbar-track:active {
+  background: #d4d4d4;
 }
 

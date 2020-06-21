@@ -31,6 +31,14 @@ class UserController extends Controller
 
     public function registerAlumn(Request $request, User $user) 
     {
+        //validar que un correo no exista.
+        $validate = User::where("email","=", $request->input("email"))->get();
+
+        if(!$validate->isEmpty())
+        {
+            return redirect()->route("home");
+        }
+
         $user->name = $request->input("name");
         $user->lastname = $request->input("lastname");
         $user->email = $request->input("email");

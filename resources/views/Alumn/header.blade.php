@@ -1,9 +1,13 @@
 <nav class="main-header navbar navbar-expand navbar-orange" role = "navigation">
 
   <ul class="navbar-nav">
+
     <li class="nav-item">
+
       <a class="nav-link" data-widget="pushmenu" href="#" style="color:white"><i class="fas fa-bars"></i></a>
+      
     </li>
+    
   </ul>
 
   <div class="navbar-custom-menu ml-auto">
