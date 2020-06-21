@@ -48,6 +48,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user'
 		    ])->middleware('candidate');
 
+		    Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+		    ]);
+
 		});
   	});
 });

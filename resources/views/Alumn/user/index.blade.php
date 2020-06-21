@@ -2,6 +2,20 @@
 
 @section('content-alumn')
 
+<?php
+  $data_user = selectSicoes("alumno","alumnoid",$user->id_alumno);
+  $data_studio = selectSicoes("planestudio","planestudioid",$data_user[0]["planestudioid"]);
+  $data_carrer = selectSicoes("carrera","carreraid",$data_studio[0]["carreraid"]);
+  $data_carrer=$data_carrer[0];
+?>
+
+<style>
+  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #fd7e14 !important;
+}
+</style>
+
 <div class="content-wrapper">
 
   <section class="content-header">
@@ -40,9 +54,9 @@
 
               <h3 class="profile-username text-center">{{$user->name}}</h3>
 
-              <p class="text-muted text-center">Software Engineer</p>
+              <p class="text-muted text-center">{{$data_carrer["nombre"]}}</p>
 
-              <ul class="list-group list-group-unbordered mb-3">
+<!--               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
                   <b>Followers</b> <a class="float-right">1,322</a>
                 </li>
@@ -52,7 +66,7 @@
                 <li class="list-group-item">
                   <b>Friends</b> <a class="float-right">13,287</a>
                 </li>
-              </ul>
+              </ul> -->
 
               <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
 
@@ -77,11 +91,11 @@
 
             </div>
 
-            <div class="card-body scroll-perfil">
+            <div class="card-body">
 
               <div class="tab-content">
 
-                <div class="active tab-pane" id="activity">
+                <div class="active tab-pane scroll-perfil" id="activity">
 
                   <div class="post">
 
@@ -115,7 +129,9 @@
 
                 <div class="tab-pane" id="settings">
 
-                  <form class="form-horizontal">
+                  <form class="form-horizontal" method="post" action="{{route('alumn.user.save',$user)}}" enctype="multipart/form-data">
+
+                    {{ csrf_field() }}
 
                     <div class="form-group row">
 
@@ -123,7 +139,19 @@
 
                       <div class="col-sm-10">
 
-                        <input type="email" class="form-control" id="inputName" placeholder="Name">
+                        <input type="text" class="form-control" name="name" placeholder="Nombre" value="{{$user->name}}">
+
+                      </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                      <label for="inputName" class="col-sm-2 col-form-label">Apellido</label>
+
+                      <div class="col-sm-10">
+
+                        <input type="text" class="form-control" name="lastname"value="{{$user->lastname}}" required>
 
                       </div>
 
@@ -135,7 +163,7 @@
 
                       <div class="col-sm-10">
 
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="email" class="form-control form-control-lg" value="{{$user->email}}" id="inputEmail" readonly>
 
                       </div>
 
@@ -143,59 +171,31 @@
 
                     <div class="form-group row">
 
-                      <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                      <label for="inputName2" class="col-sm-2 col-form-label">Password</label>
 
                       <div class="col-sm-10">
 
-                        <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
 
                       </div>
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group">
 
-                      <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
+                      <div class="panel">SUBIR FOTO</div>
 
-                      <div class="col-sm-10">
+                      <input type="file" class="newPicture" name="newPicture">
 
-                        <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                      <p class="help-block">Peso máximo de la foto 2MB</p>
 
-                      </div>
-
+                      <img src="{{asset($user->photo)}}" class="img-thumbnail preview" width="100px">
+                      
                     </div>
 
                     <div class="form-group row">
 
-                      <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-
-                      <div class="col-sm-10">
-
-                        <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                      </div>
-
-                    </div>
-
-                    <div class="form-group row">
-
-                      <div class="offset-sm-2 col-sm-10">
-
-                        <div class="checkbox">
-
-                          <label>
-                            <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                          </label>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="form-group row">
-                      <div class="offset-sm-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">guardar</button>
-                      </div>
+                        <button type="submit" class="btn btn-warnign flotante" title="Guardar"><i class="fa fa-save" style="color: white !important"></i></button>
 
                     </div>
 
@@ -218,5 +218,7 @@
   </section>
 
 </div>
+
+<script src="{{asset('js/alumn/user.js')}}"></script>
 
 @stop

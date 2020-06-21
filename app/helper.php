@@ -31,3 +31,33 @@ function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
 	return $stmt->fetchAll();
 	$stmt = null;
 }
+
+
+function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
+{
+    $ruta;
+    list($ancho,$alto) = getimagesize($foto["tmp_name"]);
+    if($flag==false)
+    {
+        mkdir("img/".$folder."/".$id,0755);
+    }  
+    if ($foto["type"] == "image/jpeg")
+    {
+        $aleatorio = mt_rand(100,999);
+        $ruta = "img/".$folder."/".$id."/".$aleatorio.".jpg";
+        $origen = imagecreatefromjpeg($foto["tmp_name"]);
+        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+        imagejpeg($destino,$ruta);
+    }
+    if ($foto["type"] == "image/png")
+    {
+        $aleatorio = mt_rand(100,999);
+        $ruta = "img/".$folder."/".$id."/".$aleatorio.".png";
+        $origen = imagecreatefrompng($foto["tmp_name"]);
+        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+        imagepng($destino,$ruta);
+    }
+    return $ruta;
+}
