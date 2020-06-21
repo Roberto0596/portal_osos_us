@@ -86,7 +86,6 @@
 
 				</div>
 
-
 				<form method="post" action="{{route('alumn.users.registerAlumn', $item)}}" style="width: 80%; margin-right: auto; margin-left: auto">
 
 					{{ csrf_field() }}
@@ -185,7 +184,7 @@
 
 							<button class="btn btn-warning button-custom">Ser aspirante</button>
 							<span class="text-center">-O-</span>
-							<button class="btn btn-success radius">Ya soy estudiante</button>
+							<a href="{{route('alumn.users.first_step')}}" class="btn btn-success radius">Ya soy estudiante</a>
 						</div>
 
 					</div>

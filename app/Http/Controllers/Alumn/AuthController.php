@@ -33,7 +33,6 @@ class AuthController extends Controller
 
         if (Auth::guard('alumn')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
         {
-            session(["current_user"=>$user]);
             return redirect()->route('alumn.home');
         }
         session()->flash('messages', 'error|El password es incorrecto');

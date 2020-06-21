@@ -5,7 +5,6 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <script src="{{ asset('js/form/index.js') }}"></script>
     <link href="{{ asset('css/form.css') }}" rel="stylesheet">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -23,7 +22,7 @@
       <div class="card">
         <div class="card-body">
             <div class="container">
-                <div class="col-md-12  col-xs-2  col-lg-12 col-sm-2">
+                <div class="col-md-8 ">
                 <div class="stepwizard">
                     <div class="stepwizard-row setup-panel">
                         <div class="stepwizard-step">
@@ -60,18 +59,18 @@
 
                 <form role="form">                  
                     <div class="row" id="step-1">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">Curp</label>
-                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese su curp"  />
+                                <input  maxlength="18" min="18" type="text" required="required" class="form-control" placeholder="Ingrese su curp"  />
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Domicilio</label>
                                 <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese su domicilio"  />
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Cedula</label>
-                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese una cedula"  />
+                                <label class="control-label">Telefono</label>
+                                <input  maxlength="10" min="10" type="text" required="required" class="form-control" placeholder="Ej. 6558036422"  />
                             </div>
                        </div>
                         <div class="col-md-2">
@@ -112,15 +111,19 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Municipio de Nacimeinto</label>
-                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese una cedula"  />
+                                <label class="control-label">Código Postal</label>
+                                <input  maxlength="5" min="5" type="text" required="required" class="form-control" placeholder="Ej. 84330"  />
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Municipio de nacimiento </label>
-                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese una cedula"  />
+                                <label for="sexo" data-alias="Sexo" class="control-label">Sexo</label>
+                                <select id="sexo" name="sexo" class="form-control " required="true">
+                                    <option value="M">Mujer</option>
+                                    <option value="H">Hombre</option>
+                                </select>
                             </div>
+                            
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="mesNacimiento" data-alias="mesNacimiento" class="control-label">Mes de nacimiento</label>
                                 <select id="mesNacimiento" name="mesNacimiento" class="form-control " required="true">
@@ -143,33 +146,33 @@
                                 <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ej. Sonora"  />
                             </div>
                             <div class="form-group">
-                                <label for="sexo" data-alias="Sexo" class="control-label">Sexo</label>
-                                <select id="sexo" name="sexo" class="form-control " required="true">
-                                    <option value="M">Mujer</option>
-                                    <option value="H">Hombre</option>
+                                <label for="alergia" data-alias="alergia" class="control-label">Alergias</label>
+                                <select id="alergia" name="alergia" class="form-control " required="true">
+                                    <option value="No">No</option>
+                                    <option value="Si">Si</option>
+                                   
                                 </select>
                               </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label"><output></output>Año de nacimiento</label>
                                 <input  maxlength="4" minlength="4" type="text" required="required" class="form-control" placeholder="Ej. 1999"  />
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Cedula</label>
-                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ingrese una cedula"  />
+                                <label class="control-label">Municipio de Nacimeinto</label>
+                                <input  maxlength="100" type="text" required="required" class="form-control" placeholder="Ej. Fronteras"  />
                             </div>
-                            <div class="form-group">
-                                <label for="sexo" data-alias="Sexo" class="control-label">Sexo</label>
-                                <select id="sexo" name="sexo" class="form-control " required="true">
-                                    <option value="M">Mujer</option>
-                                    <option value="H">Hombre</option>
-                                </select>
+                            
+                             <div class="form-group" >
+                                <label class="control-label"><output></output>Especifique</label>
+                                <input id="descAlergia" maxlength="100" type="text" class="form-control" placeholder="Especifique su alergia" disabled="" />
                             </div>
+                    
                     </div>
                     <!-- step 2 -->
                    
-                    <button type="btnIguiente" class="btn btn-warning">Siguiente</button>              
+                    <button type="btnIguiente" class="btn btn-warning button-custom">Siguiente</button>              
                    
                 </form>
 
@@ -177,11 +180,6 @@
              
 
         </div>
-        <!-- /.card-body -->
-         <!-- <div class="card-footer">
-          Footer
-        </div> -->
-        <!-- /.card-footer-->
       </div>
       <!-- /.card -->
 
@@ -191,8 +189,6 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <script>
 
- </script>
 
 @stop
