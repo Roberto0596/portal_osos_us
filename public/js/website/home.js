@@ -1,6 +1,6 @@
 var passwordFlag = true;
 
-$("#password").focus(function()
+$("#first").focus(function()
 {
 	if (passwordFlag==true)
 	{
@@ -50,3 +50,28 @@ function hiddeInterval(position)
 		}
 	}
 }
+
+$(document).ready(function(){
+$("#password").keyup(function(){
+
+	var passwordTwo = $(this).val();
+	if (passwordTwo.length>0)
+	{
+		var passwordOne = $("#first").val();
+		if (passwordOne == passwordTwo)
+		{
+			toastr.success("las contraseñas coinciden");
+			$(".sent").attr("type","submit");
+			$(".sent").focus();
+		}
+		else
+		{
+			if (passwordTwo.length >= passwordOne.length)
+			{
+				toastr.error("las contraseñas no coinciden");
+				$(".sent").attr("type","button");
+			}
+		}
+	}
+});	
+})

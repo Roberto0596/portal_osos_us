@@ -42,7 +42,13 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script>
     <!-- sweetalert -->
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.js') }}"></script>
-    
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+
+      <!-- InputMask -->
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+    <script src="{{ asset('js/temple.js') }}"></script>
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     @yield('content')
