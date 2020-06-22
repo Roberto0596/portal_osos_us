@@ -8,6 +8,7 @@ use App\Models\Alumns\User;
 use Input;
 use Auth;
 use Illuminate\Support\Collection;
+use App\Http\Requests\CreateUserRequest;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
 
-        if(isset($_FILES['newPicture']))
+        if(isset($_FILES['newPicture']) && $_FILES["newPicture"]["name"]!="")
         {
             if ($user->photo == "img/alumn/default/default.png")
             {
@@ -76,7 +77,7 @@ class UserController extends Controller
                 Auth::guard('alumn')->logout();
                 session()->flush();
             }
-            
+
             //paso dos, primero validamos que no este registrado el correo en la base de datos, para ello hacemos una consulta y validamos que este vacia.
             $email = $request->input("email");
             $validate = User::where("email","=",$email)->get();
@@ -123,6 +124,12 @@ class UserController extends Controller
 
     public function registerAlumn(Request $request, User $user) 
     {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required|min:8',
+            'name'=>'required',
+            'lastname'=>'required'
+        ]);
         //validar que un correo no exista.
         $validate = User::where("email","=", $request->input("email"))->get();
 

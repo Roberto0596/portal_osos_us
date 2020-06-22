@@ -80,12 +80,6 @@
 
 			<div class="card card-custom">
 
-				<div class="card-header text-center">
-
-					<h3>Se parte de nosotros</h3>
-
-				</div>
-
 				<form method="post" action="{{route('alumn.users.registerAlumn', $item)}}" style="width: 80%; margin-right: auto; margin-left: auto">
 
 					{{ csrf_field() }}
@@ -160,11 +154,31 @@
 
 								  	<label class="field a-field a-field_a2">
 
-									    <input type="password" class="field__input a-field__input" placeholder="Ingrese una contraseña" id="password" name="password" required>
+									    <input type="password" class="field__input a-field__input" placeholder="Ingrese una contraseña" id="first" required>
 
 									    <span class="a-field__label-wrap">
 
 									        <span class="a-field__label">Contraseña</span>
+
+									    </span>
+
+									</label> 
+
+								</div>
+
+							</div>
+
+							<div class="col-md-12">
+								
+								<div class="input-group mb-3">
+
+								  	<label class="field a-field a-field_a2">
+
+									    <input type="password" class="field__input a-field__input" placeholder="Ingrese una contraseña" id="password" name="password" required>
+
+									    <span class="a-field__label-wrap">
+
+									        <span class="a-field__label">Confirmar contraseña</span>
 
 									    </span>
 
@@ -182,7 +196,7 @@
 
 						<div class="col-md-12 col-custom">
 
-							<button class="btn btn-warning button-custom">Ser aspirante</button>
+							<button type="button" class="btn btn-warning button-custom sent">Ser aspirante</button>
 							<span class="text-center">-O-</span>
 							<a href="{{route('alumn.users.first_step')}}" class="btn btn-success radius">Ya soy estudiante</a>
 						</div>

@@ -6,7 +6,7 @@
 
     <div class="flex-content">
 
-        <div class="card"  style="width: 40%;height: 55vh;">
+        <div class="card"  style="width: 40%;height: 60vh; border-radius: 22px;">
 
             @if($step==1) 
 
@@ -18,11 +18,11 @@
 
             @endif
 
-            <form method="post" action="{{route('alumn.users.postStep',$step)}}" style="width: 80%; margin-right: auto; margin-left: auto;    height: 100%;">
+            <form method="post" action="{{route('alumn.users.postStep',$step)}}" style="width: 90%; margin-right: auto; margin-left: auto; height: 100%;" id="form-account">
 
                 {{ csrf_field() }}
 
-                <div class="card-body" style="height: 70%;">
+                <div class="card-body" style="height: 90%;">
 
                     <div class="row">
 
@@ -31,9 +31,9 @@
                             @if($step==1)                            
                             <div class="input-group mb-3" style="">
 
-                                <label class="field a-field a-field_a2">
+                                <label class="field a-field a-field_a2" style="font-size: 20px;">
 
-                                    <input type="text" class="field__input a-field__input" placeholder="Ej. 00-00-0000" id="matricula" name="matricula" required>
+                                    <input type="text" class="field__input a-field__input" placeholder="Ej. 00-00-0000" id="matricula" name="matricula" required style="font-size: 25px;">
 
                                     <span class="a-field__label-wrap">
 
@@ -54,18 +54,32 @@
 
                                 <div class="col-md-12 text-center step_one">
 
-                                    <p class="parraf-custom">Hola: <span>{{$alumn["nombre"]}}</span></p>
+                                    <p class="parraf-custom">Hola <span>{{ucwords(strtolower($alumn["nombre"]))}}</span></p>
 
                                     <p class="parraf-custom">Tu correo sera: <span>
                                     a{{$email}}@unisierra.edu.mx</span></p>
+
+                                    <p class="parraf-custom">¡Apuntalo!</p>
 
                                 </div>
 
                                 <div class="col-md-12 text-center step_two" style="display: none">
 
-                                    <p class="parraf-custom">{{$alumn["nombre"]}} solo falta tu contraseña</span></p>
+                                    <p class="parraf-custom">{{ucwords(strtolower($alumn["nombre"]))}} solo falta tu contraseña</span></p>
 
                                     <div class="input-group mb-3" style="">
+
+                                        <label class="field a-field a-field_a2">
+
+                                            <input type="password" class="field__input a-field__input" placeholder="password" id="first" required>
+
+                                            <span class="a-field__label-wrap">
+
+                                                <span class="a-field__label">Ingresa aquí tu contraseña</span>
+
+                                            </span>
+
+                                        </label> 
 
                                         <label class="field a-field a-field_a2">
 
@@ -77,11 +91,13 @@
 
                                             <span class="a-field__label-wrap">
 
-                                                <span class="a-field__label">Ingresala por favor</span>
+                                                <span class="a-field__label">Confirma tu contraseña</span>
 
                                             </span>
 
                                         </label> 
+
+                                        <div id="validate" style="width: 100%"></div>
 
                                     </div>
 
@@ -103,7 +119,7 @@
                         @if($step==1)
                          <button type="submit" class="btn btn-warning button-custom">Siguiente <i class="fa fas  fa-arrow-circle-right"></i></button>
                         @else
-                        <button type="button" class="btn btn-warning button-custom next">Siguiente <i class="fa fas  fa-arrow-circle-right"></i></button>
+                        <button type="button" class="btn btn-warning button-custom sent next">Siguiente <i class="fa fas  fa-arrow-circle-right"></i></button>
                         @endif
 
                     </div>
@@ -124,6 +140,12 @@
     {
         @if(isset($error))
             toastr.warning("{{$error}}");
+        @endif
+
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error('{{$error}}');
+            @endforeach
         @endif
     })
 </script>
