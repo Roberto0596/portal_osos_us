@@ -32,12 +32,15 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
+
                     <a href="" class="nav-link">
+
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Inicio
                         </p>
                     </a>
+
                 </li>
                 
                 @if(Auth::guard('alumn')->user()->id_alumno != null)
@@ -50,6 +53,14 @@
                     </a>
                 </li>
                 @endif
+                <li class="nav-item">
+                    <a href="{{route('alumn.charge')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Mi cuenta
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>

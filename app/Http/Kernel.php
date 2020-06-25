@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'alumn.user' => \App\Http\Middleware\AuthAlumn::class,
         'finance.user' => \App\Http\Middleware\AuthFinance::class,
         'candidate' => \App\Http\Middleware\candidateMiddleware::class,
+        'inscription' => \App\Http\Middleware\inscriptionMiddleware::class,
     ];
 }

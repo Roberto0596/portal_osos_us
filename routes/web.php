@@ -59,6 +59,19 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user.save'
 		    ]);
 
+		    Route::group(["middleware" => ["inscription"]
+			],function(){
+				//charge academic
+			    Route::get('/charge', [
+			        'uses' => 'ChargeController@index', 
+			        'as' => 'charge'
+			    ]);
+
+			    Route::post('/charge/save/{user?}', [
+			        'uses' => 'ChargeController@save', 
+			        'as' => 'charge.save'
+			    ]);
+		    });
 		});
   	});
 });

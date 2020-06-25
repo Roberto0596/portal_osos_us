@@ -2,7 +2,6 @@
 @extends('Alumn.main')
 @section('content-alumn')
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <link href="{{ asset('css/form.css') }}" rel="stylesheet">
