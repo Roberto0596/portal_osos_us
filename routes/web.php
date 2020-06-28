@@ -59,6 +59,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user.save'
 		    ]);
 
+		    Route::get('/payment-option', [
+			        'uses' => 'PaymentController@index', 
+			        'as' => 'payment'
+			]);
+
+		    Route::get('/payment-card', [
+			        'uses' => 'PaymentController@card_method', 
+			        'as' => 'payment.card'
+			]);
+
 		    Route::group(["middleware" => ["inscription"]
 			],function(){
 				//charge academic

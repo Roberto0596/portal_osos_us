@@ -13,12 +13,15 @@ class CreateTableFinanceUsers extends Migration
      */
     public function up()
     {
-        Schema::create('finance_users', function (Blueprint $table) {
+        Schema::create('admin_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('lastname');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string("photo",255)->default('img/alumn/default/default.png');
+            $table->bigInteger("area_id")->unsigned();
+            $table->foreign("area_id")->references("id")->on("area")->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateTableFinanceUsers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_finance_users');
+        Schema::dropIfExists('admin_users');
     }
 }
