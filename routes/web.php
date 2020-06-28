@@ -38,6 +38,9 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user'
 		    ]);
 
+			Route::get('pdf','PdfController@getIndex');
+			Route::post('pdf/generar/{tipo}/{accion}', ['uses'=>'PdfController@getGenerar', 'as' => 'generar']);
+			
 		});
   	});
 });
@@ -85,3 +88,12 @@ Route::group(['namespace' => 'Website'],function()
         'as' => 'home'
     ]);
 });
+
+Route::group(['namespace' => 'Alumn'],function()
+{
+	
+});
+
+
+
+
