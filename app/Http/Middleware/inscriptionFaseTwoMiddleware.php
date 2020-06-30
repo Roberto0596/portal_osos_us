@@ -5,13 +5,13 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class inscriptionMiddleware
+class inscriptionFaseTwoMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::guard("alumn")->user()->inscripcion != 0) {
+        if (Auth::guard("alumn")->user()->inscripcion != 1) {
             $path = $request->path();
-            return redirect("alumn/payment");
+            return redirect("alumn/charge");
         }
         return $next($request);
     }

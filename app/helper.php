@@ -1,5 +1,7 @@
 <?php 
 
+use App\Models\AdminUsers\AdminUser;
+
 function ConectSqlDatabase()
 {
 	$link = new \PDO("mysql:host=localhost;dbname=sicoes","root","");
@@ -159,4 +161,12 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
         imagepng($destino,$ruta);
     }
     return $ruta;
+}
+
+function selectAdmin($id = null)
+{
+    if ($id!=null)
+    {
+        return AdminUser::find($id);
+    }
 }

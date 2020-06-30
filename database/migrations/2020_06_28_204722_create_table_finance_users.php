@@ -14,13 +14,14 @@ class CreateTableFinanceUsers extends Migration
     public function up()
     {
         Schema::create('admin_users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('lastname');
             $table->string('email')->unique();
             $table->string('password');
             $table->string("photo",255)->default('img/alumn/default/default.png');
             $table->bigInteger("area_id")->unsigned();
+            $table->integer('first_time');
             $table->foreign("area_id")->references("id")->on("area")->onDelete('cascade');
             $table->timestamps();
         });

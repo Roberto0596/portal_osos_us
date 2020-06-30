@@ -69,7 +69,7 @@ class ChargeController extends Controller
             return redirect()->back();
         }
 
-        $user->inscripcion = 0;
+        $user->inscripcion = 3;
         $user->save();
         session()->flash("messages","success|Terminaste tu registro, felicidades, eres alumno");
         return redirect()->route("alumn.user");

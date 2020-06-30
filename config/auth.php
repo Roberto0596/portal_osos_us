@@ -56,6 +56,16 @@ return [
             'driver' => 'session',
             'provider' => 'finance_users',
         ],
+
+        'computercenter' => [
+            'driver' => 'session',
+            'provider' => 'computer_users',
+        ],
+
+        'library' => [
+            'driver' => 'session',
+            'provider' => 'library_users',
+        ],
     ],
 
     /*
@@ -88,7 +98,17 @@ return [
 
         'finance_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Finance\FinanceUser::class,
+            'model' => App\Models\AdminUsers\AdminUser::class,
+        ],
+
+        'computer_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AdminUsers\AdminUser::class,
+        ],
+
+        'library_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AdminUsers\AdminUser::class,
         ],
 
         // 'users' => [
