@@ -32,3 +32,24 @@ $("#payment-card").click(function(){
 	console.log("hola");
 	$("#modalCard").modal("show");
 });
+
+$(document).ready(function()
+{
+	Conekta.setPublicKey('key_JgCLUGDrLiCoyFFhYxKYgFw');
+
+	var successResponseHandler = function(token){
+	  var $form = $("#card-form");
+	  $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+	  $form.get(0).submit();
+	}
+
+	var errorResponseHandler = function(error){
+	  toastr.error("hubo un problema del tipo " + error.message_to_purchaser);
+	}
+
+	$("#card-form").submit(function(e){
+	  e.preventDefault();
+	  var $form = $("#card-form");
+	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
+	});
+});

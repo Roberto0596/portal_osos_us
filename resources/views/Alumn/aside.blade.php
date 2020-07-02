@@ -42,6 +42,18 @@
                     </a>
 
                 </li>
+
+                <li class="nav-item">
+
+                    <a href="{{route('alumn.payment.card')}}" class="nav-link">
+
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            testing pago
+                        </p>
+                    </a>
+
+                </li>
                 
                 @if(Auth::guard('alumn')->user()->id_alumno != null)
                 <li class="nav-item">

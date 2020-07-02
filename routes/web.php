@@ -67,6 +67,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'as' => 'payment'
 				]);
 
+				Route::get('/payment/card', [
+		       		'uses' => 'PaymentController@form_payment', 
+		       		'as' => 'payment.card'
+		    	]);
+
 			    Route::post('/pay-card', [
 				        'uses' => 'PaymentController@pay_card', 
 				        'as' => 'pay.card'

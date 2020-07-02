@@ -35,7 +35,7 @@ class ChargeController extends Controller
 
         $array = $this->cleanArray($request->all(),["detgrupoid","_token","currentAsignatures"],3,false); 
 
-        if (count($array)<=2)
+        if (count($array)<1)
         {
             session()->flash("messages","error|Hay un minimo de materias por llevar, favor de no jugar con el sistema");
             return redirect()->back();
