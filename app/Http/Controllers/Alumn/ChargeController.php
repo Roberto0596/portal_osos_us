@@ -17,9 +17,9 @@ class ChargeController extends Controller
 
         foreach ($getAsignatures as $key => $value)
         {
-            $aux = getDetGrupo($value["asignaturaid"]);
-            array_push($getAsignatures[$key], $aux["detgrupoid"]);
-            array_push($getAsignatures[$key], $aux["profesorid"]);
+            $aux = getDetGrupo($value["AsignaturaId"]);
+            array_push($getAsignatures[$key], $aux["DetGrupoId"]);
+            array_push($getAsignatures[$key], $aux["ProfesorId"]);
         }
 		
         return view('Alumn.charge.index')->with(["asignatures" => $getAsignatures,"user"=>$user]);
@@ -33,7 +33,7 @@ class ChargeController extends Controller
         //convertimos el array de las asginaturas que debe llevar y quitamos los campos que no necesitamos
         $currentAsignatures = $this->cleanArray(json_decode($request->input("currentAsignatures"),true),11,1,true,false);
 
-        $array = $this->cleanArray($request->all(),["detgrupoid","_token","currentAsignatures"],3,false); 
+        $array = $this->cleanArray($request->all(),["DetGrupoId","_token","currentAsignatures"],3,false); 
 
         if (count($array)<1)
         {
@@ -45,7 +45,7 @@ class ChargeController extends Controller
         
         foreach ($currentAsignatures as $key => $value)
         {
-            if (in_array($value["detgrupoid"], $array))
+            if (in_array($value["DetGrupoId"], $array))
             {
                 $baja = 0;
             }
@@ -54,10 +54,10 @@ class ChargeController extends Controller
                 $baja = 1;
             }
 
-            $temple = array(["baja"=>$baja,
-                            "detgrupoid"=>$value["detgrupoid"],
-                            "periodoid"=>$getCurrentPeriod["periodoid"],
-                            "alumnoid"=>$user->id_alumno]);
+            $temple = array(["Baja"=>$baja,
+                            "DetGrupoId"=>$value["DetGrupoId"],
+                            "PeriodoId"=>$getCurrentPeriod["PeriodoId"],
+                            "AlumnoId"=>$user->id_alumno]);
             
             $insert = insertCharge($temple[0]);
             array_push($successArray, $insert);
@@ -101,7 +101,7 @@ class ChargeController extends Controller
                 $aux = [];
                 foreach ($array as $key => $value) 
                 {
-                   array_push($aux, ["detgrupoid" => $value[$indexstoclean]]);
+                   array_push($aux, ["DetGrupoId" => $value[$indexstoclean]]);
                 }                
                 $array = $aux;
             }

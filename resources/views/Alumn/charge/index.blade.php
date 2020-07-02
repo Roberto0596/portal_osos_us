@@ -79,8 +79,8 @@
               @foreach($asignatures as $key => $value)
 
               @php
-               $planEstudio = selectSicoes("planestudio","planestudioid",$value["planestudioid"])[0]["nombre"];
-               $teacher = selectSicoes("profesor","profesorid",$value[12])[0]["nombre"];
+               $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$value["PlanEstudioId"])[0]["Nombre"];
+               $teacher = selectSicoes("Profesor","ProfesorId",$value[12])[0]["Nombre"];
               @endphp
 
               <tr>
@@ -94,7 +94,7 @@
                       <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}">
 
                       <label for="{{$key}}">
-                          {{$value["nombre"]}}
+                          {{$value["Nombre"]}}
                       </label>
                       <input type="hidden" name="detgrupoid" value="{{$value[11]}}">
 
@@ -104,7 +104,7 @@
 
                 </td>
 
-                <td>{{$value["semestre"]}}</td>
+                <td>{{$value["Semestre"]}}</td>
 
                 <td>{{$planEstudio}}</td>
 

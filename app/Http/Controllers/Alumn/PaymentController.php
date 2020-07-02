@@ -56,9 +56,9 @@ class PaymentController extends Controller
               "customer_info" => [
                 "name" => $current_user->name,
                 "email" => $current_user->email,
-                "phone" => $sicoesAlumn["telefono"]!=null?$sicoesAlumn["telefono"]:"1234234321"
+                "phone" => $sicoesAlumn["Telefono"]!=null?$sicoesAlumn["Telefono"]:"1234234321"
               ],
-              "metadata" => ["Matricula" => $sicoesAlumn["matricula"]],
+              "metadata" => ["Matricula" => $sicoesAlumn["Matricula"]],
               "charges" => [
                 [
                   "payment_method" => 
