@@ -9,5 +9,4 @@
         <input type="text" class="form-control" name="matriculaAlumno" id="matricula" aria-describedby="matriculaHelp" placeholder="Ingrese matrícula">
     </div>
     <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left;">Cedula</button>
-    <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: right;">Cedula</button>
 </form>

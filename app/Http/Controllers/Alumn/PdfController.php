@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
 use App\Http\Controllers\Controller;
-
+ 
 class PdfController extends Controller
 {
     public function getIndex()
@@ -15,7 +15,6 @@ class PdfController extends Controller
        
         $accion = $accion;
         $data['tipo'] = $tipo;
-        $data['matricula'] = $request->input('matriculaAlumno');
         
         if($accion=='html'){
             return view('pdf.generar',$data);
@@ -44,13 +43,9 @@ class PdfController extends Controller
         ]);
        
         $mpdf->SetDisplayMode('fullpage');
+        dd($html);
         $mpdf->WriteHTML($html);
-        
-        if($accion=='ver'){
-            $mpdf->Output($namefile,"I");
-        }elseif($accion=='descargar'){
-            $mpdf->Output($namefile,"D");
-        }
+       
     }
     public function pdf($accion='ver',$tipo='digital')
     {

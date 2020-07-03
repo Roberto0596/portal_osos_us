@@ -39,6 +39,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
   		Route::group(['middleware' => ['alumn.user']
 		], function()
 		{
+
+			
+			Route::get('pdf','PdfController@getIndex');
+			Route::post('pdf/generar/{tipo}/{accion}',['uses'=>'PdfController@getGenerar', 'as' => 'generar']);
+
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'

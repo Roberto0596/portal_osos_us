@@ -55,7 +55,7 @@
                 <td  style="border-right: none;font-size: 13px;">NOMBRE</td>
                 <td  style="border-right: none;border-left: none;font-size: 13px;">LUCERO</td>
                 <td  style="border-right: none;border-left: none;font-size: 13px;"></td>
-                <td  style="border-left: none;font-size: 13px;" >{{$matricula}}</td>
+                <td  style="border-left: none;font-size: 13px;" ></td>
             </tr>
             <tr >
                 <td style="border-right: none; font-size: 10px;padding-top: 0px;padding-bottom: 0px;border-bottom: none;"></td>
