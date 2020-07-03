@@ -17,8 +17,11 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+   
     <!-- scripts -->
-
+    
     <!-- jQuery -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -41,7 +44,13 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script>
     <!-- sweetalert -->
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.js') }}"></script>
-    
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+
+      <!-- InputMask -->
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+    <script src="{{ asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+    <script src="{{ asset('js/temple.js') }}"></script>
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     @yield('content')

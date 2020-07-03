@@ -13,7 +13,13 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 
 	    Route::post('/sign-in',[
 	        'uses' => 'AuthController@postLogin', 
-	    ]);
+		]);
+
+		Route::get('/form',[
+			'uses' => 'FormController@index', 
+			'as' => 'form'
+		]);
+		 
 
 	    Route::get('/sign-out', [
 	        'uses' => 'AuthController@logout', 
@@ -23,6 +29,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	    Route::post('/users/registerAlumn/{user?}',[
 	        'uses' => 'UserController@registerAlumn', 
 	        'as' => 'users.registerAlumn'
+	    ]);
+
+	    Route::get('/account/first_step',[
+	        'uses' => 'UserController@steps', 
+	        'as' => 'users.first_step'
+	    ]);
+
+	    Route::post('/account/postStep/{step}',[
+	        'uses' => 'UserController@postSteps', 
+	        'as' => 'users.postStep'
 	    ]);
 
   		Route::group(['middleware' => ['alumn.user']
@@ -36,11 +52,26 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		    Route::get('/user', [
 		        'uses' => 'UserController@index', 
 		        'as' => 'user'
+		    ])->middleware('candidate');
+
+		    Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
 		    ]);
 
-			Route::get('pdf','PdfController@getIndex');
-			Route::post('pdf/generar/{tipo}/{accion}', ['uses'=>'PdfController@getGenerar', 'as' => 'generar']);
-			
+		    Route::group(["middleware" => ["inscription"]
+			],function(){
+				//charge academic
+			    Route::get('/charge', [
+			        'uses' => 'ChargeController@index', 
+			        'as' => 'charge'
+			    ]);
+
+			    Route::post('/charge/save/{user?}', [
+			        'uses' => 'ChargeController@save', 
+			        'as' => 'charge.save'
+			    ]);
+		    });
 		});
   	});
 });
@@ -88,12 +119,3 @@ Route::group(['namespace' => 'Website'],function()
         'as' => 'home'
     ]);
 });
-
-Route::group(['namespace' => 'Alumn'],function()
-{
-	
-});
-
-
-
-

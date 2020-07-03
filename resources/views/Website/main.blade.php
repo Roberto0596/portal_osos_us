@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="content">
+<div class="content-custom">
 
 	@include('Website.header')
 
