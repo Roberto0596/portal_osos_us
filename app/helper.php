@@ -1,26 +1,31 @@
 <?php 
 
+use App\Models\AdminUsers\AdminUser;
+
 function ConectSqlDatabase()
 {
-	$link = new \PDO("mysql:host=localhost;dbname=sicoes","root","");
-	$link->exec("set names utf8");
+    $password = "admin123";
+    $user = "robert";
+    $rutaServidor = "127.0.0.1";
+	$link = new PDO("sqlsrv:server=DESKTOP-UP7PDGG\SQLEXPRESS01;database=sicoes", $user, $password);
+    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
 
 //este metodo servira para trarnos el periodo actual o en curso
 function selectCurrentPeriod()
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM periodo order by periodoid desc limit 1");
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * from Periodo order by PeriodoId desc;");
     $stmt->execute();
     return $stmt->fetch();
     $stmt = null;
 }
 
 //metodo auxiliar para saber las ultimas cargas del alumno
-function selectLastCharge($alumnoid)
+function selectLastCharge($AlumnoId)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM carga where alumnoid = :alumnoid order by cargaid desc limit 1");
-    $stmt->bindParam(":alumnoid",$alumnoid,PDO::PARAM_INT);
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM Carga where AlumnoId = :AlumnoId order by CargaId desc");
+    $stmt->bindParam(":AlumnoId",$AlumnoId,PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetch();
     $stmt = null;
@@ -31,34 +36,34 @@ function getLastSemester($alumnId)
 {
     $period = selectCurrentPeriod();
     $lastCharge = selectLastCharge($alumnId);
-    $detgrupo = selectSicoes("detgrupo","detgrupoid",$lastCharge["detgrupoid"])[0];
-    $asignature = selectSicoes("asignatura","asignaturaid",$detgrupo["asignaturaid"])[0];
-    return $asignature["semestre"];
+    $detgrupo = selectSicoes("DetGrupo","DetGrupoId",$lastCharge["DetGrupoId"])[0];
+    $asignature = selectSicoes("Asignatura","AsignaturaId",$detgrupo["AsignaturaId"])[0];
+    return $asignature["Semestre"];
 }
 
 //metodo para traernos un array con las materias que el alumno puede llevar
 function getCurrentAsignatures($alumnId)
 {
-    $alumnData = selectSicoes("alumno","alumnoid",$alumnId)[0];
+    $alumnData = selectSicoes("alumno","AlumnoId",$alumnId)[0];
     $currentSemester = getLastSemester($alumnId) + 1;
-    return getAsignatures($currentSemester,$alumnData["planestudioid"]);
+    return getAsignatures($currentSemester,$alumnData["PlanEstudioId"]);
 }
 
 //metodo que nos trae todas las asignaturas
 function getAsignatures($semester,$planid)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM asignatura where semestre = :semestre and planestudioid = :planestudioid");
+    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM Asignatura where Semestre = :semestre and PlanEstudioId = :PlanEstudioId");
     $stmt->bindParam(":semestre",$semester,PDO::PARAM_STR);
-    $stmt->bindParam(":planestudioid",$planid,PDO::PARAM_STR);
+    $stmt->bindParam(":PlanEstudioId",$planid,PDO::PARAM_STR);
     $stmt->execute();
     return $stmt->fetchAll();
     $stmt = null;
 }
 
-function getDetGrupo($asignaturaid)
+function getDetGrupo($AsignaturaId)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM detgrupo where asignaturaid = :asignaturaid order by detgrupoid desc limit 1");
-    $stmt->bindParam(":asignaturaid",$asignaturaid,PDO::PARAM_INT);
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM DetGrupo where AsignaturaId = :AsignaturaId order by DetGrupoId desc");
+    $stmt->bindParam(":AsignaturaId",$AsignaturaId,PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetch();
     $stmt = null;
@@ -114,13 +119,13 @@ function insertCharge($array)
 {
     $link = new \PDO("mysql:host=localhost;dbname=sicoes","root","");
     $link->exec("set names utf8");
-    $stmt = $link->prepare("INSERT INTO carga(baja,alumnoid,detgrupoid,periodoid) values(:baja,:alumnoid,:detgrupoid,:periodoid)");
-    $baja = chr($array["baja"]);
-    $stmt->bindParam(":baja",$baja,PDO::PARAM_STR);
-    $stmt->bindParam(":alumnoid",$array["alumnoid"],PDO::PARAM_STR);
-    $stmt->bindParam(":detgrupoid",$array["detgrupoid"],PDO::PARAM_STR);
-    $stmt->bindParam(":periodoid",$array["periodoid"],PDO::PARAM_STR);
-    if($stmt->execute())
+    $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
+    $baja = chr($array["Baja"]);
+    $array = array('Baja' => $baja,
+                    'AlumnoId'=>$array["AlumnoId"],
+                    'DetGrupoId'=>$array["DetGrupoId"],
+                    'PeriodoId'=>$array["PeriodoId"]);
+    if($stmt->execute($array))
     {
         return $link->lastInsertId();
     }
@@ -159,4 +164,12 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
         imagepng($destino,$ruta);
     }
     return $ruta;
+}
+
+function selectAdmin($id = null)
+{
+    if ($id!=null)
+    {
+        return AdminUser::find($id);
+    }
 }

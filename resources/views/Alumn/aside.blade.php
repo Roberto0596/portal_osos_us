@@ -33,11 +33,23 @@
 
                 <li class="nav-item">
 
-                    <a href="" class="nav-link">
+                    <a href="{{route('alumn.home')}}" class="nav-link">
 
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Inicio
+                        </p>
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a href="{{route('alumn.payment.card')}}" class="nav-link">
+
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            testing pago
                         </p>
                     </a>
 
@@ -57,7 +69,15 @@
                     <a href="{{route('alumn.charge')}}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
-                            Mi cuenta
+                            Carga academica
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('alumn.payment')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                           Pago
                         </p>
                     </a>
                 </li>

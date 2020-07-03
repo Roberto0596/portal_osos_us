@@ -9,9 +9,9 @@ class inscriptionMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::guard("alumn")->user()->inscripcion == 0) {
+        if (Auth::guard("alumn")->user()->inscripcion != 0) {
             $path = $request->path();
-            return redirect("/alumn");
+            return redirect("alumn/payment");
         }
         return $next($request);
     }
