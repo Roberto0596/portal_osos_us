@@ -5,13 +5,18 @@
     float: right;
 
 }
+
 .login-form form {
     margin-bottom: 15px;
     background: #f7f7f7;
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
     padding: 30px;
-    border-radius: 20px;
-    
+    border-radius: 20px;    
+}
+
+.margin-around
+{
+    margin: 0px 10px 0px 10px;
 }
 
 .footer-custom
@@ -45,6 +50,23 @@
 {
     background: orange;
 }
+
+.nav-custom-green
+{
+    background: #008000 !important;
+}
+
+.nav-custom-green .card-title
+{
+    font-weight: 600;
+}
+
+.footer-orange
+{
+    background: #fd7e14;
+    color: white;
+}
+
 
 .nav-custom > .navbar-nav > .nav-item > a:link, a:visited
 {
@@ -109,14 +131,14 @@ header
 
 .container-custom .card2
 {
-    width: 330px;
+    /*width: 330px;*/
     height: 340px;
     border-radius: 8px;
     box-shadow: 0 2px 2px rgba(0,0,0,0.2);
     overflow: hidden;
     text-align: center;
     transition: all 0.25;
-        background: orange;
+    background: #fd7e14;
 }
 
 .container .card2:hover
@@ -365,4 +387,217 @@ header
     font-weight: 300;
     font-family: unset;
 }
+
+.scroll-charge
+{
+    height: 65vh;
+    overflow-y: scroll;
+}
+
+.scroll-charge p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+/* Tamaño del scroll */
+.scroll-charge::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+ /* Estilos barra (thumb) de scroll */
+.scroll-charge::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.scroll-charge::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}
+
+.scroll-charge::-webkit-scrollbar-thumb:hover {
+  background: #b3b3b3;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+ /* Estilos track de scroll */
+.scroll-charge::-webkit-scrollbar-track {
+  background: #e1e1e1;
+  border-radius: 4px;
+}
+
+.scroll-charge::-webkit-scrollbar-track:hover, 
+.scroll-charge::-webkit-scrollbar-track:active {
+  background: #d4d4d4;
+}
+
+
+.creditCardForm {
+    max-width: 700px;
+    background-color: #fff;
+    margin: 0px auto;
+    overflow: hidden;
+    padding: 50px;
+    color: #ffffff;
+    background: #fd7e14;
+}
+.creditCardForm label {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.creditCardForm .heading h1 {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+.creditCardForm .payment {
+    float: left;
+    font-size: 18px;
+    padding: 10px 25px;
+    margin-top: 20px;
+    position: relative;
+}
+.creditCardForm .payment .form-group {
+    float: left;
+    margin-bottom: 15px;
+}
+.creditCardForm .payment .form-control {
+    line-height: 40px;
+    height: auto;
+    padding: 0 16px;
+}
+.creditCardForm .owner {
+    width: 63%;
+    margin-right: 10px;
+}
+.creditCardForm .CVV {
+    width: 35%;
+}
+.creditCardForm #card-number-field {
+    width: 100%;
+}
+.creditCardForm #expiration-date {
+    width: 49%;
+}
+.creditCardForm #credit_cards {
+    width: 50%;
+    margin-top: 25px;
+    text-align: right;
+}
+.creditCardForm #pay-now {
+    width: 100%;
+    margin-top: 25px;
+}
+.creditCardForm .payment .btn {
+    width: 100%;
+    margin-top: 3px;
+    font-size: 24px;
+    background-color: #2ec4a5;
+    color: white;
+}
+.creditCardForm .payment select {
+    padding: 10px;
+    margin-right: 15px;
+}
+.transparent {
+    opacity: 0.2;
+}
+@media(max-width: 650px) {
+    .creditCardForm .owner,
+    .creditCardForm .CVV,
+    .creditCardForm #expiration-date,
+    .creditCardForm #credit_cards {
+        width: 100%;
+    }
+    .creditCardForm #credit_cards {
+        text-align: left;
+    }
+}
+
+
+td{
+    padding: 6px 5px;
+    font-size: 15px;
+}
+table, th, td {   
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center
+}
+
+
+.tabla-info{
+    margin-top: 32vh;
+    width: 100%;
+}
+
+.tabla-fecha{
+    margin-top: 10vh;
+    width: 90%;
+    
+    margin-left: 75%;
+    
+}
+
+.celdas-vacias{
+    height: 25vh;
+}
+
+.celdas-fecha{
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 12px;
+   
+}
+
+.tabla-div{
+    margin-top: 32vh;
+    border: 1.5px solid black;
+    width: 100%;
+    height: 100vh;
+}
+
+#texto-constancia{
+    width: 88%;
+    padding-left: 5%;
+    margin-right: 50%;
+    margin-top: 5%;
+    text-align: justify;
+    margin-bottom: 10%;
+}
+
+.texto-firmas{
+    letter-spacing: normal !important;
+    font-size: 12px;
+    padding-bottom: 0px;
+    padding-top: 2.5%;
+}
+
+.texto-enunciado-firma{
+    letter-spacing: 16%; 
+    font-size: 14px; 
+    padding-bottom: 5%;
+    padding-top: 0px;
+}
+
+.tabla-firmas{
+    
+    width: 450px; 
+    
+    
+}
+
+.texto-enunciado-firma2{
+    letter-spacing: 16%; 
+    font-size: 14px; 
+    padding-bottom: 3%;
+    padding-top: 0px;
+}
+
+#tabla-de-tablas-firma{
+    border: none !important; 
+    width: 100%;
+    margin: 1.5%;
+    margin-top: 10%;
+}
+
 

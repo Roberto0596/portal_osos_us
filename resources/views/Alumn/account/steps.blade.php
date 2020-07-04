@@ -48,13 +48,13 @@
 
                             @if($step==2)
                             @php
-                                $email = str_replace("-","",$alumn["matricula"]);
+                                $email = str_replace("-","",$alumn["Matricula"]);
                             @endphp
                             <div class="row" style="margin-top: 2vh">
 
                                 <div class="col-md-12 text-center step_one">
 
-                                    <p class="parraf-custom">Hola <span>{{ucwords(strtolower($alumn["nombre"]))}}</span></p>
+                                    <p class="parraf-custom">Hola <span>{{ucwords(strtolower($alumn["Nombre"]))}}</span></p>
 
                                     <p class="parraf-custom">Tu correo sera: <span>
                                     a{{$email}}@unisierra.edu.mx</span></p>
@@ -65,7 +65,7 @@
 
                                 <div class="col-md-12 text-center step_two" style="display: none">
 
-                                    <p class="parraf-custom">{{ucwords(strtolower($alumn["nombre"]))}} solo falta tu contraseña</span></p>
+                                    <p class="parraf-custom">{{ucwords(strtolower($alumn["Nombre"]))}} solo falta tu contraseña</span></p>
 
                                     <div class="input-group mb-3" style="">
 
@@ -87,7 +87,7 @@
 
                                             <input type="hidden" value="a{{$email}}@unisierra.edu.mx" name="email">
 
-                                            <input type="hidden" value="{{$alumn['matricula']}}" name="matricula">
+                                            <input type="hidden" value="{{$alumn['Matricula']}}" name="matricula">
 
                                             <span class="a-field__label-wrap">
 

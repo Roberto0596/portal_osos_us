@@ -3,9 +3,9 @@
 @section('content-alumn')
 
 <?php
-  $data_user = selectSicoes("alumno","alumnoid",$user->id_alumno);
-  $data_studio = selectSicoes("planestudio","planestudioid",$data_user[0]["planestudioid"]);
-  $data_carrer = selectSicoes("carrera","carreraid",$data_studio[0]["carreraid"]);
+  $data_user = selectSicoes("alumno","AlumnoId",$user->id_alumno);
+  $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data_user[0]["PlanEstudioId"]);
+  $data_carrer = selectSicoes("Carrera","CarreraId",$data_studio[0]["CarreraId"]);
   $data_carrer=$data_carrer[0];
 ?>
 
@@ -54,7 +54,7 @@
 
               <h3 class="profile-username text-center">{{$user->name}}</h3>
 
-              <p class="text-muted text-center">{{$data_carrer["nombre"]}}</p>
+              <p class="text-muted text-center">{{$data_carrer["Nombre"]}}</p>
 
 <!--               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableFinanceUsers extends Migration
+class CreatePayment extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AlterTableFinanceUsers extends Migration
      */
     public function up()
     {
-        Schema::table('finance_users', function (Blueprint $table) {
-            $table->string("photo",255)->default('img/alumn/default/default.png');
+        Schema::create('payment', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,6 +26,6 @@ class AlterTableFinanceUsers extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('payment');
     }
 }

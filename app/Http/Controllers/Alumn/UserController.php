@@ -61,7 +61,8 @@ class UserController extends Controller
         if ($step == 1)
         {
             $matricula = $request->input('matricula');
-            $data = selectSicoes("alumno","matricula",$matricula);
+            $data = selectSicoes("alumno","Matricula",$matricula);
+
             if (count($data)==0)
             {
                 return view('Alumn.account.steps')->with(["step"=>1,"error"=>"Esta matricula no existe, si no la recuerda favor de comunicarse a servicios escolares"]);
@@ -93,13 +94,13 @@ class UserController extends Controller
 
             $password = $request->input("password");
             $matricula = $request->input('matricula');
-            $data = selectSicoes("alumno","matricula",$matricula)[0];
+            $data = selectSicoes("alumno","Matricula",$matricula)[0];
             
-            $user->name = $data["nombre"];
-            $user->lastname = $data["apellidoprimero"]." ".$data["apellidosegundo"];
+            $user->name = $data["Nombre"];
+            $user->lastname = $data["ApellidoPrimero"]." ".$data["ApellidoSegundo"];
             $user->email = $email;
             $user->password = bcrypt($password);
-            $user->id_alumno = $data["alumnoid"];
+            $user->id_alumno = $data["AlumnoId"];
             $user->save();
 
             $credentials = $request->only('email', 'password');

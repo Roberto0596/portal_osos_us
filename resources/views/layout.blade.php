@@ -22,6 +22,8 @@
   
   
   
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
    
     <!-- scripts -->
     
