@@ -54,7 +54,8 @@
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
                         <p>
-                            Inscripción
+                           {{ Auth::guard('alumn')->user()->id_alumno != null ?  'Reinscripción' : 'Inscripción'}}
+                           
                         </p>
                     </a>
                 </li>

@@ -61,3 +61,35 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
     }
     return $ruta;
 }
+
+//aplica para tablas que teiene un campo nombre 
+
+function getItemClaveAndNamesFromTables($table_name)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT clave,nombre FROM $table_name");
+    $stmt->execute();
+	return $stmt->fetchAll();
+
+}
+function getDataByIdAlumn($id_alumn){
+    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM alumno WHERE alumnoid = $id_alumn");
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+	return  $response[0];
+}
+function getCarreras()
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT carreraid,nombre FROM carrera");
+    $stmt->execute();
+	return $stmt->fetchAll();
+
+}
+
+function updateByIdAlumn($id_alumn,$colName,$value)
+{
+    $stmt = ConectSqlDatabase()->prepare("update alumno set $colName = :$colName where alumnoid = :alumnoid");
+    $stmt->bindParam(":".$colName,$value,PDO::PARAM_STR);
+    $stmt->bindParam(":alumnoid",$id_alumn,PDO::PARAM_INT);
+    $stmt->execute();
+	
+}

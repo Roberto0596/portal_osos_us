@@ -19,6 +19,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			'uses' => 'FormController@index', 
 			'as' => 'form'
 		]);
+
+		Route::post('form/save', [
+			'uses' => 'FormController@save',
+			'as'   => 'form.save'
+		]);
 		 
 
 	    Route::get('/sign-out', [
@@ -87,12 +92,15 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
-		    ]);
+			]);
+			
+			/*
 
 		    Route::get('/user', [
 		        'uses' => 'UserController@index', 
 		        'as' => 'user'
-		    ]);
+			]);
+			*/
 
 		});
   	});
