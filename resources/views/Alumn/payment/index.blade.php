@@ -2,6 +2,8 @@
 
 @section('content-alumn')
 
+<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+
 <div class="content-wrapper">
 
   <section class="content-header">
@@ -95,13 +97,13 @@
 
             <div class="container-custom">
 
-                <div id="payment-card" style="cursor: pointer;">
+                <div style="cursor: pointer;">
 
                     <div class="card2">
 
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
-                        <p class="parrafo">Paga con tu cuenta</p>
+                        <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                     </div>
                 </div>
@@ -112,20 +114,26 @@
 
           <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
-            <div class="container-custom">
+            <form action="{{ route('alumn.pay.cash') }}" method="post">
 
-                <a href="">
+              {{ csrf_field() }}
 
-                    <div class="card2">
+              <div class="container-custom">
 
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con deposito bancario</h4>
-                        <p class="parrafo">Deposita en nuestra cuenta</p>
+                  <a href="{{ route('alumn.pay.cash') }}">
 
-                    </div>
-                </a>
+                      <div class="card2">
 
-            </div>
+                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago con deposito bancario</h4>
+                          <button class="btn btn-success">Realiza un pago en oxxo</button>
+
+                      </div>
+                  </a>
+
+              </div>
+
+            </form>
 
           </div>
 
@@ -133,16 +141,19 @@
 
               <div class="container-custom">
 
-                  <a href="">
+                  <form method="post" action="{{route('alumn.pay.stei')}}">
 
-                      <div class="card2">
+                    {{ csrf_field() }}
 
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
-                          <p class="parrafo">Realiza una transferencia</p>
+                    <div class="card2">
 
-                      </div>
-                  </a>
+                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                        <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
+                        <button class="btn btn-success">Realiza una transferencia</button>
+
+                    </div>
+                      
+                  </form>
 
               </div>
 
@@ -212,40 +223,71 @@
   <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
-
-      <form action="{{ route('alumn.pay.card') }}" method="post">
-
-        {{ csrf_field() }}
         
         <div class="modal-body">
 
-        </div>
-
-        <div class="modal-footer justify-content">
-
-          <div class="col-sm container-fluid">
-
-            <div class="row">
-
-              <div class=" col-sm-6 btn-group">
-
-                <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
-
-              </div>
-
-              <div class=" col-sm-6 btn-group">
-
-                <button class="btn btn-success .px-2"><i class="fa fa-shopping-cart"></i> Pagar</button>
+          <form id="card-form" action="{{route('alumn.pay.card')}}" method="post">
               
-              </div>
+            {{ csrf_field() }}
 
+            <div class="card">
+
+              <div class="card-body">
+
+                <div class="creditCardForm">
+
+                  <div class="heading">
+
+                      <h1>Pago en linea</h1>
+
+                  </div>
+
+                  <div class="payment">
+
+                    {{ csrf_field() }}
+
+                    <div class="form-group owner">
+                        <label for="name">Nombre del tarjetahabiente</label>
+                        <input data-conekta="card[name]" type="text" class="form-control" name="name" id="name">
+                    </div>
+
+                    <div class="form-group" id="card-number-field">
+                        <label for="cardNumber">Numero de tarjeta</label>
+                        <input data-conekta="card[number]" value="4242424242424242" class="form-control">
+                    </div>
+
+                    <div class="form-group CVV">
+                        <label for="cvv">CVC</label>
+                        <input data-conekta="card[cvc]" class="form-control" maxlength="4">
+                    </div>
+
+                    <br>
+
+                    <div class="form-group" id="expiration-date">
+                        <label>Fecha de expiracion</label>
+                        <input data-conekta="card[exp_month]" class="form-control" maxlength="2">
+
+                        <input data-conekta="card[exp_year]" class="form-control" maxlength="4">
+                        
+                    </div>
+
+                    <div class="form-group" id="pay-now">
+
+                        <button class="btn btn-default" id="confirm-purchase">Confirm</button>
+                    
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+              
             </div>
 
-          </div>
+          </form>
 
         </div>
-
-      </form>
 
     </div>
 

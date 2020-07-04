@@ -76,6 +76,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'uses' => 'PaymentController@pay_card', 
 				        'as' => 'pay.card'
 				]);
+
+				Route::post('/pay-cash', [
+				        'uses' => 'PaymentController@pay_cash', 
+				        'as' => 'pay.cash'
+				]);
+
+				Route::post('/pay-stei', [
+				        'uses' => 'PaymentController@pay_stei', 
+				        'as' => 'pay.stei'
+				]);
 			});
 
 		    Route::group(["middleware"=>["inscriptionFaseThree"]
@@ -98,6 +108,15 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user'
 		    ])->middleware('candidate');
 
+		    Route::get('/pay-cash-oxxo', [
+				        'uses' => 'PaymentController@pay_cash_oxxo', 
+				        'as' => 'pay.oxxo'
+			]);
+
+			Route::get('/pay-cash-stei', [
+				        'uses' => 'PaymentController@pay_cash_stei', 
+				        'as' => 'pay.stei.view'
+			]);
 		});
   	});
 });
