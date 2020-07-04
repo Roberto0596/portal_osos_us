@@ -13,8 +13,10 @@ class PdfController extends Controller
     public function getGenerar(Request $request , $tipo,$accion)
     {
        
+       
         $accion = $accion;
         $data['tipo'] = $tipo;
+       
         
         if($accion=='html'){
             return view('pdf.generar',$data);
@@ -30,7 +32,7 @@ class PdfController extends Controller
         $fontData = $defaultFontConfig['fontdata'];
         $mpdf = new Mpdf([
             'fontDir' => array_merge($fontDirs, [
-                public_path() . '/bower/bootstrap/fonts',
+                public_path() . '/fonts',
             ]),
             'fontdata' => $fontData + [
                 'arial' => [
@@ -43,13 +45,16 @@ class PdfController extends Controller
         ]);
        
         $mpdf->SetDisplayMode('fullpage');
-        dd($html);
         $mpdf->WriteHTML($html);
-       
-    }
-    public function pdf($accion='ver',$tipo='digital')
-    {
-       
         
+        if($accion=='ver'){
+            $mpdf->Output($namefile,"I");
+        }elseif($accion=='descargar'){
+            $mpdf->Output($namefile,"D");
+        }
+    
+       
     }
+    
+   
 }

@@ -34,7 +34,7 @@
         <table>
             <tr >
                 <td rowspan="2" width="25%" align="center">
-                    <img id="logo" src="{{ asset('images/logo.jpg') }}" alt="" width="100" height="100">
+                    <img id="logo" src="{{ asset('img/temple/unisierra.jpg') }}" alt="" width="100" height="100">
                 </td>
                 <th width="120%" style="font-size: 21px"> UNIVERSIDAD DE LA SIERRA </th>
                 <th width="25%" style="font-size: 13px"> 
@@ -54,8 +54,8 @@
             <tr>
                 <td  style="border-right: none;font-size: 13px;">NOMBRE</td>
                 <td  style="border-right: none;border-left: none;font-size: 13px;">LUCERO</td>
-                <td  style="border-right: none;border-left: none;font-size: 13px;"></td>
-                <td  style="border-left: none;font-size: 13px;" ></td>
+                <td  style="border-right: none;border-left: none;font-size: 13px;">MORALES</td>
+                <td  style="border-left: none;font-size: 13px;" >JOHNATAN REYNALDO</td>
             </tr>
             <tr >
                 <td style="border-right: none; font-size: 10px;padding-top: 0px;padding-bottom: 0px;border-bottom: none;"></td>

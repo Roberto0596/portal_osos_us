@@ -195,6 +195,7 @@ function updateByIdAlumn($id_alumn,$colName,$value)
     $stmt->bindParam(":".$colName,$value,PDO::PARAM_STR);
     $stmt->bindParam(":alumnoid",$id_alumn,PDO::PARAM_INT);
     $stmt->execute();
+}   
 	
 function selectAdmin($id = null)
 {
