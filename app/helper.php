@@ -81,7 +81,7 @@ function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
 		}
 		else
 		{
-			$stmt = ConectSqlDatabase()->prepare("SELECT * FROM $table_name limit :bol");
+			$stmt = ConectSqlDatabase()->prepare("SELECT top(:bol)* FROM $table_name");
 			$stmt->bindParam(":bol",$limit,PDO::PARAM_INT);
 		}		
 	}
