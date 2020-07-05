@@ -13,10 +13,15 @@
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <!-- select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.css') }}">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  
+  
+  
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
    
@@ -37,6 +42,8 @@
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <!-- select2 -->
+    <script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- DataTables -->
@@ -51,6 +58,8 @@
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
     <script src="{{ asset('js/temple.js') }}"></script>
+
+    {!! htmlScriptTagJsApi() !!}
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     @yield('content')

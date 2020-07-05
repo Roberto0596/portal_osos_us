@@ -45,4 +45,6 @@ class AuthController extends Controller
         session()->flush();
         return redirect('/');
     }
+
+   
 }
