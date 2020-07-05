@@ -13,9 +13,9 @@ class FormController extends Controller
 {
     public function index(){
      
-        $estados = getItemClaveAndNamesFromTables("estado");
-        $municipios = getItemClaveAndNamesFromTables("municipio");
-        $carreras = getCarreras();
+        $estados = getItemClaveAndNamesFromTables("Estado");
+        $municipios = getItemClaveAndNamesFromTables("Municipio");
+        
 
 
         $currentId = Auth::guard('alumn')->user()->id_alumno;
@@ -24,31 +24,55 @@ class FormController extends Controller
         if($currentId != null){
 
             $data = getDataByIdAlumn($currentId);
+           
+           
+          
+               
+          
             
            
             
         }
 
-        return view('Alumn.form.index')->with(["estados"=> $estados , "municipios"=> $municipios , "data"=>$data , "carreras" => $carreras]);
+        return view('Alumn.form.index')->with(["estados"=> $estados , "municipios"=> $municipios , "data"=>$data, "currentId"=>$currentId]);
     }
 
     public function save(Request $request){
 
         $currentId = Auth::guard('alumn')->user()->id_alumno;
+        
         $dataAsString = $request->input('data');
-
         $dataArray = json_decode($dataAsString);
+        $captcha = $request->input('recaptcha');
 
 
-       if($dataArray != null){
-        for ($i = 0; $i < count($dataArray); $i++) {
-            updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
+      
+
+        if( $captcha != null){
+
+            if($dataArray != null){
+                for ($i = 0; $i < count($dataArray); $i++) {
+                    updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
+                }
+            }
+            return response()->json('ok');
+
+        
+
+        }else{
+
+            return response()->json('error');
         }
-       }
 
 
         
-        return response()->json('ok');
+
+      
+
+
+
+        
+       
 
 
 

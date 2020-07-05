@@ -7,7 +7,7 @@ function ConectSqlDatabase()
     $password = "admin123";
     $user = "robert";
     $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:server=DESKTOP-UP7PDGG\SQLEXPRESS01;database=sicoes", $user, $password);
+	$link = new PDO("sqlsrv:server=.\SQLEXPRESS01;database=sicoes", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -166,11 +166,11 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
     return $ruta;
 }
 
-//aplica para tablas que teiene un campo nombre 
+//aplica para tablas que tiene un campo nombre 
 
 function getItemClaveAndNamesFromTables($table_name)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT clave,nombre FROM $table_name");
+    $stmt = ConectSqlDatabase()->prepare("SELECT Clave,Nombre FROM $table_name");
     $stmt->execute();
 	return $stmt->fetchAll();
 
@@ -183,7 +183,7 @@ function getDataByIdAlumn($id_alumn){
 }
 function getCarreras()
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT carreraid,nombre FROM carrera");
+    $stmt = ConectSqlDatabase()->prepare("SELECT Carreraid,Nombre FROM Carrera");
     $stmt->execute();
 	return $stmt->fetchAll();
 
@@ -191,11 +191,13 @@ function getCarreras()
 
 function updateByIdAlumn($id_alumn,$colName,$value)
 {
-    $stmt = ConectSqlDatabase()->prepare("update alumno set $colName = :$colName where alumnoid = :alumnoid");
-    $stmt->bindParam(":".$colName,$value,PDO::PARAM_STR);
-    $stmt->bindParam(":alumnoid",$id_alumn,PDO::PARAM_INT);
-    $stmt->execute();
+    $sql = "UPDATE users SET name=?, surname=?, sex=? WHERE id=?";
+    $stmt= $pdo->prepare($sql);
+    $stmt->execute([$name, $surname, $sex, $id]);
 }   
+function getCarreraFromIdAlumn($id_alumn){
+
+}
 	
 function selectAdmin($id = null)
 {

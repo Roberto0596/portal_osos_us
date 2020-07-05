@@ -68,7 +68,7 @@ return [
      * @since v3.2.0
      *
      */
-    'default_token_parameter_name' => 'token',
+    'default_token_parameter_name' => 'captcha-token',
 
     /**
      *
