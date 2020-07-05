@@ -4,8 +4,9 @@ campo inscription = 0 y 1, 1 significa que esta en proceso de inscribirce, y 0, 
 
 0 = aun no rellena el formulario
 1 = debe hacer el pago
-2 = elige la carga academica
-3 = proceso finalizado.
+2 = esperar por confirmacion de pago (solo en caso de deposito bancario)
+3 = elige la carga academica
+4 = proceso finalizado.
 
 Auths: 
 

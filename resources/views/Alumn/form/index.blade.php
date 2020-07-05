@@ -50,25 +50,25 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Primer Apellido</label>
-                                        <input name="apellidoprimero"  fieldname="Primer Apellido" 
+                                        <input name="ApellidoPrimero"  fieldname="Primer Apellido" 
                                         type="text" style="text-transform:uppercase" 
-                                        value="{{ $data['apellidoprimero'] == null ? '' : $data['apellidoprimero'] }}"  class="form-control"
+                                        value="{{ $data['ApellidoPrimero'] == null ? '' : $data['ApellidoPrimero'] }}"  class="form-control"
                                         isnullable="no" placeholder="Ingrese su primer apellido"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Segundo Apellido</label>
-                                        <input name="apellidosegundo" fieldname="Segundo Apellido" type="text" style="text-transform:uppercase" 
-                                        value="{{ $data['apellidosegundo'] == null ? '' : $data['apellidosegundo'] }}"  class="form-control" 
+                                        <input name="ApellidoSegundo" fieldname="Segundo Apellido" type="text" style="text-transform:uppercase" 
+                                        value="{{ $data['ApellidoSegundo'] == null ? '' : $data['ApellidoSegundo'] }}"  class="form-control" 
                                         isnullable="no" placeholder="Ingrese su segundo apellido"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Nombre</label>
-                                        <input name="nombre" fieldname="Nombre"  type="text"
-                                        value="{{ $data['nombre'] == null ? '' : $data['nombre'] }}"  class="form-control"
+                                        <input name="Nombre" fieldname="Nombre"  type="text"
+                                        value="{{ $data['Nombre'] == null ? '' : $data['Nombre'] }}"  class="form-control"
                                         style="text-transform:uppercase"  isnullable="no" placeholder="Ingrese su nombre"  />
                                     </div>
                                 </div>
@@ -77,24 +77,24 @@
                                  <div class="col-md-2">
                                      <div class="form-group">
                                          <label class="control-label">Domicilio</label>
-                                         <input name="domicilio" fieldname="Domicilio"  type="text"
-                                         value="{{ $data['domicilio'] == null ? '' : $data['domicilio'] }}"  class="form-control"
+                                         <input name="Domicilio" fieldname="Domicilio"  type="text"
+                                         value="{{ $data['Domicilio'] == null ? '' : $data['Domicilio'] }}"  class="form-control"
                                          style="text-transform:uppercase"  isnullable="no" placeholder="Ingrese su domicilio"  />
                                      </div>
                                  </div>
                                  <div class="col-md-2">
                                      <div class="form-group">
                                          <label class="control-label">Colonia</label>
-                                         <input name="colonia" fieldname="Colonia"  type="text"
-                                         value="{{ $data['colonia'] == null ? '' : $data['colonia'] }}"  class="form-control" 
+                                         <input name="Colonia" fieldname="Colonia"  type="text"
+                                         value="{{ $data['Colonia'] == null ? '' : $data['Colonia'] }}"  class="form-control" 
                                          style="text-transform:uppercase" isnullable="no" placeholder="Ingrese su colonia"  />
                                      </div>
                                  </div>
                                  <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Localidad</label>
-                                        <input name="localidad" fieldname="Localidad"  type="text"
-                                        value="{{ $data['localidad'] == null ? '' : $data['localidad'] }}"  class="form-control"
+                                        <input name="Localidad" fieldname="Localidad"  type="text"
+                                        value="{{ $data['Localidad'] == null ? '' : $data['Localidad'] }}"  class="form-control"
                                         style="text-transform:uppercase" isnullable="no" placeholder="Ingrese su localidad"  />
                                     </div>
                                 </div>
@@ -103,13 +103,13 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="municipiodom" data-alias="municipio" class="control-label">Municipio</label>
-                                        <select id="municipiodom" fieldname="Municipio" name="municipiodom"  isnullable="no" class="form-control select2">
-                                            @if($data["municipiodom"] != null)
+                                        <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
+                                        <select id="MunicipioDom" fieldname="Municipio" name="MunicipioDom"  isnullable="no" class="form-control select2">
+                                            @if($data["MunicipioDom"] != null)
                                             @php
-                                                $mpioSelected = selectSicoes("municipio","municipioid",$data["municipiodom"])[0]; 
+                                                $mpioSelected = selectSicoes("Municipio","MunicipioId",$data["MunicipioDom"])[0]; 
                                             @endphp                                                    
-                                            <option value="{{$mpioSelected['municipioid']}}"> {{$mpioSelected['nombre']}} </option>
+                                            <option value="{{$mpioSelected['MunicipioId']}}"> {{$mpioSelected['Nombre']}} </option>
                                             @else
                                             <option  disabled="" selected="">Seleccionar</option>
                                             @endif
@@ -126,13 +126,13 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="estadodom" data-alias="estado" class="control-label">Estado</label>
-                                        <select id="estadodom" fieldname="Estado" name="estadodom"  isnullable="no" class="form-control select2">
-                                            @if($data["estadodom"] != null)
+                                        <label for="EstadoDom" data-alias="estado" class="control-label">Estado</label>
+                                        <select id="EstadoDom" fieldname="Estado" name="EstadoDom"  isnullable="no" class="form-control select2">
+                                            @if($data["EstadoDom"] != null)
                                             @php
-                                                $edoSelected = selectSicoes("estado","estadoid",$data["estadodom"])[0]; 
+                                                $edoSelected = selectSicoes("Estado","EstadoId",$data["EstadoDom"])[0]; 
                                             @endphp                                                    
-                                            <option value="{{$edoSelected['estadoid']}}"> {{$edoSelected['nombre']}} </option>
+                                            <option value="{{$edoSelected['EstadoId']}}"> {{$edoSelected['nombre']}} </option>
                                             @else
                                             <option  disabled="" selected="">Seleccionar</option>
                                             @endif
@@ -148,15 +148,15 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Código Postal</label>
-                                        <input fieldname="Código Postal" maxlength="5" min="5" type="text"  "" class="form-control" name="codigopostal"
-                                        value="{{ $data['codigopostal'] == null ? '' : $data['codigopostal'] }}"  isnullable="no" placeholder="Ej. 84330"  />
+                                        <input fieldname="Código Postal" maxlength="5" min="5" type="text"class="form-control" name="CodigoPostal"
+                                        value="{{ $data['CodigoPostal'] == null ? '' : $data['CodigoPostal'] }}"  isnullable="no" placeholder="Ej. 84330"  />
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Teléfono</label>
-                                        <input fieldname="Teléfono"  maxlength="10" min="10" type="text"  name="codigopostal" class="form-control"
-                                        value="{{ $data['telefono'] == null ? '' : $data['telefono'] }}" isnullable="no" placeholder="Ej. 6558036422"  />
+                                        <input fieldname="Teléfono"  maxlength="10" min="10" type="text"  name="Telefono" class="form-control"
+                                        value="{{ $data['Telefono'] == null ? '' : $data['Telefono'] }}" isnullable="no" placeholder="Ej. 6558036422"  />
                                     </div>
                                 </div>
                                  

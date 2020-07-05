@@ -92,7 +92,8 @@ class PaymentController extends Controller
             $value->status = 1;
             $value->save();
         }
-        $current_user->inscripcion = 2;
+
+        $current_user->inscripcion = 3;
         $current_user->save();
         return redirect()->route("alumn.charge");
     }
@@ -169,8 +170,8 @@ class PaymentController extends Controller
         //     $value->status = 1;
         //     $value->save();
         // }
-        // $current_user->inscripcion = 2;
-        // $current_user->save();
+        $current_user->inscripcion = 2;
+        $current_user->save();
         $total = 0;
         foreach ($order->line_items as $key => $value) {
             $total=$total+$value->unit_price;
@@ -255,8 +256,8 @@ class PaymentController extends Controller
         //     $value->status = 1;
         //     $value->save();
         // }
-        // $current_user->inscripcion = 2;
-        // $current_user->save();
+        $current_user->inscripcion = 2;
+        $current_user->save();
         $total = 0;
         foreach ($order->line_items as $key => $value) {
             $total=$total+$value->unit_price;

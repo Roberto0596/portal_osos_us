@@ -101,8 +101,8 @@ function deleteCharge($array)
     $validator = [];
     foreach ($array as $key => $value)
     {
-        $stmt = ConectSqlDatabase()->prepare("DELETE FROM carga where cargaid = :cargaid");
-        $stmt->bindParam(":cargaid",$value, PDO::PARAM_INT);
+        $stmt = ConectSqlDatabase()->prepare("DELETE FROM Carga where CargaId = :CargaId");
+        $stmt->bindParam(":CargaId",$value, PDO::PARAM_INT);
         if ($stmt->execute()) 
         {
             array_push($validator, true);
