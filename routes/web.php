@@ -140,6 +140,8 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
   	});
 });
 
+
+
 Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 {
   	Route::name('finance.')->group(function()
@@ -165,15 +167,6 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
-			
-			/*
-
-		    Route::get('/user', [
-		        'uses' => 'UserController@index', 
-		        'as' => 'user'
-			]);
-			*/
-
 		});
   	});
 });

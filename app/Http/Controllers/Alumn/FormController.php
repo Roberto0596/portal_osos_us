@@ -21,17 +21,21 @@ class FormController extends Controller
         if($currentId != null)
         {
             $data = getDataByIdAlumn($currentId); 
-            $group = selectSicoes("EncGrupo","planestudioid",$data["PlanEstudioId"])[0];      
+            $charge = selectSicoes("Carga","AlumnoId",$data["AlumnoId"]);  
+            $charge = $charge[count($charge)-1];
+            $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
+            $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0];    
         }
-        $mytime = \Carbon\Carbon::now();
-        DB::table('debit')->insert(
-            ['concept' => 'Pago de colegiatura',
-             'amount' => 1950.00,
-             'admin_id'=> 3,
-             'id_alumno'=>$currentId,
-             'created_at'=>$mytime->toDateTimeString(),
-             'updated_at'=>$mytime->toDateTimeString()]
-        );
+        dd($group);
+        // $mytime = \Carbon\Carbon::now();
+        // DB::table('debit')->insert(
+        //     ['concept' => 'Pago de colegiatura',
+        //      'amount' => 1950.00,
+        //      'admin_id'=> 3,
+        //      'id_alumno'=>$currentId,
+        //      'created_at'=>$mytime->toDateTimeString(),
+        //      'updated_at'=>$mytime->toDateTimeString()]
+        // );
 
         return view('Alumn.form.index')->with(["estados"=> $estados , 
                                                 "municipios"=> $municipios , 

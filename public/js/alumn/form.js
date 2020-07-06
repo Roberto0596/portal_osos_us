@@ -25,8 +25,7 @@
               $("#transporte").prop("disabled",true);
              
           }
-      });
-        
+      });       
       
   });
 
