@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'inscription' => \App\Http\Middleware\inscriptionMiddleware::class,
         'inscriptionFaseTwo' => \App\Http\Middleware\inscriptionFaseTwoMiddleware::class,
         'inscriptionFaseThree' => \App\Http\Middleware\inscriptionFaseThreeMiddleware::class,
+        'inscriptionFaseFour' => \App\Http\Middleware\inscriptionFaseFour::class,
     ];
 }

@@ -53,7 +53,8 @@
                     </a>
                 </li>
                 @endif
-
+                
+                @if(Auth::guard('alumn')->user()->inscripcion < 4)
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
@@ -63,6 +64,7 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
             </ul>
 

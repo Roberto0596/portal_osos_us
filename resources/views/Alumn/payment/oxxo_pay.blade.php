@@ -28,7 +28,7 @@
       </div>
       <div class="opps-reference">
         <h3 id="referencia">Referencia</h3>
-        <h1>{{ $order["reference"] }}</h1>
+        <h1 class="h1-oxxo">{{ $order["reference"] }}</h1>
       </div>
     </div>
     <div class="opps-instructions">

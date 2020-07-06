@@ -87,11 +87,7 @@
                                          <label class="control-label">Colonia</label>
                                          <input name="Colonia" fieldname="Colonia"  type="text"
                                          value="{{ $data['Colonia'] == null ? '' : $data['Colonia'] }}"  class="form-control" 
-<<<<<<< HEAD
                                          style="text-transform:uppercase" isnullable="no" placeholder="Ingrese su colonia"  />
-=======
-                                         style="text-transform:uppercase" isnullable="si" placeholder="Ingrese su colonia"  />
->>>>>>> fd29cf57e95247e7d8376e9db0c8aa98a8f1c34e
                                      </div>
                                  </div>
                                  <div class="col-md-2">
@@ -107,13 +103,8 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-<<<<<<< HEAD
                                         <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
                                         <select id="MunicipioDom" fieldname="Municipio" name="MunicipioDom"  isnullable="no" class="form-control select2">
-=======
-                                        <label for="municipiodom" data-alias="municipio" class="control-label">Municipio</label>
-                                        <select id="municipiodom" fieldname="Municipio" name="MunicipioDom"  isnullable="si" class="form-control select2">
->>>>>>> fd29cf57e95247e7d8376e9db0c8aa98a8f1c34e
                                             @if($data["MunicipioDom"] != null)
                                             @php
                                                 $mpioSelected = selectSicoes("Municipio","MunicipioId",$data["MunicipioDom"])[0]; 
@@ -135,22 +126,13 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-<<<<<<< HEAD
                                         <label for="EstadoDom" data-alias="estado" class="control-label">Estado</label>
                                         <select id="EstadoDom" fieldname="Estado" name="EstadoDom"  isnullable="no" class="form-control select2">
-=======
-                                        <label for="estadodom" data-alias="estado" class="control-label">Estado</label>
-                                        <select id="estadodom" fieldname="Estado" name="EstadoDom"  isnullable="no" class="form-control select2">
->>>>>>> fd29cf57e95247e7d8376e9db0c8aa98a8f1c34e
                                             @if($data["EstadoDom"] != null)
                                             @php
                                                 $edoSelected = selectSicoes("Estado","EstadoId",$data["EstadoDom"])[0]; 
                                             @endphp                                                    
-<<<<<<< HEAD
-                                            <option value="{{$edoSelected['EstadoId']}}"> {{$edoSelected['nombre']}} </option>
-=======
                                             <option value="{{$edoSelected['EstadoId']}}"> {{$edoSelected['Nombre']}} </option>
->>>>>>> fd29cf57e95247e7d8376e9db0c8aa98a8f1c34e
                                             @else
                                             <option  disabled="" selected="">Seleccionar</option>
                                             @endif
@@ -166,11 +148,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Código Postal</label>
-<<<<<<< HEAD
                                         <input fieldname="Código Postal" maxlength="5" min="5" type="text"class="form-control" name="CodigoPostal"
-=======
-                                        <input fieldname="Código Postal" maxlength="5" min="5" type="text"   class="form-control" name="CodigoPostal"
->>>>>>> fd29cf57e95247e7d8376e9db0c8aa98a8f1c34e
                                         value="{{ $data['CodigoPostal'] == null ? '' : $data['CodigoPostal'] }}"  isnullable="no" placeholder="Ej. 84330"  />
                                     </div>
                                 </div>
@@ -644,16 +622,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Grupo" data-alias="Grupo" class="control-label">Grupo</label>
-                                        <select id="Grupo" fieldname="Grupo"  class="form-control " disabled >
-                                            @if ($data != null)
-                                            @php
-                                              $lastSemester =getLastSemester($currentId) + 1;
-                                            @endphp
-                                            <option disabled="" selected="">{{$lastSemester}}</option>
-                                            @else
-                                            <option value="" disabled="" selected="">Seleccionar</option>
-                                            @endif
-                                        </select>
+                                        <input type="text" class="form-control" value="{{$group['Nombre']}}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -996,7 +965,7 @@ $(document).ready(function(){
 
         if(response == 'ok'){
             localStorage.removeItem('tempData');
-            window.location = '/alumn/';
+            window.location = '/alumn/payment';
         }else {
             console.log('hola');
             toastr.error("Tiene que verificar que no es un robot");

@@ -28,7 +28,7 @@
         </div>
         <div class="ps-reference">
           <h3>CLABE</h3>
-          <h1>{{$order["reference"]}}</h1>
+          <h1 class="h1-spei">{{$order["reference"]}}</h1>
         </div>
       </div>
       <div class="ps-instructions">

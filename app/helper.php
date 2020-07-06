@@ -195,6 +195,7 @@ function updateByIdAlumn($id_alumn,$colName,$value)
     $stmt= $pdo->prepare($sql);
     $stmt->execute([$name, $surname, $sex, $id]);
 }   
+
 function getCarreraFromIdAlumn($id_alumn){
 
 }

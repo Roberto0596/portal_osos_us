@@ -13,18 +13,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 
 	    Route::post('/sign-in',[
 	        'uses' => 'AuthController@postLogin', 
-		]);
-
-		Route::get('/form',[
-			'uses' => 'FormController@index', 
-			'as' => 'form'
-		]);
-
-		Route::post('form/save', [
-			'uses' => 'FormController@save',
-			'as'   => 'form.save'
-		]);
-		 
+		]); 
 	 
 
 	    Route::get('/sign-out', [
@@ -72,6 +61,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses' => 'FormController@index', 
 					'as' => 'form'
 				]);
+		
+				Route::post('form/save', [
+					'uses' => 'FormController@save',
+					'as'   => 'form.save'
+				]);
 		    });
 
 		    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
@@ -82,12 +76,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'uses' => 'PaymentController@index', 
 			        'as' => 'payment'
 				]);
-
-				Route::get('/payment/card', [
-		       		'uses' => 'PaymentController@form_payment', 
-		       		'as' => 'payment.card'
-		    	]);
-
+				
 			    Route::post('/pay-card', [
 				        'uses' => 'PaymentController@pay_card', 
 				        'as' => 'pay.card'
@@ -102,9 +91,23 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'uses' => 'PaymentController@pay_stei', 
 				        'as' => 'pay.stei'
 				]);
+
+				Route::post('/pay-upload', [
+					'uses' => 'PaymentController@pay_upload', 
+					'as' => 'pay.upload'
+				]);
 			});
 
-		    Route::group(["middleware"=>["inscriptionFaseThree"]
+			Route::group(["middleware"=>["inscriptionFaseThree"]
+			],function()
+			{
+				Route::get('/payment/note', [
+			        'uses' => 'PaymentController@note', 
+			        'as' => 'payment.note'
+				]);
+			});
+
+		    Route::group(["middleware"=>["inscriptionFaseFour"]
 			],function(){
 
 				//charge academic
