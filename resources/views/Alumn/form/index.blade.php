@@ -216,7 +216,7 @@
                                 </div>
 
                                 <div class="step_controls">
-                                    <button class="btn btn-warning button-custom button-next"
+                                    <button type="button" class="btn btn-warning button-custom button-next"
                                     data-to_step="2" data-step="1">Siguiente</button>
                                 </div>
 
@@ -533,7 +533,7 @@
                                     <div class="step_controls">
                                         <button type="btnAnterior" class="btn btn-warning button-custom button-back"
                                         data-to_step="1" data-step="2">Volver</button> 
-                                        <button class="btn btn-warning button-custom button-next"
+                                        <button type="button" class="btn btn-warning button-custom button-next"
                                         data-to_step="3" data-step="2">Siguiente</button>
                                     </div>
                             </div>                         
@@ -662,9 +662,9 @@
                                     </div>
                                 </div>
                                 <div class="step_controls">
-                                    <button type="btnAnterior" class="btn btn-warning button-custom button-back"
+                                    <button type="button" class="btn btn-warning button-custom button-back"
                                     data-to_step="2" data-step="3">Volver</button> 
-                                    <button type="btnSiguiente" class="btn btn-warning button-custom button-next"
+                                    <button type="button" class="btn btn-warning button-custom button-next"
                                     data-to_step="4" data-step="3">Siguiente</button>
                                     
                                 </div>
@@ -743,9 +743,9 @@
                                     </div>
                                 </div>
                                 <div class="step_controls">
-                                    <button type="btnAnterior" class="btn btn-warning button-custom button-back"
+                                    <button type="button" class="btn btn-warning button-custom button-back"
                                     data-to_step="3" data-step="4">Volver</button> 
-                                    <button id="btnSiguiente" class="btn btn-warning button-custom button-next"
+                                    <button type="button" id="btnSiguiente" class="btn btn-warning button-custom button-next"
                                     data-to_step="5" data-step="4">Siguiente</button>
                                 </div>
                             </div>
@@ -838,9 +838,9 @@
                                     </div>
                                 </div>
                                 <div class="step_controls">
-                                    <button type="btnAnterior" class="btn btn-warning button-custom button-back"
+                                    <button type="button" class="btn btn-warning button-custom button-back"
                                     data-to_step="4" data-step="5">Volver</button> 
-                                    <button type="btnSiguiente" class="btn btn-warning button-custom button-next"
+                                    <button type="button" class="btn btn-warning button-custom button-next"
                                     data-to_step="6" data-step="5">Siguiente</button>
                                 </div>
                             </div>
@@ -862,9 +862,9 @@
                                     {!! htmlFormSnippet() !!}
                                 </div>
                                 <div class="step_controls">
-                                    <button  class="btn btn-warning button-custom button-back"
+                                    <button type="button" class="btn btn-warning button-custom button-back"
                                     data-to_step="5" data-step="6">Volver</button> 
-                                    <button id="btn-sumbit"  class="btn btn-warning button-custom button-sumbit"
+                                    <button type="button" id="btn-sumbit"  class="btn btn-warning button-custom button-sumbit"
                                     data-step="6">Enviar</button>
                                 </div>
                             </div>

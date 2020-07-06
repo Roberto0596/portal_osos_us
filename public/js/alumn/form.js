@@ -30,92 +30,71 @@
       
   });
 
-  $(document).ready(function(){
-
-      //se verifica si hay datos en el local sotrage 
-      var data = JSON.parse(localStorage.getItem('tempData'));
-
-      //le pone al valor al input
-      if(data != null){
-
-          swal.fire({
-              title: "Parece que la última vez no terminaste de completar el fromulario",
-              text: "Si cambiaste algunos datos y avanzaste a pasos posteriores algunos cambios se guardaron ",
-              type: 'success',
-              });
-
-          data.forEach(element => {
-
-              //se le pone el valor por defecto a los input desde local storage
-              if(element['type'] == 'INPUT'){
+$(document).ready(function()
+{
+    //se verifica si hay datos en el local sotrage 
+    var data = JSON.parse(localStorage.getItem('tempData'));
+    //le pone al valor al input
+    if(data != null)
+    {
+        swal.fire({
+            title: "Parece que la última vez no terminaste de completar el fromulario",
+            text: "Si cambiaste algunos datos y avanzaste a pasos posteriores algunos cambios se guardaron ",
+            type: 'success',
+        });
+        data.forEach(element =>
+        {
+            //se le pone el valor por defecto a los input desde local storage
+            if(element['type'] == 'INPUT')
+            {
                   $('#'+element['name']).val(element['value']);
-              }else{
+            }
+            else
+            {
 
                   //aqui va lo de ponerle el valor por defecto al select
-              }
-          });
+            }
+        });
+    }
 
-      }
-
-
-      //bloqueo el boton para que al hacer click no se envie el formulario
-
-      $(".button-next").click(function(event){
-          event.preventDefault();
-      });
-
+    //bloqueo el boton para que al hacer click no se envie el formulario
+    $(".button-next").click(function(event){
+        event.preventDefault();
+    });
       
-      $(".button-back").click(function(event){
-          event.preventDefault();
-      });
+    $(".button-back").click(function(event){
+        event.preventDefault();
+    });
 
-      $(".button-sumbit").click(function(event){
-          event.preventDefault();
-      });
-
-
-      if(response == 'ok'){
-          localStorage.removeItem('tempData');
-          window.location = '/alumn/payment';
-      }else {
-          console.log('hola');
-          toastr.error("Tiene que verificar que no es un robot");
-      }
-  
-
-          var route = 'form/save';
-          var token = $('#token').val();
-
-
-          var data = new FormData();
-          var tempData = JSON.parse(localStorage.getItem('tempData'));
-
-          data.append('data', JSON.stringify(tempData));
-          data.append('recaptcha',grecaptcha.getResponse());
-
-
-          $.ajax({
-          url:route,
-          headers:{'X-CSRF-TOKEN': token},
-          method:'POST',
-          data:data,
-          cache:false,
-          contentType:false,
-          processData:false,
-          success:function(response){
-
-              console.log(response);
-
-              if(response == 'ok'){
-                  localStorage.removeItem('tempData');
-                  window.location = '/alumn/';
-              }else {
-                  toastr.error("Tiene que verificar que no es un robot");
-              }
-
-          }});
-      });
-  });
+    $(".button-sumbit").click(function(event){
+        var route = 'form/save';
+        var token = $('#token').val();
+        var data = new FormData();
+        var tempData = JSON.parse(localStorage.getItem('tempData'));
+        data.append('data', JSON.stringify(tempData));
+        data.append('recaptcha',grecaptcha.getResponse());
+        $.ajax({
+            url:route,
+            headers:{'X-CSRF-TOKEN': token},
+            method:'POST',
+            data:data,
+            cache:false,
+            contentType:false,
+            processData:false,
+            success:function(response)
+            {
+                if(response == 'ok')
+                {
+                    localStorage.removeItem('tempData');
+                    window.location = '/alumn/payment';
+                }
+                else
+                {
+                    toastr.error("Tiene que verificar que no es un robot");
+                }
+        }});
+    });
+});
 
 //aqui guardo los items que cambian
 var changeItems = [];
