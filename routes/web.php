@@ -53,8 +53,8 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 
 			
 			Route::get('pdf','PdfController@getIndex');
-			Route::post('pdf/generar/{tipo}/{accion}',['uses'=>'PdfController@getGenerar', 'as' => 'generar']);
-
+			Route::post('pdf/cedula/{tipo}/{accion}',['uses'=>'PdfController@getGenerarCedula', 'as' => 'cedula']);
+			Route::post('pdf/generar/{tipo}/{accion}',['uses'=>'PdfController@getGenerarConstancia', 'as' => 'constancia']);
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
