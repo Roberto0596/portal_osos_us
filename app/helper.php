@@ -191,9 +191,10 @@ function getCarreras()
 
 function updateByIdAlumn($id_alumn,$colName,$value)
 {
-    $sql = "UPDATE users SET name=?, surname=?, sex=? WHERE id=?";
-    $stmt= $pdo->prepare($sql);
-    $stmt->execute([$name, $surname, $sex, $id]);
+    $sql = "UPDATE Alumno SET $colName = :colvalue where AlumnoId = :alumnoid";
+    $datos = array("colvalue"=> $value, "alumnoid"=> $id_alumn);
+    $stmt= ConectSqlDatabase()->prepare($sql);
+    $stmt->execute($datos);
 }   
 
 function getCarreraFromIdAlumn($id_alumn){

@@ -50,7 +50,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Primer Apellido</label>
-                                        <input name="ApellidoPrimero"  fieldname="Primer Apellido" 
+                                        <input name="ApellidoPrimero"  id="ApellidoPrimero" fieldname="Primer Apellido" 
                                         type="text" style="text-transform:uppercase" 
                                         value="{{ $data['ApellidoPrimero'] == null ? '' : $data['ApellidoPrimero'] }}"  class="form-control"
                                         isnullable="no" placeholder="Ingrese su primer apellido"  />
@@ -59,15 +59,15 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Segundo Apellido</label>
-                                        <input name="ApellidoSegundo" fieldname="Segundo Apellido" type="text" style="text-transform:uppercase" 
+                                        <input name="ApellidoSegundo" fieldname="Segundo Apellido" id="ApellidoSegundo" type="text" style="text-transform:uppercase" 
                                         value="{{ $data['ApellidoSegundo'] == null ? '' : $data['ApellidoSegundo'] }}"  class="form-control" 
-                                        isnullable="no" placeholder="Ingrese su segundo apellido"  />
+                                        isnullable="si" placeholder="Ingrese su segundo apellido"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Nombre</label>
-                                        <input name="Nombre" fieldname="Nombre"  type="text"
+                                        <input id="Nombre" name="Nombre" fieldname="Nombre"  type="text"
                                         value="{{ $data['Nombre'] == null ? '' : $data['Nombre'] }}"  class="form-control"
                                         style="text-transform:uppercase"  isnullable="no" placeholder="Ingrese su nombre"  />
                                     </div>
@@ -77,15 +77,15 @@
                                  <div class="col-md-2">
                                      <div class="form-group">
                                          <label class="control-label">Domicilio</label>
-                                         <input name="Domicilio" fieldname="Domicilio"  type="text"
+                                         <input id="Domicilio" name="Domicilio" fieldname="Domicilio"  type="text"
                                          value="{{ $data['Domicilio'] == null ? '' : $data['Domicilio'] }}"  class="form-control"
-                                         style="text-transform:uppercase"  isnullable="no" placeholder="Ingrese su domicilio"  />
+                                         style="text-transform:uppercase"  isnullable="si" placeholder="Ingrese su domicilio"  />
                                      </div>
                                  </div>
                                  <div class="col-md-2">
                                      <div class="form-group">
                                          <label class="control-label">Colonia</label>
-                                         <input name="Colonia" fieldname="Colonia"  type="text"
+                                         <input id="Colonia" name="Colonia" fieldname="Colonia"  type="text"
                                          value="{{ $data['Colonia'] == null ? '' : $data['Colonia'] }}"  class="form-control" 
                                          style="text-transform:uppercase" isnullable="no" placeholder="Ingrese su colonia"  />
                                      </div>
@@ -93,9 +93,9 @@
                                  <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Localidad</label>
-                                        <input name="Localidad" fieldname="Localidad"  type="text"
+                                        <input id="Localidad" name="Localidad" fieldname="Localidad"  type="text"
                                         value="{{ $data['Localidad'] == null ? '' : $data['Localidad'] }}"  class="form-control"
-                                        style="text-transform:uppercase" isnullable="no" placeholder="Ingrese su localidad"  />
+                                        style="text-transform:uppercase" isnullable="si" placeholder="Ingrese su localidad"  />
                                     </div>
                                 </div>
 
@@ -155,15 +155,15 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label class="control-label">Teléfono</label>
-                                        <input fieldname="Teléfono"  maxlength="10" min="10" type="text"  name="Telefono" class="form-control"
-                                        value="{{ $data['Telefono'] == null ? '' : $data['Telefono'] }}" isnullable="no" placeholder="Ej. 6558036422"  />
+                                        <input id="Telefono" fieldname="Teléfono"  maxlength="10" min="10" type="text"  name="Telefono" class="form-control"
+                                        value="{{ $data['Telefono'] == null ? '' : $data['Telefono'] }}" isnullable="si" placeholder="Ej. 6558036422"  />
                                     </div>
                                 </div>
                                  
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="municipionac" data-alias="municipionac" class="control-label">Municipio de Nacimiento</label>
-                                        <select id="Municipio de Nacimiento" fieldname="Municipio de Nacimiento" name="MunicipioNac" isnullable="no" class="form-control select2" >
+                                        <select id="MunicipioNac" fieldname="Municipio de Nacimiento" name="MunicipioNac" isnullable="si" class="form-control select2" >
                                             @if($data["MunicipioNac"] != null)
                                             @php
                                                 $mpioSelected = selectSicoes("Municipio","MunicipioId",$data["MunicipioNac"])[0]; 
@@ -184,7 +184,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="estadonac" data-alias="estadonac" class="control-label">Estado de Nacimiento</label>
-                                        <select id="estadonac" fieldname="Estado de nacimiento" isnullable="no" name="EstadoNac" class="form-control select2" >
+                                        <select id="EstadoNac" fieldname="Estado de nacimiento" isnullable="si" name="EstadoNac" class="form-control select2" >
                                             @if($data["EstadoNac"] != null)
                                             @php
                                                 $edoSelected = selectSicoes("Estado","EstadoId",$data["EstadoNac"])[0]; 
@@ -205,7 +205,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label for="edocivil" data-alias="Edo.Civil" class="control-label">Edo.Civil</label>
-                                        <select id="edocivil" fieldname="Edo.Civil" isnullable="no"  name="EdoCivil" class="form-control" >
+                                        <select id="EdoCivil" fieldname="Edo.Civil" isnullable="no"  name="EdoCivil" class="form-control" >
                                             @if($data["EdoCivil"] != null)
                                             @php
                                                 $value = $data["EdoCivil"] == '0' ? 'SOLTERO' : 'CASADO';
@@ -238,14 +238,14 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label">Curp</label>
-                                    <input id="curp" name="Curp"   fieldname="Curp" isnullable="no" maxlength="18" min="18" type="text"
+                                    <input id="Curp" name="Curp"   fieldname="Curp" isnullable="si" maxlength="18" min="18" type="text" disabled
                                     value="{{ $data['Curp'] == null ? '' : $data['Curp'] }}"  class="form-control" placeholder="Ingrese su curp"  />
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="control-label"><output></output>Año de Nacimiento</label>
-                                    <input fieldname="Año de Nacimiento"  isnullable="no" maxlength="4" minlength="4" type="text"  class="form-control"
+                                    <input fieldname="Año de Nacimiento"  isnullable="no" maxlength="4" minlength="4" type="text"  class="form-control" disabled
                                     value="{{ $data['FechaNacimiento'] == null ? '' : $data['FechaNacimiento'][0].$data['FechaNacimiento'][1].$data['FechaNacimiento'][2].$data['FechaNacimiento'][3] }}"
                                     placeholder="Ej. 1999"  />
                                 </div>
@@ -253,7 +253,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="mesNacimiento" data-alias="mesNacimiento" class="control-label">Mes de Nacimiento</label>
-                                    <select  fieldname="Mes de nacimiento"id="mesNacimiento" isnullable="no" name="mesNacimiento" class="form-control " >
+                                    <select disabled fieldname="Mes de nacimiento"id="mesNacimiento" isnullable="no" name="mesNacimiento" class="form-control " >
                                         @if($data['FechaNacimiento'] != null)
                                             @php
                                             $month = $data['FechaNacimiento'][5].$data['FechaNacimiento'][6];
@@ -309,7 +309,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="diaNacimiento" data-alias="diaNacimiento" class="control-label">Dia de Nacimiento</label>
-                                    <select fieldname="Día de nacimiento" isnullable="no"  id="diaNacimiento" name="diaNacimiento" class="form-control " >
+                                    <select disabled fieldname="Día de nacimiento" isnullable="no"  id="diaNacimiento" name="diaNacimiento" class="form-control " >
                                         @if($data['FechaNacimiento'] != null)
                                         @php
                                         $day = $data['FechaNacimiento'][8].$data['FechaNacimiento'][9];
@@ -382,7 +382,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="genero" data-alias="genero" class="control-label">Género</label>
-                                    <select id="genero" fieldname="Género" isnullable="no"  name="Genero" class="form-control " >
+                                    <select id="genero" fieldname="Género" isnullable="no"  name="Genero" class="form-control " disabled >
                                         @if($data["Genero"] != null)
                                         @php
                                             $value = $data["Genero"] == '0' ? 'HOMBRE' : 'MUJER';
@@ -402,14 +402,14 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                         <label class="control-label">Correo Electrónico</label>
-                                        <input fieldname="Correo Electrónico" isnullable="no"  type="email" name="Email"
+                                        <input id="Email" fieldname="Correo Electrónico" isnullable="si" style="text-transform:uppercase"  type="email" name="Email"
                                         value="{{ $data == null ? '' : $data['Email'] }}"   class="form-control" placeholder="Ingrese su correo"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="tiposangre" data-alias="tiposangre" class="control-label">Tipo de sangre</label>
-                                        <select id="tiposangre"  fieldname="Tipo de sangre" isnullable="no"  name="TipoSangre" class="form-control " >
+                                        <select id="TipoSangre"  fieldname="Tipo de sangre" isnullable="no"  name="TipoSangre" class="form-control " >
                                             @if($data["TipoSangre"] != null)
                                             @php
                                             $TipoSangre = $data["TipoSangre"];
@@ -453,7 +453,8 @@
                                 <div class="col-md-4">
                                     <div class="form-group" >
                                         <label class="control-label"><output></output>Alergias</label>
-                                        <input fieldname="alergias" name="Alergias"  isnullable="no" id="descAlergia" maxlength="100" type="text" class="form-control" 
+                                        <input id="Alergias" fieldname="Alergias" name="Alergias"  isnullable="si" id="descAlergia" style="text-transform:uppercase" maxlength="100"
+                                         type="text" class="form-control" 
                                         value="{{ $data == null ? '' : $data['Alergias'] }}" placeholder="Especifique su alergia"  />
                                     </div>
                                 </div>
@@ -462,14 +463,15 @@
                                 <div class="col-md-4">
                                     <div class="form-group" >
                                         <label class="control-label"><output></output>Padecimiento</label>
-                                        <input fieldname="Padecimiento" name="Padecimiento" isnullable="no" id="descPadecimiento" maxlength="100" type="text" class="form-control" 
+                                        <input fieldname="Padecimiento" name="Padecimiento" isnullable="si" style="text-transform:uppercase"
+                                         id="descPadecimiento" maxlength="100" type="text" class="form-control" 
                                         value="{{ $data == null ? '' : $data['Padecimiento'] }}" placeholder="Especifique su padecimiento"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="servicioMedico" data-alias="servicioMedico" class="control-label">Servicio Médico</label>
-                                        <select  name="ServicioMedico" class="form-control" id="ServicioMedico" >
+                                        <select id="ServicioMedico" name="ServicioMedico" class="form-control" id="ServicioMedico" isnullable="si">
                                             @if($data["ServicioMedico"] != null)
                                             @php
                                             $value='';
@@ -505,7 +507,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">No. Afiliación</label>
-                                        <input name="NumAfiliacion" fieldname="No. Afiliacón"  isnullable="si" type="text"  class="form-control" 
+                                        <input id="NumAfiliacion" name="NumAfiliacion" fieldname="No. Afiliacón"  isnullable="si" type="text"  class="form-control" 
                                         value="{{ $data['NumAfiliacion'] == null ? '' : $data['NumAfiliacion'] }}" placeholder="Ingrese su No. Afiliación"  />
                                     </div>
                                 </div>
@@ -514,21 +516,24 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Contacto en caso de Emergencia</label>
-                                        <input name="ContactoEmergencia" fieldname="Contacto de Emergencia"  isnullable="no"  type="text"
+                                        <input id="ContactoEmergencia" name="ContactoEmergencia" fieldname="Contacto de Emergencia"  isnullable="si"
+                                          type="text" style="text-transform:uppercase"
                                         value="{{ $data['ContactoEmergencia'] == null ? '' : $data['ContactoEmergencia'] }}"   class="form-control" placeholder="Ingrese su contacto"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Domicilio</label>
-                                        <input name="ContactoDomicilio" fieldname="Contacto Domicilio"  isnullable="no"  type="text"
+                                        <input id="ContactoDomicilio" name="ContactoDomicilio" style="text-transform:uppercase" fieldname="Contacto Domicilio" 
+                                         isnullable="si"  type="text"
                                         value="{{ $data['ContactoDomicilio'] == null ? '' : $data['ContactoDomicilio'] }}"   class="form-control" placeholder="Ingrese su domicilio"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Teléfono</label>
-                                        <input name="ContactoTelefono" fieldname="Contacto Teléfono"  isnullable="no"  maxlength="10" min="10" type="text"   class="form-control"
+                                        <input id="ContactoTelefono" name="ContactoTelefono" fieldname="Contacto Teléfono"  isnullable="si"  
+                                        maxlength="10" min="10" type="text"   class="form-control"
                                         value="{{ $data['ContactoTelefono'] == null ? '' : $data['ContactoTelefono'] }}" placeholder="Ej. 6558036422"  />
                                     </div>
                                 </div>
@@ -540,23 +545,26 @@
                                 <button class="btn btn-warning button-custom button-next"
                                 data-to_step="3" data-step="2">Siguiente</button>
                             </div>
-                        </div>
+                    </div>
+                   
+
                     
                      <!-- step 3 DATOS ESCOLARES -->
-                    <div class="row disabled" id="step-3">
+                    
+                     <div class="row disabled" id="step-3">
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Matricula</label>
-                                        <input  fieldname="matricula"  type="text" disabled
+                                        <input name="Matricula" fieldname="Matricula"  type="text" disabled isnullable="no"
                                         value="{{ $data['Matricula'] == null ? '' : $data['Matricula'] }}"   class="form-control" placeholder="Ingrese su matricula"  />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="Carrera" class="control-label">Carrera</label>
-                                        <select id="Carrera" fieldname="Carrera"  class="form-control " disabled >
+                                        <select id="Carrera" fieldname="Carrera" name="Carrera" isnullable="si" class="form-control " disabled >
                                            @if ($data != null)
                                            @php
                                             $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
@@ -576,7 +584,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="plan" data-alias="plan" class="control-label">Plan De Estudios</label>
-                                        <select id="plan" fieldname="Plan De Estudios" class="form-control " disabled >
+                                        <select id="PlanEstudioId" name="PlanEstudioId" isnullable="si" fieldname="Plan De Estudios" class="form-control " disabled >
                                             @if ($data != null)
                                             @php
                                              $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
@@ -592,7 +600,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="Periodo" data-alias="Periodo" class="control-label">Periodo</label>
-                                        <select id="Periodo" fieldname="Periodo"  class="form-control " disabled >
+                                        <select id="Periodo" name="Periodo" fieldname="Periodo"  class="form-control " disabled >
                                             @if ($data != null)
                                             @php
                                              $period = selectCurrentPeriod();
@@ -630,7 +638,7 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label for="escuelaprocedencia" data-alias="escuelaprocedencia" class="control-label">Escuela de Procedencia</label>
-                                        <select id="escuelaprocedencia" fieldname="Escuela de Procedencia"  class="form-control " disabled >
+                                        <select id="EscuelaProcedenciaId"name="" fieldname="Escuela de Procedencia"  class="form-control " disabled >
                                             @if ($data != null)
                                             @php
                                              
@@ -682,14 +690,16 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Nombre completo del tutor</label>
-                                        <input fieldname="Nombre completo del tutor" maxlength="100" type="text" name="TutorNombre"  class="form-control"
+                                        <input fieldname="Nombre completo del tutor" maxlength="100" type="text"
+                                         name="TutorNombre"  class="form-control" style="text-transform:uppercase"
                                         value="{{ $data == null ? '' : $data['TutorNombre']}}" placeholder="Ingrese el nombre del tutor"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Domicilio del tutor</label>
-                                        <input fieldname="Domicilio del tutor" maxlength="100" type="text" name="TutorDomicilio"   class="form-control"
+                                        <input fieldname="Domicilio del tutor" maxlength="100" type="text"
+                                         name="TutorDomicilio"   class="form-control" style="text-transform:uppercase"
                                         value="{{ $data == null ? '' : $data['TutorDomicilio']}}" placeholder="Ingrese el domicilio del tutor"  />
                                     </div>
                                 </div>
@@ -705,7 +715,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Ocupación del tutor</label>
-                                        <input fieldname="Ocupación del tutor" maxlength="100" type="text" name="TutorOcupacion"  class="form-control"
+                                        <input fieldname="Ocupación del tutor" maxlength="100" type="text"
+                                         name="TutorOcupacion"  class="form-control" style="text-transform:uppercase"
                                         value="{{ $data == null ? '' : $data['TutorOcupacion']}}" placeholder="Ingrese la ocupación del tutor"  />
                                     </div>
                                 </div>
@@ -722,14 +733,16 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Nombre completo de la madre</label>
-                                        <input fieldname="Nombre completo de la Madre" maxlength="100" type="text" name="MadreNombre"   class="form-control"
+                                        <input fieldname="Nombre completo de la Madre" maxlength="100" type="text"
+                                         name="MadreNombre"   class="form-control" style="text-transform:uppercase"
                                         value="{{ $data == null ? '' : $data['MadreNombre']}}" placeholder="Ingrese el nombre de la madre"  />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label">Domicilio de la madre</label>
-                                        <input fieldname="Domicilio de la madre" maxlength="100" type="text" name="MadreDomicilio" class="form-control"
+                                        <input fieldname="Domicilio de la madre" maxlength="100" type="text"
+                                        style="text-transform:uppercase" name="MadreDomicilio" class="form-control"
                                         value="{{ $data == null ? '' : $data['MadreDomicilio']}}" placeholder="Ingrese el domicilio de la madre"  />
                                     </div>
                                 </div>
@@ -832,7 +845,8 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label class="control-label">Practicas alguna actividad deportiva o cultural</label>
-                                        <input fieldname="Actividad cultural" maxlength="100" type="text"  isnullable="si" class="form-control" name="DeportePractica"
+                                        <input fieldname="Actividad cultural" maxlength="100" type="text"  isnullable="si" 
+                                        class="form-control" name="DeportePractica" style="text-transform:uppercase"
                                         value="{{ $data['DeportePractica'] == null ? '' : $data['DeportePractica']}}" placeholder="ej.Danza"  />
                                     </div>
                                 </div>
@@ -888,7 +902,10 @@
   <!-- /.content-wrapper -->
   <script>
 
-       $( function(){
+
+      //Sirve para habilitar y deshabilitar campos dependiendo la opcion que seleccionen
+
+    $( function(){
 
           $("#trabajaactualmente").change( function(){
             if($(this).val() === "1"){
@@ -911,57 +928,54 @@
                 $("#transporte").prop("disabled",true);
                
             }
-
         });
-
-      
-
-         
           
         
-      });
+    });
 
-$(document).ready(function(){
-    
+    $(document).ready(function(){
 
+        //se verifica si hay datos en el local sotrage 
+        var data = JSON.parse(localStorage.getItem('tempData'));
 
-  $(".button-next").click(function(event){
-    event.preventDefault();
-  });
+        //le pone al valor al input
+        if(data != null){
 
-  $(".button-back").click(function(event){
-    event.preventDefault();
-  });
+            swal.fire({
+                title: "Parece que la última vez no terminaste de completar el fromulario",
+                text: "Si cambiaste algunos datos y avanzaste a pasos posteriores algunos cambios se guardaron ",
+                type: 'success',
+                });
 
-  $(".button-sumbit").click(function(event){
-    event.preventDefault();
-  });
+            data.forEach(element => {
 
-  $('#btn-sumbit').click(function(event){
+                //se le pone el valor por defecto a los input desde local storage
+                if(element['type'] == 'INPUT'){
+                    $('#'+element['name']).val(element['value']);
+                }else{
 
-    var route = 'form/save';
-    var token = $('#token').val();
+                    //aqui va lo de ponerle el valor por defecto al select
+                }
+            });
 
-
-    var data = new FormData();
-    var tempData = JSON.parse(localStorage.getItem('tempData'));
-
-    data.append('data', JSON.stringify(tempData));
-    data.append('recaptcha',grecaptcha.getResponse());
-
-
-    $.ajax({
-    url:route,
-    headers:{'X-CSRF-TOKEN': token},
-    method:'POST',
-    data:data,
-    cache:false,
-    contentType:false,
-    processData:false,
-    success:function(response){
+        }
 
 
-        console.log(response);
+        //bloqueo el boton para que al hacer click no se envie el formulario
+
+        $(".button-next").click(function(event){
+            event.preventDefault();
+        });
+
+        
+        $(".button-back").click(function(event){
+            event.preventDefault();
+        });
+
+        $(".button-sumbit").click(function(event){
+            event.preventDefault();
+        });
+
 
         if(response == 'ok'){
             localStorage.removeItem('tempData');
@@ -972,26 +986,45 @@ $(document).ready(function(){
         }
     
 
-    }});
+            var route = 'form/save';
+            var token = $('#token').val();
 
 
+            var data = new FormData();
+            var tempData = JSON.parse(localStorage.getItem('tempData'));
+
+            data.append('data', JSON.stringify(tempData));
+            data.append('recaptcha',grecaptcha.getResponse());
 
 
-});
+            $.ajax({
+            url:route,
+            headers:{'X-CSRF-TOKEN': token},
+            method:'POST',
+            data:data,
+            cache:false,
+            contentType:false,
+            processData:false,
+            success:function(response){
 
+                console.log(response);
 
-  
+                if(response == 'ok'){
+                    localStorage.removeItem('tempData');
+                    window.location = '/alumn/';
+                }else {
+                    toastr.error("Tiene que verificar que no es un robot");
+                }
 
-  
+            }});
+        });
+    });
 
-
-
- 
-  
-});
-
-
+//aqui guardo los items que cambian
 var changeItems = [];
+
+
+//cuando se modifica un campo se verfica si está en el arreglo y se actualiza el valor, si no lo agrega al arreglo
 
 $(document).ready(function(){
    
@@ -1000,9 +1033,22 @@ $(document).ready(function(){
 	   modified = true; 
        var value = $(this).val(); 
        var name =  $(this).prop('name');
+       var elementType = $(this)[0].tagName;
+
+       // en caso de ser un select guarda el el texto  para ponerlo con jquery desde local storage
+      if(elementType == 'SELECT'){
+        var textSelect = $( '#'+name+' option:selected' ).text();
+      }else{
+        var textSelect = null;
+      }
+       
 
        let tempIndex = checkExistThisName(name);
-       let field = { 'name': name, 'value':value.toUpperCase()};
+       let field = {
+       'name' : name, 
+       'value':value.toUpperCase() ,
+       'type' :  elementType,
+       'text' : textSelect };
       
 
        if( tempIndex >= 0 ){
@@ -1014,7 +1060,7 @@ $(document).ready(function(){
       
 	}); 
 });
-
+// este método determina si ya existe en el arreglo y si es asi devuelve la posión en que se encuentra
 function checkExistThisName(name){
 
     for (let index = 0; index < changeItems.length; index++) {
@@ -1028,6 +1074,8 @@ function checkExistThisName(name){
 
 }
 
+
+//se ubica donde se da clic y mediante clases de css hace que se meuva el formulario
 let form = document.querySelector('.form-inscription');
       let progressbarOptions = document.querySelectorAll('.progressbar-option');
     
@@ -1038,15 +1086,21 @@ let form = document.querySelector('.form-inscription');
          let isButtonSumbit = element.classList.contains('sumbit');
         
          if( isButtonBack || isButtonNext){
-             let currentStep = document.getElementById('step-' + element.dataset.step);
-             let goToStep = document.getElementById('step-' + element.dataset.to_step);
+            let currentStep = document.getElementById('step-' + element.dataset.step);
+            let goToStep = document.getElementById('step-' + element.dataset.to_step);
 
-             var stepItems = [];
-             let itemCount = 0;
 
-             $('#step-' + element.dataset.step + " input").each(function(){
+            // en este arreglo se guardan todos los cmapos y el valor para verifcar de que alguno no quede vacio
+            //nota:solo verfica con forma la base de datos ,  los que dice not null
+            //nota2: si quieres que se valide el campo, en el html hay una propiedad llamada nullable cambiala a no y entonces se validará
+            var stepItems = [];
+            let itemCount = 0;
 
-                 let itemName =  $(this).attr('fieldname'); 
+
+            // dentro de esta funcion del selector se guardan todos los inputs del paso en el que está
+            $('#step-' + element.dataset.step + " input").each(function(){
+
+                let itemName =  $(this).attr('fieldname'); 
 
                 stepItems[itemCount] = {
                     "name"      : itemName,
@@ -1055,10 +1109,10 @@ let form = document.querySelector('.form-inscription');
                 };
 
                 itemCount++;
-             });
+            });
 
-
-             $('#step-' + element.dataset.step + " select").each(function(){
+            // dentro de esta función del selector se guardan todos los select del paso en el que está
+            $('#step-' + element.dataset.step + " select").each(function(){
 
                 stepItems[itemCount] = {
                     "name"      : $(this).attr('fieldname'),
@@ -1067,29 +1121,30 @@ let form = document.querySelector('.form-inscription');
                 };
               
                 itemCount++;
-             });
+            });
 
-                if(isButtonNext){
-                    var errorCount = 0;
-                    
+            if(isButtonNext){
 
-                    for (var i = 0; i < stepItems.length; i++) {
+
+                // aqui se recorre el arreglo y si es null o el length es cero incrementa el error count  
+                var errorCount = 0;
+                for (var i = 0; i < stepItems.length; i++) {
                       
-                       if(stepItems[i]['nullable'] == 'no'){
+                    if(stepItems[i]['nullable'] == 'no'){
 
-                        if( stepItems[i]['value'] == null){
+                    if( stepItems[i]['value'] == null){
                             toastr.error("Tiene que llenar el campo " + stepItems[i]['name']);
                             errorCount++;
 
-                        }else if( stepItems[i]['value'].length == 0 ){
+                    }else if( stepItems[i]['value'].length == 0 ){
 
                             toastr.error("Tiene que llenar el campo " + stepItems[i]['name']);
                             errorCount++;
-                        }
-                       }
+                     }
                     }
+                }
                   
-
+                    //para que pueda cmabiar de paso el error count debe ser igual a cero, es decir que no haya errores
                     if(errorCount == 0 ){
 
                       if(changeItems.length != 0){
@@ -1102,15 +1157,11 @@ let form = document.querySelector('.form-inscription');
                         localStorage.setItem('tempData' , JSON.stringify(changeItems));
 
 
-                         }
+                        }
 
                       }
 
-                    
-
-
-                       
-
+                      //aqui se hace el cambio del progres bar y cambio de paso del formulario hacia adelante
                         currentStep.classList.add('disabled');
                         currentStep.classList.remove('active');
                         goToStep.classList.add('active');
@@ -1119,33 +1170,25 @@ let form = document.querySelector('.form-inscription');
                         currentStep.classList.add('inactive');
                         goToStep.classList.remove('inactive');
 
-
                     }
 
 
-                }else if(isButtonBack){
+            }else if(isButtonBack){
 
-                    
-                    currentStep.classList.add('disabled');
-                    currentStep.classList.remove('active');
-                    goToStep.classList.add('active');
-                   
-
-                    goToStep.classList.remove('to-left');
-                    progressbarOptions[element.dataset.step - 1].classList.remove('active');
-
-
-                    currentStep.classList.add('inactive');
-                    goToStep.classList.remove('inactive');
-
-                }
-             
-
+                 //aqui se hace el cambio del progres bar y cambio de paso del formulario hacia atras
+                currentStep.classList.add('disabled');
+                currentStep.classList.remove('active');
+                goToStep.classList.add('active');
+                goToStep.classList.remove('to-left');
+                progressbarOptions[element.dataset.step - 1].classList.remove('active');
+                currentStep.classList.add('inactive');
+                goToStep.classList.remove('inactive');
+            }
          }
 
       });
 
-      $(".select2").select2();
+    $(".select2").select2();
 
   </script>
 
