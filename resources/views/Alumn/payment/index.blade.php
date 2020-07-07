@@ -93,84 +93,26 @@
           
           <div class="row">
 
-            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
-              <div class="container-custom">
+            <div class="container-custom">
 
                 <div style="cursor: pointer;">
 
-                  <div class="card2">
-
-                    <figure>
-
-                      <div class=frontal>
+                    <div class="card2">
 
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
-                      </div>
-
-                      <div class="trasera">
-
-                        <p>
-                         Validación automática, el usuario pagará$1950.00 de colegiatura + $70.89 por comisión bancaria, un total de $2’020.89
-                        </p>
-
-                      </div>
-
-                    </figure>
-
-                  </div>
-
+                    </div>
                 </div>
-
-              </div>
 
             </div>
 
-            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
-
-              <div class="container-custom">
-
-                <div id="payment-card" style="cursor: pointer;">
-
-                  <div class="card2">
-
-                    <figure>
-
-                     <div class=frontal>
-
-                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-
-                      <h4 class="titulo-cards">Depósito Bancario</h4>
-
-                      <p class="parrafo">Deposito desde Banco Santander</p>
-
-                    </div>
-
-                     <figcaption class="trasera">
-
-                      <p >
-                        No tiene comisión el usuario debe depositar
-                        en Banco Santander, el sistema emite una hoja de pago con su
-                        referencia personal. Usuario envía comprobante de depósito
-                        escaneado o fotografiado mediante el sistema. Validación
-                        Manual. Se paga $1’950.00
-                      </p>
-
-                    </figcaption>
-
-                  </div>
-
-                </div>
-
-              </div>
-
           </div>
 
-          <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
             <form action="{{ route('alumn.pay.cash') }}" method="post">
 
@@ -193,22 +135,9 @@
 
             </form>
 
-                      <p >
-                        Validación automática, el usuario
-                        pagará $1’950.00 de colegiatura + $14.0 por comisión bancaria, un total de $1’964.50
-                      </p>
+          </div>
 
-                    </figcaption>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
               <div class="container-custom">
 
@@ -228,13 +157,11 @@
 
               </div>
 
-            </div>
+          </div>
 
-            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+            <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
-              <div class="container-custom"><div id="payment-card" style="cursor: pointer;">
-
-                  <div class="card2">
+              <div class="container-custom">
 
                       <div class="card2">
 
@@ -246,10 +173,12 @@
               </div>
 
             </div>
-
-          </div>
+          
+        </div>
 
         </div>
+
+      </div>
 
       <div class="card-footer">
 

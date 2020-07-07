@@ -1,43 +1,17 @@
 .login-form {
-    width: 350px;
-    margin-right: 4rem ;
-    margin-top: 31vh;
-    float: right;
-
+    width: 340px;
+    margin: 50px auto;
 }
-
 .login-form form {
     margin-bottom: 15px;
     background: #f7f7f7;
-    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     padding: 30px;
-    border-radius: 20px;    
-}
-
-.margin-around
-{
-    margin: 0px 10px 0px 10px;
-}
-
-.footer-custom
-{
-    margin-bottom: 5vh;
-    margin-top: -15px;
-}
-
-.radius
-{
-    border-radius: 20px;
-    /*font-size: 20px !important;*/
-}
-
-.login-form a{
-    color: black;
 }
 .login-form h2 {
     margin: 0 0 15px;
 }
-.form-control {
+.form-control, .btn {
     min-height: 38px;
     border-radius: 2px;
 }
@@ -50,23 +24,6 @@
 {
     background: orange;
 }
-
-.nav-custom-green
-{
-    background: #008000 !important;
-}
-
-.nav-custom-green .card-title
-{
-    font-weight: 600;
-}
-
-.footer-orange
-{
-    background: #fd7e14;
-    color: white;
-}
-
 
 .nav-custom > .navbar-nav > .nav-item > a:link, a:visited
 {
@@ -92,82 +49,22 @@
 
 .back2
 {
-    background: url(../img/temple/fondo.png);
+    background: url(../img/temple/back.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
-/*    height: 100%;*/
+    height: 100%;
     width: 100%;
     padding-top: 5%;
-    display : flex
 }
 
-.content-custom
+.content
 {
-    width: 100%;
+    width: 100%
     min-height: 100vh;
-    /*height: 100vh;*/
-    display: flex;
+    height: 100vh;
 }
-
-
-/**/
-
-.container-custom:hover figure {
-    transform: perspective(600px) rotateY(180deg);
-    
-}
-
-figure {
-    
-    margin:0;
-    border-radius: 5px;
-    position: relative;
-    transition: all ease .5s;
-    transform-style: preserve-3d;
-    transform: perspective(600px) rotateY(0deg);
-
-    background: #fd7e14;
-}
-
-figure .frontal,
-figure .trasera {
-    
-    transition: all ease .5s;
-    background: #fd7e14;
-}
-
-figure .frontal {
-    display: block;
-    backface-visibility: hidden;
-}
-
-figure .trasera {
-    
-    transform: perspective(600px) rotateY(180deg);
-    backface-visibility: hidden;
-    overflow: auto;
-    margin-top: -280px;
-
-    
-}
-
-
-@media screen and (max-width: 992px) { 
-    figure .trasera {
-        position: relative;
-        /*backface-visibility:hidden;*/
-        transform: perspective(600px) rotateY(0deg);
-    }
-
-    .container-custom:hover figure {
-        transform: perspective(600px) rotateY(0deg);    
-    }
-
-}
-
-/**/
 
 header
 {
@@ -187,19 +84,16 @@ header
     margin: auto;
 }
 
-
-
 .container-custom .card2
 {
-    /*width: 330px;*/
+    width: 330px;
     height: 340px;
     border-radius: 8px;
-    /*box-shadow: 0 2px 2px rgba(0,0,0,0.2);*/
+    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
     overflow: hidden;
     text-align: center;
     transition: all 0.25;
-    background: #fd7e14;
-    
+        background: orange;
 }
 
 .container .card2:hover
@@ -234,7 +128,7 @@ header
 {
     width: 100%;
     height: 678px;
-    background-image: url(../img/temple/fondo.png);
+    background-image: url(../img/temple/back.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
@@ -270,396 +164,28 @@ header
 
 .osos_alfa
 {
-    width: 10%;
+        width: 17%;
     position: fixed;
-    top: 75vh;
+    top: 60vh;
     left: 5%;
 }
 
 .card-custom
 {
-    margin-top: 2vh;
+    margin-top: 10vh;
     border-radius: 20px;
 }
 
 .button-custom
 {
     color: white;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
     border-radius: 18px;
-    background: #fd7e14 !important;
-    /*font-size: 20px;*/
+    margin-left: 38%;
 }
 
 .button-custom:hover
 {
     color: white;
 }
-
-.col-custom
-{
-    align-items: center;
-    display: grid;
-}
-
-.feed
-{
-    height: 45vh;
-    background: rgba(255, 255, 255, 0.50);
-    border-radius: 20px;
-    margin-top: 0vh;
-    margin-left: 4vh;
-    width: 90%;
-}
-
-.feed2  
-{
-    height: 45vh;
-    background: rgba(255, 255, 255, 0.50);
-    border-radius: 20px;
-    margin-top: 5vh;
-    
-    width: 100%;
-}
-
-
-.feed_content
-{
-    padding: 10%;
-    width: 100%;
-    height: 100%;
-    color: black;
-}
-
-.feed-header h1
-{
-    font-size: 40px;
-}
-
-.feed-body p
-{
-    font-size: 20px;
-}
-
-.bienvenida{
-    margin-top: 15vh;
-    margin-left: 3%;
-    width: 50%;
-    float: left;
-    
-    
-}
-.bienvenida h2{
-    color: white;
-    width: 70%;
-    
-}
-
-.boton{
-    width: 50%;
-    margin: auto;
-    background-color: #fd7e14;
-    border-radius: 2px;
-    border: #fd7e14;
-    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
-
-}
-
-.imagen-fondo{
-    
-    background-image: url("../img/temple/fondo.png");
-
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-   height: 100vh;
-}
-
-.recuperar{
-    color: black;
-    margin: auto;
-}
-
-.osos-title
-{
-        margin-top: 8vh;
-    color: white;
-    margin-left: 4%;
-}
-
-.osos-title h1
-{
-    padding-left: 1%;
-}
-
-.scroll-perfil
-{
-    height: 65vh;
-    overflow-y: scroll;
-}
-
-.scroll-perfil p:not(:last-child) {
-  margin-bottom: 1rem;
-}
-
-/* Tamaño del scroll */
-.scroll-perfil::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
- /* Estilos barra (thumb) de scroll */
-.scroll-perfil::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.scroll-perfil::-webkit-scrollbar-thumb:active {
-  background-color: #999999;
-}
-
-.scroll-perfil::-webkit-scrollbar-thumb:hover {
-  background: #b3b3b3;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-
- /* Estilos track de scroll */
-.scroll-perfil::-webkit-scrollbar-track {
-  background: #e1e1e1;
-  border-radius: 4px;
-}
-
-.scroll-perfil::-webkit-scrollbar-track:hover, 
-.scroll-perfil::-webkit-scrollbar-track:active {
-  background: #d4d4d4;
-}
-
-.flex-content
-{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-}
-
-.parraf-custom
-{
-    font-size: 30px;
-    font-weight: 300;
-    font-family: unset;
-}
-
-.scroll-charge
-{
-    height: 65vh;
-    overflow-y: scroll;
-}
-
-.scroll-charge p:not(:last-child) {
-  margin-bottom: 1rem;
-}
-
-/* Tamaño del scroll */
-.scroll-charge::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
- /* Estilos barra (thumb) de scroll */
-.scroll-charge::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.scroll-charge::-webkit-scrollbar-thumb:active {
-  background-color: #999999;
-}
-
-.scroll-charge::-webkit-scrollbar-thumb:hover {
-  background: #b3b3b3;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-
- /* Estilos track de scroll */
-.scroll-charge::-webkit-scrollbar-track {
-  background: #e1e1e1;
-  border-radius: 4px;
-}
-
-.scroll-charge::-webkit-scrollbar-track:hover, 
-.scroll-charge::-webkit-scrollbar-track:active {
-  background: #d4d4d4;
-}
-
-
-.creditCardForm {
-    max-width: 700px;
-    background-color: #fff;
-    margin: 0px auto;
-    overflow: hidden;
-    padding: 50px;
-    color: #ffffff;
-    background: #fd7e14;
-}
-.creditCardForm label {
-    width: 100%;
-    margin-bottom: 10px;
-}
-.creditCardForm .heading h1 {
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    color: white;
-}
-.creditCardForm .payment {
-    float: left;
-    font-size: 18px;
-    padding: 10px 25px;
-    margin-top: 20px;
-    position: relative;
-}
-.creditCardForm .payment .form-group {
-    float: left;
-    margin-bottom: 15px;
-}
-.creditCardForm .payment .form-control {
-    line-height: 40px;
-    height: auto;
-    padding: 0 16px;
-}
-.creditCardForm .owner {
-    width: 63%;
-    margin-right: 10px;
-}
-.creditCardForm .CVV {
-    width: 35%;
-}
-.creditCardForm #card-number-field {
-    width: 100%;
-}
-.creditCardForm #expiration-date {
-    width: 49%;
-}
-.creditCardForm #credit_cards {
-    width: 50%;
-    margin-top: 25px;
-    text-align: right;
-}
-.creditCardForm #pay-now {
-    width: 100%;
-    margin-top: 25px;
-}
-.creditCardForm .payment .btn {
-    width: 100%;
-    margin-top: 3px;
-    font-size: 24px;
-    background-color: #2ec4a5;
-    color: white;
-}
-.creditCardForm .payment select {
-    padding: 10px;
-    margin-right: 15px;
-}
-.transparent {
-    opacity: 0.2;
-}
-@media(max-width: 650px) {
-    .creditCardForm .owner,
-    .creditCardForm .CVV,
-    .creditCardForm #expiration-date,
-    .creditCardForm #credit_cards {
-        width: 100%;
-    }
-    .creditCardForm #credit_cards {
-        text-align: left;
-    }
-}
-
-
-td{
-    padding: 6px 5px;
-    font-size: 15px;
-}
-
-/* table, th, td {   
-        border: 1px solid black;
-        border-collapse: collapse;
-        text-align: center
-} */
-
-
-.tabla-info{
-    margin-top: 32vh;
-    width: 100%;
-}
-
-.tabla-fecha{
-    margin-top: 10vh;
-    width: 90%;
-    
-    margin-left: 75%;
-    
-}
-
-.celdas-vacias{
-    height: 25vh;
-}
-
-.celdas-fecha{
-    padding-top: 1px;
-    padding-bottom: 1px;
-    font-size: 12px;
-   
-}
-
-.tabla-div{
-    margin-top: 32vh;
-    border: 1.5px solid black;
-    width: 100%;
-    height: 100vh;
-}
-
-#texto-constancia{
-    width: 88%;
-    padding-left: 5%;
-    margin-right: 50%;
-    margin-top: 5%;
-    text-align: justify;
-    margin-bottom: 10%;
-}
-
-.texto-firmas{
-    letter-spacing: normal !important;
-    font-size: 12px;
-    padding-bottom: 0px;
-    padding-top: 2.5%;
-}
-
-.texto-enunciado-firma{
-    letter-spacing: 16%; 
-    font-size: 14px; 
-    padding-bottom: 5%;
-    padding-top: 0px;
-}
-
-.tabla-firmas{
-    
-    width: 450px; 
-    
-    
-}
-
-.texto-enunciado-firma2{
-    letter-spacing: 16%; 
-    font-size: 14px; 
-    padding-bottom: 3%;
-    padding-top: 0px;
-}
-
-#tabla-de-tablas-firma{
-    border: none !important; 
-    width: 100%;
-    margin: 1.5%;
-    margin-top: 10%;
-}
-
-

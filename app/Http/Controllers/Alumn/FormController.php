@@ -26,16 +26,15 @@ class FormController extends Controller
             $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
             $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0];    
         }
-        dd($group);
-        // $mytime = \Carbon\Carbon::now();
-        // DB::table('debit')->insert(
-        //     ['concept' => 'Pago de colegiatura',
-        //      'amount' => 1950.00,
-        //      'admin_id'=> 3,
-        //      'id_alumno'=>$currentId,
-        //      'created_at'=>$mytime->toDateTimeString(),
-        //      'updated_at'=>$mytime->toDateTimeString()]
-        // );
+        $mytime = \Carbon\Carbon::now();
+        DB::table('debit')->insert(
+            ['concept' => 'Pago de colegiatura',
+             'amount' => 1950.00,
+             'admin_id'=> 3,
+             'id_alumno'=>$currentId,
+             'created_at'=>$mytime->toDateTimeString(),
+             'updated_at'=>$mytime->toDateTimeString()]
+        );
 
         return view('Alumn.form.index')->with(["estados"=> $estados , 
                                                 "municipios"=> $municipios , 

@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
     }
 
-    public function save(Request $request, Categories $categorie) 
+    public function save(Request $request) 
     {
     }
 
