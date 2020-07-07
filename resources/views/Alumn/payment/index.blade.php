@@ -91,87 +91,202 @@
           
           <div class="row">
 
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
+            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
 
-            <div class="container-custom">
+              <div class="container-custom">
 
                 <div id="payment-card" style="cursor: pointer;">
 
-                    <div class="card2">
+                  <div class="card2">
+
+                    <figure>
+
+                      <div class=frontal>
 
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
+
                         <p class="parrafo">Paga con tu cuenta</p>
 
-                    </div>
+                      </div>
+
+                      <div class="trasera">
+
+                        <p>
+                         Validación automática, el usuario pagará$1950.00 de colegiatura + $70.89 por comisión bancaria, un total de $2’020.89
+                        </p>
+
+                      </div>
+
+                    </figure>
+
+                  </div>
+
                 </div>
+
+              </div>
 
             </div>
 
+            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+
+              <div class="container-custom">
+
+                <div id="payment-card" style="cursor: pointer;">
+
+                  <div class="card2">
+
+                    <figure>
+
+                     <div class=frontal>
+
+                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+
+                      <h4 class="titulo-cards">Depósito Bancario</h4>
+
+                      <p class="parrafo">Deposito desde Banco Santander</p>
+
+                    </div>
+
+                     <figcaption class="trasera">
+
+                      <p >
+                        No tiene comisión el usuario debe depositar
+                        en Banco Santander, el sistema emite una hoja de pago con su
+                        referencia personal. Usuario envía comprobante de depósito
+                        escaneado o fotografiado mediante el sistema. Validación
+                        Manual. Se paga $1’950.00
+                      </p>
+
+                    </figcaption>
+
+                  </div>
+
+                </div>
+
+              </div>
+
           </div>
 
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
+          <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
 
             <div class="container-custom">
 
-                <a href="">
+              <div id="payment-card" style="cursor: pointer;">
 
-                    <div class="card2">
+                <div class="card2">
 
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con deposito bancario</h4>
-                        <p class="parrafo">Deposita en nuestra cuenta</p>
+                  <figure>
+
+                    <div class=frontal>
+
+                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+
+                      <h4 class="titulo-cards">Transferencia Interbancaria SPEI</h4>
+
+                      <p class="parrafo">Pago desde banco con SPEI</p>
 
                     </div>
-                </a>
+
+                    <figcaption class="trasera">
+
+                      <p >
+                        Validación automática, el usuario
+                        pagará $1’950.00 de colegiatura + $14.0 por comisión bancaria, un total de $1’964.50
+                      </p>
+
+                    </figcaption>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+
+              <div class="container-custom">
+
+               <div id="payment-card" style="cursor: pointer;">
+
+                <div class="card2">
+
+                  <figure>
+
+                    <div class=frontal>
+
+                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+
+                      <h4 class="titulo-cards">Pago en efectivo</h4>
+
+                      <p class="parrafo">Pago desde Oxxo</p>
+
+                    </div>
+
+                    <figcaption class="trasera">
+
+                      <p >
+                        Validación
+                        automática, el usuario pagará $1950.00 de colegiatura +
+                        $92.39 por comisión bancaria, un total de $2’042.39
+                      </p>
+
+                    </figcaption>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
+
+              <div class="container-custom"><div id="payment-card" style="cursor: pointer;">
+
+                  <div class="card2">
+
+                    <figure>
+
+                      <div class=frontal>
+
+                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+
+                        <h4 class="titulo-cards">Pago con tranferencia</h4>
+
+                        <p class="parrafo">Pago desde banca web o movil</p>
+
+                      </div>
+
+                      <figcaption class="trasera">
+
+                        <p class="parrafo">
+                         Haga pago desde su banca web o movil,
+                         por la cantidad de $1950.00 a banco
+                         Santander y subir comprobante de dicha tranferencia
+                        </p>
+
+                      </figcaption>
+
+                    </figure>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
 
             </div>
 
           </div>
 
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
-
-              <div class="container-custom">
-
-                  <a href="">
-
-                      <div class="card2">
-
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
-                          <p class="parrafo">Realiza una transferencia</p>
-
-                      </div>
-                  </a>
-
-              </div>
-
-          </div>
-
-            <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
-
-              <div class="container-custom">
-
-                  <a href="">
-
-                      <div class="card2">
-
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Realizar un acuerdo con la institución</h4>
-                          <p class="parrafo">Habla con nosotross</p>
-
-                      </div>
-                  </a>
-
-              </div>
-
-            </div>
-          
         </div>
-
-        </div>
-
-      </div>
 
       <div class="card-footer">
 

@@ -111,6 +111,64 @@
     display: flex;
 }
 
+
+/**/
+
+.container-custom:hover figure {
+    transform: perspective(600px) rotateY(180deg);
+    
+}
+
+figure {
+    
+    margin:0;
+    border-radius: 5px;
+    position: relative;
+    transition: all ease .5s;
+    transform-style: preserve-3d;
+    transform: perspective(600px) rotateY(0deg);
+
+    background: #fd7e14;
+}
+
+figure .frontal,
+figure .trasera {
+    
+    transition: all ease .5s;
+    background: #fd7e14;
+}
+
+figure .frontal {
+    display: block;
+    backface-visibility: hidden;
+}
+
+figure .trasera {
+    
+    transform: perspective(600px) rotateY(180deg);
+    backface-visibility: hidden;
+    overflow: auto;
+    margin-top: -280px;
+
+    
+}
+
+
+@media screen and (max-width: 992px) { 
+    figure .trasera {
+        position: relative;
+        /*backface-visibility:hidden;*/
+        transform: perspective(600px) rotateY(0deg);
+    }
+
+    .container-custom:hover figure {
+        transform: perspective(600px) rotateY(0deg);    
+    }
+
+}
+
+/**/
+
 header
 {
     position: fixed;
@@ -129,16 +187,19 @@ header
     margin: auto;
 }
 
+
+
 .container-custom .card2
 {
     /*width: 330px;*/
     height: 340px;
     border-radius: 8px;
-    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+    /*box-shadow: 0 2px 2px rgba(0,0,0,0.2);*/
     overflow: hidden;
     text-align: center;
     transition: all 0.25;
     background: #fd7e14;
+    
 }
 
 .container .card2:hover
