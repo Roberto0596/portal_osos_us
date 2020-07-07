@@ -108,12 +108,7 @@
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
 
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
-<<<<<<< HEAD
-
-                        <p class="parrafo">Paga con tu cuenta</p>
-=======
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
->>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
                       </div>
 
@@ -179,25 +174,6 @@
 
             <form action="{{ route('alumn.pay.cash') }}" method="post">
 
-<<<<<<< HEAD
-              <div id="payment-card" style="cursor: pointer;">
-
-                <div class="card2">
-
-                  <figure>
-
-                    <div class=frontal>
-
-                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-
-                      <h4 class="titulo-cards">Transferencia Interbancaria SPEI</h4>
-
-                      <p class="parrafo">Pago desde banco con SPEI</p>
-
-                    </div>
-
-                    <figcaption class="trasera">
-=======
               {{ csrf_field() }}
 
               <div class="container-custom">
@@ -216,7 +192,6 @@
               </div>
 
             </form>
->>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
                       <p >
                         Validación automática, el usuario
@@ -237,37 +212,6 @@
 
               <div class="container-custom">
 
-<<<<<<< HEAD
-               <div id="payment-card" style="cursor: pointer;">
-
-                <div class="card2">
-
-                  <figure>
-
-                    <div class=frontal>
-
-                      <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-
-                      <h4 class="titulo-cards">Pago en efectivo</h4>
-
-                      <p class="parrafo">Pago desde Oxxo</p>
-
-                    </div>
-
-                    <figcaption class="trasera">
-
-                      <p >
-                        Validación
-                        automática, el usuario pagará $1950.00 de colegiatura +
-                        $92.39 por comisión bancaria, un total de $2’042.39
-                      </p>
-
-                    </figcaption>
-
-                  </div>
-
-                </div>
-=======
                   <form method="post" action="{{route('alumn.pay.stei')}}">
 
                     {{ csrf_field() }}
@@ -281,7 +225,6 @@
                     </div>
                       
                   </form>
->>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
               </div>
 
@@ -293,38 +236,6 @@
 
                   <div class="card2">
 
-<<<<<<< HEAD
-                    <figure>
-
-                      <div class=frontal>
-
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-
-                        <h4 class="titulo-cards">Pago con tranferencia</h4>
-
-                        <p class="parrafo">Pago desde banca web o movil</p>
-
-                      </div>
-
-                      <figcaption class="trasera">
-
-                        <p class="parrafo">
-                         Haga pago desde su banca web o movil,
-                         por la cantidad de $1950.00 a banco
-                         Santander y subir comprobante de dicha tranferencia
-                        </p>
-
-                      </figcaption>
-
-                    </figure>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-=======
                       <div class="card2">
 
                           <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
@@ -332,7 +243,6 @@
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
                       </div>
->>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
               </div>
 
             </div>
