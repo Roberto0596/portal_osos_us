@@ -15,7 +15,7 @@ class HomeController extends Controller
 
         $debits = DB::table('debit')
         ->join('users', 'users.id_alumno' , '=', 'debit.id_alumno')
-        ->select('debit.id', 'debit.concept' ,'debit.amount','debit.admin_id','debit.status','debit.payment_method','users.name','users.lastname')
+        ->select('debit.id','debit.id_order', 'debit.concept' ,'debit.amount','debit.admin_id','debit.status','debit.payment_method','users.name','users.lastname')
         ->get();
 
 
@@ -46,7 +46,7 @@ class HomeController extends Controller
     {
     }
 
-    public function save(Request $request, Categories $categorie) 
+    public function save(Request $request) 
     {
     }
 
