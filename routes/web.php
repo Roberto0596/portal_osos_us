@@ -13,18 +13,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 
 	    Route::post('/sign-in',[
 	        'uses' => 'AuthController@postLogin', 
-		]);
-
-		Route::get('/form',[
-			'uses' => 'FormController@index', 
-			'as' => 'form'
-		]);
-
-		Route::post('form/save', [
-			'uses' => 'FormController@save',
-			'as'   => 'form.save'
-		]);
-		 
+		]); 
 	 
 
 	    Route::get('/sign-out', [
@@ -72,6 +61,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses' => 'FormController@index', 
 					'as' => 'form'
 				]);
+		
+				Route::post('form/save', [
+					'uses' => 'FormController@save',
+					'as'   => 'form.save'
+				]);
 		    });
 
 		    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
@@ -82,19 +76,38 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'uses' => 'PaymentController@index', 
 			        'as' => 'payment'
 				]);
-
-				Route::get('/payment/card', [
-		       		'uses' => 'PaymentController@form_payment', 
-		       		'as' => 'payment.card'
-		    	]);
-
+				
 			    Route::post('/pay-card', [
 				        'uses' => 'PaymentController@pay_card', 
 				        'as' => 'pay.card'
 				]);
+
+				Route::post('/pay-cash', [
+				        'uses' => 'PaymentController@pay_cash', 
+				        'as' => 'pay.cash'
+				]);
+
+				Route::post('/pay-stei', [
+				        'uses' => 'PaymentController@pay_stei', 
+				        'as' => 'pay.stei'
+				]);
+
+				Route::post('/pay-upload', [
+					'uses' => 'PaymentController@pay_upload', 
+					'as' => 'pay.upload'
+				]);
 			});
 
-		    Route::group(["middleware"=>["inscriptionFaseThree"]
+			Route::group(["middleware"=>["inscriptionFaseThree"]
+			],function()
+			{
+				Route::get('/payment/note', [
+			        'uses' => 'PaymentController@note', 
+			        'as' => 'payment.note'
+				]);
+			});
+
+		    Route::group(["middleware"=>["inscriptionFaseFour"]
 			],function(){
 
 				//charge academic
@@ -114,9 +127,20 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'user'
 		    ])->middleware('candidate');
 
+		    Route::get('/pay-cash-oxxo', [
+				        'uses' => 'PaymentController@pay_cash_oxxo', 
+				        'as' => 'pay.oxxo'
+			]);
+
+			Route::get('/pay-cash-stei', [
+				        'uses' => 'PaymentController@pay_cash_stei', 
+				        'as' => 'pay.stei.view'
+			]);
 		});
   	});
 });
+
+
 
 Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 {
@@ -143,15 +167,6 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
-			
-			/*
-
-		    Route::get('/user', [
-		        'uses' => 'UserController@index', 
-		        'as' => 'user'
-			]);
-			*/
-
 		});
   	});
 });

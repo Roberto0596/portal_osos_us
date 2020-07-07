@@ -6,7 +6,7 @@ use Auth;
 use Input;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Finance\FinanceUser;
+use App\Models\AdminUsers\AdminUser;
 
 class AuthController extends Controller
 {
@@ -24,7 +24,7 @@ class AuthController extends Controller
         $email = $request->input('email');
         $pass = $request->input('password');
 
-        $user = FinanceUser::where('email', "=" ,$email)->first();
+        $user = AdminUser::where('email', "=" ,$email)->first();
 
         if (!$user) {
             session()->flash('messages', 'error|No Existe un usuario con ese correo');

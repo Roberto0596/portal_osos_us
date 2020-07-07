@@ -2,6 +2,8 @@
 
 @section('content-alumn')
 
+<script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+
 <div class="content-wrapper">
 
   <section class="content-header">
@@ -95,7 +97,7 @@
 
               <div class="container-custom">
 
-                <div id="payment-card" style="cursor: pointer;">
+                <div style="cursor: pointer;">
 
                   <div class="card2">
 
@@ -106,8 +108,12 @@
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
 
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
+<<<<<<< HEAD
 
                         <p class="parrafo">Paga con tu cuenta</p>
+=======
+                        <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
+>>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
                       </div>
 
@@ -171,8 +177,9 @@
 
           <div class="col-md-2 col-sm-12" style="margin-bottom: 55px;">
 
-            <div class="container-custom">
+            <form action="{{ route('alumn.pay.cash') }}" method="post">
 
+<<<<<<< HEAD
               <div id="payment-card" style="cursor: pointer;">
 
                 <div class="card2">
@@ -190,6 +197,26 @@
                     </div>
 
                     <figcaption class="trasera">
+=======
+              {{ csrf_field() }}
+
+              <div class="container-custom">
+
+                  <a href="{{ route('alumn.pay.cash') }}">
+
+                      <div class="card2">
+
+                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago con deposito bancario</h4>
+                          <button class="btn btn-success">Realiza un pago en oxxo</button>
+
+                      </div>
+                  </a>
+
+              </div>
+
+            </form>
+>>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
                       <p >
                         Validación automática, el usuario
@@ -210,6 +237,7 @@
 
               <div class="container-custom">
 
+<<<<<<< HEAD
                <div id="payment-card" style="cursor: pointer;">
 
                 <div class="card2">
@@ -239,6 +267,21 @@
                   </div>
 
                 </div>
+=======
+                  <form method="post" action="{{route('alumn.pay.stei')}}">
+
+                    {{ csrf_field() }}
+
+                    <div class="card2">
+
+                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                        <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
+                        <button class="btn btn-success">Realiza una transferencia</button>
+
+                    </div>
+                      
+                  </form>
+>>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
 
               </div>
 
@@ -250,6 +293,7 @@
 
                   <div class="card2">
 
+<<<<<<< HEAD
                     <figure>
 
                       <div class=frontal>
@@ -280,6 +324,15 @@
 
                 </div>
 
+=======
+                      <div class="card2">
+
+                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">transferencia o deposito bancario</h4>
+                          <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
+
+                      </div>
+>>>>>>> efb563dcdefe06b1c418c5d92db2d5a66168e61a
               </div>
 
             </div>
@@ -328,39 +381,182 @@
 
     <div class="modal-content">
 
-      <form action="{{ route('alumn.pay.card') }}" method="post">
-
-        {{ csrf_field() }}
+    	<div class="modal-header">
+    		<h1>Pago en linea</h1>
+    	</div>
         
         <div class="modal-body">
 
-        </div>
-
-        <div class="modal-footer justify-content">
-
-          <div class="col-sm container-fluid">
+          <form id="card-form" action="{{route('alumn.pay.card')}}" method="post">
+              
+            {{ csrf_field() }}
 
             <div class="row">
 
-              <div class=" col-sm-6 btn-group">
+                <div class="col-md-12">                
 
-                <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+                    <div class="form-group row">
 
-              </div>
+                      <label for="inputName" class="col-sm-2 col-form-label">Name</label>
 
-              <div class=" col-sm-6 btn-group">
+                      <div class="col-sm-10">
 
-                <button class="btn btn-success .px-2"><i class="fa fa-shopping-cart"></i> Pagar</button>
+                        <input data-conekta="card[name]" type="text" class="form-control" name="name" id="name">
+
+                      </div>
+
+                    </div>
+
+                 </div>
+
+                <div class="col-md-12">
+
+                    <div class="form-group row">
+
+                      	<label for="inputName" class="col-sm-2 col-form-label">Numero de tarjeta</label>
+
+	                    <div class="col-sm-10">
+
+	                      <input data-conekta="card[number]" value="4242424242424242" class="form-control">
+
+	                    </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                  <div class="form-group row">
+
+                    <label for="inputName" class="col-sm-2 col-form-label">CVC</label>
+
+                    <div class="col-sm-10">
+
+                      <input data-conekta="card[cvc]" class="form-control" maxlength="4">
+
+                    </div>
+
+                  </div>
+
+                 </div>
+
+                <div class="row">
+                    
+                    <div class="col-md-4">
+                    	<label for="inputName" class="col-sm-12 col-form-label">Fecha de expiracion</label>
+                    </div>
+
+                    <div class="col-md-4">
+
+                    	<div class="form-group row">
+
+		                    <div class="col-sm-10">
+
+		                      <input data-conekta="card[exp_month]" class="form-control" maxlength="2">
+
+		                    </div>
+
+		                </div>
+	                                            
+                    </div>
+                    
+                    <div class="col-md-4">
+
+                    	<div class="form-group row">
+
+		                    <div class="col-sm-10">
+
+		                      <input data-conekta="card[exp_year]" class="form-control" maxlength="4">
+
+		                    </div>
+
+		                </div>
+                                          
+                    </div>
+                    
+                </div>
+                  
+            </div>
+
+            <div class="row">
+            	<div class="col-md-12">
+            		<div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+		                <button class="btn btn-success" id="confirm-purchase">Pagar</button>
+		              
+		            </div>
+            	</div>
+            </div>
               
+          </form>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal fade" id="modalTicket">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+    	<div class="modal-header">
+
+    		<h3>Deposito en banco o transferencia bancara</h3>
+
+    	</div>
+        
+        <div class="modal-body">
+
+          <form id="card-form" action="{{route('alumn.pay.upload')}}" method="post" enctype="multipart/form-data">
+              
+            {{ csrf_field() }}
+
+            <div class="row">
+
+              <div class="col-md-12">
+                  <p>Para procesar tu pago, es necesario que realices el deposito o transferencia a la cuenta de la universidad y despues subas el comprobante en esta parte. una vez que lo hayas hecho, personal de finanzas verificaran el pago y te dejaran avanzar en el proceso</p>
+              </div>
+              
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="form-group">
+
+                <div class="panel">SUBIR COMPROBANTE</div>
+
+                  <input type="file" name="file" id="ticket">
+
+                </div>
+
               </div>
 
             </div>
 
-          </div>
+            <div class="row">
+
+            	<div class="col-md-12">
+
+            		<div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+		                <button class="btn btn-success" id="confirm-purchase">subir</button>
+		              
+		            </div>
+
+            	</div>
+
+            </div>
+              
+          </form>
 
         </div>
-
-      </form>
 
     </div>
 

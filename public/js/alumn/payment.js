@@ -53,3 +53,30 @@ $(document).ready(function()
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });
+
+$('#ticket').change(function()
+{
+	var file = this.files[0];
+	var ext = file['type'];
+	console.log(ext);
+	if ($(this).val() != '') 
+	{
+	  if(ext == "application/pdf")
+	  {
+		if(file["size"] > 1048576)
+		{
+			toastr.error("Se solicita un archivo no mayor a 1MB. Por favor verifica.");
+			$(this).val('');
+		}
+		else
+		{
+			toastr.success("Formato permitido");
+		}
+	  }
+	  else
+	  {
+		$(this).val('');
+		alert("Extensión no permitida: " + ext);
+	  }
+	}
+  });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableUsers extends Migration
+class AlterDebit extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterTableUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer("inscripcion")->default(0);
+        Schema::table('debit', function (Blueprint $table) {
+            $table->string("payment_method")->nullable();
         });
     }
 

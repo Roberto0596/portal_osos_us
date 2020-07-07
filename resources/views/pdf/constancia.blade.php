@@ -34,7 +34,6 @@
         <table>
             <tr >
                 <td rowspan="2" width="25%" align="center">
-                    <img id="logo" src="{{ asset('images/logo.jpg') }}" alt="" width="100" height="100">
                 </td>
                 <th width="120%" style="font-size: 21px"> UNIVERSIDAD DE LA SIERRA </th>
                 <th width="25%" style="font-size: 13px"> 

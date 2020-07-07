@@ -17,6 +17,7 @@ class CreateDebit extends Migration
             $table->foreign("admin_id")->references("id")->on("admin_users")->onDelete('cascade');
 
             $table->integer("id_alumno");
+            $table->string("id_order",100)->nullable();
             $table->integer("status")->default(0);
             $table->timestamps();
         });
