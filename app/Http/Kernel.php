@@ -65,6 +65,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'alumn.user' => \App\Http\Middleware\AuthAlumn::class,
         'finance.user' => \App\Http\Middleware\AuthFinance::class,
+        'computer.user' => \App\Http\Middleware\AuthComputer::class,
+        'library.user' => \App\Http\Middleware\AuthLibrary::class,
         'candidate' => \App\Http\Middleware\candidateMiddleware::class,
         'inscription' => \App\Http\Middleware\inscriptionMiddleware::class,
         'inscriptionFaseTwo' => \App\Http\Middleware\inscriptionFaseTwoMiddleware::class,
