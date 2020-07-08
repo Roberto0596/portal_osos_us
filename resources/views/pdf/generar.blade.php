@@ -242,7 +242,7 @@
                 <td  style="border-right: none;border-left: none;width: 15%">SEMESTRE</td>
                 <td  style="border-left:  none; border-right: none; width: 15%">{{$datos_escolares['semestre']}}</td>
                 <td  style="border-left:  none; border-right: none; width: 15%">GRUPO:</td>
-                <td  style="border-right: none; border-left: none; width: 15%">ISC 2-1</td>
+                <td  style="border-right: none; border-left: none; width: 15%">{{$datos_escolares['grupo']}}</td>
             </tr>
             <tr >
                 <td colspan="2" style="border-right: none;border-top: none; padding: auto; font-size: 17px">ESCUELA DE PROC:</td>
