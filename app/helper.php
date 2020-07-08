@@ -7,11 +7,7 @@ function ConectSqlDatabase()
     $password = "portal123";
     $user = "david";
     $rutaServidor = "127.0.0.1";
-<<<<<<< HEAD
 	$link = new PDO("sqlsrv:Server=localhost\SQLEXPRESS;Database=Sicoes;", $user, $password);
-=======
-	$link = new PDO("sqlsrv:server=.\SQLEXPRESS01;database=sicoes", $user, $password);
->>>>>>> abac0d4bf21f272b75c83723871cf41de1aee760
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }

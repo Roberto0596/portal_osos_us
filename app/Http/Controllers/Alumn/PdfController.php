@@ -69,7 +69,6 @@ class PdfController extends Controller
         $fontData = $defaultFontConfig['fontdata'];
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
        
-<<<<<<< HEAD
         $mpdf->SetDisplayMode('fullpage');
 
         
@@ -127,8 +126,6 @@ class PdfController extends Controller
 
         
 
-=======
->>>>>>> abac0d4bf21f272b75c83723871cf41de1aee760
         $mpdf->WriteHTML($html);
         
 
