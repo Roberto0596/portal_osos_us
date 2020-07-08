@@ -42,18 +42,6 @@
                     </a>
 
                 </li>
-
-                <li class="nav-item">
-
-                    <a href="{{route('alumn.payment.card')}}" class="nav-link">
-
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            testing pago
-                        </p>
-                    </a>
-
-                </li>
                 
                 @if(Auth::guard('alumn')->user()->id_alumno != null)
                 <li class="nav-item">
@@ -65,22 +53,8 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-item">
-                    <a href="{{route('alumn.charge')}}" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Carga academica
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('alumn.payment')}}" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                           Pago
-                        </p>
-                    </a>
-                </li>
+                
+                @if(Auth::guard('alumn')->user()->inscripcion < 4)
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
@@ -90,6 +64,7 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
             </ul>
 

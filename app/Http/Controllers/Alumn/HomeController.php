@@ -13,7 +13,7 @@ class HomeController extends Controller
 	public function index()
 	{
         $user = User::find(Auth::guard("alumn")->user()->id);
-		$status = $user->inscripcion < 3? false:true;
+		$status = $user->inscripcion < 4? false:true;
         return view('Alumn.home.index')->with(["status"=>$status]);
 	}
 

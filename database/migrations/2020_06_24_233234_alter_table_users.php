@@ -14,7 +14,7 @@ class AlterTableUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer("inscripcion")->default(1);
+            $table->integer("inscripcion")->default(0);
         });
     }
 

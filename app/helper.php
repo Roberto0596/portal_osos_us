@@ -7,7 +7,11 @@ function ConectSqlDatabase()
     $password = "portal123";
     $user = "david";
     $rutaServidor = "127.0.0.1";
+<<<<<<< HEAD
 	$link = new PDO("sqlsrv:Server=localhost\SQLEXPRESS;Database=Sicoes;", $user, $password);
+=======
+	$link = new PDO("sqlsrv:server=.\SQLEXPRESS01;database=sicoes", $user, $password);
+>>>>>>> abac0d4bf21f272b75c83723871cf41de1aee760
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -81,7 +85,7 @@ function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
 		}
 		else
 		{
-			$stmt = ConectSqlDatabase()->prepare("SELECT * FROM $table_name limit :bol");
+			$stmt = ConectSqlDatabase()->prepare("SELECT top(:bol)* FROM $table_name");
 			$stmt->bindParam(":bol",$limit,PDO::PARAM_INT);
 		}		
 	}
@@ -101,8 +105,8 @@ function deleteCharge($array)
     $validator = [];
     foreach ($array as $key => $value)
     {
-        $stmt = ConectSqlDatabase()->prepare("DELETE FROM carga where cargaid = :cargaid");
-        $stmt->bindParam(":cargaid",$value, PDO::PARAM_INT);
+        $stmt = ConectSqlDatabase()->prepare("DELETE FROM Carga where CargaId = :CargaId");
+        $stmt->bindParam(":CargaId",$value, PDO::PARAM_INT);
         if ($stmt->execute()) 
         {
             array_push($validator, true);
@@ -166,11 +170,11 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
     return $ruta;
 }
 
-//aplica para tablas que teiene un campo nombre 
+//aplica para tablas que tiene un campo nombre 
 
 function getItemClaveAndNamesFromTables($table_name)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT clave,nombre FROM $table_name");
+    $stmt = ConectSqlDatabase()->prepare("SELECT Clave,Nombre FROM $table_name");
     $stmt->execute();
 	return $stmt->fetchAll();
 
@@ -183,7 +187,7 @@ function getDataByIdAlumn($id_alumn){
 }
 function getCarreras()
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT carreraid,nombre FROM carrera");
+    $stmt = ConectSqlDatabase()->prepare("SELECT Carreraid,Nombre FROM Carrera");
     $stmt->execute();
 	return $stmt->fetchAll();
 
@@ -191,11 +195,15 @@ function getCarreras()
 
 function updateByIdAlumn($id_alumn,$colName,$value)
 {
-    $stmt = ConectSqlDatabase()->prepare("update alumno set $colName = :$colName where alumnoid = :alumnoid");
-    $stmt->bindParam(":".$colName,$value,PDO::PARAM_STR);
-    $stmt->bindParam(":alumnoid",$id_alumn,PDO::PARAM_INT);
-    $stmt->execute();
+    $sql = "UPDATE Alumno SET $colName = :colvalue where AlumnoId = :alumnoid";
+    $datos = array("colvalue"=> $value, "alumnoid"=> $id_alumn);
+    $stmt= ConectSqlDatabase()->prepare($sql);
+    $stmt->execute($datos);
 }   
+
+function getCarreraFromIdAlumn($id_alumn){
+
+}
 	
 function selectAdmin($id = null)
 {

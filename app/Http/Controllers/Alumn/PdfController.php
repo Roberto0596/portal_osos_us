@@ -67,20 +67,9 @@ class PdfController extends Controller
  
         $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
         $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                public_path() . '/fonts',
-            ]),
-            'fontdata' => $fontData + [
-                'arial' => [
-                    'R' => 'arial.ttf',
-                    'B' => 'arialbd.ttf',
-                ],
-            ],
-            'default_font' => 'arial',
-            "format" => [210,297],
-        ]);
+        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
        
+<<<<<<< HEAD
         $mpdf->SetDisplayMode('fullpage');
 
         
@@ -138,6 +127,8 @@ class PdfController extends Controller
 
         
 
+=======
+>>>>>>> abac0d4bf21f272b75c83723871cf41de1aee760
         $mpdf->WriteHTML($html);
         
 

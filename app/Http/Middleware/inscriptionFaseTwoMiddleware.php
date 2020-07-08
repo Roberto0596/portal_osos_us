@@ -9,9 +9,15 @@ class inscriptionFaseTwoMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::guard("alumn")->user()->inscripcion != 1) {
+        if (Auth::guard("alumn")->user()->inscripcion != 1) 
+        {
             $path = $request->path();
-            return redirect("alumn/charge");
+            if(Auth::guard("alumn")->user()->inscripcion == 2)
+            {
+                return redirect()->route("alumn.payment.note");
+            }
+            return redirect()->route("alumn.charge");
+            
         }
         return $next($request);
     }

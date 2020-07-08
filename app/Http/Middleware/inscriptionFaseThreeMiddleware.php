@@ -11,7 +11,7 @@ class inscriptionFaseThreeMiddleware
     {
         if (Auth::guard("alumn")->user()->inscripcion != 2) {
             $path = $request->path();
-            return redirect("alumn/");
+            return redirect("alumn/charge");
         }
         return $next($request);
     }
