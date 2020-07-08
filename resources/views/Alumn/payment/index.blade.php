@@ -101,11 +101,21 @@
 
                     <div class="card2">
 
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
+                      <div class="front-card">
+
+                        <img src="{{asset('img/alumn/payment methods/card.png')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
+                        
+                      </div>
+                      
+                      <div class="back-card">
+
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
+                      </div> 
+
                     </div>
+
                 </div>
 
             </div>
@@ -124,9 +134,20 @@
 
                       <div class="card2">
 
+                        <div class="front-card">
+
                           <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
                           <h4 class="titulo-cards">Pago con deposito bancario</h4>
+                          
+                        
+                        </div>
+
+                        <div class="back-card">
+
+                          <p>HOLA</p>
                           <button class="btn btn-success">Realiza un pago en oxxo</button>
+
+                        </div>
 
                       </div>
                   </a>
@@ -147,9 +168,19 @@
 
                     <div class="card2">
 
+                      <div class="front-card">
+
                         <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
+                       
+
+                      </div>
+                      
+                      <div class="back-card">
+
                         <button class="btn btn-success">Realiza una transferencia</button>
+                      
+                      </div>
 
                     </div>
                       
@@ -165,20 +196,30 @@
 
                       <div class="card2">
 
+                        <div class="front-card">
+
                           <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
                           <h4 class="titulo-cards">transferencia o deposito bancario</h4>
+                         
+                        </div>
+                        
+                        <div class="back-card">
+
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
+                        </div>
+
                       </div>
+
               </div>
 
             </div>
           
         </div>
 
-        </div>
-
       </div>
+
+    </div>
 
       <div class="card-footer">
 
