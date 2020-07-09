@@ -39,8 +39,9 @@ $(document).ready(function()
 
 	var successResponseHandler = function(token){
 	  var $form = $("#card-form");
-	  $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
-	  $form.get(0).submit();
+    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+    $form.get(0).submit();
+    
 	}
 
 	var errorResponseHandler = function(error){
@@ -49,7 +50,7 @@ $(document).ready(function()
 
 	$("#card-form").submit(function(e){
 	  e.preventDefault();
-	  var $form = $("#card-form");
+    var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });
@@ -84,23 +85,39 @@ $('#ticket').change(function()
 
 
   // jquery de la tarjeta
-  $('.input-cart-number').on('keyup change', function(){
+  $('#confirm-purchase').click(function() {
 
-	if ($t.val().length == 4) {
+    let a =$('#fullCardNumber').val();
+    let b =$('#card-holder').val();
+    let c =$('#expire-month').val();
+    let d =$('#expire-year').val();
+    let e =$('#card-ccv').val();
+
+    console.log(a + " num -tarjeta" + a.length);
+    console.log(b + " nombre-trajeta" + b.length);
+    console.log(c + " mes" +c.length);
+    console.log(d + " año" + d.length);
+    console.log(e + " ccv" +e.length);
+
+
+
+  });
+
+  $('.input-cart-number').on('keyup change', function(){
+  $t = $(this);
+
+  if ($t.val().length > 3) {
     $t.next().focus();
-    $fullnumber=  $t.val();
-	}
-  
+  }
+
   var card_number = '';
   var fullCardNumber = '';
-	$('.input-cart-number').each(function(){
+  $('.input-cart-number').each(function(){
     card_number += $(this).val() + ' ';
-    fullCardNumber  += $(this).val();
-	  if ($(this).val().length == 4) {
-    $(this).next().focus();
-    
+    fullCardNumber += $(this).val();
+    if ($(this).val().length == 4) {
+      $(this).next().focus();
     }
-   
   })
 
   
@@ -110,8 +127,8 @@ $('#ticket').change(function()
 
   // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
  
-  if(cleanCardNumber.length == 16){
-    $("#full-card-number").val(fullCardNumber);
+  if(fullCardNumber.length == 16){
+    $("#fullCardNumber").val(fullCardNumber);
   }
   
   });
