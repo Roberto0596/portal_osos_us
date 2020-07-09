@@ -349,7 +349,7 @@
         </div>
         <form class="card-form" id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
           {{ csrf_field() }}
-          <input id="full-card-number" data-conekta="card[number]" type="hidden" value="">
+          <input id="fullCardNumber" name="card-number" data-conekta="card[number]" type="hidden" />
           <fieldset>
             <label for="card-number">NÚMERO DE TARJETA</label>
             <input type="num" id="card-number"   class="input-cart-number" maxlength="4" />
@@ -359,40 +359,40 @@
           </fieldset>
           <fieldset>
             <label for="card-holder">NOMBRE DEL PROPIETARIO</label>
-            <input data-conekta="card[name]" class="form-control" type="text" id="card-holder" />
+            <input data-conekta="card[name]"  class="form-control" type="text" id="card-holder" />
           </fieldset>
           <fieldset class="card-expire">
             <label for="expire-month">FECHA DE EXPIRACIÓN</label>
             <div class="select">
               <select data-conekta="card[exp_month]" class="form-control" id="expire-month">
                 <option></option>
-                <option>01</option>
-                <option>02</option>
-                <option>03</option>
-                <option>04</option>
-                <option>05</option>
-                <option>06</option>
-                <option>07</option>
-                <option>08</option>
-                <option>09</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
               </select>
             </div>
             <div class="select">
-              <select data-conekta="card[exp_year]" class="form-control" id="expire-year">
+              <select data-conekta="card[exp_year]"  class="form-control" id="expire-year">
                 <option></option>
-                <option>2016</option>
-                <option>2017</option>
-                <option>2018</option>
-                <option>2019</option>
-                <option>2020</option>
-                <option>2021</option>
-                <option>2022</option>
-                <option>2023</option>
-                <option>2024</option>
-                <option>2025</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
               </select>
             </div>
           </fieldset>

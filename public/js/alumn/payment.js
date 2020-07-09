@@ -39,8 +39,9 @@ $(document).ready(function()
 
 	var successResponseHandler = function(token){
 	  var $form = $("#card-form");
-	  $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
-	  $form.get(0).submit();
+    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+    $form.get(0).submit();
+    
 	}
 
 	var errorResponseHandler = function(error){
@@ -50,7 +51,7 @@ $(document).ready(function()
 	$("#card-form").submit(function(e)
 	{
 	  e.preventDefault();
-	  var $form = $("#card-form");
+    var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });
@@ -103,21 +104,10 @@ $('#ticket').change(function()
 		if ($(this).val().length == 4) 
 		{
    			 $(this).next().focus();
-        }
-		$("#full-card-number").val(fullCardNumber);   
-  })
-
-  
-  $('.credit-card-box .number').html(card_number);
-
-
-
-  // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
- 
-  if(cleanCardNumber.length == 16){
-    
-  }
-  
+        }  
+	})
+	$("#fullCardNumber").val(fullCardNumber);   
+	$('.credit-card-box .number').html(card_number);  
   });
   
   $('#card-holder').on('keyup change', function(){
