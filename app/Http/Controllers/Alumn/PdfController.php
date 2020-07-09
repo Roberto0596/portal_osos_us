@@ -12,57 +12,39 @@ class PdfController extends Controller
     {
         return view('pdf.index');
     }
-    public function getGenerarCedula(Request $request , $tipo,$accion)
+    public function getGenerarCedula(Request $request,$tipo,$accion)
     {
-       
-
         $current_user = Auth::guard("alumn")->user();
-        $alumno = getDataByIdAlumn($current_user->id_alumno);
-        
-        
+        $alumno = getDataByIdAlumn($current_user->id_alumno);            
         $charge = selectSicoes("Carga","AlumnoId",$alumno["AlumnoId"]);  
         $charge = $charge[count($charge)-1];
         $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
         $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0]['Nombre'];
-
-      
-
         $accion = $accion;
-        $data['tipo'] = $tipo;
-       
-      
+        $data['tipo'] = $tipo;      
         $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
         $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);
-
         $bachiller = selectSicoes("Escuela","EscuelaId",$alumno['EscuelaProcedenciaId'])[0];
-        
-
         $datos_escolares['carrera'] = getCarrera($alumno['Matricula']);
         $datos_escolares['periodo'] = selectCurrentPeriod()['Clave'];
         $datos_escolares['semestre'] = getLastSemester(getAlumnoId($alumno['Matricula'])[0]);
         $datos_escolares['escuela_procedencia'] = $bachiller["Nombre"];
         $datos_escolares['grupo'] = $group;
+        $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal'];    
 
-
-        
-        
-
-        $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal'];
-        
-        
-        
-
-        if($accion=='html'){
+        if($accion=='html')
+        {
             return view('pdf.generar',$alumno);
-        }else{
+        }
+        else
+        {
             $html = view('pdf.generar',
             ['alumno' => $alumno,
             'lugar_nacimiento' => $localidad_nacimiento,
             'direccion' => $localidad_residencia,
             'datos_escolares' => $datos_escolares])->render();
         }
-        $namefile = 'CEDULA'.time().'.pdf';
- 
+        $namefile = 'CEDULA'.time().'.pdf'; 
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
  
@@ -71,8 +53,7 @@ class PdfController extends Controller
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
        
         $mpdf->SetDisplayMode('fullpage');
-
-        
+       
 
         $mpdf->WriteHTML($html);
         

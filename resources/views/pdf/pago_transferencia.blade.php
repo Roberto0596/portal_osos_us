@@ -48,7 +48,7 @@
                 <img src="{{ asset('img/logo.jpg') }}" alt="" width="60" height="60" >
             </td>
             <th class='titulo1' width="100%"><?php
-                dd(localtime(time(),true));
+                echo localtime(time(),true);
             ?>
             </th>
 
