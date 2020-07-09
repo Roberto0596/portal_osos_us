@@ -396,10 +396,8 @@
     </div>
 
   </div>
+
 </div>
-
-
-
 
 <div class="modal fade" id="modalTicket">
 
@@ -415,7 +413,7 @@
         
         <div class="modal-body">
 
-          <form id="card-form" action="{{route('alumn.pay.upload')}}" method="post" enctype="multipart/form-data">
+          <form action="{{route('alumn.pay.upload')}}" method="post" enctype="multipart/form-data">
               
             {{ csrf_field() }}
 
@@ -448,7 +446,7 @@
 
             		<div class="form-group" id="pay-now" style="margin-top: 10vh;">
 
-		                <button class="btn btn-success" id="confirm-purchase">subir</button>
+		                <button class="btn btn-success" type="submit">subir</button>
 		              
 		            </div>
 

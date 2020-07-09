@@ -184,6 +184,136 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
   	});
 });
 
+Route::group(['prefix'=> 'computo', 'namespace'=>'ComputerCenterPanel'], function()
+{
+  	Route::name('computo.')->group(function()
+  	{
+  		Route::get('/sign-in',[
+	        'uses' => 'AuthController@login', 
+	        'as' => 'login'
+	    ]);
+
+	    Route::post('/sign-in',[
+	        'uses' => 'AuthController@postLogin', 
+	    ]);
+
+	    Route::get('/sign-out', [
+	        'uses' => 'AuthController@logout', 
+	        'as' => 'logout'
+	    ]);
+
+  		Route::group(['middleware' => ['computer.user']
+		], function()
+		{
+			Route::get('/', [
+		        'uses' => 'HomeController@index', 
+		        'as' => 'home'
+			]);
+
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			Route::post('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
+			]);
+			
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
+			]);
+
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
+			]);
+
+		});
+  	});
+});
+
+Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
+{
+  	Route::name('library.')->group(function()
+  	{
+  		Route::get('/sign-in',[
+	        'uses' => 'AuthController@login', 
+	        'as' => 'login'
+	    ]);
+
+	    Route::post('/sign-in',[
+	        'uses' => 'AuthController@postLogin', 
+	    ]);
+
+	    Route::get('/sign-out', [
+	        'uses' => 'AuthController@logout', 
+	        'as' => 'logout'
+	    ]);
+
+  		Route::group(['middleware' => ['library.user']
+		], function()
+		{
+			Route::get('/', [
+		        'uses' => 'HomeController@index', 
+		        'as' => 'home'
+			]);
+
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			Route::post('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
+			]);
+			
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
+			]);
+
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
+			]);
+
+		});
+  	});
+});
+
 
 Route::group(['namespace' => 'Website'],function()
 {

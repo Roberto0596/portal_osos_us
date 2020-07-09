@@ -14,7 +14,7 @@ class AuthController extends Controller
     {   
         if (Auth::guard("library")->check())
         {
-            return redirect()->route('computo.home');
+            return redirect()->route('library.home');
         }  
         return view('LibraryPanel.Auth.login');
     }
@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         if (Auth::guard('library')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
         {
-            return redirect()->route('computo.home');
+            return redirect()->route('library.home');
         }
         session()->flash('messages', 'error|El password es incorrecto');
         return redirect()->back();
@@ -43,6 +43,6 @@ class AuthController extends Controller
     {
         Auth::guard('library')->logout();
         session()->flush();
-        return redirect('/computo');
+        return redirect('/library');
     }
 }

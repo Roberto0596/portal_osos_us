@@ -17,7 +17,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::guard('computercenter')->user()->name }}</a>
+                <a href="#" class="d-block">{{ Auth::guard('library')->user()->name }}</a>
             </div>
         </div>
 
@@ -34,7 +34,16 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{route('library.debit')}}" class="nav-link">
+                        <i class="nav-icon fas fa-credit-card"></i>
+                        <p>
+                            Adeudos
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('library.user')}}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Mi cuenta
