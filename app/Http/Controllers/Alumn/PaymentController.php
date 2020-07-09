@@ -312,7 +312,7 @@ class PaymentController extends Controller
     //traer los conceptos que se deben del alumno
     $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
     $debits = Debit::where($query)->get();
-    $route = "img/comprobantes/".$name.".pdf";
+    $route = "img/comprobantes/".$name;        //aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
     foreach ($debits as $key => $value)
     {
         $value->id_order = $route;
