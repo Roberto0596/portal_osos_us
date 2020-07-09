@@ -4,10 +4,10 @@ use App\Models\AdminUsers\AdminUser;
 
 function ConectSqlDatabase()
 {
-    $password = "portal123";
-    $user = "david";
+    $password = "admin123";
+    $user = "robert";
     $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:Server=localhost\SQLEXPRESS;Database=Sicoes;", $user, $password);
+	$link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
