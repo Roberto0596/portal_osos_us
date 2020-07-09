@@ -40,11 +40,26 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		], function()
 		{
 
-			
-			Route::get('pdf','PdfController@getIndex');
-			Route::post('pdf/cedula/{tipo}/{accion}',['uses'=>'PdfController@getGenerarCedula', 'as' => 'cedula']);
-			Route::post('pdf/generar/{tipo}/{accion}',['uses'=>'PdfController@getGenerarConstancia', 'as' => 'constancia']);
-			Route::post('pdf/generar/{tipo}/{accion}/{pago}',['uses'=>'PdfController@getGenerarFicha', 'as' => 'fichas']);
+			Route::get('/documents',[
+				'uses'=>'PdfController@index', 
+				'as' => 'documents'
+			]);
+
+			Route::post('pdf/cedula/{tipo}/{accion}',[
+				'uses'=>'PdfController@getGenerarCedula', 
+				'as' => 'cedula'
+			]);
+
+			Route::post('pdf/generar/{tipo}/{accion}',[
+				'uses'=>'PdfController@getGenerarConstancia', 
+				'as' => 'constancia'
+			]);
+
+			Route::post('pdf/generar/{tipo}/{accion}/{pago}',[
+				'uses'=>'PdfController@getGenerarFicha', 
+				'as' => 'fichas'
+			]);
+
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'

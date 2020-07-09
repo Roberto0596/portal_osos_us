@@ -230,13 +230,31 @@
 
         <div class="row">
 
-          <div class="col-md-6">
+          <div class="col-md-5">
 
               <p style="font-size: 30px">Total: <span>{{$total}}</span></p>
 
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-1">
+
+            <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
+              @csrf             
+              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
+            </form>
+
+          </div>
+
+          <div class="col-md-1">
+
+           <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
+              @csrf              
+              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
+            </form>
+
+          </div>
+
+          <div class="col-md-5">
 
             <div class="float-right">
 

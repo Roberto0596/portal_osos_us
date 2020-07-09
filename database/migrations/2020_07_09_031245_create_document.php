@@ -15,10 +15,13 @@ class CreateDocument extends Migration
     {
         Schema::create('document', function (Blueprint $table) 
         {
-            $table->bigIncrements();
+            $table->bigIncrements("id");
             $table->string("name",50);
-            $table->integer("status");
-
+            $table->string("route",50);
+            $table->integer("status")->default(0);
+            $table->integer("PeriodoId");
+            $table->bigInteger("alumn_id")->unsigned();
+            $table->foreign("alumn_id")->references("id")->on("users")->onDelete('cascade');
             $table->timestamps();
         });
     }
