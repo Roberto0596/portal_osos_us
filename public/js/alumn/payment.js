@@ -86,52 +86,28 @@ $('#ticket').change(function()
 
 
   // jquery de la tarjeta
-  $('#confirm-purchase').click(function() {
-
-    let a =$('#fullCardNumber').val();
-    let b =$('#card-holder').val();
-    let c =$('#expire-month').val();
-    let d =$('#expire-year').val();
-    let e =$('#card-ccv').val();
-
-    console.log(a + " num -tarjeta" + a.length);
-    console.log(b + " nombre-trajeta" + b.length);
-    console.log(c + " mes" +c.length);
-    console.log(d + " año" + d.length);
-    console.log(e + " ccv" +e.length);
-
-
-
-  });
-
-  $('.input-cart-number').on('keyup change', function(){
-  $t = $(this);
-
-  if ($t.val().length > 3) {
-    $t.next().focus();
-  }
-
-  var card_number = '';
-  var fullCardNumber = '';
-  $('.input-cart-number').each(function(){
-    card_number += $(this).val() + ' ';
-    fullCardNumber += $(this).val();
-    if ($(this).val().length == 4) {
-      $(this).next().focus();
-    }
-  })
-
-  
-  $('.credit-card-box .number').html(card_number);
-
-
-
-  // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
- 
-  if(fullCardNumber.length == 16){
-    $("#fullCardNumber").val(fullCardNumber);
-  }
-  
+  $('.input-cart-number').on('keyup change', function()
+  {
+	$t = $(this);
+	if ($t.val().length == 4) 
+	{
+    	$t.next().focus();
+    	$fullnumber=  $t.val();
+	}  
+    var card_number = '';
+    var fullCardNumber = '';
+	$('.input-cart-number').each(function()
+	{
+    	card_number += $(this).val() + ' ';
+    	fullCardNumber  += $(this).val();
+		  
+		if ($(this).val().length == 4) 
+		{
+   			 $(this).next().focus();
+        }  
+	})
+	$("#fullCardNumber").val(fullCardNumber);   
+	$('.credit-card-box .number').html(card_number);  
   });
   
   $('#card-holder').on('keyup change', function(){
