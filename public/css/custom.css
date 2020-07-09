@@ -118,27 +118,72 @@ header
     z-index: 100000;
 }
 
-.container-custom
+/*Edicion desde aqui*/
+.container-custom /*Tajeta_wrap*/
 {
     width: 100%;
     max-width: 1200px;
     height: 340px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    margin: auto;
+    margin: 50px auto;
+
+    /**/
+    -webkit-perspective: 600px;
+    perspective: 600px;
 }
 
 .container-custom .card2
 {
-    /*width: 330px;*/
+    width: 330px;
     height: 340px;
     border-radius: 8px;
     box-shadow: 0 2px 2px rgba(0,0,0,0.2);
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-align: center;
     transition: all 0.25;
+
+    
+}
+
+.card2/*Tarjeta*/
+{
     background: #fd7e14;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: ease .7s;
+    
+}
+
+
+.front-card, .back-card
+{
+    width: 100%;
+    top: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.back-card
+{
+    transform: rotateY(180deg);
+
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.container-custom:hover .card2
+{
+    transform: rotateY(180deg);
 }
 
 .container .card2:hover
@@ -146,6 +191,8 @@ header
     transform: translateY(-15px);
     box-shadow: 0 12px 16px rgba(0,0,0,0.2);
 }
+
+/*Edicion hasta aqui*/
 
 .card-image-rob
 {
@@ -220,6 +267,7 @@ header
     margin-top: 2vh;
     border-radius: 20px;
 }
+
 
 .button-custom
 {
