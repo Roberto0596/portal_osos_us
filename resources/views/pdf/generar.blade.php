@@ -67,7 +67,7 @@
             <tr >
 
                 <td rowspan="2" width="25%">
-                <img id="logo" src="{{ asset('img/logo.jpg') }}" alt="" width="100" height="100">
+                    <img id="logo" src="{{ asset('img/logo.jpg') }}" alt="" width="100" height="100">
                 </td>
                 <th width="120%" style="font-size: 21px"> UNIVERSIDAD DE LA SIERRA </th>
                 <th width="25%" style="font-size: 13px"> 
