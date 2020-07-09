@@ -183,14 +183,20 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
-			
+
+			//te lleva a la vista de adeudos	
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
 			//cambia el estado del pago
-			Route::put('/change-payment-status/{debit}', [
+			Route::post('/change-payment-status', [
 		        'uses' => 'HomeController@changePaymentStatus', 
 		        'as' => 'changePaymentStatus'
 			]);
 			// sirve para ver el comprobante de pago
-			Route::get('/show-payement-ticket/{id_order}',[
+			Route::post('/show-payement-ticket',[
 				'uses' => 'HomeController@showPayementTicket', 
 				'as' => 'showTicket'
 			]);
