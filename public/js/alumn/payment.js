@@ -47,7 +47,8 @@ $(document).ready(function()
 	  toastr.error("hubo un problema del tipo " + error.message_to_purchaser);
 	}
 
-	$("#card-form").submit(function(e){
+	$("#card-form").submit(function(e)
+	{
 	  e.preventDefault();
 	  var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);

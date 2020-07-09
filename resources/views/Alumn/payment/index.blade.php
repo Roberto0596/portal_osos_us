@@ -347,7 +347,7 @@
             </div>
           </div>
         </div>
-        <form class="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
+        <form id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
           {{ csrf_field() }}
           <input id="full-card-number" data-conekta="card[number]" type="hidden" value="">
           <fieldset>

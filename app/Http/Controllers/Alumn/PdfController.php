@@ -8,9 +8,9 @@ use App\Models\Alumns\Debit;
  
 class PdfController extends Controller
 {
-    public function getIndex()
+    public function index()
     {
-        return view('pdf.index');
+        return view('Alumn.pdf.index');
     }
     public function getGenerarCedula(Request $request,$tipo,$accion)
     {
@@ -34,11 +34,11 @@ class PdfController extends Controller
 
         if($accion=='html')
         {
-            return view('pdf.generar',$alumno);
+            return view('Alumn.pdf.generar',$alumno);
         }
         else
         {
-            $html = view('pdf.generar',
+            $html = view('Alumn.pdf.generar',
             ['alumno' => $alumno,
             'lugar_nacimiento' => $localidad_nacimiento,
             'direccion' => $localidad_residencia,
@@ -83,9 +83,9 @@ class PdfController extends Controller
         
         
         if($accion=='html'){
-            return view('pdf.constancia',$alumno);
+            return view('Alumn.pdf.constancia',$alumno);
         }else{
-            $html = view('pdf.constancia')->with('alumno', $alumno)->render();
+            $html = view('Alumn.pdf.constancia')->with('alumno', $alumno)->render();
         }
         $namefile = 'CONSTANCIA'.time().'.pdf';
  
@@ -145,13 +145,13 @@ class PdfController extends Controller
         
         
         if($accion=='html'){
-            return view('pdf.pago_transferencia',$alumno);
+            return view('Alumn.pdf.pago_transferencia',$alumno);
         }else{
             if($pago == 'transferencia'){
-                $html = view('pdf.pago_transferencia',['alumno' => $alumno,
+                $html = view('Alumn.pdf.pago_transferencia',['alumno' => $alumno,
                 'deuda_total' => $total])->render();
             }else{
-                $html = view('pdf.pago_banco',
+                $html = view('Alumn.pdf.pago_banco',
                 ['alumno' => $alumno,
                 'deuda_total' => $total])->render();
             }
