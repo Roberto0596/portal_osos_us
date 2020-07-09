@@ -168,11 +168,18 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
+			
 			//cambia el estado del pago
 			Route::put('/change-payment-status/{debit}', [
 		        'uses' => 'HomeController@changePaymentStatus', 
 		        'as' => 'changePaymentStatus'
 			]);
+			// sirve para ver el comprobante de pago
+			Route::get('/show-payement-ticket/{id_order}',[
+				'uses' => 'HomeController@showPayementTicket', 
+				'as' => 'showTicket'
+			]);
+			
 		});
   	});
 });

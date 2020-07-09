@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table class="table table-bordered table-hover tableDebit">
+          <table class="table table-bordered table-hover tableDebit" id="tableDebits">
             <thead>
               <tr>
                 <th style="width: 10px">#</th>
@@ -92,7 +92,19 @@
                 <td>{{$debit->name." ".$debit->lastname}}</td>
                 <td>{{ strtoupper($debit->concept)   }}</td>
                 <td>{{$debit->amount."\$"}}</td>
-                <td>{{$debit->payment_method}}</td>
+                @php
+                if($debit->payment_method == 'card'){
+                  $paymentMethod = 'TRAJETA';
+                }elseif ($debit->payment_method == 'oxxo_cash') {
+                  $paymentMethod = 'EFECTIVO EN OXXO';
+                }elseif ($debit->payment_method == 'spei') {
+                  $paymentMethod = 'PAGO POR SPEI';
+                }elseif ($debit->payment_method == 'transfer') {
+                  $paymentMethod = 'TRANSFERENCIA';;
+                }
+               
+                @endphp
+                <td>{{$paymentMethod}}</td>
                 <td>{{$debit->status == '0' ? 'PENDIENTE' : 'PAGADO' }}
                   
                    <!-- Modal -->
@@ -112,7 +124,6 @@
                           <br>
                           <form action="{{ route('finance.changePaymentStatus', $debit->id)}}" method="POST">
                             @csrf @method('PUT')
-                            
                             <div class="form-group">
                               <label for6"status"  class="control-label">ESTADO ACTUAL DEL PAGO</label>
                               <select  name="status" class="form-control "  >
@@ -139,11 +150,20 @@
                 </td>
                 <td>
                   <div>
-                    <button id="viewFile" class="btn btn-warning custom"><i class="fa fa-file" title="Comprobante"></i></button>
-                    @if ($debit->payment_method == 'DEPOSITO')
-                    <button id="changeStatus" class="btn btn-success" data-toggle="modal" title="Cambair estado de pago"
-                    data-target="#changeStatusDebit{{$debit->id , $debit->status }}"><i class="fa fa-pen"></i></button>
+                    @if ($debit->payment_method == 'card')
+                    <object  type="application/x-pdf" title="{{strtoupper($debit->concept)}}" width="5" height="5">
+                      <a href="{{$debit->id_order}}" class="btn btn-warning custom"><i class="fa fa-file" title="Comprobante"></i></a>
+                    </object>
+                    @else
+                    <object  type="application/x-pdf" title="{{strtoupper($debit->concept)}}" width="5" height="5">
+                      <a href="{{route('finance.showTicket',[  $debit->id_order])}}" class="btn btn-warning custom">
+                      <i class="fa fa-file" title="Comprobante"></i></a>
+                    </object>
+                    <button  class="btn btn-success" data-toggle="modal" title="Cambair estado de pago"
+                    data-target="#changeStatusDebit{{$debit->id }}"> <i class="fa fa-pen"></i></button>
+                        
                     @endif
+                   
                   </div>
                 </td>
                
@@ -151,6 +171,7 @@
               @endforeach
             </tbody>
           </table>
+          
           
         </div>
         <!-- /.card-body -->
@@ -167,16 +188,28 @@
   <!-- /.content-wrapper -->
 
   <script>
-    $(".tableDebit").dataTable();
 
-    function detectChanges(id){
-
-    }
+$(document).ready(function() {
+  $('#tableDebits').css('min-height','300px');
 
 
-    
+  $(".tableDebit").dataTable({
+      "language": {
+        "lengthMenu": "MOSTRANDO _MENU_ REGISTROS POR PÁGINA",
+        "zeroRecords": "NO HAY REGISTROS",
+        "info": "MOSTRANDO PÁGINA _PAGE_ DE _PAGES_",
+        "infoEmpty": "NO HAY REGISTROS DISPONIBLES",
+        "infoFiltered": "(FILTRADO POR _MAX_ REGISTROS)",
+        "paginate": {
+          "previous": "ANTERIOR",
+          "next": "SIGUIENTE"
+        },
+        search: "_INPUT_",
+        searchPlaceholder: "BUSCAR"
+      }
+  } );
 
-    
+} );
 
     
   </script>

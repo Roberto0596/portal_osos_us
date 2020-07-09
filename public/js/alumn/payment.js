@@ -29,7 +29,7 @@ $("#back").click(function()
 });
 
 $("#payment-card").click(function(){
-	console.log("hola");
+	
 	$("#modalCard").modal("show");
 });
 
@@ -80,3 +80,77 @@ $('#ticket').change(function()
 	  }
 	}
   });
+  
+
+
+  // jquery de la tarjeta
+  $('.input-cart-number').on('keyup change', function(){
+
+	if ($t.val().length == 4) {
+    $t.next().focus();
+    $fullnumber=  $t.val();
+	}
+  
+  var card_number = '';
+  var fullCardNumber = '';
+	$('.input-cart-number').each(function(){
+    card_number += $(this).val() + ' ';
+    fullCardNumber  += $(this).val();
+	  if ($(this).val().length == 4) {
+    $(this).next().focus();
+    
+    }
+   
+  })
+
+  
+  $('.credit-card-box .number').html(card_number);
+
+
+
+  // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
+ 
+  if(cleanCardNumber.length == 16){
+    $("#full-card-number").val(fullCardNumber);
+  }
+  
+  });
+  
+  $('#card-holder').on('keyup change', function(){
+	$t = $(this);
+	$('.credit-card-box .card-holder div').html($t.val());
+  });
+  
+  $('#card-holder').on('keyup change', function(){
+	$t = $(this);
+	$('.credit-card-box .card-holder div').html($t.val());
+  });
+  
+  $('#expire-month, #expire-year').change(function(){
+	m = $('#expire-month option').index($('#expire-month option:selected'));
+	m = (m < 10) ? '0' + m : m;
+	y = $('#expire-year').val().substr(2,2);
+	$('.card-expiration-date div').html(m + '/' + y);
+  })
+  
+  $('#card-ccv').on('focus', function(){
+	$('.credit-card-box').addClass('hover');
+  }).on('blur', function(){
+	$('.credit-card-box').removeClass('hover');
+  }).on('keyup change', function(){
+   let temp = $(this).val();
+   let obscureText = ''; 
+    for (let index = 0; index < temp.length; index++) {
+     obscureText = obscureText + '·';
+      
+    }
+	$('.ccv div').html(obscureText);
+  });
+  
+  setTimeout(function(){
+	$('#card-ccv').focus().delay(1000).queue(function(){
+	  $(this).blur().dequeue();
+	});
+  }, 500);
+
+  

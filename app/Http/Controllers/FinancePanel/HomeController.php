@@ -27,27 +27,23 @@ class HomeController extends Controller
         $status = $request->input('status');
         DB::table('debit')
         ->where('id', $id) ->update(['status' => $status]);
+
+
         return redirect()->route('finance.home');
+    }
+
+    public function showPayementTicket($id_order){
+
+        require_once("conekta/Conekta.php");
+        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiVersion("2.0.0");
+        $order = \Conekta\Order::find($id_order);
        
 
-        
+        return view('FinancePanel.home.temp');
 
     }
 
-	public function add() 
-	{
-    }
-
-    public function edit($id)
-    {
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function save(Request $request) 
-    {
-    }
+	
 
 }
