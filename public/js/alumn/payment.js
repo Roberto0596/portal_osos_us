@@ -85,23 +85,26 @@ $('#ticket').change(function()
 
 
   // jquery de la tarjeta
-  $('.input-cart-number').on('keyup change', function(){
-
-	if ($t.val().length == 4) {
-    $t.next().focus();
-    $fullnumber=  $t.val();
-	}
-  
-  var card_number = '';
-  var fullCardNumber = '';
-	$('.input-cart-number').each(function(){
-    card_number += $(this).val() + ' ';
-    fullCardNumber  += $(this).val();
-	  if ($(this).val().length == 4) {
-    $(this).next().focus();
-    
-    }
-   
+  $('.input-cart-number').on('keyup change', function()
+  {
+	$t = $(this);
+	if ($t.val().length == 4) 
+	{
+    	$t.next().focus();
+    	$fullnumber=  $t.val();
+	}  
+    var card_number = '';
+    var fullCardNumber = '';
+	$('.input-cart-number').each(function()
+	{
+    	card_number += $(this).val() + ' ';
+    	fullCardNumber  += $(this).val();
+		  
+		if ($(this).val().length == 4) 
+		{
+   			 $(this).next().focus();
+        }
+		$("#full-card-number").val(fullCardNumber);   
   })
 
   
@@ -112,7 +115,7 @@ $('#ticket').change(function()
   // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
  
   if(cleanCardNumber.length == 16){
-    $("#full-card-number").val(fullCardNumber);
+    
   }
   
   });

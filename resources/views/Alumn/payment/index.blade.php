@@ -347,7 +347,7 @@
             </div>
           </div>
         </div>
-        <form id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
+        <form class="card-form" id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
           {{ csrf_field() }}
           <input id="full-card-number" data-conekta="card[number]" type="hidden" value="">
           <fieldset>
@@ -364,7 +364,7 @@
           <fieldset class="card-expire">
             <label for="expire-month">FECHA DE EXPIRACIÓN</label>
             <div class="select">
-              <select ata-conekta="card[exp_month]" class="form-control" id="expire-month">
+              <select data-conekta="card[exp_month]" class="form-control" id="expire-month">
                 <option></option>
                 <option>01</option>
                 <option>02</option>
