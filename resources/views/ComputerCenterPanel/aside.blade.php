@@ -34,6 +34,15 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{route('computo.debit')}}" class="nav-link">
+                        <i class="nav-icon fas fa-credit-card"></i>
+                        <p>
+                            Adeudos
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{route('computo.user')}}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>

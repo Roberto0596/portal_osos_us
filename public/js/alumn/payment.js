@@ -29,7 +29,7 @@ $("#back").click(function()
 });
 
 $("#payment-card").click(function(){
-	console.log("hola");
+	
 	$("#modalCard").modal("show");
 });
 
@@ -39,17 +39,19 @@ $(document).ready(function()
 
 	var successResponseHandler = function(token){
 	  var $form = $("#card-form");
-	  $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
-	  $form.get(0).submit();
+    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+    $form.get(0).submit();
+    
 	}
 
 	var errorResponseHandler = function(error){
 	  toastr.error("hubo un problema del tipo " + error.message_to_purchaser);
 	}
 
-	$("#card-form").submit(function(e){
+	$("#card-form").submit(function(e)
+	{
 	  e.preventDefault();
-	  var $form = $("#card-form");
+    var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });
@@ -80,3 +82,69 @@ $('#ticket').change(function()
 	  }
 	}
   });
+  
+
+
+  // jquery de la tarjeta
+  $('.input-cart-number').on('keyup change', function()
+  {
+	$t = $(this);
+	if ($t.val().length == 4) 
+	{
+    	$t.next().focus();
+    	$fullnumber=  $t.val();
+	}  
+    var card_number = '';
+    var fullCardNumber = '';
+	$('.input-cart-number').each(function()
+	{
+    	card_number += $(this).val() + ' ';
+    	fullCardNumber  += $(this).val();
+		  
+		if ($(this).val().length == 4) 
+		{
+   			 $(this).next().focus();
+        }  
+	})
+	$("#fullCardNumber").val(fullCardNumber);   
+	$('.credit-card-box .number').html(card_number);  
+  });
+  
+  $('#card-holder').on('keyup change', function(){
+	$t = $(this);
+	$('.credit-card-box .card-holder div').html($t.val());
+  });
+  
+  $('#card-holder').on('keyup change', function(){
+	$t = $(this);
+	$('.credit-card-box .card-holder div').html($t.val());
+  });
+  
+  $('#expire-month, #expire-year').change(function(){
+	m = $('#expire-month option').index($('#expire-month option:selected'));
+	m = (m < 10) ? '0' + m : m;
+	y = $('#expire-year').val().substr(2,2);
+	$('.card-expiration-date div').html(m + '/' + y);
+  })
+  
+  $('#card-ccv').on('focus', function(){
+	$('.credit-card-box').addClass('hover');
+  }).on('blur', function(){
+	$('.credit-card-box').removeClass('hover');
+  }).on('keyup change', function(){
+   let temp = $(this).val();
+   let obscureText = ''; 
+    for (let index = 0; index < temp.length; index++) {
+     obscureText = obscureText + '·';
+      
+    }
+	$('.ccv div').html(obscureText);
+  });
+  
+  setTimeout(function(){
+	$('#card-ccv').focus().delay(1000).queue(function(){
+	  $(this).blur().dequeue();
+	});
+  }, 500);
+
+  

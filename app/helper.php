@@ -7,7 +7,7 @@ function ConectSqlDatabase()
     $password = "admin123";
     $user = "robert";
     $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:server=.\SQLEXPRESS01;database=sicoes", $user, $password);
+	$link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -207,4 +207,59 @@ function selectAdmin($id = null)
     {
         return AdminUser::find($id);
     }
+}
+
+function getAlumno($matricula){
+    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM alumno where matricula = '$matricula'");
+    $stmt->execute();
+    $alumno = $stmt->fetchAll();
+
+    return $alumno[0];
+    $stmt = null;
+}
+
+function getEstadoMunicipio($matricula, $desicion){
+
+    if ($desicion == 1){
+        $stmt = ConectSqlDatabase()->prepare("SELECT m.nombre as municipio, e.nombre as estado from Municipio as m join Estado as e on e.EstadoId = m.EstadoId 
+        where MunicipioId = (select municipionac from alumno where matricula = '$matricula')");
+        $stmt->execute();
+        $localidad = $stmt->fetchAll();
+
+        if (count($localidad) > 0){
+            return $localidad[0];
+        }
+    }
+    else{
+        $stmt = ConectSqlDatabase()->prepare("SELECT m.Nombre as municipio,
+         e.Nombre as estado from Alumno as a
+        join Municipio as m on m.MunicipioId = a.MunicipioDom join Estado as e on e.EstadoId = m.EstadoId where matricula = '$matricula'");
+        $stmt->execute();
+        $localidad = $stmt->fetchAll();
+
+        if (count($localidad) > 0){
+            return $localidad[0];
+        }
+    }
+    return 'VACIO';
+    $stmt = null;
+}
+
+function getCarrera($matricula){
+    $stmt = ConectSqlDatabase()->prepare("SELECT c.nombre as carrera, p.Nombre as planDeEstudio from Alumno as a 
+    join PlanEstudio as p on p.PlanEstudioId = a.PlanEstudioId
+    join Carrera as c on c.CarreraId = p.CarreraId where a.Matricula = '$matricula'");
+    $stmt->execute();
+    $carrera = $stmt->fetchAll();
+
+    return $carrera[0];
+    $stmt = null;
+}
+function getAlumnoId($matricula){
+    $stmt = ConectSqlDatabase()->prepare("SELECT AlumnoId FROM alumno where matricula = '$matricula'");
+    $stmt->execute();
+    $alumno = $stmt->fetchAll();
+
+    return $alumno[0];
+    $stmt = null;
 }

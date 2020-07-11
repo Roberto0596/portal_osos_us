@@ -40,9 +40,30 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		], function()
 		{
 
-			
-			Route::get('pdf','PdfController@getIndex');
-			Route::post('pdf/generar/{tipo}/{accion}',['uses'=>'PdfController@getGenerar', 'as' => 'generar']);
+			Route::get('/documents',[
+				'uses'=>'PdfController@index', 
+				'as' => 'documents'
+			]);
+
+			Route::put('/documents/show',[
+				'uses'=>'PdfController@showDocuments', 
+				'as' => 'documents.show'
+			]);
+
+			Route::get('pdf/cedula/{document?}',[
+				'uses'=>'PdfController@getGenerarCedula', 
+				'as' => 'cedula'
+			]);
+
+			Route::get('pdf/generar/{document?}',[
+				'uses'=>'PdfController@getGenerarConstancia', 
+				'as' => 'constancia'
+			]);
+
+			Route::post('pdf/generar/{tipo}/{accion}/{pago}',[
+				'uses'=>'PdfController@getGenerarFicha', 
+				'as' => 'fichas'
+			]);
 
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
@@ -167,11 +188,148 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
+			
 			//cambia el estado del pago
 			Route::put('/change-payment-status/{debit}', [
 		        'uses' => 'HomeController@changePaymentStatus', 
 		        'as' => 'changePaymentStatus'
 			]);
+			// sirve para ver el comprobante de pago
+			Route::get('/show-payement-ticket/{id_order}',[
+				'uses' => 'HomeController@showPayementTicket', 
+				'as' => 'showTicket'
+			]);
+			
+		});
+  	});
+});
+
+Route::group(['prefix'=> 'computo', 'namespace'=>'ComputerCenterPanel'], function()
+{
+  	Route::name('computo.')->group(function()
+  	{
+  		Route::get('/sign-in',[
+	        'uses' => 'AuthController@login', 
+	        'as' => 'login'
+	    ]);
+
+	    Route::post('/sign-in',[
+	        'uses' => 'AuthController@postLogin', 
+	    ]);
+
+	    Route::get('/sign-out', [
+	        'uses' => 'AuthController@logout', 
+	        'as' => 'logout'
+	    ]);
+
+  		Route::group(['middleware' => ['computer.user']
+		], function()
+		{
+			Route::get('/', [
+		        'uses' => 'HomeController@index', 
+		        'as' => 'home'
+			]);
+
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			Route::post('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
+			]);
+			
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
+			]);
+
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
+			]);
+
+		});
+  	});
+});
+
+Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
+{
+  	Route::name('library.')->group(function()
+  	{
+  		Route::get('/sign-in',[
+	        'uses' => 'AuthController@login', 
+	        'as' => 'login'
+	    ]);
+
+	    Route::post('/sign-in',[
+	        'uses' => 'AuthController@postLogin', 
+	    ]);
+
+	    Route::get('/sign-out', [
+	        'uses' => 'AuthController@logout', 
+	        'as' => 'logout'
+	    ]);
+
+  		Route::group(['middleware' => ['library.user']
+		], function()
+		{
+			Route::get('/', [
+		        'uses' => 'HomeController@index', 
+		        'as' => 'home'
+			]);
+
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			Route::post('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
+			]);
+			
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
+			]);
+
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
+			]);
+
 		});
   	});
 });

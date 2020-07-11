@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
+use DB;
 use Input;
 use Auth;
 
@@ -71,8 +72,13 @@ class ChargeController extends Controller
 
         $user->inscripcion = 4;
         $user->save();
+
+        DB::table('document')->insert([
+            ['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id],
+            ['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id]
+        ]);
         session()->flash("messages","success|Terminaste tu registro, felicidades, eres alumno");
-        return redirect()->route("alumn.user");
+        return redirect()->route("alumn.home");
     }
 
     public function cleanArray($array,$indexstoclean,$rounds,$flag,$mode=true)
