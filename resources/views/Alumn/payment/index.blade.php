@@ -177,9 +177,7 @@
                       </div>
                       
                       <div class="back-card">
-
                         <button class="btn btn-success">Realiza una transferencia</button>
-                      
                       </div>
 
                     </div>
