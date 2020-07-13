@@ -74,8 +74,8 @@ class ChargeController extends Controller
         $user->save();
 
         DB::table('document')->insert([
-            ['name' => 'constancia de no adeudo', 'route' => 'cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id],
-            ['name' => 'cédula de reinscripción', 'route' => 'constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id]
+            ['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id],
+            ['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id]
         ]);
         session()->flash("messages","success|Terminaste tu registro, felicidades, eres alumno");
         return redirect()->route("alumn.home");

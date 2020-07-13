@@ -39,6 +39,8 @@
 
   <div class="card-body">
 
+  <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
     <table class="table table-bordered table-hover tableDocuments">
 
       <thead>
@@ -61,6 +63,6 @@
 
 </div>
 
-<script src="{{ asset('js/library/debit.js')}}"></script>
+<script src="{{ asset('js/alumn/pdf.js')}}"></script>
 
 @stop

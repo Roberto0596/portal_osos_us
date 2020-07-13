@@ -45,12 +45,17 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				'as' => 'documents'
 			]);
 
-			Route::post('pdf/cedula/{tipo}/{accion}',[
+			Route::put('/documents/show',[
+				'uses'=>'PdfController@showDocuments', 
+				'as' => 'documents.show'
+			]);
+
+			Route::get('pdf/cedula/{document?}',[
 				'uses'=>'PdfController@getGenerarCedula', 
 				'as' => 'cedula'
 			]);
 
-			Route::post('pdf/generar/{tipo}/{accion}',[
+			Route::get('pdf/generar/{document?}',[
 				'uses'=>'PdfController@getGenerarConstancia', 
 				'as' => 'constancia'
 			]);
