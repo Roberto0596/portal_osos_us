@@ -25,6 +25,9 @@ class HomeController extends Controller
 
 		return view('FinancePanel.home.index');
     }
+
+
+    /*
     
     public function changePaymentStatus(Request $request , $id){
         
@@ -47,6 +50,8 @@ class HomeController extends Controller
         return view('FinancePanel.home.temp');
 
     }
+
+    */
 
 	
 

@@ -190,16 +190,49 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'as' => 'debit'
 			]);
 
-			//cambia el estado del pago
-			Route::post('/change-payment-status', [
-		        'uses' => 'HomeController@changePaymentStatus', 
-		        'as' => 'changePaymentStatus'
+		
+			// te lleva a la parte de usuarios
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
 			]);
-			// sirve para ver el comprobante de pago
-			Route::post('/show-payement-ticket',[
-				'uses' => 'HomeController@showPayementTicket', 
-				'as' => 'showTicket'
+
+			//sirve para mostrar los registros en la tabla
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
 			]);
+			
+			//sirve para mostrar un registros en especifico
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
+			]);
+
+
+			//sirve para actualizar el estado de un adeudo
+			Route::put('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
+			]);
+			
+			//sirve para guardar un nuevo adeudo
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			//sirve para ver los detalles del pago
+			Route::post('/debit/payment-details', [
+		        'uses' => 'DebitController@showPayementDetails', 
+		        'as' => 'user.showPayementDetails'
+			]);
+
+			
+
+			
+			
+
 			
 		});
   	});
