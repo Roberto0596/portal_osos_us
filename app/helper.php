@@ -7,7 +7,7 @@ function ConectSqlDatabase()
     $password = "admin123";
     $user = "robert";
     $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+	$link = new PDO("sqlsrv:Server=.\SQLEXPRESS01;Database=Sicoes;", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -69,6 +69,15 @@ function getDetGrupo($AsignaturaId)
     $stmt = null;
 }
 
+function getLastThing($table_name,$item,$value,$orderby)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM $table_name where $item = :$item order by $orderby desc");
+    $stmt->bindParam(":".$item,$value,PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+    $stmt = null;
+}
+
 
 //metodo default para hacer consultas a la base de datos de sicoes
 function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
@@ -117,14 +126,39 @@ function deleteCharge($array)
 
 function insertCharge($array)
 {
-    $link = new \PDO("mysql:host=localhost;dbname=sicoes","root","");
-    $link->exec("set names utf8");
+    $password = "admin123";
+    $user = "robert";
+    $rutaServidor = "127.0.0.1";
+    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
     $baja = chr($array["Baja"]);
     $array = array('Baja' => $baja,
                     'AlumnoId'=>$array["AlumnoId"],
                     'DetGrupoId'=>$array["DetGrupoId"],
                     'PeriodoId'=>$array["PeriodoId"]);
+    if($stmt->execute($array))
+    {
+        return $link->lastInsertId();
+    }
+    else
+    {
+        return false;
+    }
+    $stmt = null;
+}
+
+function InsertAlumn($array)
+{
+    $password = "admin123";
+    $user = "robert";
+    $rutaServidor = "127.0.0.1";
+    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $link->prepare("INSERT INTO Alumno(Matricula, Nombre, ApellidoPrimero, ApellidoSegundo, Regular, Tipo, Curp, Genero, FechaNacimiento, Edad, MunicipioNac, EstadoNac, EdoCivil, Estatura, Peso, TipoSangre, Alergias, Padecimiento, ServicioMedio, NumAfiliacion, Domicilio, Colonia, Localidad, MunicipioDom, EstadoDom, CodigoPostal, Telefono, Email, EscuelaProcedenciaId, AnioEgreso, PromedioBachiller, ContactoEmergencia, ContactoDomicilio, ContactoTelefono, TutorNombre, TutorDomicilio, TutorTelefono, TutorOcupacion, TutorSueldoMensual, MadreNombre, MadreDomicilio, MadreTelefono, TrabajaActualmente, Puesto, SueldoMensualAlumno, DeportePractica, Deportiva, Cultural, Academica, TransporteUniversidad, Transporte, ActaNacimiento, CertificadoBachillerato, Baja, PlanEstudioId, CirugiaMayor, CirugiaMenor, Hijo, Egresado) VALUES(:Matricula, :Nombre, :ApellidoPrimero, :ApellidoSegundo, :Regular, :Tipo, :Curp, :Genero, :FechaNacimiento, :Edad, :MunicipioNac, :EstadoNac, :EdoCivil, :Estatura, :Peso, :TipoSangre, :Alergias, :Padecimiento, :ServicioMedio, :NumAfiliacion, :Domicilio, :Colonia, :Localidad, :MunicipioDom, :EstadoDom, :CodigoPostal, :Telefono, :Email, :EscuelaProcedenciaId, :AnioEgreso, :PromedioBachiller, :ContactoEmergencia, :ContactoDomicilio, :ContactoTelefono, :TutorNombre, :TutorDomicilio, :TutorTelefono, :TutorOcupacion, :TutorSueldoMensual, :MadreNombre, :MadreDomicilio, :MadreTelefono, :TrabajaActualmente, :Puesto, :SueldoMensualAlumno, :DeportePractica, :Deportiva, :Cultural, :Academica, :TransporteUniversidad, :Transporte, :ActaNacimiento, :CertificadoBachillerato, :Baja, :PlanEstudioId, :CirugiaMayor, :CirugiaMenor, :Hijo, :Egresado)");
+
     if($stmt->execute($array))
     {
         return $link->lastInsertId();

@@ -25,16 +25,25 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{route('finance.home')}}" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Inicio
                         </p>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a href="{{route('finance.debit')}}" class="nav-link">
+                        <i class="nav-icon fas fa-credit-card"></i>
+                        <p>
+                            Adeudos
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{route('finance.user')}}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Mi cuenta

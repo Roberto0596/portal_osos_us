@@ -13,14 +13,21 @@ class HomeController extends Controller
 	public function index()
 	{
 
+        /*
+
         $debits = DB::table('debit')
         ->join('users', 'users.id_alumno' , '=', 'debit.id_alumno')
         ->select('debit.id','debit.id_order', 'debit.concept' ,'debit.amount','debit.admin_id','debit.status','debit.payment_method','users.name','users.lastname')
         ->get();
 
+        */
 
-		return view('FinancePanel.home.index')->with(['debits'=> $debits]);
+
+		return view('FinancePanel.home.index');
     }
+
+
+    /*
     
     public function changePaymentStatus(Request $request , $id){
         
@@ -43,6 +50,8 @@ class HomeController extends Controller
         return view('FinancePanel.home.temp');
 
     }
+
+    */
 
 	
 

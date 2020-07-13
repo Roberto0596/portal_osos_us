@@ -87,6 +87,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses' => 'FormController@save',
 					'as'   => 'form.save'
 				]);
+
+				Route::post('form/save/inscription', [
+					'uses' => 'FormController@saveInscription',
+					'as'   => 'save.inscription'
+				]);
 		    });
 
 		    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
@@ -188,17 +193,56 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
 			]);
+
+			//te lleva a la vista de adeudos	
+			Route::get('/debit', [
+		        'uses' => 'DebitController@index', 
+		        'as' => 'debit'
+			]);
+
+		
+			// te lleva a la parte de usuarios
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+
+			//sirve para mostrar los registros en la tabla
+			Route::put('/debit/show', [
+		        'uses' => 'DebitController@showDebit', 
+		        'as' => 'user.show'
+			]);
 			
-			//cambia el estado del pago
-			Route::put('/change-payment-status/{debit}', [
-		        'uses' => 'HomeController@changePaymentStatus', 
-		        'as' => 'changePaymentStatus'
+			//sirve para mostrar un registros en especifico
+			Route::post('/debit/see', [
+		        'uses' => 'DebitController@seeDebit', 
+		        'as' => 'user.see'
 			]);
-			// sirve para ver el comprobante de pago
-			Route::get('/show-payement-ticket/{id_order}',[
-				'uses' => 'HomeController@showPayementTicket', 
-				'as' => 'showTicket'
+
+
+			//sirve para actualizar el estado de un adeudo
+			Route::put('/debit/update', [
+		        'uses' => 'DebitController@update', 
+		        'as' => 'debit.update'
 			]);
+			
+			//sirve para guardar un nuevo adeudo
+			Route::post('/debit/save', [
+		        'uses' => 'DebitController@save', 
+		        'as' => 'debit.save'
+			]);
+
+			//sirve para ver los detalles del pago
+			Route::post('/debit/payment-details', [
+		        'uses' => 'DebitController@showPayementDetails', 
+		        'as' => 'user.showPayementDetails'
+			]);
+
+			
+
+			
+			
+
 			
 		});
   	});
