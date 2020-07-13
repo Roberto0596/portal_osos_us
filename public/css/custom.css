@@ -121,6 +121,8 @@ header
 
 
 /*Edicion desde aqui*/
+
+
 .container-custom /*Tajeta_wrap*/
 {
     width: 100%;
@@ -145,7 +147,7 @@ header
     /*overflow: hidden;*/
     text-align: center;
     transition: all 0.25;
-
+    
     
 }
 
@@ -191,13 +193,17 @@ header
     box-shadow: 0 12px 16px rgba(0,0,0,0.2);
 }
 
+.parrafo-back{
+    color: white;
+}
+
 /*Edicion hasta aqui*/
 
 .card-image-rob
 {
-    width: 100%;
+    width: 200px;
     height: 200px;
-    background-color: white;
+    padding-top: 10px;
 }
 
 .titulo-cards
