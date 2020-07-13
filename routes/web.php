@@ -87,6 +87,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses' => 'FormController@save',
 					'as'   => 'form.save'
 				]);
+
+				Route::post('form/save/inscription', [
+					'uses' => 'FormController@saveInscription',
+					'as'   => 'save.inscription'
+				]);
 		    });
 
 		    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
