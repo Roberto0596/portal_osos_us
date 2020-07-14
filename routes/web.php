@@ -384,5 +384,15 @@ Route::group(['namespace' => 'Website'],function()
 	Route::get('/', [
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
-    ]);
+	]);
+	
+	Route::get('/load-data',[
+		'uses' => 'PendingsController@loadData', 
+		'as' => 'load'
+	]);
+
+	Route::get('/generate-pdf',[
+		'uses' => 'PendingsController@generatePdf', 
+		'as' => 'pdfGenerate'
+	]);
 });
