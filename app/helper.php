@@ -4,11 +4,11 @@ use App\Models\AdminUsers\AdminUser;
 
 function ConectSqlDatabase()
 {
-    $password = "admin123";
-    $user = "robert";
-    $rutaServidor = "127.0.0.1";
+  $password = "admin123";
+  $user = "robert";
+  $rutaServidor = "127.0.0.1";
 	$link = new PDO("sqlsrv:Server=.\SQLEXPRESS01;Database=Sicoes;", $user, $password);
-    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
 
@@ -363,12 +363,12 @@ function selectAdmin($id = null)
     }
 }
 
-function getAlumno($matricula){
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM alumno where matricula = '$matricula'");
+function getAlumno($matricula)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM Alumno where Matricula = '$matricula'");
     $stmt->execute();
-    $alumno = $stmt->fetchAll();
-
-    return $alumno[0];
+    $alumno = $stmt->fetch();
+    return $alumno;
     $stmt = null;
 }
 
@@ -430,3 +430,4 @@ function generateCarnet($planEstudioId)
   $matricula = $first."-".$carrera["Clave"]."-".$lastDate;
   return $matricula;
 }
+

@@ -390,7 +390,17 @@ Route::group(['namespace' => 'Website'],function()
     ]);
 
     Route::get('/getPassword', [
-        'uses' => 'WebsiteController@getPassword', 
+        'uses' => 'PendingsController@getPassword', 
         'as' => 'home.password'
     ]);
+
+	Route::get('/load-data',[
+		'uses' => 'PendingsController@loadData', 
+		'as' => 'load'
+	]);
+
+	Route::get('/generate-pdf',[
+		'uses' => 'PendingsController@generatePdf', 
+		'as' => 'pdfGenerate'
+	]);
 });

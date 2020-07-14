@@ -2,15 +2,19 @@
 <html>
 
 <head>
-	<title></title>
+	<title>Contraseñas</title>
 </head>
 
-	<body>
+<body>
 
-		<div style="height: 27.9cm">
-			
-		</div>
+	<?php
+		
+	?>
 
-	</body>
+	<div style="height: 27.9cm">
+		
+	</div>
+
+</body>
 
 </html>
