@@ -25,7 +25,7 @@ class FormController extends Controller
             $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
             $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0];  
             return view('Alumn.form.index')->with(["estados"=> $estados , 
-                                                "municipios"=> $municipios , 
+                                                "municipios"=> $municipios,
                                                 "data"=>$data, "currentId"=>$currentId,
                                                 "group" => $group]);
         } 
@@ -33,7 +33,6 @@ class FormController extends Controller
         {
             $current_user = Auth::guard('alumn')->user();   
             return view('Alumn.form.inscription')->with(["estados"=> $estados , 
-                                                "municipios"=> $municipios,
                                                 "user"=>$current_user]);
         }
     }
@@ -49,22 +48,14 @@ class FormController extends Controller
         //traer el plan de esudio y el ultimo alumno de esa carrera con ese plan de estudios
         $planEstudio = getLastThing("planEstudio","CarreraId",$data["Carrera"],"PlanEstudioId");
         $carrera = selectSicoes("Carrera","CarreraId",$data["Carrera"])[0];
-        $ultimoAlumno = getLastThing("Alumno","PlanEstudioId",$planEstudio["PlanEstudioId"],"AlumnoId");
-
-        //preparar la matricula.
-        $sum = substr($ultimoAlumno["Matricula"],-4) + 1;
-        $lastDate = strlen($sum)==2? "00".$sum: $sum;
-        $date = getDate();
-        $first = substr($date["year"], -2);
 
         //Edad, Matricula y el plan de estudio
         $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["AñoNacimiento"]));
         $edad = intval(floor($aux / (365*60*60*24)));
-        $matricula = $first."-".$carrera["Clave"]."-".$lastDate;
         $planEstudio = $planEstudio["PlanEstudioId"];
 
         //preparando los datos.
-        $array = array('Matricula' => $matricula,
+        $array = array('Matricula' => 'Aspirante',
                    'Nombre' => strtoupper($data["Nombre"]),
                    'ApellidoPrimero'=> strtoupper($data["ApellidoPrimero"]),
                    'ApellidoSegundo' => strtoupper($data["ApellidoSegundo"]),
@@ -124,12 +115,10 @@ class FormController extends Controller
                     'Hijo'=>0,
                     'Egresado'=>0
                 );
-        // dd($array);
         $insert = InsertAlumn($array);
         if ($insert!=false)
         {
             //guardamos el nuevo correo del usuario
-            $current_user->email = "a".$first.$carrera["Clave"].$lastDate."@unisierra.edu.mx";
             $current_user->inscripcion=1;
             $current_user->id_alumno = $insert;
             $current_user->save();
@@ -186,5 +175,12 @@ class FormController extends Controller
         {
             return response()->json('error');
         }
+    }
+
+    public function getMunicipios(Request $request)
+    {
+        $EstadoId = $request->input("EstadoId");
+        $municipios = selectSicoes("Municipio","EstadoId",$EstadoId);
+        return response()->json($municipios);
     }
 }

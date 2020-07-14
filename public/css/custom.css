@@ -657,7 +657,7 @@ td{
 
 .capitalize
 {
-    text-transform: capitalize;
+    text-transform: uppercase;
 }
 
 

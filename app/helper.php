@@ -409,6 +409,7 @@ function getCarrera($matricula){
     return $carrera[0];
     $stmt = null;
 }
+
 function getAlumnoId($matricula){
     $stmt = ConectSqlDatabase()->prepare("SELECT AlumnoId FROM alumno where matricula = '$matricula'");
     $stmt->execute();
@@ -416,4 +417,16 @@ function getAlumnoId($matricula){
 
     return $alumno[0];
     $stmt = null;
+}
+
+function generateCarnet($planEstudioId)
+{
+  //preparar la matricula.
+  $ultimoAlumno = getLastThing("Alumno","PlanEstudioId",$planEstudioId,"AlumnoId");
+  $sum = substr($ultimoAlumno["Matricula"],-4) + 1;
+  $lastDate = strlen($sum)==2? "00".$sum: $sum;
+  $date = getDate();
+  $first = substr($date["year"], -2);
+  $matricula = $first."-".$carrera["Clave"]."-".$lastDate;
+  return $matricula;
 }

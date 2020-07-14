@@ -52,6 +52,8 @@
 
                         <form class="form-inscription" method="POST" action="{{route('alumn.save.inscription')}}">
 
+                            <input  id="token"  type="hidden" value="{{csrf_token()}}"/> 
+
                             {{ csrf_field() }}                                            
                             <!-- step 1  DATOS PERSONALES I -->
                             @php
@@ -145,15 +147,13 @@
 
                                             <div class="form-group">
 
-                                                <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
+                                                <label for="EstadoDom" data-alias="estado" class="control-label">Estado</label>
 
-                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2">
-
+                                                <select id="EstadoDom" name="EstadoDom"  isnullable="no" class="form-control select2">
                                                     <option  disabled="" selected="">Seleccionar</option>
-                                                    @foreach ($municipios as $mpio)
-                                                    <option value="{{$mpio['Clave']}}"> {{$mpio['Nombre']}} </option>
+                                                    @foreach ($estados as $edo)
+                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
                                                     @endforeach
-
                                                 </select>
 
                                             </div>
@@ -164,12 +164,10 @@
 
                                             <div class="form-group">
 
-                                                <label for="EstadoDom" data-alias="estado" class="control-label">Estado</label>
-                                                <select id="EstadoDom" name="EstadoDom"  isnullable="no" class="form-control select2">
-                                                    <option  disabled="" selected="">Seleccionar</option>
-                                                    @foreach ($estados as $edo)
-                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
-                                                    @endforeach
+                                                <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
+
+                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2" readonly>
+
                                                 </select>
 
                                             </div>
@@ -186,7 +184,7 @@
 
                                                 <label class="control-label">Código Postal</label>
 
-                                                <input maxlength="5" min="5" type="number" class="form-control" id="CodigoPostal" name="CodigoPostal" isnullable="no" placeholder="Ej. 84330">
+                                                <input type="text" class="form-control codigo" id="CodigoPostal" name="CodigoPostal" isnullable="no" placeholder="Ej. 84330">
 
                                             </div>
 
@@ -203,23 +201,7 @@
                                             </div>
 
                                         </div>
-                                            
-                                        <div class="col-md-3">
 
-                                            <div class="form-group">
-
-                                                <label for="municipionac" data-alias="municipionac" class="control-label">Municipio de Nacimiento</label>
-                                                
-                                                <select id="MunicipioNac" name="MunicipioNac" isnullable="si" class="form-control select2" >
-                                                    <option  disabled="" selected="">Seleccionar</option>
-                                                    @foreach ($municipios as $mpio)
-                                                    <option value="{{$mpio['Clave']}}"> {{$mpio['Nombre']}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                            
-                                        
                                         <div class="col-md-3">
 
                                             <div class="form-group">
@@ -235,7 +217,20 @@
 
                                             </div>
 
-                                        </div>                                            
+                                        </div> 
+                                            
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+
+                                                <label for="municipionac" data-alias="municipionac" class="control-label">Municipio de Nacimiento</label>
+                                                
+                                                <select id="MunicipioNac" name="MunicipioNac" isnullable="si" class="form-control select2" >
+                                                </select>
+
+                                            </div>
+
+                                        </div>                                                               
 
                                         <div class="col-md-2">
 
@@ -297,7 +292,8 @@
                                             <div class="form-group">
 
                                                 <label for="genero" data-alias="genero" class="control-label">Género</label>
-                                                <select id="genero" isnullable="no" name="Genero" class="form-control" required>
+
+                                                <select id="Genero" isnullable="no" name="Genero" class="form-control" required>
                                                     <option  disabled="" selected="">Seleccionar</option>                             
                                                     <option value="0">HOMBRE</option>
                                                     <option value="1">MUJER</option>
@@ -363,7 +359,7 @@
                                             <div class="form-group">
 
                                                 <label class="control-label"><output></output>Padecimiento</label>
-                                                <input name="Padecimiento" isnullable="si" id="descPadecimiento" type="text" class="form-control capitalize" placeholder="Especifique su padecimiento">
+                                                <input name="Padecimiento" isnullable="si" id="Padecimiento" type="text" class="form-control capitalize" placeholder="Especifique su padecimiento">
 
                                             </div>
 
@@ -467,7 +463,7 @@
 
                                                 <label for="Carrera" class="control-label">Carrera</label>
 
-                                                <select id="Carrera" name="Carrera" isnullable="no" class="form-control" required>
+                                                <select id="Carrera" name="Carrera" isnullable="no" class="form-control select2" required>
 
                                                     @php                                                        
                                                         $school = selectSicoes("Carrera");
@@ -495,9 +491,9 @@
 
                                                 <label for="escuelaprocedencia" data-alias="escuelaprocedencia" class="control-label">Escuela de Procedencia</label>
 
-                                                <select id="EscuelaProcedenciaId" name="EscuelaProcedenciaId" class="form-control" isnullable="si">
+                                                <select id="EscuelaProcedenciaId" name="EscuelaProcedenciaId" class="form-control select2" isnullable="si">
 
-                                                    @php                                                        
+                                                    @php                                                       
                                                         $school = selectSicoes("Escuela");
                                                     @endphp
 
@@ -625,31 +621,46 @@
                                         </div>
                                         
                                     </div>
+
                                     <div class="row">
+
                                         <div class="col-md-4">
+
                                             <div class="form-group">
+
                                                 <label class="control-label">Nombre completo de la madre</label>
-                                                <input fieldname="Nombre completo de la Madre" maxlength="100" type="text"
-                                                    name="MadreNombre"   class="form-control"
-                                                 placeholder="Ingrese el nombre de la madre"  />
+                                                <input type="text" id="MadreNombre" name="MadreNombre" class="form-control capitalize" placeholder="Ingrese el nombre de la madre">
+
                                             </div>
+
                                         </div>
+
                                         <div class="col-md-4">
+
                                             <div class="form-group">
+
                                                 <label class="control-label">Domicilio de la madre</label>
-                                                <input fieldname="Domicilio de la madre" maxlength="100" type="text"
-                                                name="MadreDomicilio" class="form-control"
-                                                placeholder="Ingrese el domicilio de la madre"  />
+
+                                                <input type="text" id="MadreDomicilio" name="MadreDomicilio" class="form-control capitalize" placeholder="Ingrese el domicilio de la madre">
+
                                             </div>
+
                                         </div>
+
                                         <div class="col-md-4">
+
                                             <div class="form-group">
+
                                                 <label class="control-label">Teléfono de la madre</label>
-                                                <input fieldname="Teléfono de la Madre" maxlength="10" type="text"   name="MadreTelefono"  class="form-control phone"
-                                                 placeholder="Ingrese el teléfono de la madre"  />
+
+                                                <input type="text" id="MadreTelefono" name="MadreTelefono" class="form-control phone" placeholder="Ingrese el teléfono de la madre">
+
                                             </div>
+
                                         </div>
+
                                     </div>
+
                                 </div>
                                 <div class="step_controls">
                                     <button type="button" class="btn btn-warning button-custom button-back"
@@ -661,32 +672,50 @@
 
                             <!-- step 5 DATOS GENERALES-->
                             <div class="row disabled" id="step-5">
+
                                 <div class="col-md-12">
+
                                     <div class="row">
+
                                         <div class="col-md-3">
+
                                             <div class="form-group">
+
                                                 <label for="trabajaactualmente" data-alias="trabajaactualmente" class="control-label">¿Trabaja Actualmente?</label>
+
                                                 <select  name="TrabajaActualmente" class="form-control" id="TrabajaActualmente" isnullable="no" required>
                                                     <option  disabled="" selected="">Seleccionar</option>
                                                     <option value="0">NO</option>
                                                     <option value="1">SI</option>
                                                 </select>
-                                                </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label class="control-label">Puesto</label>
-                                                <input id="Puesto" name="Puesto" fieldname="Puesto" maxlength="100" type="text" disabled  class="form-control"
-                                                isnullable="si" placeholder="Ingrese el puesto" />
+
                                             </div>
+
                                         </div>
+
+                                        <div class="col-md-5">
+
+                                            <div class="form-group">
+
+                                                <label class="control-label">Puesto</label>
+
+                                                <input id="Puesto" name="Puesto" fieldname="Puesto" maxlength="100" type="text" disabled  class="form-control"
+                                                isnullable="si" placeholder="Ingrese el puesto">
+
+                                            </div>
+
+                                        </div>
+
                                         <div class="col-md-4">
                                             
                                             <div class="form-group">
+
                                                 <label class="control-label">Sueldo mensual del alumno</label>
-                                                <input fieldname="Sueldo mensual del alumno" maxlength="100" type="text" disabled id="SueldoMensualAlumno"  
+
+                                                <input type="text" disabled id="SueldoMensualAlumno"  
                                                 class="form-control" name="SueldoMensualAlumno"
-                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno"  />
+                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno">
+
                                             </div>
                                             
                                         </div>
@@ -719,7 +748,7 @@
 
                                                 <label for="transporte" data-alias="transporte"  class="control-label">¿Cual?</label>
                                                 
-                                                <select  name="Transporte" class="form-control"   id="Transporte" >
+                                                <select name="Transporte" class="form-control" id="Transporte" disabled>
                                                     <option  disabled="" selected="">SELECCIONAR</option>
                                                     <option value="0">MOCTEZUMA</option>
                                                     <option value="1">CUMPAS</option>
@@ -739,7 +768,7 @@
 
                                                 <label class="control-label">Practicas alguna actividad deportiva o cultural</label>
 
-                                                <input fieldname="Actividad cultural" maxlength="100" type="text"  isnullable="si" class="form-control" name="DeportePractica" id="DeportePractica"
+                                                <input type="text"  isnullable="si" class="form-control capitalize" name="DeportePractica" id="DeportePractica"
                                                 placeholder="ej.Danza"/>
 
                                             </div>

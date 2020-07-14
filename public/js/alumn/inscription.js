@@ -1,5 +1,4 @@
 //Sirve para habilitar y deshabilitar campos dependiendo la opcion que seleccionen
-
 $("#trabajaactualmente").change( function()
 {
   if($(this).val() === "1")
@@ -25,8 +24,7 @@ $("#transporteuniversidad").change(function()
   {
     $("#transporte").prop("disabled",true);   
   }
-});       
-      
+});     
 
 $(document).ready(function()
 {
@@ -232,3 +230,47 @@ $(".select2").select2();
 $('.phone').inputmask({"mask": "9999999999", "placeholder": '0000000000'});
 
 $('.eleven').inputmask({"mask": "99999999999", "placeholder": '00000000000'});
+
+$('.codigo').inputmask({"mask": "99999", "placeholder": '00000'});
+
+$("#EstadoDom").change(function()
+{
+  var EstadoId = $(this).val();
+  getEstados("MunicipioDom",EstadoId);
+});
+
+$("#EstadoNac").change(function()
+{
+  var EstadoId = $(this).val();
+  getEstados("MunicipioNac",EstadoId);
+});
+
+function getEstados(elementName, EstadoId)
+{
+  var route = 'form/getMunicipio';
+  var token = $('#token').val();
+  var data = new FormData();
+  data.append("EstadoId",EstadoId);
+  $.ajax({
+      url:route,
+      headers:{'X-CSRF-TOKEN': token},
+      method:'POST',
+      data:data,
+      cache:false,
+      contentType:false,
+      processData:false,
+      success:function(response)
+      {
+          $('#'+elementName).empty().append('whatever');
+          for (var i = 0; i < response.length; i++)
+          {
+            let $option = $('<option />', {
+                text: response[i]["Nombre"],
+                value: response[i]["MunicipioId"],
+                selected: ""
+            });
+            $('#'+elementName).prepend($option);
+          }
+      }
+  });
+}

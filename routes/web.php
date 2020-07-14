@@ -43,7 +43,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			Route::get('/documents',[
 				'uses'=>'PdfController@index', 
 				'as' => 'documents'
-			]);
+			])->middleware('candidate');
 
 			Route::put('/documents/show',[
 				'uses'=>'PdfController@showDocuments', 
@@ -91,6 +91,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				Route::post('form/save/inscription', [
 					'uses' => 'FormController@saveInscription',
 					'as'   => 'save.inscription'
+				]);
+
+				Route::post('form/getMunicipio', [
+					'uses' => 'FormController@getMunicipios',
+					'as'   => 'form.getMunicipio'
 				]);
 		    });
 
@@ -165,8 +170,6 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		});
   	});
 });
-
-
 
 Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 {
@@ -384,5 +387,10 @@ Route::group(['namespace' => 'Website'],function()
 	Route::get('/', [
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
+    ]);
+
+    Route::get('/getPassword', [
+        'uses' => 'WebsiteController@getPassword', 
+        'as' => 'home.password'
     ]);
 });
