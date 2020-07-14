@@ -114,7 +114,9 @@
                       </div>
                       
                       <div class="back-card">
-
+                      
+                        <p class="parrafo-back"> El usuario debera pagar 
+                          $1950.00 de colegiatura + $70.89 por comisión bancaria, lo cual da un total de $2’020.89</p>
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                       </div> 
@@ -141,17 +143,18 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con deposito bancario</h4>
+                          <img src="{{asset('img/alumn/payment methods/money.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago en efectivo</h4>
                           
                         
                         </div>
 
                         <div class="back-card">
 
-                          <p>HOLA</p>
+                          <p class="parrafo-back"> El usuario deberá pagar $1’950.00 de colegiatura + 
+                            $92.39 por comisión bancaria, lo cual da total de $2’042.39</p>
                           <button class="btn btn-success">Realiza un pago en oxxo</button>
-
+                      
                         </div>
 
                       </div>
@@ -175,16 +178,16 @@
 
                       <div class="front-card">
 
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
+                        <img src="{{asset('img/alumn/payment methods/transfer.png')}}" alt="" class="card-image-rob">
+                        <h4 class="titulo-cards">Pago con transferencia interbancaria (SPEI)</h4>
                        
 
                       </div>
                       
                       <div class="back-card">
-
-                        <button class="btn btn-success">Realiza una transferencia</button>
-                      
+                        <p class="parrafo-back"> El usuario debera pagar $1’950.00 de colegiatura + $14.50 por comisión bancaria, 
+                          lo cual da un total de $1’964.50*</p>
+                        <button class="btn btn-success">Realiza una transferencia SPEI</button>
                       </div>
 
                     </div>
@@ -203,12 +206,24 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">transferencia o deposito bancario</h4>
+                          <img src="{{asset('img/alumn/payment methods/bank.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">transferencia electronica o deposito bancario</h4>
                          
                         </div>
                         
                         <div class="back-card">
+                        <p class="parrafo-back"> El usuario debe depositar 
+                          en Banco Santander un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
+                          
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
+                              @csrf             
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
+                          </form>
+
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
+                              @csrf              
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
+                          </form>
 
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
@@ -236,23 +251,7 @@
 
           </div>
 
-          <div class="col-md-1">
-
-            <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
-              @csrf             
-              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
-            </form>
-
-          </div>
-
-          <div class="col-md-1">
-
-           <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
-              @csrf              
-              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
-            </form>
-
-          </div>
+         
 
           <div class="col-md-5">
 
