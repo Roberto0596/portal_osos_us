@@ -131,6 +131,13 @@ class UserController extends Controller
             'name'=>'required',
             'lastname'=>'required'
         ]);
+
+        if (Auth::guard("alumn")->check())
+        {
+            Auth::guard('alumn')->logout();
+            session()->flush();
+        }
+        
         //validar que un correo no exista.
         $validate = User::where("email","=", $request->input("email"))->get();
 
@@ -143,15 +150,9 @@ class UserController extends Controller
         $user->lastname = $request->input("lastname");
         $user->email = $request->input("email");
         $user->password = bcrypt($request->input("password"));
-        $user->save();
+        $user->save(); 
 
-        if (Auth::guard("alumn")->check())
-        {
-            Auth::guard('alumn')->logout();
-            session()->flush();
-        } 
-
-         $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
         if (Auth::guard('alumn')->attempt($credentials))
         {

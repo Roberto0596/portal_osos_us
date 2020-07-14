@@ -2,6 +2,7 @@ var step = 0;
 
 $(document).ready(function(){
 	$("#hidden-2").css("display","none");
+	localStorage.removeItem('inscriptionData');
 })
 
 $("#next").click(function()

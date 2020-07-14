@@ -44,9 +44,7 @@ class DebitController extends Controller
                 }else{
 
                     $buttons.="
-                    <object  type='application/x-pdf'  width='5' height='5'>
-                    <a class='btn btn-success' href='".$value->id_order."'>
-                    <i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></a></object>";
+                    <button class='btn btn-success showPdf' route='".$value->id_order."''><i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
 
                 }
             }

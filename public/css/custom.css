@@ -649,6 +649,11 @@ td{
     margin-top: 10%;
 }
 
+.capitalize
+{
+    text-transform: capitalize;
+}
+
 
 
 

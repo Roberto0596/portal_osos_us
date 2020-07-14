@@ -516,6 +516,11 @@ $(".tableDebits tbody").on("click","button.edit",function()
         }});
 });
 
+$(".tableDebits tbody").on("click","button.showPdf",function()
+{
+  var route = $(this).attr("route");
+  window.open("/"+route,"_blank");
+})
 
 $(".tableDebits tbody").on("click","button.details",function()
 {
