@@ -9,6 +9,7 @@ use Input;
 use Auth;
 use Illuminate\Support\Collection;
 use App\Http\Requests\CreateUserRequest;
+use App\Models\Website\Pending;
 
 class UserController extends Controller
 {
@@ -61,12 +62,16 @@ class UserController extends Controller
         if ($step == 1)
         {
             $matricula = $request->input('matricula');
+            $password = $request->input('password');
             $data = selectSicoes("alumno","Matricula",$matricula);
+            $query = [["enrollment","=",$matricula],["password","=",$password]];
+            $validate = Pending::where("enrollment","=",$matricula)->get();
 
-            if (count($data)==0)
+            if ($validate[0].isEmpty())
             {
                 return view('Alumn.account.steps')->with(["step"=>1,"error"=>"Esta matricula no existe, si no la recuerda favor de comunicarse a servicios escolares"]);
             }
+
             $data = $data[0];
             return view('Alumn.account.steps')->with(["step"=>2,"alumn"=>$data]);
         }
@@ -117,10 +122,6 @@ class UserController extends Controller
                 return redirect()->route("alumn.users.first_step");
             } 
         }
-    }
-
-    public function delete($id)
-    {
     }
 
     public function registerAlumn(Request $request, User $user) 

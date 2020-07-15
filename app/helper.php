@@ -12,15 +12,6 @@ function ConectSqlDatabase()
 	return $link;
 }
 
-function getGroups($table, $field)
-{
-  $link = new \PDO("mysql:host=localhost;dbname=portal","root","");
-  $link->exec("set names utf8");
-  $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
-  $stmt->execute();
-  return $stmt->fetchAll();
-}
-
 //este metodo servira para trarnos el periodo actual o en curso
 function selectCurrentPeriod()
 {
@@ -460,7 +451,6 @@ function agruparPorSalon($PlanEstudioId,$EncGrupoId)
   
 }
 
-
 function getInscriptionData($AlumnoId)
 {
     $stmt = ConectSqlDatabase()->prepare("SELECT InscripcionId,Semestre,EncGrupoId from Inscripcion as i inner join Alumno as a on i.AlumnoId = a.AlumnoId where a.AlumnoId = :AlumnoId and i.Baja = 0 and a.Baja = 0;");
@@ -468,5 +458,14 @@ function getInscriptionData($AlumnoId)
     $stmt->execute();
     return $stmt->fetch();
     $stmt = null;
+}
+
+function getGroups($table, $field)
+{
+  $link = new \PDO("mysql:host=localhost;dbname=portal","root","");
+  $link->exec("set names utf8");
+  $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
+  $stmt->execute();
+  return $stmt->fetchAll();
 }
 
