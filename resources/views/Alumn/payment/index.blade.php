@@ -108,7 +108,7 @@
 
                       <div class="front-card">
 
-                        <img src="{{asset('img/alumn/payment methods/card.png')}}" alt="" class="card-image-rob">
+                        <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
                         
                       </div>
@@ -143,7 +143,7 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/alumn/payment methods/money.png')}}" alt="" class="card-image-rob">
+                          <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
                           <h4 class="titulo-cards">Pago en efectivo</h4>
                           
                         
@@ -178,7 +178,7 @@
 
                       <div class="front-card">
 
-                        <img src="{{asset('img/alumn/payment methods/transfer.png')}}" alt="" class="card-image-rob">
+                        <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con transferencia interbancaria (SPEI)</h4>
                        
 
@@ -206,14 +206,14 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/alumn/payment methods/bank.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">transferencia electronica o deposito bancario</h4>
+                          <img src="{{asset('img/alumn/payment methods/bank_white.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago con transferencia en linea o deposito bancario</h4>
                          
                         </div>
                         
                         <div class="back-card">
                         <p class="parrafo-back"> El usuario debe depositar 
-                          en Banco Santander un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
+                          en Banco Santander o realiza una tranferencia desde la banca en linea o movil, por un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
                           
                           <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
                               @csrf             
