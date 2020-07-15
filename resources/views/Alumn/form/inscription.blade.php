@@ -12,7 +12,7 @@
 
                 <div class="col-sm-6">
 
-                    <h3>Verifica que tu información sea correcta</h3>
+                    <h3>Ingresa todos los datos</h3>
 
                 </div>
 
@@ -461,7 +461,7 @@
 
                                             <div class="form-group">
 
-                                                <label for="Carrera" class="control-label">Carrera</label>
+                                                <label for="Carrera" class="control-label">¿Que carrera quieres estudiar?</label>
 
                                                 <select id="Carrera" name="Carrera" isnullable="no" class="form-control select2" required>
 

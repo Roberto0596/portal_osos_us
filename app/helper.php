@@ -49,8 +49,8 @@ function getLastSemester($alumnId)
 function getCurrentAsignatures($alumnId)
 {
     $alumnData = selectSicoes("alumno","AlumnoId",$alumnId)[0];
-    $currentSemester = getLastSemester($alumnId) + 1;
-    return getAsignatures($currentSemester,$alumnData["PlanEstudioId"]);
+    $inscipcion = getLastThing("Inscripcion","AlumnoId",$alumnId,"InscripcionId");
+    return getAsignatures($inscipcion["Semestre"],$alumnData["PlanEstudioId"]);
 }
 
 //metodo que nos trae todas las asignaturas
@@ -518,5 +518,13 @@ function getDateCustom()
   $date = date('Y-m-d');
   $hour = date('H:i:s');
   return $date.' '.$hour;
+}
+
+function obtenerGrupo($semestre,$planEstudioId)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM EncGrupo where Semestre = '$semestre' and PlanEstudioId = '$planEstudioId' order by EncGrupoId");
+  $stmt->execute();
+  return $stmt->fetch();
+  $stmt = null;
 }
 

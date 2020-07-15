@@ -20,10 +20,8 @@ class FormController extends Controller
         {
             $currentId = Auth::guard('alumn')->user()->id_alumno;
             $data = getDataByIdAlumn($currentId); 
-            $charge = selectSicoes("Carga","AlumnoId",$data["AlumnoId"]);  
-            $charge = $charge[count($charge)-1];
-            $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
-            $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0];  
+            $inscripcion = getLastThing("Inscripcion","AlumnoId",$currentId,"InscripcionId");
+            $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"]);
             return view('Alumn.form.index')->with(["estados"=> $estados , 
                                                 "municipios"=> $municipios,
                                                 "data"=>$data, "currentId"=>$currentId,

@@ -114,7 +114,7 @@ class PaymentController extends Controller
       } 
       else
       {
-        $semester = $inscripcionData["Semestre"];
+        $semester = $inscripcionData["Semestre"]+1;
       }   
 
       //inscribimos al alumno despues de pagar
