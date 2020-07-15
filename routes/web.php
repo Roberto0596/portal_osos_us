@@ -261,7 +261,7 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 				'as' => 'pdfGenerate'
 			]);	
 
-			Route::get('/elete-groups',[
+			Route::get('/delete-groups',[
 				'uses' => 'PendingsController@deleteGroups', 
 				'as' => 'deleteGroups'
 			]);		

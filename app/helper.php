@@ -453,7 +453,7 @@ function agruparPorSalon($PlanEstudioId,$EncGrupoId)
 
 function getInscriptionData($AlumnoId)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT InscripcionId,Semestre,EncGrupoId from Inscripcion as i inner join Alumno as a on i.AlumnoId = a.AlumnoId where a.AlumnoId = :AlumnoId and i.Baja = 0 and a.Baja = 0;");
+    $stmt = ConectSqlDatabase()->prepare("SELECT TOP(1) InscripcionId,Semestre,EncGrupoId from Inscripcion as i inner join Alumno as a on i.AlumnoId = a.AlumnoId where a.AlumnoId = :AlumnoId and i.Baja = 0 and a.Baja = 0 order by i.InscripcionId desc;");
     $stmt->bindParam("AlumnoId",$AlumnoId,PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetch();
