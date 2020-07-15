@@ -47,7 +47,6 @@ class FormController extends Controller
 
         //traer el plan de esudio y el ultimo alumno de esa carrera con ese plan de estudios
         $planEstudio = getLastThing("planEstudio","CarreraId",$data["Carrera"],"PlanEstudioId");
-        $carrera = selectSicoes("Carrera","CarreraId",$data["Carrera"])[0];
 
         //Edad, Matricula y el plan de estudio
         $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["AñoNacimiento"]));
@@ -126,7 +125,7 @@ class FormController extends Controller
             DB::table('debit')->insert(
                 ['concept' => 'Pago de colegiatura',
                  'amount' => 1950.00,
-                 'admin_id'=> 3,
+                 'admin_id'=> 2,
                  'id_alumno'=>$current_user->id_alumno,
                  'created_at'=>$mytime->toDateTimeString(),
                  'updated_at'=>$mytime->toDateTimeString()]

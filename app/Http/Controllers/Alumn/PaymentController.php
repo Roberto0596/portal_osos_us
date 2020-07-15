@@ -42,10 +42,16 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => 71*100,
+                          'quantity'=>1);
+      array_push($item_array, $commission);
 
       try
       {
@@ -95,10 +101,39 @@ class PaymentController extends Controller
           $value->save();
       }
 
-      $current_user->inscripcion = 3;
-      $current_user->save();
-      session()->flash("messages","success|Se realizo con exito su pago, ahora elija su carga");
-      return redirect()->route("alumn.charge");
+      $inscripcionData = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");
+
+      //verificamos que es un alumno nuevo y no se esta inscribiendo
+      if (!$inscripcionData)
+      {
+        //traemos la matricula para el alumno que acaba de pagar
+        $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
+        updateByIdAlumn($current_user->id_alumno,"Matricula",$enrollement);
+        $current_user->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
+        $semester = 1;
+      } 
+      else
+      {
+        $semester = $inscripcionData["Semestre"];
+      }   
+
+      //inscribimos al alumno despues de pagar
+      $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
+
+      if (inscribirAlumno($inscription))
+      {
+        $current_user->inscripcion = 3;
+        $current_user->save();
+        session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
+        return redirect()->route("alumn.charge");
+      }
+      else
+      {
+        $current_user->inscripcion = 4;
+        $current_user->save();
+        session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
+        return redirect()->route("alumn.charge");
+      }
   }
 
   public function pay_cash(Request $request)

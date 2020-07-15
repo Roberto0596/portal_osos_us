@@ -12,7 +12,7 @@
 
         <div class="col-sm-6">
 
-          <h1>Elige tu carga academica</h1>
+          <h1>Esta sera tu carga academica</h1>
 
         </div>
 
@@ -40,7 +40,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">Puedes Elegir Las Clases Que Quieres LLevar En Este Semestre</h3>
+        <h3 class="card-title">Para dar de baja una materia debes comunicarte con servicios escolares</h3>
 
       </div>
       
@@ -91,7 +91,7 @@
 
                     <div class="icheck-success d-inline">
 
-                      <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}">
+<!--                       <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}"> -->
 
                       <label for="{{$key}}">
                           {{$value["Nombre"]}}

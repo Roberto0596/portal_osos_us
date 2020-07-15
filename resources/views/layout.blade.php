@@ -75,7 +75,7 @@
                 var timeout = setTimeout(() => 
                 {
                     swal.close()
-                }, 3000);
+                }, 8000);
                 swal.fire({
                     title: "{{ $fmessage }}",
                     text: "",

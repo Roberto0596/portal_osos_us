@@ -138,6 +138,7 @@ class UserController extends Controller
             'lastname'=>'required'
         ]);
 
+        //cerrar cualquier session que haya abierta.
         if (Auth::guard("alumn")->check())
         {
             Auth::guard('alumn')->logout();
