@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h4>Aqui se generará los pdf</h4>
-</body>
-</html>
+@extends('Website.main')
+
+@section('main-content')
+
+<div class="back2">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<a class="btn btn-success" href="{{route('home.load')}}">LLenar Tabla</a>
+			</div>
+			<div class="col-md-3">
+				<a class="btn btn-success" href="{{route('home.generate')}}">Generar grupos</a>
+			</div>
+			<div class="col-md-3">
+				<a class="btn btn-success" href="{{route('home.pdf')}}">Imprimir</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@endsection

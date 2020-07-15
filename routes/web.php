@@ -241,12 +241,30 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'as' => 'user.showPayementDetails'
 			]);
 
-			
+			Route::get('/generateGroups', [
+		        'uses' => 'PendingsController@generateGroups', 
+		        'as' => 'generate'
+		    ]);
 
-			
-			
+			Route::get('/load-data',[
+				'uses' => 'PendingsController@loadData', 
+				'as' => 'load'
+			]);
 
-			
+			Route::get('/print/pdf',[
+				'uses' => 'PendingsController@print', 
+				'as' => 'pdf'
+			]);
+
+			Route::get('/generate-pdf',[
+				'uses' => 'PendingsController@generatePdf', 
+				'as' => 'pdfGenerate'
+			]);	
+
+			Route::get('/elete-groups',[
+				'uses' => 'PendingsController@deleteGroups', 
+				'as' => 'deleteGroups'
+			]);		
 		});
   	});
 });
@@ -388,19 +406,4 @@ Route::group(['namespace' => 'Website'],function()
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
     ]);
-
-    Route::get('/getPassword', [
-        'uses' => 'PendingsController@getPassword', 
-        'as' => 'home.password'
-    ]);
-
-	Route::get('/load-data',[
-		'uses' => 'PendingsController@loadData', 
-		'as' => 'load'
-	]);
-
-	Route::get('/generate-pdf',[
-		'uses' => 'PendingsController@generatePdf', 
-		'as' => 'pdfGenerate'
-	]);
 });

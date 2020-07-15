@@ -17,6 +17,8 @@ class CreateTablePendings extends Migration
             $table->bigIncrements('id');
             $table->string('enrollment');
             $table->string('password');
+            $table->integer('PlanEstudioId');
+            $table->integer('EncGrupoId');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

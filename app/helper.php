@@ -12,6 +12,15 @@ function ConectSqlDatabase()
 	return $link;
 }
 
+function getGroups($table, $field)
+{
+  $link = new \PDO("mysql:host=localhost;dbname=portal","root","");
+  $link->exec("set names utf8");
+  $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
+  $stmt->execute();
+  return $stmt->fetchAll();
+}
+
 //este metodo servira para trarnos el periodo actual o en curso
 function selectCurrentPeriod()
 {
@@ -77,7 +86,6 @@ function getLastThing($table_name,$item,$value,$orderby)
     return $stmt->fetch();
     $stmt = null;
 }
-
 
 //metodo default para hacer consultas a la base de datos de sicoes
 function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
@@ -429,5 +437,36 @@ function generateCarnet($planEstudioId)
   $first = substr($date["year"], -2);
   $matricula = $first."-".$carrera["Clave"]."-".$lastDate;
   return $matricula;
+}
+
+function getEncGrupo()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT Nombre FROM EncGrupo");
+  $stmt->execute();
+  $nombre = $stmt->fetchAll();
+  return $nombre;
+  $stmt = null;
+}
+
+function agruparPorSalon($PlanEstudioId,$EncGrupoId)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Nombre, a.Matricula, g.Nombre as Grupo from Alumno as a inner join PlanEstudio as p on a.PlanEstudioId = p.PlanEstudioId inner join EncGrupo as g on g.PlanEstudioId = p.PlanEstudioId where p.PlanEstudioId = :PlanEstudioId and g.EncGrupoId = :EncGrupoId and a.Baja = 0;");
+  $stmt->bindParam(":PlanEstudioId", $PlanEstudioId, PDO::PARAM_STR);
+  $stmt->bindParam(":EncGrupoId", $EncGrupoId, PDO::PARAM_STR);
+  $stmt->execute();
+  $nombre = $stmt->fetchAll();
+  return $nombre;
+  $stmt = null;
+  
+}
+
+
+function getInscriptionData($AlumnoId)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT InscripcionId,Semestre,EncGrupoId from Inscripcion as i inner join Alumno as a on i.AlumnoId = a.AlumnoId where a.AlumnoId = :AlumnoId and i.Baja = 0 and a.Baja = 0;");
+    $stmt->bindParam("AlumnoId",$AlumnoId,PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+    $stmt = null;
 }
 

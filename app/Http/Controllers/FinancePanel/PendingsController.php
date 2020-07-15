@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Website;
+namespace App\Http\Controllers\FinancePanel;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -59,7 +59,15 @@ class PendingsController extends Controller
 
     public function generatePdf()
     {
-        return view('Website\homepdf');
+        return view('FinancePanel.temp.homepdf');
+    }
+
+    public function deleteGroups()
+    {
+        session()->forget("data");
+        session()->forget("index");
+        session()->flash("messages","info|Se Borraron los grupos");
+        return redirect()->back();
     }
 
     public function print()
@@ -67,9 +75,9 @@ class PendingsController extends Controller
         if (session()->has("data"))
         {     
             $data = session()->get("data");
-            dd($data);  
-            $html = view('temp.index',
-            ['alumn' => $current_user,'data'=>$data[0]])->render();
+            $index = session()->get("index");
+
+            $html = view('FinancePanel.temp.index',['data'=>$data[$index]])->render();
             
             $namefile = 'Contraseñas'.time().'.pdf'; 
             $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -79,10 +87,10 @@ class PendingsController extends Controller
             $fontData = $defaultFontConfig['fontdata'];
             $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
-            $index = session()->get("index")+1;
+            $newIndex = $index + 1;
             session()->forget("index");
-            session(["index"=>$index]);
-            
+            session(["index"=>$newIndex]);
+
             $mpdf->SetDisplayMode('fullpage');
             $mpdf->WriteHTML($html);
             $mpdf->Output($namefile,"I"); 
@@ -96,7 +104,7 @@ class PendingsController extends Controller
 
     public function generateGroups(Request $request)
     {
-        if (!session()->has("data"))
+        if (!session()->has("data") && DB::table('pendings')->count())
         {
             $current_user = Auth::guard("alumn")->user(); 
             $pendings = Pending::all();
@@ -141,7 +149,6 @@ class PendingsController extends Controller
         }
         else
         {
-            session(["data",$data,"index" => $index]);
             session()->flash("messages","info|ya se habian creado los grupos");
             return redirect()->back(); 
         }
