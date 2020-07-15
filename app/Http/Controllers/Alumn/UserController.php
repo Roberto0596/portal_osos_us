@@ -67,9 +67,14 @@ class UserController extends Controller
             $query = [["enrollment","=",$matricula],["password","=",$password]];
             $validate = Pending::where("enrollment","=",$matricula)->get();
 
-            if ($validate[0].isEmpty())
+            if ($validate->isEmpty())
             {
                 return view('Alumn.account.steps')->with(["step"=>1,"error"=>"Esta matricula no existe, si no la recuerda favor de comunicarse a servicios escolares"]);
+            }
+
+            if($validate[0]->password != $password)
+            {
+                return view('Alumn.account.steps')->with(["step"=>1,"error"=>"Esa no es la contraseña asignada para usted"]);
             }
 
             $data = $data[0];
