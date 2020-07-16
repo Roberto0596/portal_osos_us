@@ -6,7 +6,7 @@
 
     <div class="flex-content">
 
-        <div class="card"  style="width: 40%;height: 60vh; border-radius: 22px;">
+        <div class="card box-enrollement">
 
             @if($step==1) 
 

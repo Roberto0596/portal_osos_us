@@ -660,6 +660,23 @@ td{
     text-transform: uppercase;
 }
 
+.box-enrollement
+{
+    width: 40%;
+    height: 60vh;
+    border-radius: 
+    22px;
+}
+
+@media (max-width: 992px)
+{
+  .box-enrollement
+  {
+    width: 80%;
+    height: 60vh;
+  }
+}
+
 
 
 
