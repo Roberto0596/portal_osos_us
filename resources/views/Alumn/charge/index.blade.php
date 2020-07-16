@@ -20,9 +20,7 @@
 
           <ol class="breadcrumb float-sm-right">
 
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-
-            <li class="breadcrumb-item active">Carga academica</li>
+            <button class="btn btn-success buttom-custom" id="print">Imprimir</button>
 
           </ol>
 
@@ -141,5 +139,11 @@
   </section>
 
 </div>
+
+<script>
+  $("#print").click(function(){
+    window.print();
+  });
+</script>
 
 @stop

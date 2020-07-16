@@ -554,11 +554,13 @@
                                                 <label for="Carrera" class="control-label">Carrera</label>
                                                 <select id="Carrera" fieldname="Carrera" name="Carrera" isnullable="si" class="form-control " disabled >
                                                     @if ($data != null)
+
                                                     @php
-                                                    $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
-                                                    $data_carrer = selectSicoes("Carrera","CarreraId",$data_studio[0]["CarreraId"]);
+                                                        $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
+                                                        $data_carrer = selectSicoes("Carrera","CarreraId",$data_studio[0]["CarreraId"]);
                                                     @endphp
-                                                    <option value="{{ $data_studio[0]["CarreraId"]}}" disabled="" selected="">{{$data_carrer[0]['Nombre']}}</option>
+
+                                                    <option value="{{ $data_studio[0]['CarreraId']}}" disabled="" selected="">{{$data_carrer[0]['Nombre']}}</option>
                                                     @else
                                                     <option value="" disabled="" selected="">Seleccionar</option>
                                                     @endif

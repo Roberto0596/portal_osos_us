@@ -528,3 +528,11 @@ function obtenerGrupo($semestre,$planEstudioId)
   $stmt = null;
 }
 
+function getActiveCarrer()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from Carrera where CarreraId <> 8 and CarreraId <> 4 and CarreraId <> 7;");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+

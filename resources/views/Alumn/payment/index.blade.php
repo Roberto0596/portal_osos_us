@@ -43,7 +43,7 @@
 
   <section class="content">
 
-    <div class="card card-success" style="height: 75vh;">
+    <div class="card card-success" style="height: 80vh;">
 
       <div class="card-header">
 
@@ -94,7 +94,7 @@
           
         </div>
 
-        <div class="row" id="hidden-2">
+        <div class="row" id="hidden-2" style="margin-top: -50px;">
           
           <div class="row">
 
