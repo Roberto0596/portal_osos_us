@@ -60,6 +60,18 @@
     {!! htmlScriptTagJsApi() !!}
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
+    <!-- Preloader -->
+
+    <div id="preloader">
+
+        <div class="preload-content">
+
+            <div id="original-load"></div>
+
+        </div>
+
+    </div>
+    
     @yield('content')
     <script>
         $(document).ready(function () 

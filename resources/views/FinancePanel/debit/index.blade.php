@@ -92,7 +92,7 @@
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 
-        <table class="table table-bordered table-hover tableDebits">
+        <table class="table table-bordered table-hover dt-responsive tableDebits">
 
           <thead>
 
