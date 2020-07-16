@@ -166,7 +166,7 @@
 
                                                 <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
 
-                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2" readonly>
+                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2">
 
                                                 </select>
 
