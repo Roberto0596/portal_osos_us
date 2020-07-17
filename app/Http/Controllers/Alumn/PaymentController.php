@@ -119,15 +119,24 @@ class PaymentController extends Controller
 
       //inscribimos al alumno despues de pagar
       $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
-
-      if (inscribirAlumno($inscription))
+      try
       {
-        $current_user->inscripcion = 3;
-        $current_user->save();
-        session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
-        return redirect()->route("alumn.charge");
+        if (inscribirAlumno($inscription))
+        {
+          $current_user->inscripcion = 3;
+          $current_user->save();
+          session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
+          return redirect()->route("alumn.charge");
+        }
+        else
+        {
+          $current_user->inscripcion = 4;
+          $current_user->save();
+          session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
+          return redirect()->route("alumn.charge");
+        }
       }
-      else
+      catch(\Exception $e)
       {
         $current_user->inscripcion = 4;
         $current_user->save();

@@ -517,7 +517,7 @@ function getDateCustom()
   date_default_timezone_set('America/Hermosillo');
   $date = date('Y-m-d');
   $hour = date('H:i:s');
-  return $date.' '.$hour;
+  return $date.'T'.$hour;
 }
 
 function obtenerGrupo($semestre,$planEstudioId)
