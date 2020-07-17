@@ -137,7 +137,7 @@
                                                 <label class="control-label">Localidad</label>
 
                                                 <input id="Localidad" name="Localidad" class="form-control capitalize"
-                                                isnullable="si" placeholder="Ingrese su localidad" required>
+                                                isnullable="si" placeholder="Ingrese su localidad">
 
                                             </div>
 
@@ -345,7 +345,7 @@
 
                                             <div class="form-group" >
                                                 <label class="control-label"><output></output>Alergias</label>
-                                                <input id="Alergias" name="Alergias"  isnullable="si" id="descAlergia" maxlength="100" type="text" class="form-control capitalize"          placeholder="Especifique su alergia">
+                                                <input id="Alergias" name="Alergias"  isnullable="si" id="descAlergia" maxlength="100" type="text" class="form-control capitalize" placeholder="Especifique su alergia">
                                             </div>
 
                                         </div>
@@ -700,8 +700,8 @@
 
                                                 <label class="control-label">Puesto</label>
 
-                                                <input id="Puesto" name="Puesto" fieldname="Puesto" maxlength="100" type="text" disabled  class="form-control"
-                                                isnullable="si" placeholder="Ingrese el puesto">
+                                                <input id="Puesto" name="Puesto" maxlength="100" type="text"  class="form-control"
+                                                isnullable="si" placeholder="Ingrese el puesto" readonly>
 
                                             </div>
 
@@ -713,9 +713,9 @@
 
                                                 <label class="control-label">Sueldo mensual del alumno</label>
 
-                                                <input type="text" disabled id="SueldoMensualAlumno"  
+                                                <input type="text" id="SueldoMensualAlumno"  
                                                 class="form-control" name="SueldoMensualAlumno"
-                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno">
+                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno" readonly>
 
                                             </div>
                                             

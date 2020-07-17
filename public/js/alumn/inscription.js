@@ -1,28 +1,30 @@
 //Sirve para habilitar y deshabilitar campos dependiendo la opcion que seleccionen
-$("#trabajaactualmente").change( function()
+$("#TrabajaActualmente").change(function()
 {
-  if($(this).val() === "1")
+  var flag = $(this).val();
+  if( flag == "1")
   {
-    $("#Puesto").prop("disabled",false);
-    $("#SueldoMensualAlumno").prop("disabled",false);
+    $("#Puesto").removeAttr("readonly");
+    $("#SueldoMensualAlumno").removeAttr("readonly");
 
   }
   else
   {
-    $("#Puesto").prop("disabled",true);
-    $("#SueldoMensualAlumno").prop("disabled",true);
+    $("#Puesto").attr("readonly","readonly");
+    $("#SueldoMensualAlumno").attr("readonly","readonly");
   }
 });
 
-$("#transporteuniversidad").change(function()
+$("#TransporteUniversidad").change(function()
 {
+  var flag = $(this).val();
   if($(this).val() === "1")
   {
-    $("#transporte").prop("disabled",false);
+    $("#Transporte").removeAttr("readonly");
   }
   else
   {
-    $("#transporte").prop("disabled",true);   
+    $("#Transporte").attr("readonly","readonly");   
   }
 });     
 

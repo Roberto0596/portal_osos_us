@@ -157,10 +157,17 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => 93*100,
+                          'quantity'=>1);
+
+      array_push($item_array, $commission);
 
       try
       {
@@ -237,10 +244,17 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => 15*100,
+                          'quantity'=>1);
+
+      array_push($item_array, $commission);
 
       //crear la orden
       try

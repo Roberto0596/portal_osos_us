@@ -83,33 +83,6 @@ $(document).ready(function()
             var anim_dur = $(this).data('duration');
             $(this).css('animation-duration', anim_dur);
         });
-
-        $('.instagram-slides').owlCarousel({
-            items: 7,
-            margin: 0,
-            loop: true,
-            autoplay: true,
-            autoplayHoverPause: true,
-            autoplayTimeout: 2000, // Autoplay Timeout 1s = 1000ms
-            smartSpeed: 2000,
-            responsive: {
-                0: {
-                    items: 2
-                },
-                480: {
-                    items: 3
-                },
-                576: {
-                    items: 4
-                },
-                992: {
-                    items: 5
-                },
-                1500: {
-                    items: 7
-                }
-            }
-        });
     }
 
     // :: Sticky Active Code
@@ -147,11 +120,6 @@ $(document).ready(function()
     $("a[href='#']").on('click', function ($) {
         $.preventDefault();
     });
-
-    // :: WOW Active Code
-    if ($window.width() > 767) {
-        new WOW().init();
-    }
 
 })(jQuery);
 

@@ -245,7 +245,7 @@
 
         <div class="row">
 
-          <div class="col-md-5">
+          <div class="col-md-9">
 
               <p style="font-size: 30px">Total: <span>{{$total}}</span></p>
 
@@ -253,7 +253,7 @@
 
          
 
-          <div class="col-md-5">
+          <div class="col-md-3">
 
             <div class="float-right">
 

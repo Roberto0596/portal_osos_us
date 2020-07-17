@@ -38,7 +38,7 @@ class ChargeController extends Controller
         ]);
 
         session()->flash("messages","success|Terminaste tu registro, felicidades, eres alumno");
-        return redirect()->route("alumn.home");
+        return redirect()->route("alumn.documents");
     }
 
     public function cleanArray($array,$indexstoclean,$rounds,$flag,$mode=true)
