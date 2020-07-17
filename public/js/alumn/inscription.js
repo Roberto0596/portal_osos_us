@@ -276,3 +276,35 @@ function getEstados(elementName, EstadoId)
       }
   });
 }
+
+$('.date').inputmask({"mask": "99-99-9999", "placeholder": 'dd-mm-yyyy'});
+
+$(".date").blur(function()
+{
+  var text = $(this).val();
+  var aux = text.split("-");
+  console.log(aux);
+  if(parseInt(aux[1])>12)
+  {
+    if(aux[2]=="yyyy")
+    {
+      $(this).val(aux[0]+"-12-1999");
+      toastr.warning("Solo existen 12 meses en el año y no especificaste un año de nacimiento");
+      $(this).focus();
+    }
+    else
+    {
+      $(this).val(aux[0]+"-12-"+aux[2]);
+      toastr.warning("Solo existen 12 meses en el año");
+    }
+  }
+  else
+  {
+    if(aux[2]=="yyyy")
+    {
+      $(this).val(aux[0]+"-"+aux[1]+"-1999");
+      toastr.warning("no especifico un año de nacimiento");
+      $(this).focus();
+    }
+  } 
+});

@@ -233,10 +233,11 @@
                                             value="{{ $data['Curp'] == null ? '' : $data['Curp'] }}"  class="form-control" placeholder="Ingrese su curp"  />
                                         </div>
                                     </div>
+
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="control-label"><output></output>Año de Nacimiento</label>
-                                            <input fieldname="Año de Nacimiento"  isnullable="no" maxlength="4" minlength="4" type="text"  class="form-control" disabled
+                                            <input fieldname="Año de Nacimiento"  isnullable="no" maxlength="4" minlength="4" type="text"  class="form-control date" disabled
                                             value="{{ $data['FechaNacimiento'] == null ? '' : $data['FechaNacimiento'][0].$data['FechaNacimiento'][1].$data['FechaNacimiento'][2].$data['FechaNacimiento'][3] }}"
                                             placeholder="Ej. 1999"  />
                                         </div>
@@ -370,6 +371,7 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="genero" data-alias="genero" class="control-label">Género</label>

@@ -281,7 +281,7 @@
 
                                             <div class="form-group">
                                                 <label class="control-label">Fecha de nacimiento</label>
-                                                <input type="date"  isnullable="no" class="form-control" 
+                                                <input type="text"  isnullable="no" class="form-control date" 
                                                 id="AñoNacimiento" name="AñoNacimiento" required>
                                             </div>
 
