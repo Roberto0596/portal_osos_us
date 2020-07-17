@@ -22,7 +22,7 @@
           <div class="ps-brand"><img src="{{asset('img/temple/spei_brand.png')}}" alt="Banorte"></div>
           <div class="ps-amount">
             <h3>Monto a pagar</h3>
-            <h2>$ {{$order["total"]}} <sup>MXN</sup></h2>
+            <h2>$ {{number_format(($order["total"]/100),2)}} <sup>MXN</sup></h2>
             <p>Utiliza exactamente esta cantidad al realizar el pago.</p>
           </div>
         </div>
