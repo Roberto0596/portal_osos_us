@@ -39,40 +39,58 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
   		Route::group(['middleware' => ['alumn.user']
 		], function()
 		{
+			Route::group(['middleware'=>['candidate']
+			], function()
+			{
+				Route::get('/documents',[
+					'uses'=>'PdfController@index', 
+					'as' => 'documents'
+				]);
 
-			Route::get('/documents',[
-				'uses'=>'PdfController@index', 
-				'as' => 'documents'
-			])->middleware('candidate');
+				Route::put('/documents/show',[
+					'uses'=>'PdfController@showDocuments', 
+					'as' => 'documents.show'
+				]);
 
-			Route::put('/documents/show',[
-				'uses'=>'PdfController@showDocuments', 
-				'as' => 'documents.show'
-			]);
+				Route::get('pdf/cedula/{document?}',[
+					'uses'=>'PdfController@getGenerarCedula', 
+					'as' => 'cedula'
+				]);
 
-			Route::get('pdf/cedula/{document?}',[
-				'uses'=>'PdfController@getGenerarCedula', 
-				'as' => 'cedula'
-			]);
+				Route::get('pdf/generar/{document?}',[
+					'uses'=>'PdfController@getGenerarConstancia', 
+					'as' => 'constancia'
+				]);
 
-			Route::get('pdf/generar/{document?}',[
-				'uses'=>'PdfController@getGenerarConstancia', 
-				'as' => 'constancia'
-			]);
+				Route::post('pdf/generar/{tipo}/{accion}/{pago}',[
+					'uses'=>'PdfController@getGenerarFicha', 
+					'as' => 'fichas'
+				]);
 
-			Route::post('pdf/generar/{tipo}/{accion}/{pago}',[
-				'uses'=>'PdfController@getGenerarFicha', 
-				'as' => 'fichas'
-			]);
+				Route::get('/user', [
+			        'uses' => 'UserController@index', 
+			        'as' => 'user'
+			    ]);
+
+			    Route::post('/user/save/{user?}', [
+			        'uses' => 'UserController@save', 
+			        'as' => 'user.save'
+			    ]);
+
+			    Route::get('/debits', [
+			        'uses' => 'DebitController@index', 
+			        'as' => 'debit'
+			    ]);
+
+			    Route::put('/debit/show', [
+			        'uses' => 'DebitController@show', 
+			        'as' => 'debit.show'
+			    ]);
+			});
 
 			Route::get('/', [
 		        'uses' => 'HomeController@index', 
 		        'as' => 'home'
-		    ]);
-
-		    Route::post('/user/save/{user?}', [
-		        'uses' => 'UserController@save', 
-		        'as' => 'user.save'
 		    ]);
 
 		   	Route::group(["middleware" => ["inscription"]
@@ -152,11 +170,6 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'as' => 'charge.save'
 			    ]);
 			});
-
-		  	Route::get('/user', [
-		        'uses' => 'UserController@index', 
-		        'as' => 'user'
-		    ])->middleware('candidate');
 
 		    Route::get('/pay-cash-oxxo', [
 				        'uses' => 'PaymentController@pay_cash_oxxo', 

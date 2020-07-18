@@ -47,13 +47,10 @@
             <td rowspan="2"  class="logo">
                 <img src="{{ asset('img/logo.jpg') }}" alt="" width="60" height="60" >
             </td>
-<<<<<<< HEAD
+
             <th class='titulo1' width="100%"><?php
-                echo localtime(time(),true);
+                echo date("Y-m-d")
             ?>
-=======
-            <th class='titulo1' width="100%">
->>>>>>> 033892c4a787b72a32ff885a6e00b46c82766073
             </th>
 
         </tr>

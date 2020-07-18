@@ -66,6 +66,11 @@ return [
             'driver' => 'session',
             'provider' => 'library_users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin_users',
+        ],
     ],
 
     /*
@@ -107,6 +112,11 @@ return [
         ],
 
         'library_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AdminUsers\AdminUser::class,
+        ],
+
+        'admin_users' => [
             'driver' => 'eloquent',
             'model' => App\Models\AdminUsers\AdminUser::class,
         ],

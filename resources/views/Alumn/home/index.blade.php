@@ -4,6 +4,8 @@
 
 @php
   $box = $status?"bg-success":"bg-danger";
+  $boxDocuments = count($documents) == 0?"bg-default":"bg-primary";
+  $boxDebits = $debits == 0?"bg-default":"bg-warning";
 @endphp
 
 <div class="content-wrapper">
@@ -44,7 +46,7 @@
 
         <div class="row">
 
-          <div class="col-lg-3 col-6">
+          <div class="col-md-3 col-sm-12">
 
             <div class="small-box {{$box}}">
 
@@ -63,6 +65,62 @@
               </div>
 
               <a href="{{route('alumn.form')}}" class="small-box-footer">Incribirme<i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+            
+          </div>
+
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box {{$boxDocuments}}">
+
+              <div class="inner">
+
+                <h3>Documentos</h3>
+
+                <p>{{count($documents) == 0?"No hay documentos":"tienes algunos documentos"}}</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fa fa-user"></i>
+
+              </div>
+
+              @if(count($documents) != 0)
+              <a href="{{route('alumn.documents')}}" class="small-box-footer">Imprimir<i class="fas fa-arrow-circle-right"></i></a>
+              @else
+              <a href="*" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
+              @endif
+
+            </div>
+            
+          </div>
+
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box {{$boxDebits}}">
+
+              <div class="inner">
+
+                <h3 style="color: white !important">Adeudos</h3>
+
+                <p style="color:white !important">Tienes: {{$debits}} adeudos</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fa fa-user"></i>
+
+              </div>
+
+              @if($debits != 0)
+              <a href="{{route('alumn.debit')}}" class="small-box-footer">Ver<i class="fas fa-arrow-circle-right"></i></a>
+              @else
+              <a href="*" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
+              @endif
 
             </div>
             

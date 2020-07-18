@@ -16,6 +16,13 @@
 
                 </div>
 
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{route('alumn.home')}}">Home</a></li>
+                    <li class="breadcrumb-item active">Inscripción</li>
+                  </ol>
+                </div>
+
             </div>
 
         </div>
@@ -26,18 +33,13 @@
         
         <div class="card">
 
-
             <div class="card-body">
-
 
                 <div class="container">
 
-
                     <div class="col-md-12 ">
 
-
                         <div class="form-register_header">
-
 
                             <ul class="progressbar">
                                 <li class="progressbar-option active"> Datos Personales I</li>

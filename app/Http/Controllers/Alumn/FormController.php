@@ -15,7 +15,6 @@ class FormController extends Controller
     public function index()
     {
         $estados = getItemClaveAndNamesFromTables("Estado");
-        $municipios = getItemClaveAndNamesFromTables("Municipio");
         try 
         {
             $currentId = Auth::guard('alumn')->user()->id_alumno;
@@ -23,7 +22,6 @@ class FormController extends Controller
             $inscripcion = getLastThing("Inscripcion","AlumnoId",$currentId,"InscripcionId");
             $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"]);
             return view('Alumn.form.index')->with(["estados"=> $estados , 
-                                                "municipios"=> $municipios,
                                                 "data"=>$data, "currentId"=>$currentId,
                                                 "group" => $group]);
         } 

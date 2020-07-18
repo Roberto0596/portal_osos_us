@@ -70,6 +70,18 @@
                     </li>
 
                     <li class="nav-item">
+
+                        <a href="{{route('alumn.debit')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-credit-card"></i>
+                            <p>
+                                Adeudos
+                            </p>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{route('alumn.user')}}" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
