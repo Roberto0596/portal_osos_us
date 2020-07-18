@@ -64,12 +64,6 @@
     color: white;
 }
 
-
-.nav-custom > .navbar-nav > .nav-item > a:link, a:visited
-{
-    color: white !important;
-}
-
 .nav-custom > .navbar-nav > .nav-item > a:hover
 {
     color: green !important;
@@ -674,6 +668,21 @@ td{
   }
 }
 
+@media (max-width: 993px)
+{
+  .login-form
+  {
+    width: 85%;
+    margin-left: 7%;
+    margin-top: 5vh;
+  }
+
+  .feed
+  {
+    margin-left: 5% !important;
+  }
+}
+
 #preloader {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -748,7 +757,20 @@ td{
 
 
 
+.link-custom:link
+{
+    color: white !important;
+}
 
+.link-custom:visited
+{
+    color: white !important;
+}
+
+.link-footer
+{
+    color: blue !important;
+}
 
 
 

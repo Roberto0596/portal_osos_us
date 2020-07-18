@@ -1,15 +1,16 @@
 @extends('layout')
 
 @section('content')
+
 <div class="content-custom">
 
     @include('Website.header')
 
-    <div class="back2" id="back2">
+    <div class="back2">
 
         <div class="row" style="margin: 1%; width: 100%">
 
-            <div class="col-md-8">
+            <div class="col-lg-8 col-md-12">
 
                 <div class="row">
 
@@ -69,17 +70,11 @@
 
                     </div>
 
-                    <div class="col-md-12">
-
-                        <img src="{{asset('img/temple/unisierra.png')}}" class="osos_alfa">
-
-                    </div>
-
                 </div>
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-12">
 
                 <div class="login-form">
 
@@ -109,7 +104,7 @@
 
                             <label class="field a-field a-field_a2">
 
-                                <input type="password" class="field__input a-field__input" placeholder="Ingresa tu contraseña" id="password" name="password" required>
+                                <input type="password" class="field__input a-field__input" placeholder="Ingresa tu contraseña" name="password" required>
 
                                 <span class="a-field__label-wrap">
 

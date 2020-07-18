@@ -8,10 +8,10 @@
 	  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
 		      <li class="nav-item active">
-		        <a class="nav-link" href="{{route('home')}}">Inicio</a>
+		        <a class="nav-link link-custom" href="{{route('home')}}">Inicio</a>
 		      </li>
 		      <li class="nav-item active">
-		        <a class="nav-link" href="{{route('alumn.home')}}">Plan de estudios</a>
+		        <a class="nav-link link-custom" href="{{route('alumn.home')}}">Plan de estudios</a>
 		      </li>
 		    </ul>
 	  	</div>
