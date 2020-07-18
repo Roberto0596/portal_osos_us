@@ -69,7 +69,7 @@ $(document).ready(function()
         event.preventDefault();
     });
 
-    $(".button-sumbit").click(function(event){
+    $("#button-sumbit").click(function(event){
         var route = 'form/save';
         var token = $('#token').val();
         var data = new FormData();

@@ -1004,7 +1004,7 @@
                                 <div class="step_controls">
                                     <button type="button" class="btn btn-warning button-custom button-back"
                                     data-to_step="5" data-step="6">Volver</button> 
-                                    <button type="button"  class="btn btn-warning button-custom">Enviar</button>
+                                    <button type="button" id="button-sumbit"  class="btn btn-warning button-custom">Enviar</button>
                                 </div>
                             </div>
                                                             

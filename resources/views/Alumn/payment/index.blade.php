@@ -85,7 +85,7 @@
                   <td>{{$value->concept}}</td>
                   <td>{{selectAdmin($value->admin_id)->name}}</td>
                   <td>{{$value->created_at}}</td>
-                  <td>{{$value->amount}}</td>
+                  <td>${{number_format($value->amount,2)}}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -247,7 +247,7 @@
 
           <div class="col-md-9">
 
-              <p style="font-size: 30px">Total: <span>{{$total}}</span></p>
+              <p style="font-size: 30px">Total: <span>${{number_format($total,2)}}</span></p>
 
           </div>
 

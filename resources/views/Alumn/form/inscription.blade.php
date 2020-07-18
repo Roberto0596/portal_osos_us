@@ -284,7 +284,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Fecha de nacimiento</label>
                                                 <input type="text"  isnullable="no" class="form-control date" 
-                                                id="AñoNacimiento" name="AñoNacimiento" required>
+                                                id="FechaNacimiento" name="FechaNacimiento" required>
                                             </div>
 
                                         </div>
@@ -326,7 +326,7 @@
 
                                                 <label for="tiposangre" data-alias="tiposangre" class="control-label">Tipo de sangre</label>
 
-                                                <select id="TipoSangre" isnullable="no" name="TipoSangre" class="form-control" >
+                                                <select id="TipoSangre" isnullable="no" name="TipoSangre" class="form-control" required>
                                                     <option value="" disabled="" selected="">Seleccionar</option>
                                                     <option value="0">A+</option>
                                                     <option value="1">A-</option>
@@ -373,7 +373,7 @@
 
                                                 <label for="servicioMedico" data-alias="servicioMedico" class="control-label">Servicio Médico</label>
 
-                                                <select id="ServicioMedico" name="ServicioMedico" class="form-control" id="ServicioMedico" isnullable="si">
+                                                <select id="ServicioMedico" name="ServicioMedico" class="form-control" id="ServicioMedico" isnullable="no" required>
                                                     <option value="" disabled="" selected="">Seleccione un item</option>
                                                     <option value="0">IMSS</option>
                                                     <option value="1">ISSSTE</option>
