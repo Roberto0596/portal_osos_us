@@ -21,7 +21,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	        'as' => 'logout'
 	    ]);
 
-	    Route::post('/users/registerAlumn/{user?}',[
+	    Route::post('/users/registerAlumn',[
 	        'uses' => 'UserController@registerAlumn', 
 	        'as' => 'users.registerAlumn'
 	    ]);
@@ -136,9 +136,9 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'as' => 'pay.cash'
 				]);
 
-				Route::post('/pay-stei', [
-				        'uses' => 'PaymentController@pay_stei', 
-				        'as' => 'pay.stei'
+				Route::post('/pay-spei', [
+				        'uses' => 'PaymentController@pay_spei', 
+				        'as' => 'pay.spei'
 				]);
 
 				Route::post('/pay-upload', [
@@ -176,9 +176,9 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'as' => 'pay.oxxo'
 			]);
 
-			Route::get('/pay-cash-stei', [
-				        'uses' => 'PaymentController@pay_cash_stei', 
-				        'as' => 'pay.stei.view'
+			Route::get('/pay-cash-spei', [
+				        'uses' => 'PaymentController@pay_cash_spei', 
+				        'as' => 'pay.spei.view'
 			]);
 		});
   	});

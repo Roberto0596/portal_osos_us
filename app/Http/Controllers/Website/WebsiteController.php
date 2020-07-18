@@ -11,7 +11,7 @@ class WebsiteController extends Controller
 {
 	public function index()
 	{
-		return view('Website.register')->with(["item"=> new User()]);
+		return view('Website.register');
 	}
     public function edit($id)
     {

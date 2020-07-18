@@ -49,7 +49,7 @@ class PaymentController extends Controller
 
       //agregamos la comision bancaria correspondiente.
       $commission = array('name' => 'comision bancaria',
-                          'unit_price' => 71*100,
+                          'unit_price' => floatval((70.89*100)),
                           'quantity'=>1);
       array_push($item_array, $commission);
 
@@ -173,7 +173,7 @@ class PaymentController extends Controller
 
       //agregamos la comision bancaria correspondiente.
       $commission = array('name' => 'comision bancaria',
-                          'unit_price' => 93*100,
+                          'unit_price' => floatval((92.39*100)),
                           'quantity'=>1);
 
       array_push($item_array, $commission);
@@ -232,7 +232,7 @@ class PaymentController extends Controller
       return redirect()->route("alumn.payment.note");
   }
 
-  public function pay_stei(Request $request)
+  public function pay_spei(Request $request)
   {
       //mandamos llamar a la libreria de conekta
       require_once("conekta/Conekta.php");
@@ -260,9 +260,8 @@ class PaymentController extends Controller
 
       //agregamos la comision bancaria correspondiente.
       $commission = array('name' => 'comision bancaria',
-                          'unit_price' => 15*100,
+                          'unit_price' => floatval((14.5*100)),
                           'quantity'=>1);
-
       array_push($item_array, $commission);
 
       //crear la orden
@@ -336,10 +335,11 @@ class PaymentController extends Controller
       \Conekta\Conekta::setApiVersion("2.0.0");
       $order = \Conekta\Order::find($debit[0]->id_order);
       $total = 0;
-      foreach ($order->line_items as $key => $value) {
-          $total=$total+$value->unit_price;
+      foreach ($order->line_items as $key => $value) 
+      {
+        $total=$total+$value->unit_price;
       }
-      
+
       if($method == "oxxo_cash")
       {
         $totalAndReference = array('total' => $total,
@@ -350,7 +350,7 @@ class PaymentController extends Controller
       {
         $totalAndReference = array('total' => $total,
                                 'reference'=>$order->charges[0]->payment_method->receiving_account_number);
-        return view('Alumn.payment.stei_pay')->with(["order"=>$totalAndReference]);
+        return view('Alumn.payment.spei_pay')->with(["order"=>$totalAndReference]);
       }
     }
   }

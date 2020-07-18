@@ -170,7 +170,7 @@
 
               <div class="container-custom">
 
-                  <form method="post" action="{{route('alumn.pay.stei')}}">
+                  <form method="post" action="{{route('alumn.pay.spei')}}">
 
                     {{ csrf_field() }}
 

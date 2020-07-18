@@ -80,7 +80,7 @@
 
 			<div class="card card-custom">
 
-				<form method="post" action="{{route('alumn.users.registerAlumn', $item)}}" style="width: 80%; margin-right: auto; margin-left: auto">
+				<form method="post" action="{{route('alumn.users.registerAlumn')}}" style="width: 80%; margin-right: auto; margin-left: auto">
 
 					{{ csrf_field() }}
 
@@ -94,7 +94,7 @@
 
 								  	<label class="field a-field a-field_a2">
 
-									    <input class="field__input a-field__input" placeholder="Ingrese su nombre" id="name" name="name" required>
+									    <input class="field__input a-field__input" placeholder="Ingrese su nombre" id="name" name="name" required value="{{ old('name') }}">
 
 									    <span class="a-field__label-wrap">
 
@@ -114,7 +114,7 @@
 
 								  	<label class="field a-field a-field_a2">
 
-									    <input class="field__input a-field__input" placeholder="Ingrese su apellido" id="lastname" name="lastname" required>
+									    <input class="field__input a-field__input" placeholder="Ingrese su apellido" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
 
 									    <span class="a-field__label-wrap">
 
@@ -213,6 +213,21 @@
 	</div>
 
 </div>
+
+<script>
+    $(document).ready(function()
+    {
+        @if(isset($error))
+            toastr.warning("{{$error}}");
+        @endif
+
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error('{{$error}}');
+            @endforeach
+        @endif
+    })
+</script>
 
 <script src="{{asset('js/website/home.js')}}"></script>
 

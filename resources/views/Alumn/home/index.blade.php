@@ -6,6 +6,7 @@
   $box = $status?"bg-success":"bg-danger";
   $boxDocuments = count($documents) == 0?"bg-default":"bg-primary";
   $boxDebits = $debits == 0?"bg-default":"bg-warning";
+  $styleBox = $debits == 0?"style='color:white;'":"";
 @endphp
 
 <div class="content-wrapper">
@@ -91,7 +92,7 @@
               @if(count($documents) != 0)
               <a href="{{route('alumn.documents')}}" class="small-box-footer">Imprimir<i class="fas fa-arrow-circle-right"></i></a>
               @else
-              <a href="*" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
               @endif
 
             </div>
@@ -104,9 +105,9 @@
 
               <div class="inner">
 
-                <h3 style="color: white !important">Adeudos</h3>
+                <h3 {{$styleBox}}>Adeudos</h3>
 
-                <p style="color:white !important">Tienes: {{$debits}} adeudos</p>
+                <p {{$styleBox}}>Tienes: {{$debits}} adeudos</p>
 
               </div>
 
@@ -119,7 +120,7 @@
               @if($debits != 0)
               <a href="{{route('alumn.debit')}}" class="small-box-footer">Ver<i class="fas fa-arrow-circle-right"></i></a>
               @else
-              <a href="*" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
               @endif
 
             </div>
