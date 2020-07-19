@@ -22,17 +22,17 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	    ]);
 
 	    Route::post('/users/registerAlumn',[
-	        'uses' => 'UserController@registerAlumn', 
+	        'uses' => 'AccountController@registerAlumn', 
 	        'as' => 'users.registerAlumn'
 	    ]);
 
 	    Route::get('/account/first_step',[
-	        'uses' => 'UserController@steps', 
+	        'uses' => 'AccountController@index', 
 	        'as' => 'users.first_step'
 	    ]);
 
 	    Route::post('/account/postStep/{step}',[
-	        'uses' => 'UserController@postSteps', 
+	        'uses' => 'AccountController@save', 
 	        'as' => 'users.postStep'
 	    ]);
 

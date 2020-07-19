@@ -308,3 +308,5 @@ $(".date").blur(function()
     }
   } 
 });
+
+$('.sueldo').mask("#.##0,00", {reverse: true});

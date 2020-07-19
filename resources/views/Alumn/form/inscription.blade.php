@@ -85,7 +85,7 @@
 
                                                 <label class="control-label">Segundo Apellido</label>
 
-                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{$lastnames[1]}}" isnullable="no" required>
+                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{count($lastnames)>1?$lastnames[1]:''}}" isnullable="no" required>
 
                                             </div>
 
@@ -616,7 +616,7 @@
 
                                                 <label class="control-label">Sueldo mensual del tutor</label>
 
-                                                <input step="any" type="number" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control"
+                                                <input type="text" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control sueldo"
                                                  placeholder="Ingrese el sueldo mensual del tutor">
 
                                             </div>
