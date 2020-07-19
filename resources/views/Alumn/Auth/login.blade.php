@@ -118,10 +118,21 @@
 
                         <div class="form-group">
 
-                            <button type="submit" class="btn btn-primary btn-block boton">Entrar</button>
+                            <button type="submit" class="btn btn-primary btn-block boton" style="border-radius: 19px;">Entrar</button>
 
                         </div>
+
+                        <div class="row" style="margin-top: 35px; margin-bottom: -35px;">
+                            <div class="col-md-6">
+                                <p class="parrafo-login text-center">¿Aun no tienes cuenta?</p>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{route('alumn.users.first_step')}}" class="btn btn-success" style="border-radius: 19px; width: 90%; color:white">Activar</a>
+                            </div>
+                        </div>
+
                     </form> 
+
                 </div> 
 
             </div>        

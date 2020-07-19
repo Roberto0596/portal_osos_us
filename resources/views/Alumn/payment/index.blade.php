@@ -53,7 +53,7 @@
 
             <h4>
               <i class="fas fa-globe"></i> Unisierra
-              <small class="float-right">Date: {{date("Y-m-d")}}</small>
+              <small class="float-right">Fecha: {{date("Y-m-d")}}</small>
             </h4>
 
           </div>
@@ -71,7 +71,7 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>concepto</th>
+                <th>Concepto</th>
                 <th>Encargado</th>
                 <th>Fecha</th>
                 <th>Sub total</th>
@@ -257,7 +257,7 @@
 
             <div class="float-right">
 
-              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">no debo eso <i class="fa fa-hand-stop-o"></i></button>
+              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">No debo eso <i class="fa fa-hand-stop-o"></i></button>
 
               <button type="button" class="btn btn-warning" style="border-radius: 20px; display: none;color: white" id="back" ><i class="fa fas  fa-arrow-circle-left" style="color: white !important"></i> Regresar</button>
 

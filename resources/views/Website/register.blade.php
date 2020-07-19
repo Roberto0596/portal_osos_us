@@ -11,7 +11,7 @@
 			<div class="row">
 
 				<div class="col-md-12 osos-title">
-					<h1>Se un Oso Unisierra</h1>
+					<h1 class="feel-title">Se un Oso Unisierra</h1>
 				</div>
 
 				<div class="col-md-12">
@@ -21,11 +21,11 @@
 						<div class="feed_content">
 
 							<div class="feed-header">
-								<h1>encabezado2</h1>
+								<h1>#Inscripciones.</h1>
 							</div>
 
 							<div class="feed-body">
-								<p>Parrafo</p>
+								<p>El módulo de inscripciones ya está disponible. Primero registrate en el portal llenando los datos en el panel derecho; Segundo, accede con tus datos y llena el formulario.</p>
 							</div>
 
 						</div>
@@ -37,11 +37,11 @@
 						<div class="feed_content">
 
 							<div class="feed-header">
-								<h1>encabezado2</h1>
+								<h1>#Re-Inscripciones.</h1>
 							</div>
 
 							<div class="feed-body">
-								<p>Parrafo</p>
+								<p>El módulo de Re-Inscripciones ya está abierto. Si nunca has entrado al portal da Clic en el botón de la esquina “Acceder”  y sigue las instrucciones para activar tu cuenta con el usuario y contraseña que tu TUTOR te entregó.</p>
 							</div>
 
 						</div>
@@ -53,11 +53,11 @@
 						<div class="feed_content">
 
 							<div class="feed-header">
-								<h1>encabezado3</h1>
+								<h1>#Nuevas Formas de Pago</h1>
 							</div>
 
 							<div class="feed-body">
-								<p>Parrafo</p>
+								<p> Ahora puedes pagar tu Inscripción con depósito en el banco, con tu tarjeta de débito/crédito, con transferencia o en Efectivo pagando en OXXO. No olvides que algunos métodos de pago aplican comisión.</p>
 							</div>
 
 						</div>
@@ -197,8 +197,7 @@
 						<div class="col-md-12 col-custom">
 
 							<button type="button" class="btn btn-warning button-custom sent">Ser aspirante</button>
-							<span class="text-center">-O-</span>
-							<a href="{{route('alumn.users.first_step')}}" class="btn btn-success radius">Ya soy estudiante</a>
+							
 						</div>
 
 					</div>
