@@ -40,19 +40,6 @@ class DebitController extends Controller
                 $buttons
             ]);
         }
-
         return response()->json($res);
-    }
-
-    public function edit($id)
-    {
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function save(Request $request, Categories $categorie) 
-    {
     }
 }

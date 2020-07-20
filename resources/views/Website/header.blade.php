@@ -11,7 +11,7 @@
 		        <a class="nav-link link-custom header-link" href="{{route('home')}}">Inicio</a>
 		      </li>
 		      <li class="nav-item active">
-		        <a class="nav-link link-custom header-link" href="{{route('alumn.home')}}">Plan de estudios</a>
+		        <a class="nav-link link-custom header-link" href="http://www.unisierra.edu.mx/oferta_educativa/oferta-educativa.htm" target="_blank">Plan de estudios</a>
 		      </li>
 		    </ul>
 	  	</div>

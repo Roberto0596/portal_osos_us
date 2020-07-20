@@ -100,27 +100,29 @@ class DebitController extends Controller
                     $alumn = User::where("id_alumno","=",$debit->id_alumno)->get()[0];
                     $inscripcionData = getLastThing("Inscripcion","AlumnoId",$alumn->id_alumno,"InscripcionId");
 
-                      //verificamos que es un alumno nuevo y no se esta inscribiendo
-                      if (!$inscripcionData)
-                      {
+                    //verificamos que es un alumno nuevo y no se esta inscribiendo
+                    if (!$inscripcionData)
+                    {
                         //traemos la matricula para el alumno que acaba de pagar
                         $sicoesAlumn = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
                         $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
                         updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
                         $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
                         $semester = 1;
-                      } 
-                      else
-                      {
+                    } 
+                    else
+                    {
                         $semester = $inscripcionData["Semestre"]+1;
-                      }   
+                    }   
 
-                      //inscribimos al alumno despues de pagar
-                      $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$alumn->id_alumno);
-                      $inscribir = inscribirAlumno($inscription);
-                      $alumn->inscripcion=3;
-                      $alumn->save();
-                      addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
+                    //inscribimos al alumno despues de pagar
+                    $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$alumn->id_alumno);
+                    $inscribir = inscribirAlumno($inscription);
+                    $alumn->inscripcion=3;
+                    $alumn->save();
+                    addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
+                    //generamos los documentos de inscripcion
+                    insertInscriptionDocuments($alumn->id);
                 }
 
             }

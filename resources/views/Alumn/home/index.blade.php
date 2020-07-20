@@ -65,7 +65,7 @@
 
               </div>
 
-              <a href="{{route('alumn.form')}}" class="small-box-footer">Inscribirme<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{route('alumn.form')}}" class="small-box-footer">{{!$status?"Inscribirse ":"Ver carga "}}<i class="fas fa-arrow-circle-right"></i></a>
 
             </div>
             

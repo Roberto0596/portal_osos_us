@@ -27,20 +27,4 @@ class HomeController extends Controller
         $total = $debit->count("amount");
         return view('Alumn.home.index')->with(["status"=>$status,'documents'=>$documents,'debits'=>$total]);
 	}
-
-	public function add() 
-	{
-    }
-
-    public function edit($id)
-    {
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function save(Request $request, Categories $categorie) 
-    {
-    }
 }
