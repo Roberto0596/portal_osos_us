@@ -43,7 +43,7 @@
 
                 </li>
                
-                @if(Auth::guard('alumn')->user()->inscripcion < 4)
+                @if(Auth::guard('alumn')->user()->inscripcion < 3)
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>

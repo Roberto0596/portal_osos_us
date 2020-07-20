@@ -85,7 +85,7 @@
 
                                                 <label class="control-label">Segundo Apellido</label>
 
-                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{count($lastnames)>1?$lastnames[1]:''}}" isnullable="no" required>
+                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{count($lastnames)>1?$lastnames[1]:''}}" isnullable="si">
 
                                             </div>
 

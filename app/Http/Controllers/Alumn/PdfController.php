@@ -24,7 +24,7 @@ class PdfController extends Controller
 
         foreach($documents as $key => $value)
         {
-            $buttons="<div class='btn-group'><a class='btn btn-primary' target='_blank' href='".route($value->route,$value)."'  title='Ver datos de pago'>
+            $buttons="<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."'  title='Imprimir'>
             <i class='fa fa-file'></i></a>
             </div>";
 
@@ -76,7 +76,8 @@ class PdfController extends Controller
         
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
-        $mpdf->Output($namefile,"I");      
+        $mpdf->Output($namefile,"I"); 
+        return redirect(Request::url());     
     }
 
     public function getGenerarConstancia(Request $request, Document $document)
@@ -113,7 +114,8 @@ class PdfController extends Controller
        
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
-        $mpdf->Output($namefile,"I");     
+        $mpdf->Output($namefile,"I");   
+        return redirect(Request::url());   
     }
 
     public function getGenerarFicha(Request $request , $tipo,$accion, $pago)

@@ -126,8 +126,8 @@ class AccountController extends Controller
         try
         {
             $user = new User();
-            $user->name = $request->input("name");
-            $user->lastname = $request->input("lastname");
+            $user->name = strtoupper($request->input("name"));
+            $user->lastname = strtoupper($request->input("lastname"));
             $user->email = $request->input("email");
             $user->password = bcrypt($request->input("password"));
             $user->save(); 

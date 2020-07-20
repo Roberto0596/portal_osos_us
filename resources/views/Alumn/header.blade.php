@@ -97,14 +97,14 @@
         processData:false,
         success:function(response)
         {
-          $("#content-notify").empty();
-          $(".count-notify").text(response.length);          
+          $("#content-notify").empty();        
           if (response.length==0)
           {
               $("#content-notify").append("<p style='text-align: center; margin: 5%;'>No hay notificaciones</p>");
           } 
           else
           {
+            $(".count-notify").text(response.length);  
             for (var i = 0; i < response.length; i++) {
               $("#content-notify").append("<a href='/alumn/notify/"+response[i]["route"]+"/"+response[i]["id"]+"' class='dropdown-item'>"+
                 "<i class='fas fa-th mr-2'></i>"+response[i]['text']+

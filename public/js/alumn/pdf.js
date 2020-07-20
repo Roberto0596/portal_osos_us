@@ -35,5 +35,8 @@ $(".tableDocuments").dataTable({
         }
 
     }
+});
 
+$(".tableDocuments tbody").on("click","button.reload",function(){
+    location.reload();
 });
