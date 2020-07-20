@@ -80,10 +80,8 @@
 
 <script>
 
-  $(document).ready(function(){
     setInterval(function()
     {
-      console.log("se repiteS");
       var route = "/alumn/notify/show";
       var token = $('#token').val();
       var data = new FormData();
@@ -100,8 +98,7 @@
         success:function(response)
         {
           $("#content-notify").empty();
-          $(".count-notify").text(response.length);
-          
+          $(".count-notify").text(response.length);          
           if (response.length==0)
           {
               $("#content-notify").append("<p style='text-align: center; margin: 5%;'>No hay notificaciones</p>");
@@ -117,11 +114,4 @@
           }       
         }});
     },10000);
-  });
-
-  function getNotify()
-  {
-
-  }
-
 </script>

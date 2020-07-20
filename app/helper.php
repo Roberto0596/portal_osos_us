@@ -14,8 +14,6 @@ function addNotify($text,$id,$route)
   $notify->save();
 }
 
-
-
 //seccion de sicoes
 function ConectSqlDatabase()
 {
