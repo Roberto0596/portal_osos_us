@@ -15,7 +15,7 @@ class HomeController extends Controller
 	public function index()
 	{
         $user = Auth::guard("alumn")->user();
-		$status = $user->inscripcion < 4? false:true;
+		$status = $user->inscripcion < 3? false:true;
 
         //documentos
         $query = [["alumn_id","=",$user->id],["status","=","0"]];

@@ -40,7 +40,7 @@
         Nota:
       </div>
       <div class="card-body">
-        <p>Estos documentos son volátiles, es decir, solo se podran imprimir una sola vez. Asegurate de guardarlos</p>
+        <p>Estos documentos sólo se pueden imprimir en una sóla ocasión, pues llevan registro de fecha. Si quieres conservarlos, asegurate de guardarlos como PDF.</p>
       </div>
     </div>
 

@@ -77,7 +77,7 @@
             <li>Realiza la transferencia correspondiente por la cantidad exacta en esta ficha, <strong>de lo contrario se rechazará el cargo</strong>.</li>
             <li>Al confirmar tu pago, el portal de tu banco generará un comprobante digital. <strong>En el podrás verificar que se haya realizado correctamente.</strong> Conserva este comprobante de pago.</li>
           </ol>
-          <div class="ps-footnote">Al completar estos pasos recibirás un correo de <strong>Nombre del negocio</strong> confirmando tu pago.</div>
+          <div class="ps-footnote">Después de realizado el pago, revise el estatus de su Inscripción 24hrs después, el cual, debe cambiar a Inscrito.</div>
         </div>
     </div> 
      

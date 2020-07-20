@@ -1,7 +1,22 @@
 <?php 
 
 use App\Models\AdminUsers\AdminUser;
+use App\Models\Alumns\Notify;
 
+//seccion del sistema
+
+function addNotify($text,$id,$route)
+{
+  $notify = new Notify();
+  $notify->text = $text;
+  $notify->alumn_id = $id;
+  $notify->route = $route;
+  $notify->save();
+}
+
+
+
+//seccion de sicoes
 function ConectSqlDatabase()
 {
   $password = "admin123";

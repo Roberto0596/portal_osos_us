@@ -120,6 +120,7 @@ class DebitController extends Controller
                       $inscribir = inscribirAlumno($inscription);
                       $alumn->inscripcion=3;
                       $alumn->save();
+                      addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
                 }
 
             }

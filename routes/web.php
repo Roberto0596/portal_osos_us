@@ -39,6 +39,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
   		Route::group(['middleware' => ['alumn.user']
 		], function()
 		{
+			Route::post('/notify/show',[
+					'uses'=>'UserController@notify', 
+					'as' => 'notify.show'
+			]);
+
+			Route::get('/notify/{route?}/{id?}',[
+					'uses'=>'UserController@seeNotify', 
+					'as' => 'notify'
+			]);
+
 			Route::group(['middleware'=>['candidate']
 			], function()
 			{

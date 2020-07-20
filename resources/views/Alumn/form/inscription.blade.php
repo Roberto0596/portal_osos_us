@@ -616,7 +616,7 @@
 
                                                 <label class="control-label">Sueldo mensual del tutor</label>
 
-                                                <input type="text" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control sueldo"
+                                                <input type="number" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control"
                                                  placeholder="Ingrese el sueldo mensual del tutor">
 
                                             </div>

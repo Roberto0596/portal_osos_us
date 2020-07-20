@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
+use App\Models\Alumns\Notify;
 use Input;
 use Auth;
 use Illuminate\Support\Collection;
@@ -19,6 +20,21 @@ class UserController extends Controller
         $current_user = User::find($current_id);
 		return view('Alumn.user.index')->with(["user"=>$current_user]);
 	}
+
+    public function notify(Request $request)
+    {
+        $query = [["alumn_id","=",$request->input('AlumnId')],["status","=","0"]];
+        $notifys = Notify::where($query)->get();
+        return response()->json($notifys);
+    }
+
+    public function seeNotify($route,$id)
+    {
+        $notify = Notify::find($id);
+        $notify->status = 1;
+        $notify->save();
+        return redirect()->route($route);
+    }
 
     public function save(Request $request, User $user)
     {

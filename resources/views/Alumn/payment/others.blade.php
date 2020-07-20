@@ -37,7 +37,7 @@
 
               <div class="col-md-12">
 
-                <p>Hola, resivimos tu comprobante, ahora debes esperar a que la encargada de finanzas verifique tu pago</p>
+                <p>Hola, recibimos tu comprobante, ahora debes esperar a que la encargada de finanzas verifique tu pago</p>
 
               </div>
 

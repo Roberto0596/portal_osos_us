@@ -659,12 +659,31 @@ td{
     22px;
 }
 
+.margin-responsivo
+{
+    margin-left: 70%;
+}
+
 @media (max-width: 992px)
 {
   .box-enrollement
   {
     width: 80%;
     height: 60vh;
+  }
+}
+
+@media (max-width: 992px)
+{
+  .box-enrollement
+  {
+    width: 80%;
+    height: 60vh;
+  }
+
+  .margin-responsivo
+  {
+    margin-left: -20px;
   }
 }
 
