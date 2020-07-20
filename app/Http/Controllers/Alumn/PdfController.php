@@ -138,14 +138,13 @@ class PdfController extends Controller
         if($accion=='html'){
             return view('Alumn.pdf.pago_transferencia',$alumno);
         }else{
-            if($pago == 'transferencia'){
-                $html = view('Alumn.pdf.pago_transferencia',['alumno' => $alumno,
-                'deuda_total' => $total])->render();
-            }else{
-                $html = view('Alumn.pdf.pago_banco',
+           if($pago == 'ficha'){
+
+                $html = view('Alumn.pdf.ficha',
                 ['alumno' => $alumno,
                 'deuda_total' => $total])->render();
             }
+            
             
         }
         $namefile = 'CONSTANCIA'.time().'.pdf';

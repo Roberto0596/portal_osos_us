@@ -114,9 +114,8 @@
                       </div>
                       
                       <div class="back-card">
-                      
-                        <p class="parrafo-back"> El usuario debera pagar 
-                          $1950.00 de colegiatura + $70.89 por comisión bancaria, lo cual da un total de $2’020.89</p>
+                        <p class="parrafo-back"> <b>Total a Pagar: $ 2020.89</b><br><br>
+                          $1950.00 de Inscripción + <br>$70.89 por comisión bancaria.</p>
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                       </div> 
@@ -151,8 +150,8 @@
 
                         <div class="back-card">
 
-                          <p class="parrafo-back"> El usuario deberá pagar $1’950.00 de colegiatura + 
-                            $92.39 por comisión bancaria, lo cual da total de $2’042.39</p>
+                          <p class="parrafo-back"> <b>Total a Pagar: $ 2042.39</b><br><br>
+                            $1950.00 de Inscripción + <br>$92.39 por comisión bancaria.</p>
                           <button class="btn btn-success">Realiza un pago en oxxo</button>
                       
                         </div>
@@ -185,8 +184,8 @@
                       </div>
                       
                       <div class="back-card">
-                        <p class="parrafo-back"> El usuario debera pagar $1’950.00 de colegiatura + $14.50 por comisión bancaria, 
-                          lo cual da un total de $1’964.50*</p>
+                        <p class="parrafo-back"> <b>Total a Pagar: $ 1964.50</b><br><br>
+                          $1950.00 de Inscripción + <br>$14.50 por comisión bancaria.</p>
                         <button class="btn btn-success">Realiza una transferencia SPEI</button>
                       </div>
 
@@ -212,18 +211,15 @@
                         </div>
                         
                         <div class="back-card">
-                        <p class="parrafo-back"> El usuario debe depositar 
-                          en Banco Santander o realiza una tranferencia desde la banca en linea o movil, por un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
+                          <p class="parrafo-back"> <b>Total a Pagar: $ 1950.00</b><br><br>
+                            $1950.00 de Inscripción  <br>Después del pago escanea tu recibo o captura tu comprobante.</p>
                           
-                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','ficha'])}}" style="width: 100%; margin: 5%;padding-left:10%">
                               @csrf             
-                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 12%">Ficha de Pago</button>
                           </form>
 
-                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
-                              @csrf              
-                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
-                          </form>
+                         
 
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
