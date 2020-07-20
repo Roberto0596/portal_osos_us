@@ -88,6 +88,12 @@
 
 						<div class="row">
 
+							<h3>Registrarme en el Portal</h3>
+
+						</div>
+
+						<div class="row">
+
 							<div class="col-md-12">
 								
 								<div class="input-group mb-3">
