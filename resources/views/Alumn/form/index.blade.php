@@ -793,7 +793,7 @@
                                                 <label class="control-label">Sueldo mensual del tutor</label>
 
                                                 <input step="any" type="number" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control"
-                                                 placeholder="Ingrese el sueldo mensual del tutor" value="{{ $data == null ? '' : $data['TutorSueldoMensual']}}" >
+                                                 placeholder="Ingrese el sueldo mensual del tutor" value="${{ $data == null ? '' : $data['TutorSueldoMensual']}}" >
 
                                             </div>
 
@@ -895,12 +895,11 @@
                                         <div class="col-md-4">
                                             
                                             <div class="form-group">
-
-                                                <label class="control-label">Sueldo mensual del alumno</label>
-
-                                                <input type="text" id="SueldoMensualAlumno" class="form-control" name="SueldoMensualAlumno"
-                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno" readonly value="{{ $data['SueldoMensualAlumno'] == null ? '' : $data['SueldoMensualAlumno']}}">
-
+                                                <label class="control-label">Sueldo Mensual del Alumno</label>
+                                                <input fieldname="Sueldo mensual del alumno" maxlength="100" type="text" disabled id="SueldoMensualAlumno"  
+                                                class="form-control" name="SueldoMensualAlumno"
+                                                value="{{ $data['SueldoMensualAlumno'] == null ? '' : $data['SueldoMensualAlumno']}}" 
+                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno"  />
                                             </div>
                                             
                                         </div>
@@ -913,7 +912,7 @@
 
                                             <div class="form-group">
 
-                                                <label for="transporteuniversidad" data-alias="transporteuniversidad" class="control-label">¿utiliza el transporte unisierra?</label>
+                                                <label for="transporteuniversidad" data-alias="transporteuniversidad" class="control-label">¿Utiliza el Transporte Unisierra?</label>
 
                                                 <select  name="TransporteUniversidad" class="form-control" id="TransporteUniversidad" required>
 
@@ -937,10 +936,8 @@
                                         <div class="col-md-6">
 
                                             <div class="form-group">
-
-                                                <label for="transporte" data-alias="transporte"  class="control-label">¿Cual?</label>
-                                                
-                                                <select name="Transporte" class="form-control" id="Transporte" disabled>
+                                                <label for="transporte" data-alias="transporte"  class="control-label">¿Cuál?</label>
+                                                <select  name="Transporte" class="form-control"   id="transporte" >
                                                     @if($data["TransporteUniversidad"] != null)
                                                     @php
                                                         $value = $data["Transporte"] == '0' ? 'MOCTEZUMA' : 'CUMPAS';

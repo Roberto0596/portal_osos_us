@@ -47,10 +47,15 @@
             <td rowspan="2"  class="logo">
                 <img src="{{ asset('img/logo.jpg') }}" alt="" width="60" height="60" >
             </td>
+<<<<<<< HEAD
+            <th class='titulo1' width="100%">
+            Universidad de la Sierra
+=======
 
             <th class='titulo1' width="100%"><?php
                 echo date("Y-m-d")
             ?>
+>>>>>>> 623c7718392a7e58915b95c4aafe65141dc32292
             </th>
 
         </tr>
