@@ -12,7 +12,7 @@
         
         <div class="col-sm-6">
           
-          <h1>Mis documentos por imprimir</h1>
+          <h1>Mis Documentos por Imprimir</h1>
           
         </div>
         
