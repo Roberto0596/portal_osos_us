@@ -109,7 +109,7 @@
                       <div class="front-card">
 
                         <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con tarjeta</h4>
+                        <h4 class="titulo-cards">Tarjeta Débido/Crédito</h4>
                         
                       </div>
                       
@@ -143,7 +143,7 @@
                         <div class="front-card">
 
                           <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago en efectivo</h4>
+                          <h4 class="titulo-cards">Efectivo <br> Pago en Oxxo</h4>
                           
                         
                         </div>
@@ -178,7 +178,7 @@
                       <div class="front-card">
 
                         <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con transferencia interbancaria (SPEI)</h4>
+                        <h4 class="titulo-cards">Paga desde otro Banco (SPEI)</h4>
                        
 
                       </div>
@@ -206,7 +206,7 @@
                         <div class="front-card">
 
                           <img src="{{asset('img/alumn/payment methods/bank_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con transferencia en linea o deposito bancario</h4>
+                          <h4 class="titulo-cards">Paga desde tu App Web, o Deposita en santander</h4>
                          
                         </div>
                         

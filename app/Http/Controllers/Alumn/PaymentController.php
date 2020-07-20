@@ -15,9 +15,9 @@ class PaymentController extends Controller
 {
 	public function index()
 	{
-        $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
-        $debit = Debit::where($query)->get();
-        $total = $debit->sum("amount");
+    $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
+    $debit = Debit::where($query)->get();
+    $total = $debit->sum("amount");
 		return view('Alumn.payment.index')->with(["debit" => $debit,"total"=>$total]);
   }
   
@@ -130,11 +130,14 @@ class PaymentController extends Controller
         }
         else
         {
-          $current_user->inscripcion = 4;
+          $current_user->inscripcion = 3;
           $current_user->save();
           session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
           return redirect()->route("alumn.charge");
         }
+
+        //generamos los documentos de inscripcion
+        insertInscriptionDocuments($current_user->id);
       }
       catch(\Exception $e)
       {

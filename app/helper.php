@@ -4,7 +4,6 @@ use App\Models\AdminUsers\AdminUser;
 use App\Models\Alumns\Notify;
 
 //seccion del sistema
-
 function addNotify($text,$id,$route)
 {
   $notify = new Notify();
@@ -14,7 +13,18 @@ function addNotify($text,$id,$route)
   $notify->save();
 }
 
+function insertIntoPortal($tableName,$array)
+{
+  $insertar = DB::table($tableName)->insert($array);
+}
 
+function insertInscriptionDocuments($id)
+{
+  $getCurrentPeriod = selectCurrentPeriod();
+  $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id]
+        ];
+  insertIntoPortal("document",$array);
+}
 
 //seccion de sicoes
 function ConectSqlDatabase()

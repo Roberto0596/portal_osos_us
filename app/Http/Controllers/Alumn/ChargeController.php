@@ -21,23 +21,16 @@ class ChargeController extends Controller
             $aux = getDetGrupo($value["AsignaturaId"]);
             array_push($getAsignatures[$key], $aux["DetGrupoId"]);
             array_push($getAsignatures[$key], $aux["ProfesorId"]);
-        }
-		
+        }		
         return view('Alumn.charge.index')->with(["asignatures" => $getAsignatures,"user"=>$user]);
 	}
 
     public function save(Request $request,User $user) 
     {
-        //periodo actual
         $getCurrentPeriod = selectCurrentPeriod();
         $user->inscripcion = 4;
         $user->save();
-        $insertar = DB::table('document')->insert([
-            ['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id],
-            ['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $user->id]
-        ]);
-
-        session()->flash("messages","success|Terminaste tu registro, felicidades, eres alumno");
+        session()->flash("messages","success|Concluiste tu registro");
         return redirect()->route("alumn.home");
     }
 

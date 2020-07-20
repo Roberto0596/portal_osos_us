@@ -116,11 +116,11 @@
 
             </table>
 
-            <div class="form-group row">
+<!--             <div class="form-group row">
 
               <button type="submit" class="btn btn-warnign flotante" title="Guardar" style="background: green !important;bottom: 60px !important;"><i class="fa fa-save" style="color: white !important;"></i></button>
 
-            </div>
+            </div> -->
 
             </form>
 
