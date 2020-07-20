@@ -43,7 +43,7 @@
 
   <section class="content">
 
-    <div class="card card-success" style="height: 75vh;">
+    <div class="card card-success" style="height: 80vh;">
 
       <div class="card-header">
 
@@ -53,7 +53,7 @@
 
             <h4>
               <i class="fas fa-globe"></i> Unisierra
-              <small class="float-right">Date: {{date("Y-m-d")}}</small>
+              <small class="float-right">Fecha: {{date("Y-m-d")}}</small>
             </h4>
 
           </div>
@@ -71,7 +71,7 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>concepto</th>
+                <th>Concepto</th>
                 <th>Encargado</th>
                 <th>Fecha</th>
                 <th>Sub total</th>
@@ -85,7 +85,7 @@
                   <td>{{$value->concept}}</td>
                   <td>{{selectAdmin($value->admin_id)->name}}</td>
                   <td>{{$value->created_at}}</td>
-                  <td>{{$value->amount}}</td>
+                  <td>${{number_format($value->amount,2)}}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -94,7 +94,7 @@
           
         </div>
 
-        <div class="row" id="hidden-2">
+        <div class="row" id="hidden-2" style="margin-top: -50px;">
           
           <div class="row">
 
@@ -108,13 +108,15 @@
 
                       <div class="front-card">
 
-                        <img src="{{asset('img/alumn/payment methods/card.png')}}" alt="" class="card-image-rob">
+                        <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
                         <h4 class="titulo-cards">Pago con tarjeta</h4>
                         
                       </div>
                       
                       <div class="back-card">
-
+                      
+                        <p class="parrafo-back"> El usuario debera pagar 
+                          $1950.00 de colegiatura + $70.89 por comisión bancaria, lo cual da un total de $2’020.89</p>
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                       </div> 
@@ -141,17 +143,18 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con deposito bancario</h4>
+                          <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago en efectivo</h4>
                           
                         
                         </div>
 
                         <div class="back-card">
 
-                          <p>HOLA</p>
+                          <p class="parrafo-back"> El usuario deberá pagar $1’950.00 de colegiatura + 
+                            $92.39 por comisión bancaria, lo cual da total de $2’042.39</p>
                           <button class="btn btn-success">Realiza un pago en oxxo</button>
-
+                      
                         </div>
 
                       </div>
@@ -167,7 +170,7 @@
 
               <div class="container-custom">
 
-                  <form method="post" action="{{route('alumn.pay.stei')}}">
+                  <form method="post" action="{{route('alumn.pay.spei')}}">
 
                     {{ csrf_field() }}
 
@@ -175,16 +178,16 @@
 
                       <div class="front-card">
 
-                        <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con transferencia interbancaria</h4>
+                        <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
+                        <h4 class="titulo-cards">Pago con transferencia interbancaria (SPEI)</h4>
                        
 
                       </div>
                       
                       <div class="back-card">
-
-                        <button class="btn btn-success">Realiza una transferencia</button>
-                      
+                        <p class="parrafo-back"> El usuario debera pagar $1’950.00 de colegiatura + $14.50 por comisión bancaria, 
+                          lo cual da un total de $1’964.50*</p>
+                        <button class="btn btn-success">Realiza una transferencia SPEI</button>
                       </div>
 
                     </div>
@@ -203,12 +206,24 @@
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/temple/avatar.jpg')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">transferencia o deposito bancario</h4>
+                          <img src="{{asset('img/alumn/payment methods/bank_white.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Pago con transferencia en linea o deposito bancario</h4>
                          
                         </div>
                         
                         <div class="back-card">
+                        <p class="parrafo-back"> El usuario debe depositar 
+                          en Banco Santander o realiza una tranferencia desde la banca en linea o movil, por un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
+                          
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
+                              @csrf             
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
+                          </form>
+
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
+                              @csrf              
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
+                          </form>
 
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
@@ -230,35 +245,19 @@
 
         <div class="row">
 
-          <div class="col-md-5">
+          <div class="col-md-9">
 
-              <p style="font-size: 30px">Total: <span>{{$total}}</span></p>
-
-          </div>
-
-          <div class="col-md-1">
-
-            <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
-              @csrf             
-              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
-            </form>
+              <p style="font-size: 30px">Total: <span>${{number_format($total,2)}}</span></p>
 
           </div>
 
-          <div class="col-md-1">
+         
 
-           <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
-              @csrf              
-              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
-            </form>
-
-          </div>
-
-          <div class="col-md-5">
+          <div class="col-md-3">
 
             <div class="float-right">
 
-              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">no debo eso <i class="fa fa-hand-stop-o"></i></button>
+              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">No debo eso <i class="fa fa-hand-stop-o"></i></button>
 
               <button type="button" class="btn btn-warning" style="border-radius: 20px; display: none;color: white" id="back" ><i class="fa fas  fa-arrow-circle-left" style="color: white !important"></i> Regresar</button>
 
@@ -347,9 +346,9 @@
             </div>
           </div>
         </div>
-        <form id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
+        <form class="card-form" id="card-form" action="{{route('alumn.pay.card')}}" method="POST" autocomplete="off" novalidate>
           {{ csrf_field() }}
-          <input id="full-card-number" data-conekta="card[number]" type="hidden" value="">
+          <input id="fullCardNumber" name="card-number" data-conekta="card[number]" type="hidden" />
           <fieldset>
             <label for="card-number">NÚMERO DE TARJETA</label>
             <input type="num" id="card-number"   class="input-cart-number" maxlength="4" />
@@ -359,40 +358,40 @@
           </fieldset>
           <fieldset>
             <label for="card-holder">NOMBRE DEL PROPIETARIO</label>
-            <input data-conekta="card[name]" class="form-control" type="text" id="card-holder" />
+            <input data-conekta="card[name]"  class="form-control" type="text" id="card-holder" />
           </fieldset>
           <fieldset class="card-expire">
             <label for="expire-month">FECHA DE EXPIRACIÓN</label>
             <div class="select">
-              <select ata-conekta="card[exp_month]" class="form-control" id="expire-month">
+              <select data-conekta="card[exp_month]" class="form-control" id="expire-month">
                 <option></option>
-                <option>01</option>
-                <option>02</option>
-                <option>03</option>
-                <option>04</option>
-                <option>05</option>
-                <option>06</option>
-                <option>07</option>
-                <option>08</option>
-                <option>09</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
               </select>
             </div>
             <div class="select">
-              <select data-conekta="card[exp_year]" class="form-control" id="expire-year">
+              <select data-conekta="card[exp_year]"  class="form-control" id="expire-year">
                 <option></option>
-                <option>2016</option>
-                <option>2017</option>
-                <option>2018</option>
-                <option>2019</option>
-                <option>2020</option>
-                <option>2021</option>
-                <option>2022</option>
-                <option>2023</option>
-                <option>2024</option>
-                <option>2025</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
               </select>
             </div>
           </fieldset>

@@ -35,32 +35,43 @@
 
   <section class="content">
 
-<div class="card">
+    <div class="card">
+      <div class="card-header">
+        Nota:
+      </div>
+      <div class="card-body">
+        <p>Estos documentos sólo se pueden imprimir en una sóla ocasión, pues llevan registro de fecha. Si quieres conservarlos, asegurate de guardarlos como PDF.</p>
+      </div>
+    </div>
 
-  <div class="card-body">
+    <div class="card">
 
-    <table class="table table-bordered table-hover tableDocuments">
+      <div class="card-body">
 
-      <thead>
+      <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 
-        <tr>
-          <th style="width: 10px">#</th>
-          <th>Nombre</th>
-          <th>Acciones</th>
-        </tr>
+        <table class="table table-bordered table-hover tableDocuments">
 
-      </thead>
+          <thead>
 
-    </table>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
 
-  </div>
+          </thead>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </div>
 
-</section>
-
-</div>
-
-<script src="{{ asset('js/library/debit.js')}}"></script>
+<script src="{{ asset('js/alumn/pdf.js')}}"></script>
 
 @stop

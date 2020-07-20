@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Sistema portal</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{asset('img/temple/unisierra.png')}}" />
     <!-- estilos -->
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
@@ -55,9 +58,22 @@
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
     <script src="{{ asset('js/temple.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     {!! htmlScriptTagJsApi() !!}
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
+    <!-- Preloader -->
+
+    <div id="preloader">
+
+        <div class="preload-content">
+
+            <div id="original-load"></div>
+
+        </div>
+
+    </div>
+    
     @yield('content')
     <script>
         $(document).ready(function () 
@@ -75,7 +91,7 @@
                 var timeout = setTimeout(() => 
                 {
                     swal.close()
-                }, 3000);
+                }, 8000);
                 swal.fire({
                     title: "{{ $fmessage }}",
                     text: "",

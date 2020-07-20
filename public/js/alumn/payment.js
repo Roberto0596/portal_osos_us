@@ -2,6 +2,7 @@ var step = 0;
 
 $(document).ready(function(){
 	$("#hidden-2").css("display","none");
+	localStorage.removeItem('inscriptionData');
 })
 
 $("#next").click(function()
@@ -39,8 +40,9 @@ $(document).ready(function()
 
 	var successResponseHandler = function(token){
 	  var $form = $("#card-form");
-	  $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
-	  $form.get(0).submit();
+    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+    $form.get(0).submit();
+    
 	}
 
 	var errorResponseHandler = function(error){
@@ -50,7 +52,7 @@ $(document).ready(function()
 	$("#card-form").submit(function(e)
 	{
 	  e.preventDefault();
-	  var $form = $("#card-form");
+    var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });
@@ -85,36 +87,28 @@ $('#ticket').change(function()
 
 
   // jquery de la tarjeta
-  $('.input-cart-number').on('keyup change', function(){
-
-	if ($t.val().length == 4) {
-    $t.next().focus();
-    $fullnumber=  $t.val();
-	}
-  
-  var card_number = '';
-  var fullCardNumber = '';
-	$('.input-cart-number').each(function(){
-    card_number += $(this).val() + ' ';
-    fullCardNumber  += $(this).val();
-	  if ($(this).val().length == 4) {
-    $(this).next().focus();
-    
-    }
-   
-  })
-
-  
-  $('.credit-card-box .number').html(card_number);
-
-
-
-  // aqui estaba queriendo ponerle al campo hidden el numero de tarjeta completo
- 
-  if(cleanCardNumber.length == 16){
-    $("#full-card-number").val(fullCardNumber);
-  }
-  
+  $('.input-cart-number').on('keyup change', function()
+  {
+	$t = $(this);
+	if ($t.val().length == 4) 
+	{
+    	$t.next().focus();
+    	$fullnumber=  $t.val();
+	}  
+    var card_number = '';
+    var fullCardNumber = '';
+	$('.input-cart-number').each(function()
+	{
+    	card_number += $(this).val() + ' ';
+    	fullCardNumber  += $(this).val();
+		  
+		if ($(this).val().length == 4) 
+		{
+   			 $(this).next().focus();
+        }  
+	})
+	$("#fullCardNumber").val(fullCardNumber);   
+	$('.credit-card-box .number').html(card_number);  
   });
   
   $('#card-holder').on('keyup change', function(){

@@ -12,7 +12,7 @@
 
         <div class="col-sm-6">
 
-          <h1>Elige tu carga academica</h1>
+          <h1>Esta sera tu carga academica</h1>
 
         </div>
 
@@ -20,9 +20,7 @@
 
           <ol class="breadcrumb float-sm-right">
 
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-
-            <li class="breadcrumb-item active">Carga academica</li>
+            <button class="btn btn-success buttom-custom" id="print">Imprimir</button>
 
           </ol>
 
@@ -40,7 +38,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">Puedes Elegir Las Clases Que Quieres LLevar En Este Semestre</h3>
+        <h3 class="card-title">Para dar de baja una materia debes comunicarte con servicios escolares</h3>
 
       </div>
       
@@ -91,7 +89,7 @@
 
                     <div class="icheck-success d-inline">
 
-                      <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}">
+<!--                       <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}"> -->
 
                       <label for="{{$key}}">
                           {{$value["Nombre"]}}
@@ -141,5 +139,11 @@
   </section>
 
 </div>
+
+<script>
+  $("#print").click(function(){
+    window.print();
+  });
+</script>
 
 @stop

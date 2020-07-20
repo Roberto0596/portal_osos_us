@@ -1,14 +1,29 @@
 <?php 
 
 use App\Models\AdminUsers\AdminUser;
+use App\Models\Alumns\Notify;
 
+//seccion del sistema
+
+function addNotify($text,$id,$route)
+{
+  $notify = new Notify();
+  $notify->text = $text;
+  $notify->alumn_id = $id;
+  $notify->route = $route;
+  $notify->save();
+}
+
+
+
+//seccion de sicoes
 function ConectSqlDatabase()
 {
-    $password = "admin123";
-    $user = "robert";
-    $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
-    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $password = "admin123";
+  $user = "robert";
+  $rutaServidor = "127.0.0.1";
+	$link = new PDO("sqlsrv:Server=.\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+  $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
 
@@ -34,19 +49,23 @@ function selectLastCharge($AlumnoId)
 //metodo que nos da el ultimo semestre en el que estuvo el alumno, de manera que, el resultado de este metodo se le subara 1.
 function getLastSemester($alumnId)
 {
-    $period = selectCurrentPeriod();
-    $lastCharge = selectLastCharge($alumnId);
-    $detgrupo = selectSicoes("DetGrupo","DetGrupoId",$lastCharge["DetGrupoId"])[0];
-    $asignature = selectSicoes("Asignatura","AsignaturaId",$detgrupo["AsignaturaId"])[0];
-    return $asignature["Semestre"];
+    $lastSemester = getLastThing("Inscripcion","AlumnoId",$alumnId,"InscripcionId");
+    if (!$lastSemester)
+    {
+      return 1;
+    }
+    else
+    {
+      return $lastSemester["Semestre"];
+    }
 }
 
 //metodo para traernos un array con las materias que el alumno puede llevar
 function getCurrentAsignatures($alumnId)
 {
     $alumnData = selectSicoes("alumno","AlumnoId",$alumnId)[0];
-    $currentSemester = getLastSemester($alumnId) + 1;
-    return getAsignatures($currentSemester,$alumnData["PlanEstudioId"]);
+    $inscipcion = getLastThing("Inscripcion","AlumnoId",$alumnId,"InscripcionId");
+    return getAsignatures($inscipcion["Semestre"],$alumnData["PlanEstudioId"]);
 }
 
 //metodo que nos trae todas las asignaturas
@@ -69,6 +88,14 @@ function getDetGrupo($AsignaturaId)
     $stmt = null;
 }
 
+function getLastThing($table_name,$item,$value,$orderby)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM $table_name where $item = :$item order by $orderby desc");
+    $stmt->bindParam(":".$item,$value,PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+    $stmt = null;
+}
 
 //metodo default para hacer consultas a la base de datos de sicoes
 function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
@@ -117,14 +144,174 @@ function deleteCharge($array)
 
 function insertCharge($array)
 {
-    $link = new \PDO("mysql:host=localhost;dbname=sicoes","root","");
-    $link->exec("set names utf8");
+    $password = "admin123";
+    $user = "robert";
+    $rutaServidor = "127.0.0.1";
+    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
     $baja = chr($array["Baja"]);
     $array = array('Baja' => $baja,
                     'AlumnoId'=>$array["AlumnoId"],
                     'DetGrupoId'=>$array["DetGrupoId"],
                     'PeriodoId'=>$array["PeriodoId"]);
+    if($stmt->execute($array))
+    {
+        return $link->lastInsertId();
+    }
+    else
+    {
+        return false;
+    }
+    $stmt = null;
+}
+
+function inscribirAlumno($array)
+{
+  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId)");
+
+  if($stmt->execute($array))
+  {
+      return true;
+  }
+  else
+  {
+      return false;
+  }
+  $stmt = null;
+}
+
+function InsertAlumn($array)
+{
+    $password = "admin123";
+    $user = "robert";
+    $rutaServidor = "127.0.0.1";
+    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $link->prepare("INSERT INTO Alumno(
+           Matricula,
+           Nombre,
+           ApellidoPrimero,
+           ApellidoSegundo,
+           Regular,
+           Tipo,
+           Curp,
+           Genero,
+           FechaNacimiento,
+           Edad,
+           MunicipioNac,
+           EstadoNac,
+           EdoCivil,
+           Estatura,
+           Peso,
+           TipoSangre,
+           Alergias,
+           Padecimiento,
+           ServicioMedico,
+           NumAfiliacion,
+           Domicilio,
+           Colonia,
+           Localidad,
+           MunicipioDom,
+           EstadoDom,
+           CodigoPostal,
+           Telefono,
+           Email,
+           EscuelaProcedenciaId,
+           AnioEgreso,
+           PromedioBachiller,
+           ContactoEmergencia,
+           ContactoDomicilio,
+           ContactoTelefono,
+           TutorNombre,
+           TutorDomicilio,
+           TutorTelefono,
+           TutorOcupacion,
+           TutorSueldoMensual,
+           MadreNombre,
+           MadreDomicilio,
+           MadreTelefono,
+           TrabajaActualmente,
+           Puesto,
+           SueldoMensualAlumno,
+           DeportePractica,
+           Deportiva,
+           Cultural,
+           Academica,
+           TransporteUniversidad,
+           Transporte,
+           ActaNacimiento,
+           CertificadoBachillerato,
+           Baja,
+           PlanEstudioId,
+           CirugiaMayor,
+           CirugiaMenor,
+           Hijo,
+           Egresado) 
+    VALUES(:Matricula,
+           :Nombre,
+           :ApellidoPrimero,
+           :ApellidoSegundo,
+           :Regular,
+           :Tipo,
+           :Curp,
+           :Genero,
+           :FechaNacimiento,
+           :Edad,
+           :MunicipioNac,
+           :EstadoNac,
+           :EdoCivil,
+           :Estatura,
+           :Peso,
+           :TipoSangre,
+           :Alergias,
+           :Padecimiento,
+           :ServicioMedico,
+           :NumAfiliacion,
+           :Domicilio,
+           :Colonia,
+           :Localidad,
+           :MunicipioDom,
+           :EstadoDom,
+           :CodigoPostal,
+           :Telefono,
+           :Email,
+           :EscuelaProcedenciaId,
+           :AnioEgreso,
+           :PromedioBachiller,
+           :ContactoEmergencia,
+           :ContactoDomicilio,
+           :ContactoTelefono,
+           :TutorNombre,
+           :TutorDomicilio,
+           :TutorTelefono,
+           :TutorOcupacion,
+           :TutorSueldoMensual,
+           :MadreNombre,
+           :MadreDomicilio,
+           :MadreTelefono,
+           :TrabajaActualmente,
+           :Puesto,
+           :SueldoMensualAlumno,
+           :DeportePractica,
+           :Deportiva,
+           :Cultural,
+           :Academica,
+           :TransporteUniversidad,
+           :Transporte,
+           :ActaNacimiento,
+           :CertificadoBachillerato,
+           :Baja,
+           :PlanEstudioId,
+           :CirugiaMayor,
+           :CirugiaMenor,
+           :Hijo,
+           :Egresado)");
+
+    // dd($array);
+
     if($stmt->execute($array))
     {
         return $link->lastInsertId();
@@ -209,12 +396,12 @@ function selectAdmin($id = null)
     }
 }
 
-function getAlumno($matricula){
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM alumno where matricula = '$matricula'");
+function getAlumno($matricula)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM Alumno where Matricula = '$matricula'");
     $stmt->execute();
-    $alumno = $stmt->fetchAll();
-
-    return $alumno[0];
+    $alumno = $stmt->fetch();
+    return $alumno;
     $stmt = null;
 }
 
@@ -255,6 +442,7 @@ function getCarrera($matricula){
     return $carrera[0];
     $stmt = null;
 }
+
 function getAlumnoId($matricula){
     $stmt = ConectSqlDatabase()->prepare("SELECT AlumnoId FROM alumno where matricula = '$matricula'");
     $stmt->execute();
@@ -263,3 +451,103 @@ function getAlumnoId($matricula){
     return $alumno[0];
     $stmt = null;
 }
+
+function lastEnrollement($planEstudioId,$clave,$fecha)
+{
+    $like = $fecha."-".$clave."-%";
+    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by AlumnoId desc");
+    $stmt->execute();
+    $alumno = $stmt->fetch();
+    return $alumno;
+    $stmt = null;
+}
+
+function generateCarnet($planEstudioId)
+{
+  $plan = selectSicoes("PlanEstudio","PlanEstudioId",$planEstudioId)[0];
+  $date = getDate();
+  $year = substr($date["year"], -2);
+  $clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
+  $lastAlumn = lastEnrollement($planEstudioId,$clave["Clave"],$year);
+  if (!$lastAlumn)
+  {
+    return $year."-".$clave["Clave"]."-0001";
+  }
+  else
+  {
+    $sum = substr($lastAlumn["Matricula"],-4) + 1;
+    if (strlen($sum)==1)
+      $lastDate = "000".$sum;
+    else if (strlen($sum)=="") 
+      $lastDate = "00".$sum;
+    else 
+      $lastDate = "0".$sum;
+
+    $matricula = $year."-".$clave["Clave"]."-".$lastDate;
+    return $matricula;
+  }
+}
+
+function getEncGrupo()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT Nombre FROM EncGrupo");
+  $stmt->execute();
+  $nombre = $stmt->fetchAll();
+  return $nombre;
+  $stmt = null;
+}
+
+function agruparPorSalon($PlanEstudioId,$EncGrupoId)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Nombre, a.Matricula, g.Nombre as Grupo from Alumno as a inner join PlanEstudio as p on a.PlanEstudioId = p.PlanEstudioId inner join EncGrupo as g on g.PlanEstudioId = p.PlanEstudioId where p.PlanEstudioId = :PlanEstudioId and g.EncGrupoId = :EncGrupoId and a.Baja = 0;");
+  $stmt->bindParam(":PlanEstudioId", $PlanEstudioId, PDO::PARAM_STR);
+  $stmt->bindParam(":EncGrupoId", $EncGrupoId, PDO::PARAM_STR);
+  $stmt->execute();
+  $nombre = $stmt->fetchAll();
+  return $nombre;
+  $stmt = null;
+  
+}
+
+function getInscriptionData($AlumnoId)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT TOP(1) InscripcionId,Semestre,EncGrupoId from Inscripcion as i inner join Alumno as a on i.AlumnoId = a.AlumnoId where a.AlumnoId = :AlumnoId and i.Baja = 0 and a.Baja = 0 order by i.InscripcionId desc;");
+    $stmt->bindParam("AlumnoId",$AlumnoId,PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+    $stmt = null;
+}
+
+function getGroups($table, $field)
+{
+  $link = new \PDO("mysql:host=localhost;dbname=portal","root","");
+  $link->exec("set names utf8");
+  $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
+  $stmt->execute();
+  return $stmt->fetchAll();
+}
+
+function getDateCustom()
+{
+  date_default_timezone_set('America/Hermosillo');
+  $date = date('Y-m-d');
+  $hour = date('H:i:s');
+  return $date.'T'.$hour;
+}
+
+function obtenerGrupo($semestre,$planEstudioId)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM EncGrupo where Semestre = '$semestre' and PlanEstudioId = '$planEstudioId' order by EncGrupoId");
+  $stmt->execute();
+  return $stmt->fetch();
+  $stmt = null;
+}
+
+function getActiveCarrer()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from Carrera where CarreraId <> 8 and CarreraId <> 4 and CarreraId <> 7;");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+

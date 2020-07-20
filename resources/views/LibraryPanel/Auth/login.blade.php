@@ -2,105 +2,136 @@
 
 @section('content')
 
-<div class="imagen-fondo">
-   
+<div class="content-custom">
+
     @include('Website.header')
 
-    <div class="bienvenida">
-        <h2>
-        Bienvenido oso, tenemos estas noticias para ti!
-        </h2>
+    <div class="back2">
 
-    <div class="feed2">
+        <div class="row" style="margin: 1%; width: 100%">
 
-        <div class="feed_content">
+            <div class="col-lg-8 col-md-12">
 
-            <div class="feed-header">
-                <h1>encabezado2</h1>
+                <div class="row">
+
+                    <div class="col-md-12 osos-title">
+                        <h1>Se un Oso Unisierra</h1>
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <div class="feed">
+
+                            <div class="feed_content">
+
+                                <div class="feed-header">
+                                    <h1>encabezado2</h1>
+                                </div>
+
+                                <div class="feed-body">
+                                    <p>Parrafo</p>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="feed">
+
+                            <div class="feed_content">
+
+                                <div class="feed-header">
+                                    <h1>encabezado2</h1>
+                                </div>
+
+                                <div class="feed-body">
+                                    <p>Parrafo</p>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <div class="feed">
+
+                            <div class="feed_content">
+
+                                <div class="feed-header">
+                                    <h1>encabezado3</h1>
+                                </div>
+
+                                <div class="feed-body">
+                                    <p>Parrafo</p>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="feed-body">
-                <p>Parrafo</p>
-            </div>
+            <div class="col-lg-4 col-md-12">
 
-        </div>
-                    
+                <div class="login-form">
+
+                    <form action="" method="post">
+
+                        {{ csrf_field() }}
+
+                        <h2 class="text-center">Iniciar sesión</h2>  
+
+                        <div class="input-group mb-3">
+
+                            <label class="field a-field a-field_a2">
+
+                                <input class="field__input a-field__input" placeholder="example@example.com" id="email" name="email" required>
+
+                                <span class="a-field__label-wrap">
+
+                                    <span class="a-field__label">Correo</span>
+
+                                </span>
+
+                            </label> 
+
+                        </div>
+
+                        <div class="input-group mb-3">
+
+                            <label class="field a-field a-field_a2">
+
+                                <input type="password" class="field__input a-field__input" placeholder="Ingresa tu contraseña" name="password" required>
+
+                                <span class="a-field__label-wrap">
+
+                                    <span class="a-field__label">Contraseña</span>
+
+                                </span>
+
+                            </label> 
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <button type="submit" class="btn btn-primary btn-block boton">Entrar</button>
+
+                        </div>
+                    </form> 
+                </div> 
+
+            </div>        
+
+        </div>   
+
     </div>
-    
-    </div>
 
-
-    <div class="login-form">
-
-        <form action="" method="post">
-
-            {{ csrf_field() }}
-
-            <h2 class="text-center">Iniciar sesión</h2>  
-
-            <div class="form-group">
-
-                <input type="text" class="form-control" placeholder="Correo" required="required" name="email">
-
-            </div>
-
-            <div class="form-group">
-
-                <input type="password" class="form-control" placeholder="Contraseña" required="required" name="password">
-
-            </div>
-
-            <div class="form-group">
-
-                <button type="submit" class="btn btn-primary btn-block boton">Entrar</button>
-
-            </div>
-        </form> 
-    </div>
-
-    <div>hola</div>
 </div>
 
-
-
-
+<script src="{{asset('js/website/home.js')}}"></script>
 
 @stop
-
-
-
-
-<!--<div class="bienvenida">
-    <h2>
-        Bienvenido oso, tenemos estas noticias para ti!
-    </h2>
-</div>
-<div class="login-form">
-
-    <form action="" method="post">
-
-         {{ csrf_field() }}
-
-        <h2 class="text-center">Iniciar sesión</h2>  
-
-        <div class="form-group">
-
-        <input type="text" class="form-control" placeholder="Correo" required="required" name="email">
-
-         </div>
-
-        <div class="form-group">
-
-            <input type="password" class="form-control" placeholder="Contraseña" required="required" name="password">
-
-        </div>
-
-        <div class="form-group">
-
-            <button type="submit" class="btn btn-primary btn-block boton">Entrar</button>
-
-        </div>
-    </form> 
-</div>
-
--->

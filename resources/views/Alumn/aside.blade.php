@@ -42,19 +42,7 @@
                     </a>
 
                 </li>
-
-                <li class="nav-item">
-
-                    <a href="{{route('alumn.documents')}}" class="nav-link">
-
-                        <i class="nav-icon fas fa-file"></i>
-                        <p>
-                            Documentos
-                        </p>
-                    </a>
-
-                </li>
-                
+               
                 @if(Auth::guard('alumn')->user()->inscripcion < 4)
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
@@ -68,14 +56,40 @@
                 @endif
 
                 @if(Auth::guard('alumn')->user()->id_alumno != null)
-                <li class="nav-item">
-                    <a href="{{route('alumn.user')}}" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Mi cuenta
-                        </p>
-                    </a>
-                </li>
+
+                    <li class="nav-item">
+
+                        <a href="{{route('alumn.documents')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>
+                                Documentos
+                            </p>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a href="{{route('alumn.debit')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-credit-card"></i>
+                            <p>
+                                Adeudos
+                            </p>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('alumn.user')}}" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Mi cuenta
+                            </p>
+                        </a>
+                    </li>
+                
                 @endif
 
             </ul>
