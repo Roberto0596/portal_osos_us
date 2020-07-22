@@ -12,8 +12,15 @@
 
                 <div class="col-sm-6">
 
-                    <h3>Verifica que tu información sea correcta</h3>
+                    <h3>Ingresa todos los datos</h3>
 
+                </div>
+
+                <div class="col-sm-6">
+                  <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{route('alumn.home')}}">Home</a></li>
+                    <li class="breadcrumb-item active">Inscripción</li>
+                  </ol>
                 </div>
 
             </div>
@@ -26,18 +33,13 @@
         
         <div class="card">
 
-
             <div class="card-body">
-
 
                 <div class="container">
 
-
                     <div class="col-md-12 ">
 
-
                         <div class="form-register_header">
-
 
                             <ul class="progressbar">
                                 <li class="progressbar-option active"> Datos Personales I</li>
@@ -83,7 +85,7 @@
 
                                                 <label class="control-label">Segundo Apellido</label>
 
-                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{$lastnames[1]}}" isnullable="no" required>
+                                                <input name="ApellidoSegundo" id="ApellidoSegundo" class="form-control capitalize" placeholder="Ingrese su segundo apellido" value="{{count($lastnames)>1?$lastnames[1]:''}}" isnullable="si">
 
                                             </div>
 
@@ -137,7 +139,7 @@
                                                 <label class="control-label">Localidad</label>
 
                                                 <input id="Localidad" name="Localidad" class="form-control capitalize"
-                                                isnullable="si" placeholder="Ingrese su localidad" required>
+                                                isnullable="si" placeholder="Ingrese su localidad">
 
                                             </div>
 
@@ -166,7 +168,7 @@
 
                                                 <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
 
-                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2" readonly>
+                                                <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2">
 
                                                 </select>
 
@@ -281,8 +283,8 @@
 
                                             <div class="form-group">
                                                 <label class="control-label">Fecha de nacimiento</label>
-                                                <input type="date"  isnullable="no" class="form-control" 
-                                                id="AñoNacimiento" name="AñoNacimiento" required>
+                                                <input type="text"  isnullable="no" class="form-control date" 
+                                                id="FechaNacimiento" name="FechaNacimiento" required>
                                             </div>
 
                                         </div>
@@ -324,7 +326,7 @@
 
                                                 <label for="tiposangre" data-alias="tiposangre" class="control-label">Tipo de sangre</label>
 
-                                                <select id="TipoSangre" isnullable="no" name="TipoSangre" class="form-control" >
+                                                <select id="TipoSangre" isnullable="no" name="TipoSangre" class="form-control" required>
                                                     <option value="" disabled="" selected="">Seleccionar</option>
                                                     <option value="0">A+</option>
                                                     <option value="1">A-</option>
@@ -345,7 +347,7 @@
 
                                             <div class="form-group" >
                                                 <label class="control-label"><output></output>Alergias</label>
-                                                <input id="Alergias" name="Alergias"  isnullable="si" id="descAlergia" maxlength="100" type="text" class="form-control capitalize"          placeholder="Especifique su alergia">
+                                                <input id="Alergias" name="Alergias"  isnullable="si" id="descAlergia" maxlength="100" type="text" class="form-control capitalize" placeholder="Especifique su alergia">
                                             </div>
 
                                         </div>
@@ -371,7 +373,7 @@
 
                                                 <label for="servicioMedico" data-alias="servicioMedico" class="control-label">Servicio Médico</label>
 
-                                                <select id="ServicioMedico" name="ServicioMedico" class="form-control" id="ServicioMedico" isnullable="si">
+                                                <select id="ServicioMedico" name="ServicioMedico" class="form-control" id="ServicioMedico" isnullable="no" required>
                                                     <option value="" disabled="" selected="">Seleccione un item</option>
                                                     <option value="0">IMSS</option>
                                                     <option value="1">ISSSTE</option>
@@ -461,18 +463,19 @@
 
                                             <div class="form-group">
 
-                                                <label for="Carrera" class="control-label">Carrera</label>
+                                                <label for="Carrera" class="control-label">¿Que carrera quieres estudiar?</label>
 
                                                 <select id="Carrera" name="Carrera" isnullable="no" class="form-control select2" required>
 
                                                     @php                                                        
-                                                        $school = selectSicoes("Carrera");
+                                                        $school = getActiveCarrer();
+
                                                     @endphp
 
                                                     <option value="" disabled="" selected="">Seleccionar</option>
 
                                                     @foreach($school as $key => $value)
-                                                    <option value="{{$value['CarreraId']}}">{{$value["Nombre"]}}</option>
+                                                        <option value="{{$value['CarreraId']}}">{{$value["Nombre"]}}</option>
                                                     @endforeach                             
                                                     
                                                 </select>
@@ -613,7 +616,7 @@
 
                                                 <label class="control-label">Sueldo mensual del tutor</label>
 
-                                                <input step="any" type="number" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control"
+                                                <input type="number" name="TutorSueldoMensual" id="TutorSueldoMensual" class="form-control"
                                                  placeholder="Ingrese el sueldo mensual del tutor">
 
                                             </div>
@@ -699,8 +702,8 @@
 
                                                 <label class="control-label">Puesto</label>
 
-                                                <input id="Puesto" name="Puesto" fieldname="Puesto" maxlength="100" type="text" disabled  class="form-control"
-                                                isnullable="si" placeholder="Ingrese el puesto">
+                                                <input id="Puesto" name="Puesto" maxlength="100" type="text"  class="form-control"
+                                                isnullable="si" placeholder="Ingrese el puesto" readonly>
 
                                             </div>
 
@@ -712,9 +715,9 @@
 
                                                 <label class="control-label">Sueldo mensual del alumno</label>
 
-                                                <input type="text" disabled id="SueldoMensualAlumno"  
+                                                <input type="text" id="SueldoMensualAlumno"  
                                                 class="form-control" name="SueldoMensualAlumno"
-                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno">
+                                                isnullable="si" placeholder="Ingrese el sueldo mensual del alumno" readonly>
 
                                             </div>
                                             

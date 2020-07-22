@@ -68,7 +68,7 @@
                 </li>
               </ul> -->
 
-              <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+              <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
 
             </div>
 
@@ -86,7 +86,7 @@
 
                 <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Noticias</a></li>
                 <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Editar</a></li>
-                <li style="margin-top: 10px;margin-left: 5%;">Recuerda que el cambio de estos datos, no alteran tu registro de la universidad</li>
+                <li style="margin-top: 10px;margin-left: 5%;">Recuerda que el cambio de estos datos, no alteran tu registro de la Universidad</li>
 
               </ul>
 
@@ -136,7 +136,7 @@
 
                     <div class="form-group row">
 
-                      <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                      <label for="inputName" class="col-sm-2 col-form-label">Nombre</label>
 
                       <div class="col-sm-10">
 
@@ -172,7 +172,7 @@
 
                     <div class="form-group row">
 
-                      <label for="inputName2" class="col-sm-2 col-form-label">Password</label>
+                      <label for="inputName2" class="col-sm-2 col-form-label">Contraseña</label>
 
                       <div class="col-sm-10">
 

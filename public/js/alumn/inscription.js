@@ -1,28 +1,30 @@
 //Sirve para habilitar y deshabilitar campos dependiendo la opcion que seleccionen
-$("#trabajaactualmente").change( function()
+$("#TrabajaActualmente").change(function()
 {
-  if($(this).val() === "1")
+  var flag = $(this).val();
+  if( flag == "1")
   {
-    $("#Puesto").prop("disabled",false);
-    $("#SueldoMensualAlumno").prop("disabled",false);
+    $("#Puesto").removeAttr("readonly");
+    $("#SueldoMensualAlumno").removeAttr("readonly");
 
   }
   else
   {
-    $("#Puesto").prop("disabled",true);
-    $("#SueldoMensualAlumno").prop("disabled",true);
+    $("#Puesto").attr("readonly","readonly");
+    $("#SueldoMensualAlumno").attr("readonly","readonly");
   }
 });
 
-$("#transporteuniversidad").change(function()
+$("#TransporteUniversidad").change(function()
 {
+  var flag = $(this).val();
   if($(this).val() === "1")
   {
-    $("#transporte").prop("disabled",false);
+    $("#Transporte").removeAttr("readonly");
   }
   else
   {
-    $("#transporte").prop("disabled",true);   
+    $("#Transporte").attr("readonly","readonly");   
   }
 });     
 
@@ -227,11 +229,11 @@ form.addEventListener('click',function(e)
 
 $(".select2").select2();
 
-$('.phone').inputmask({"mask": "9999999999", "placeholder": '0000000000'});
+$('.phone').mask('0000000000');
 
-$('.eleven').inputmask({"mask": "99999999999", "placeholder": '00000000000'});
+$('.eleven').mask('00000000000');
 
-$('.codigo').inputmask({"mask": "99999", "placeholder": '00000'});
+$('.codigo').mask('00000');
 
 $("#EstadoDom").change(function()
 {
@@ -274,3 +276,37 @@ function getEstados(elementName, EstadoId)
       }
   });
 }
+
+$('.date').inputmask({"mask": "99-99-9999", "placeholder": 'dd-mm-yyyy'});
+
+$(".date").blur(function()
+{
+  var text = $(this).val();
+  var aux = text.split("-");
+  console.log(aux);
+  if(parseInt(aux[1])>12)
+  {
+    if(aux[2]=="yyyy")
+    {
+      $(this).val(aux[0]+"-12-1999");
+      toastr.warning("Solo existen 12 meses en el año y no especificaste un año de nacimiento");
+      $(this).focus();
+    }
+    else
+    {
+      $(this).val(aux[0]+"-12-"+aux[2]);
+      toastr.warning("Solo existen 12 meses en el año");
+    }
+  }
+  else
+  {
+    if(aux[2]=="yyyy")
+    {
+      $(this).val(aux[0]+"-"+aux[1]+"-1999");
+      toastr.warning("no especifico un año de nacimiento");
+      $(this).focus();
+    }
+  } 
+});
+
+$('.sueldo').mask("#.##0,00", {reverse: true});

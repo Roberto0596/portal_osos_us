@@ -44,5 +44,4 @@ $("#password").keyup(function(){
 });	
 })
 
-
- $('#matricula').inputmask({"mask": "99-99-9999", "placeholder": '00-00-0000'});
+ $('#matricula').mask('00-00-0000');

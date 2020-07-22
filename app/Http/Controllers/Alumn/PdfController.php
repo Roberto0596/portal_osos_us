@@ -24,7 +24,7 @@ class PdfController extends Controller
 
         foreach($documents as $key => $value)
         {
-            $buttons="<div class='btn-group'><a class='btn btn-primary' target='_blank' href='".route($value->route,$value)."'  title='Ver datos de pago'>
+            $buttons="<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."'  title='Imprimir'>
             <i class='fa fa-file'></i></a>
             </div>";
 
@@ -41,26 +41,27 @@ class PdfController extends Controller
     public function getGenerarCedula(Request $request, Document $document)
     {
         $current_user = Auth::guard("alumn")->user();
-        $alumno = getDataByIdAlumn($current_user->id_alumno);            
-        $charge = selectSicoes("Carga","AlumnoId",$alumno["AlumnoId"]);  
-        $charge = $charge[count($charge)-1];
-        $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
-        $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0]['Nombre'];
+
+        $alumno = getDataByIdAlumn($current_user->id_alumno);
+
+        $inscripcion = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");            
+        $group =  selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0];
+
         $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
         $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);
+
         $bachiller = selectSicoes("Escuela","EscuelaId",$alumno['EscuelaProcedenciaId'])[0];
-        $datos_escolares['carrera'] = getCarrera($alumno['Matricula']);
-        $datos_escolares['periodo'] = selectCurrentPeriod()['Clave'];
-        $datos_escolares['semestre'] = getLastSemester(getAlumnoId($alumno['Matricula'])[0]);
-        $datos_escolares['escuela_procedencia'] = $bachiller["Nombre"];
-        $datos_escolares['grupo'] = $group;
+
+        $datos_escolares = array('carrera' => getCarrera($alumno['Matricula']),
+                                 'periodo' => selectCurrentPeriod()['Clave'],
+                                 'semestre' => $inscripcion["Semestre"],
+                                 'escuela_procedencia'=>$bachiller["Nombre"],
+                                 'grupo' => $group["Nombre"]);
+
         $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal'];    
 
-        $html = view('Alumn.pdf.generar',
-        ['alumno' => $alumno,
-        'lugar_nacimiento' => $localidad_nacimiento,
-        'direccion' => $localidad_residencia,
-        'datos_escolares' => $datos_escolares])->render();
+        $html = view('Alumn.pdf.generar',['alumno' => $alumno,'lugar_nacimiento' => $localidad_nacimiento,
+        'direccion' => $localidad_residencia,'datos_escolares' => $datos_escolares])->render();
         
         $namefile = 'CEDULA'.time().'.pdf'; 
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -75,7 +76,8 @@ class PdfController extends Controller
         
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
-        $mpdf->Output($namefile,"I");      
+        $mpdf->Output($namefile,"I"); 
+        return redirect(Request::url());     
     }
 
     public function getGenerarConstancia(Request $request, Document $document)
@@ -112,7 +114,8 @@ class PdfController extends Controller
        
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
-        $mpdf->Output($namefile,"I");     
+        $mpdf->Output($namefile,"I");   
+        return redirect(Request::url());   
     }
 
     public function getGenerarFicha(Request $request , $tipo,$accion, $pago)
@@ -137,14 +140,13 @@ class PdfController extends Controller
         if($accion=='html'){
             return view('Alumn.pdf.pago_transferencia',$alumno);
         }else{
-            if($pago == 'transferencia'){
-                $html = view('Alumn.pdf.pago_transferencia',['alumno' => $alumno,
-                'deuda_total' => $total])->render();
-            }else{
-                $html = view('Alumn.pdf.pago_banco',
+           if($pago == 'ficha'){
+
+                $html = view('Alumn.pdf.ficha',
                 ['alumno' => $alumno,
                 'deuda_total' => $total])->render();
             }
+            
             
         }
         $namefile = 'CONSTANCIA'.time().'.pdf';

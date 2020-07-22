@@ -35,6 +35,21 @@
         border: none;
         padding: 2%;
     }
+    .subtitle{
+       padding-left: 3%;
+       font-size: 10px;
+       align: center;
+    }
+    .last{
+       border:none;
+       padding-top: 2.6%;
+       padding-bottom: 2.6%;
+       padding-left: 3%;
+       font-size: 13px;
+       align: left;
+       border-bottom: 1px solid black
+
+    }
 
 </style>
 
@@ -69,7 +84,7 @@
                     }
 
                 ?>
-            $ {{$total_pagar}}
+            ${{  number_format($total_pagar,2)}}
             </td>
         
         </tr>
@@ -82,19 +97,71 @@
 
         <tr>
         
-            <td colspan="2" class="info"><b>CUENTA: </b>51908243936</td>
-        
-        </tr>
-
-        <tr>
-        
             <td colspan="2" class="info" ><b>REFERENCIA: </b>{{$alumno['Matricula']}}</td>
         
         </tr>
 
         <tr>
         
-            <th align="center" colspan="2" class="pie_de_formato" style="padding-top: 13%;">ATENTAMENTE</th>
+            <td colspan="2" class="info" ></td>
+        
+        </tr>
+
+        <tr>
+        
+            <td colspan="2" class="subtitle"><b>Depósito en Banco</td>
+        
+        </tr>
+
+       
+
+        <!-- deposito en banco -->
+
+        <tr>
+        
+            <td colspan="2" class="info"><b>CUENTA: </b>51908243936</td>
+            
+        
+        </tr>
+
+        <tr>
+        
+            <td colspan="2" class="info" ></td>
+        
+        </tr>
+
+      
+         <!-- termina deposito en banco -->
+
+         <tr>
+        
+            <td colspan="2" class="subtitle"><b>Transferencia</td>
+        
+        </tr>
+
+        
+         <!-- transferencia  -->
+
+        <tr>
+        
+            <td colspan="2" class="info"><b>CUENTA CLABE: </b>014775519082439362</td>
+        
+        </tr>
+
+         <tr>
+
+             <td colspan="2" class="last" ><b>BENEFICIARIO: </b>Universidad de la Sierra</td>
+             
+
+         </tr>
+
+         
+
+         <!--termina transferencia  -->
+
+        <tr>
+        
+            <th align="center" colspan="2" class="pie_de_formato" style="padding-top: 6%;">ATENTAMENTE</th>
 
         </tr>
 

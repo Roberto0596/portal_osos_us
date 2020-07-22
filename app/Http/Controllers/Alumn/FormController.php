@@ -15,17 +15,13 @@ class FormController extends Controller
     public function index()
     {
         $estados = getItemClaveAndNamesFromTables("Estado");
-        $municipios = getItemClaveAndNamesFromTables("Municipio");
         try 
         {
             $currentId = Auth::guard('alumn')->user()->id_alumno;
             $data = getDataByIdAlumn($currentId); 
-            $charge = selectSicoes("Carga","AlumnoId",$data["AlumnoId"]);  
-            $charge = $charge[count($charge)-1];
-            $detGrupo = selectSicoes("DetGrupo","DetGrupoId",$charge["DetGrupoId"])[0];
-            $group =  selectSicoes("EncGrupo","EncGrupoId",$detGrupo["EncGrupoId"])[0];  
+            $inscripcion = getLastThing("Inscripcion","AlumnoId",$currentId,"InscripcionId");
+            $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"]);
             return view('Alumn.form.index')->with(["estados"=> $estados , 
-                                                "municipios"=> $municipios,
                                                 "data"=>$data, "currentId"=>$currentId,
                                                 "group" => $group]);
         } 
@@ -39,18 +35,17 @@ class FormController extends Controller
 
     public function saveInscription(Request $request)
     {
-        $this->validate($request,[
-            'g-recaptcha-response' => 'required|recaptcha',
-        ]);
+        // $this->validate($request,[
+        //     'g-recaptcha-response' => 'required|recaptcha',
+        // ]);
         $current_user = Auth::guard('alumn')->user();
         $data = $request->input();
 
         //traer el plan de esudio y el ultimo alumno de esa carrera con ese plan de estudios
         $planEstudio = getLastThing("planEstudio","CarreraId",$data["Carrera"],"PlanEstudioId");
-        $carrera = selectSicoes("Carrera","CarreraId",$data["Carrera"])[0];
 
         //Edad, Matricula y el plan de estudio
-        $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["AñoNacimiento"]));
+        $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["FechaNacimiento"]));
         $edad = intval(floor($aux / (365*60*60*24)));
         $planEstudio = $planEstudio["PlanEstudioId"];
 
@@ -58,15 +53,15 @@ class FormController extends Controller
         $array = array('Matricula' => 'Aspirante',
                    'Nombre' => strtoupper($data["Nombre"]),
                    'ApellidoPrimero'=> strtoupper($data["ApellidoPrimero"]),
-                   'ApellidoSegundo' => strtoupper($data["ApellidoSegundo"]),
+                   'ApellidoSegundo' => array_key_exists("ApellidoSegundo",$data)?strtoupper($data["ApellidoSegundo"]):null,
                    'Regular'=> 1,
                     'Tipo'=>0,
-                    'Curp'=>strtoupper($data["Curp"]),
+                    'Curp'=>array_key_exists("Curp",$data)?strtoupper($data["Curp"]):null,
                     'Genero'=>$data["Genero"],
-                    'FechaNacimiento'=>$data["AñoNacimiento"],
+                    'FechaNacimiento'=>$data["FechaNacimiento"],
                     'Edad' => $edad,
-                    'MunicipioNac' => $data["MunicipioNac"],
-                    'EstadoNac' => $data["EstadoNac"],
+                    'MunicipioNac' => array_key_exists("MunicipioNac",$data)?strtoupper($data["MunicipioNac"]):null,
+                    'EstadoNac' => array_key_exists("EstadoNac",$data)?strtoupper($data["EstadoNac"]):null,
                     'EdoCivil' => $data["EdoCivil"],
                     'Estatura' => 0,
                     'Peso' => 0,
@@ -104,7 +99,7 @@ class FormController extends Controller
                     'Deportiva'=>0,
                     'Cultural'=>0,
                     'Academica'=>0,
-                    'TransporteUniversidad'=>0,
+                    'TransporteUniversidad'=>array_key_exists("TransporteUniversidad",$data)?1:0,
                     'Transporte'=>array_key_exists("Transporte",$data)?1:0,
                     'ActaNacimiento'=>0,
                     'CertificadoBachillerato'=>0,
@@ -126,7 +121,7 @@ class FormController extends Controller
             DB::table('debit')->insert(
                 ['concept' => 'Pago de colegiatura',
                  'amount' => 1950.00,
-                 'admin_id'=> 3,
+                 'admin_id'=> 2,
                  'id_alumno'=>$current_user->id_alumno,
                  'created_at'=>$mytime->toDateTimeString(),
                  'updated_at'=>$mytime->toDateTimeString()]
@@ -149,7 +144,7 @@ class FormController extends Controller
         $dataArray = json_decode($dataAsString);
         $captcha = $request->input('recaptcha');
         
-        if( $captcha != null)
+        if($captcha == null)
         {
             if($dataArray != null)
             {

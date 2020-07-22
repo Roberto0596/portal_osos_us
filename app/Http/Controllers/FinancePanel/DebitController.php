@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FinancePanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\Debit;
+use App\Models\Alumns\User;
 use Input;
 use Auth;
 
@@ -22,33 +23,30 @@ class DebitController extends Controller
         $res = [ "data" => []];
         $debits = Debit::all();
 
-
         foreach($debits as $key => $value)
         {
 
             $buttons="<div class='btn-group'>";
+
             $buttons.="
             <button class='btn btn-danger custom edit' data-toggle='modal' data-target='#modalEdit' DebitId='".$value->id."' title='Editar Adeudo'>
             <i class='fa fa-pen' style='color:white'></i></button>
-            </div>";
+            ";
 
-            
-            if($value->status == 1 || $value->payment_method == 'transfer')
+            if ($value->payment_method == 'transfer') 
             {
-
-                if($value->status == 1){
-                    
-                    $buttons.="
-                    <button class='btn btn-success details' data-toggle='modal' data-target='#modalShowDetails' DebitId='".$value->id."'>
-                    <i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
-                }else{
-
-                    $buttons.="
+                $buttons.="
                     <button class='btn btn-success showPdf' route='".$value->id_order."''><i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
-
-                }
             }
-            
+
+            if ($value->status == 1 && $value->payment_method != 'transfer') 
+            {
+                $buttons.="
+                    <button class='btn btn-success details' data-toggle='modal' data-target='#modalShowDetails' is='".$value->payment_method."' DebitId='".$value->id."'>
+                    <i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
+            }
+
+            $buttons.="</div>";            
 
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
             array_push($res["data"],[
@@ -88,16 +86,48 @@ class DebitController extends Controller
     // sirve para editar un adeudo 
     public function update(Request $request)
     {
-
-       
-
+        $array = $request->input();
         try 
         {
             $debit = Debit::find($request->input("DebitId"));
+            if (array_key_exists("EditStatus", $array))
+            {
+                $debit->id_alumno = $request->input("EditId_alumno");
+                $debit->status    = $request->input("EditStatus");
+
+                if ($array["concept"] == "Pago de colegiatura") 
+                {
+                    $alumn = User::where("id_alumno","=",$debit->id_alumno)->get()[0];
+                    $inscripcionData = getLastThing("Inscripcion","AlumnoId",$alumn->id_alumno,"InscripcionId");
+
+                    //verificamos que es un alumno nuevo y no se esta inscribiendo
+                    if (!$inscripcionData)
+                    {
+                        //traemos la matricula para el alumno que acaba de pagar
+                        $sicoesAlumn = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
+                        $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
+                        updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
+                        $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
+                        $semester = 1;
+                    } 
+                    else
+                    {
+                        $semester = $inscripcionData["Semestre"]+1;
+                    }   
+
+                    //inscribimos al alumno despues de pagar
+                    $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$alumn->id_alumno);
+                    $inscribir = inscribirAlumno($inscription);
+                    $alumn->inscripcion=3;
+                    $alumn->save();
+                    addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
+                    //generamos los documentos de inscripcion
+                    insertInscriptionDocuments($alumn->id);
+                }
+
+            }
             $debit->concept   = $request->input("concept");
             $debit->amount    = $request->input("amount");
-            $debit->id_alumno = $request->input("id_alumno");
-            $debit->status    = $request->input("status");
             $debit->save();
             session()->flash("messages","success|Se guardó correctamente");
             return redirect()->back();
@@ -106,8 +136,7 @@ class DebitController extends Controller
         {
             session()->flash("messages","error|No pudimos guardar los datos");
             return redirect()->back();
-        }
-        
+        }        
     }
 
     //creamos un nuevo adeudos y se guarda el taba de debits
@@ -139,33 +168,39 @@ class DebitController extends Controller
 
 
     // accedemos a este método con ajax para cargar los datos de la orden 
-    public function showPayementDetails(Request $request){
-        
-
+    public function showPayementDetails(Request $request)
+    {
         $debit = Debit::find($request->input("DebitId"));
-       
-        
-
         require_once("conekta/Conekta.php");
         \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
         \Conekta\Conekta::setApiVersion("2.0.0");
         $order = \Conekta\Order::find($debit->id_order);
 
-        $data = array(
+        if ($request->input('is')=="card")
+        {
+            $data = array(
             "id"   => $order->id,
-            "paymentMethod" => $order->charges[0]->payment_method->service_name,
-            "reference"     => $order->charges[0]->payment_method->reference,
-            "amount"        => "$".$order->amount ." ". $order->currency,
-            "order"         => $order->line_items[0]->quantity .
-                                "-". $order->line_items[0]->name .
-                                "- $". $order->line_items[0]->unit_price,
-        );
-
-         return response()->json($data);
-
-        
-
-    }
-
-    
+                "paymentMethod" => "Tarjeta",
+                "amount"        =>  "$". $order->amount/100 . $order->currency,
+                "order"         => $order->line_items[0]->quantity .
+                                      "-". $order->line_items[0]->name .
+                                      "- $". $order->line_items[0]->unit_price/100,
+                  "type"=>"card"                   
+            );
+        }
+        else
+        {
+            $data = array(
+                "id"   => $order->id,
+                "paymentMethod" => $order->charges[0]->payment_method->service_name,
+                "reference"     => $order->charges[0]->payment_method->reference,
+                "amount"        => "$".$order->amount/100 ." ". $order->currency,
+                "order"         => $order->line_items[0]->quantity .
+                                    "-". $order->line_items[0]->name .
+                                    "- $". $order->line_items[0]->unit_price/100,
+                "type"=> "nocard"                  
+            );
+        }
+        return response()->json($data);
+    }    
 }

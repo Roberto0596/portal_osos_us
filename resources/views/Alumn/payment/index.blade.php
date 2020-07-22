@@ -43,7 +43,7 @@
 
   <section class="content">
 
-    <div class="card card-success" style="height: 75vh;">
+    <div class="card card-success" style="height: 80vh;">
 
       <div class="card-header">
 
@@ -53,7 +53,7 @@
 
             <h4>
               <i class="fas fa-globe"></i> Unisierra
-              <small class="float-right">Date: {{date("Y-m-d")}}</small>
+              <small class="float-right">Fecha: {{date("Y-m-d")}}</small>
             </h4>
 
           </div>
@@ -71,7 +71,7 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>concepto</th>
+                <th>Concepto</th>
                 <th>Encargado</th>
                 <th>Fecha</th>
                 <th>Sub total</th>
@@ -85,7 +85,7 @@
                   <td>{{$value->concept}}</td>
                   <td>{{selectAdmin($value->admin_id)->name}}</td>
                   <td>{{$value->created_at}}</td>
-                  <td>{{$value->amount}}</td>
+                  <td>${{number_format($value->amount,2)}}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -94,7 +94,7 @@
           
         </div>
 
-        <div class="row" id="hidden-2">
+        <div class="row" id="hidden-2" style="margin-top: -50px;">
           
           <div class="row">
 
@@ -109,14 +109,13 @@
                       <div class="front-card">
 
                         <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con tarjeta</h4>
+                        <h4 class="titulo-cards">Tarjeta Débido/Crédito</h4>
                         
                       </div>
                       
                       <div class="back-card">
-                      
-                        <p class="parrafo-back"> El usuario debera pagar 
-                          $1950.00 de colegiatura + $70.89 por comisión bancaria, lo cual da un total de $2’020.89</p>
+                        <p class="parrafo-back"> <b>Total a Pagar: $ 2020.89</b><br><br>
+                          $1950.00 de Inscripción + <br>$70.89 por comisión bancaria.</p>
                         <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                       </div> 
@@ -144,15 +143,15 @@
                         <div class="front-card">
 
                           <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago en efectivo</h4>
+                          <h4 class="titulo-cards">Efectivo <br> Pago en Oxxo</h4>
                           
                         
                         </div>
 
                         <div class="back-card">
 
-                          <p class="parrafo-back"> El usuario deberá pagar $1’950.00 de colegiatura + 
-                            $92.39 por comisión bancaria, lo cual da total de $2’042.39</p>
+                          <p class="parrafo-back"> <b>Total a Pagar: $ 2042.39</b><br><br>
+                            $1950.00 de Inscripción + <br>$92.39 por comisión bancaria.</p>
                           <button class="btn btn-success">Realiza un pago en oxxo</button>
                       
                         </div>
@@ -170,7 +169,7 @@
 
               <div class="container-custom">
 
-                  <form method="post" action="{{route('alumn.pay.stei')}}">
+                  <form method="post" action="{{route('alumn.pay.spei')}}">
 
                     {{ csrf_field() }}
 
@@ -179,14 +178,14 @@
                       <div class="front-card">
 
                         <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Pago con transferencia interbancaria (SPEI)</h4>
+                        <h4 class="titulo-cards">Paga desde otro Banco (SPEI)</h4>
                        
 
                       </div>
                       
                       <div class="back-card">
-                        <p class="parrafo-back"> El usuario debera pagar $1’950.00 de colegiatura + $14.50 por comisión bancaria, 
-                          lo cual da un total de $1’964.50*</p>
+                        <p class="parrafo-back"> <b>Total a Pagar: $ 1964.50</b><br><br>
+                          $1950.00 de Inscripción + <br>$14.50 por comisión bancaria.</p>
                         <button class="btn btn-success">Realiza una transferencia SPEI</button>
                       </div>
 
@@ -207,23 +206,20 @@
                         <div class="front-card">
 
                           <img src="{{asset('img/alumn/payment methods/bank_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Pago con transferencia en linea o deposito bancario</h4>
+                          <h4 class="titulo-cards">Paga desde tu App Web, o Deposita en santander</h4>
                          
                         </div>
                         
                         <div class="back-card">
-                        <p class="parrafo-back"> El usuario debe depositar 
-                          en Banco Santander o realiza una tranferencia desde la banca en linea o movil, por un total de $1’950.00 y deberá subir en esta plataforma, el comprobante del pago realizado. </p>
+                          <p class="parrafo-back"> <b>Total a Pagar: $ 1950.00</b><br><br>
+                            $1950.00 de Inscripción  <br>Después del pago escanea tu recibo o captura tu comprobante.</p>
                           
-                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','transferencia'])}}" style="width: 40%; margin: 5%;">
+                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','ficha'])}}" style="width: 100%; margin: 5%;padding-left:10%">
                               @csrf             
-                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Transferencia</button>
+                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 12%">Ficha de Pago</button>
                           </form>
 
-                          <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','deposito'])}}" style="width: 40%; margin: 5%;">
-                              @csrf              
-                              <button type="submit" class="btn btn-primary" style="background-color: orange; border: none; float: left; margin: 10%">Depósito</button>
-                          </form>
+                         
 
                           <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket">subir comprobante</button>
 
@@ -245,19 +241,19 @@
 
         <div class="row">
 
-          <div class="col-md-5">
+          <div class="col-md-9">
 
-              <p style="font-size: 30px">Total: <span>{{$total}}</span></p>
+              <p style="font-size: 30px">Total: <span>${{number_format($total,2)}}</span></p>
 
           </div>
 
          
 
-          <div class="col-md-5">
+          <div class="col-md-3">
 
             <div class="float-right">
 
-              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">no debo eso <i class="fa fa-hand-stop-o"></i></button>
+              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">No debo eso <i class="fa fa-hand-stop-o"></i></button>
 
               <button type="button" class="btn btn-warning" style="border-radius: 20px; display: none;color: white" id="back" ><i class="fa fas  fa-arrow-circle-left" style="color: white !important"></i> Regresar</button>
 

@@ -43,7 +43,7 @@
 
                 </li>
                
-                @if(Auth::guard('alumn')->user()->inscripcion < 4)
+                @if(Auth::guard('alumn')->user()->inscripcion < 3)
                 <li class="nav-item">
                     <a href="{{route('alumn.form')}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
@@ -56,6 +56,31 @@
                 @endif
 
                 @if(Auth::guard('alumn')->user()->id_alumno != null)
+
+                    <li class="nav-item">
+
+                        <a href="{{route('alumn.documents')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>
+                                Documentos
+                            </p>
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a href="{{route('alumn.debit')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-credit-card"></i>
+                            <p>
+                                Adeudos
+                            </p>
+                        </a>
+
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{route('alumn.user')}}" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
@@ -63,18 +88,6 @@
                                 Mi cuenta
                             </p>
                         </a>
-                    </li>
-
-                    <li class="nav-item">
-
-                        <a href="{{route('alumn.documents')}}" class="nav-link">
-
-                            <i class="nav-icon fas fa-file"></i>
-                            <p>
-                                Documentos
-                            </p>
-                        </a>
-
                     </li>
                 
                 @endif

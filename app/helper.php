@@ -1,7 +1,32 @@
 <?php 
 
 use App\Models\AdminUsers\AdminUser;
+use App\Models\Alumns\Notify;
 
+//seccion del sistema
+function addNotify($text,$id,$route)
+{
+  $notify = new Notify();
+  $notify->text = $text;
+  $notify->alumn_id = $id;
+  $notify->route = $route;
+  $notify->save();
+}
+
+function insertIntoPortal($tableName,$array)
+{
+  $insertar = DB::table($tableName)->insert($array);
+}
+
+function insertInscriptionDocuments($id)
+{
+  $getCurrentPeriod = selectCurrentPeriod();
+  $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id]
+        ];
+  insertIntoPortal("document",$array);
+}
+
+//seccion de sicoes
 function ConectSqlDatabase()
 {
   $password = "admin123";
@@ -34,19 +59,23 @@ function selectLastCharge($AlumnoId)
 //metodo que nos da el ultimo semestre en el que estuvo el alumno, de manera que, el resultado de este metodo se le subara 1.
 function getLastSemester($alumnId)
 {
-    $period = selectCurrentPeriod();
-    $lastCharge = selectLastCharge($alumnId);
-    $detgrupo = selectSicoes("DetGrupo","DetGrupoId",$lastCharge["DetGrupoId"])[0];
-    $asignature = selectSicoes("Asignatura","AsignaturaId",$detgrupo["AsignaturaId"])[0];
-    return $asignature["Semestre"];
+    $lastSemester = getLastThing("Inscripcion","AlumnoId",$alumnId,"InscripcionId");
+    if (!$lastSemester)
+    {
+      return 1;
+    }
+    else
+    {
+      return $lastSemester["Semestre"];
+    }
 }
 
 //metodo para traernos un array con las materias que el alumno puede llevar
 function getCurrentAsignatures($alumnId)
 {
     $alumnData = selectSicoes("alumno","AlumnoId",$alumnId)[0];
-    $currentSemester = getLastSemester($alumnId) + 1;
-    return getAsignatures($currentSemester,$alumnData["PlanEstudioId"]);
+    $inscipcion = getLastThing("Inscripcion","AlumnoId",$alumnId,"InscripcionId");
+    return getAsignatures($inscipcion["Semestre"],$alumnData["PlanEstudioId"]);
 }
 
 //metodo que nos trae todas las asignaturas
@@ -146,6 +175,21 @@ function insertCharge($array)
         return false;
     }
     $stmt = null;
+}
+
+function inscribirAlumno($array)
+{
+  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId)");
+
+  if($stmt->execute($array))
+  {
+      return true;
+  }
+  else
+  {
+      return false;
+  }
+  $stmt = null;
 }
 
 function InsertAlumn($array)
@@ -418,16 +462,40 @@ function getAlumnoId($matricula){
     $stmt = null;
 }
 
+function lastEnrollement($planEstudioId,$clave,$fecha)
+{
+    $like = $fecha."-".$clave."-%";
+    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by AlumnoId desc");
+    $stmt->execute();
+    $alumno = $stmt->fetch();
+    return $alumno;
+    $stmt = null;
+}
+
 function generateCarnet($planEstudioId)
 {
-  //preparar la matricula.
-  $ultimoAlumno = getLastThing("Alumno","PlanEstudioId",$planEstudioId,"AlumnoId");
-  $sum = substr($ultimoAlumno["Matricula"],-4) + 1;
-  $lastDate = strlen($sum)==2? "00".$sum: $sum;
+  $plan = selectSicoes("PlanEstudio","PlanEstudioId",$planEstudioId)[0];
   $date = getDate();
-  $first = substr($date["year"], -2);
-  $matricula = $first."-".$carrera["Clave"]."-".$lastDate;
-  return $matricula;
+  $year = substr($date["year"], -2);
+  $clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
+  $lastAlumn = lastEnrollement($planEstudioId,$clave["Clave"],$year);
+  if (!$lastAlumn)
+  {
+    return $year."-".$clave["Clave"]."-0001";
+  }
+  else
+  {
+    $sum = substr($lastAlumn["Matricula"],-4) + 1;
+    if (strlen($sum)==1)
+      $lastDate = "000".$sum;
+    else if (strlen($sum)=="") 
+      $lastDate = "00".$sum;
+    else 
+      $lastDate = "0".$sum;
+
+    $matricula = $year."-".$clave["Clave"]."-".$lastDate;
+    return $matricula;
+  }
 }
 
 function getEncGrupo()
@@ -467,5 +535,29 @@ function getGroups($table, $field)
   $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
   $stmt->execute();
   return $stmt->fetchAll();
+}
+
+function getDateCustom()
+{
+  date_default_timezone_set('America/Hermosillo');
+  $date = date('Y-m-d');
+  $hour = date('H:i:s');
+  return $date.'T'.$hour;
+}
+
+function obtenerGrupo($semestre,$planEstudioId)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM EncGrupo where Semestre = '$semestre' and PlanEstudioId = '$planEstudioId' order by EncGrupoId");
+  $stmt->execute();
+  return $stmt->fetch();
+  $stmt = null;
+}
+
+function getActiveCarrer()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from Carrera where CarreraId <> 8 and CarreraId <> 4 and CarreraId <> 7;");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
 }
 

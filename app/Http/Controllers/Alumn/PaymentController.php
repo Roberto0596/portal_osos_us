@@ -15,9 +15,9 @@ class PaymentController extends Controller
 {
 	public function index()
 	{
-        $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
-        $debit = Debit::where($query)->get();
-        $total = $debit->sum("amount");
+    $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
+    $debit = Debit::where($query)->get();
+    $total = $debit->sum("amount");
 		return view('Alumn.payment.index')->with(["debit" => $debit,"total"=>$total]);
   }
   
@@ -42,10 +42,16 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => floatval((70.89*100)),
+                          'quantity'=>1);
+      array_push($item_array, $commission);
 
       try
       {
@@ -95,10 +101,51 @@ class PaymentController extends Controller
           $value->save();
       }
 
-      $current_user->inscripcion = 3;
-      $current_user->save();
-      session()->flash("messages","success|Se realizo con exito su pago, ahora elija su carga");
-      return redirect()->route("alumn.charge");
+      $inscripcionData = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");
+
+      //verificamos que es un alumno nuevo y no se esta inscribiendo
+      if (!$inscripcionData)
+      {
+        //traemos la matricula para el alumno que acaba de pagar
+        $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
+        updateByIdAlumn($current_user->id_alumno,"Matricula",$enrollement);
+        $current_user->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
+        $semester = 1;
+      } 
+      else
+      {
+        $semester = $inscripcionData["Semestre"]+1;
+      }   
+
+      //inscribimos al alumno despues de pagar
+      $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
+      try
+      {
+        if (inscribirAlumno($inscription))
+        {
+          $current_user->inscripcion = 3;
+          $current_user->save();
+          session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
+          return redirect()->route("alumn.charge");
+        }
+        else
+        {
+          $current_user->inscripcion = 3;
+          $current_user->save();
+          session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
+          return redirect()->route("alumn.charge");
+        }
+
+        //generamos los documentos de inscripcion
+        insertInscriptionDocuments($current_user->id);
+      }
+      catch(\Exception $e)
+      {
+        $current_user->inscripcion = 4;
+        $current_user->save();
+        session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
+        return redirect()->route("alumn.charge");
+      }
   }
 
   public function pay_cash(Request $request)
@@ -122,10 +169,17 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => floatval((92.39*100)),
+                          'quantity'=>1);
+
+      array_push($item_array, $commission);
 
       try
       {
@@ -181,7 +235,7 @@ class PaymentController extends Controller
       return redirect()->route("alumn.payment.note");
   }
 
-  public function pay_stei(Request $request)
+  public function pay_spei(Request $request)
   {
       //mandamos llamar a la libreria de conekta
       require_once("conekta/Conekta.php");
@@ -202,10 +256,16 @@ class PaymentController extends Controller
       foreach ($debits as $key => $value)
       {
           $items = array('name' => $value->concept,
-                          "unit_price" => $value->amount,
+                          "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
       }
+
+      //agregamos la comision bancaria correspondiente.
+      $commission = array('name' => 'comision bancaria',
+                          'unit_price' => floatval((14.5*100)),
+                          'quantity'=>1);
+      array_push($item_array, $commission);
 
       //crear la orden
       try
@@ -278,10 +338,11 @@ class PaymentController extends Controller
       \Conekta\Conekta::setApiVersion("2.0.0");
       $order = \Conekta\Order::find($debit[0]->id_order);
       $total = 0;
-      foreach ($order->line_items as $key => $value) {
-          $total=$total+$value->unit_price;
+      foreach ($order->line_items as $key => $value) 
+      {
+        $total=$total+$value->unit_price;
       }
-      
+
       if($method == "oxxo_cash")
       {
         $totalAndReference = array('total' => $total,
@@ -292,7 +353,7 @@ class PaymentController extends Controller
       {
         $totalAndReference = array('total' => $total,
                                 'reference'=>$order->charges[0]->payment_method->receiving_account_number);
-        return view('Alumn.payment.stei_pay')->with(["order"=>$totalAndReference]);
+        return view('Alumn.payment.spei_pay')->with(["order"=>$totalAndReference]);
       }
     }
   }

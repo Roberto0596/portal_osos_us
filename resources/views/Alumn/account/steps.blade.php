@@ -6,7 +6,7 @@
 
     <div class="flex-content">
 
-        <div class="card"  style="width: 40%;height: 60vh; border-radius: 22px;">
+        <div class="card box-enrollement">
 
             @if($step==1) 
 
@@ -28,12 +28,13 @@
 
                         <div class="col-md-12">
 
-                            @if($step==1)                            
+                            @if($step==1) 
+
                             <div class="input-group mb-3" style="">
 
                                 <label class="field a-field a-field_a2" style="font-size: 20px;">
 
-                                    <input type="text" class="field__input a-field__input" placeholder="Ej. 00-00-0000" id="matricula" name="matricula" required style="font-size: 25px;">
+                                    <input type="text" class="field__input a-field__input" placeholder=" 00-00-0000" id="matricula" name="matricula" required style="font-size: 25px;">
 
                                     <span class="a-field__label-wrap">
 

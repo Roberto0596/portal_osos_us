@@ -8,15 +8,19 @@
 	  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
 		      <li class="nav-item active">
-		        <a class="nav-link" href="{{route('home')}}">Inicio</a>
+		        <a class="nav-link link-custom header-link" href="{{route('home')}}">Inicio</a>
 		      </li>
 		      <li class="nav-item active">
-		        <a class="nav-link" href="{{route('alumn.home')}}">Plan de estudios</a>
+		        <a class="nav-link link-custom header-link" href="http://www.unisierra.edu.mx/oferta_educativa/oferta-educativa.htm" target="_blank">Plan de estudios</a>
 		      </li>
 		    </ul>
 	  	</div>
 
-   		<a href="{{route('alumn.home')}}" class="btn btn-success my-2 my-sm-0" style="color: white; border-radius: 20px;">Acceder</a>
+	  	@if(Route::currentRouteName()=='home')
+
+	  		<span class="header-link" style="margin-right: 1%">Estoy Registrado/Ya soy Alumno -> </span> <a href="{{route('alumn.home')}}" class="btn btn-success my-2 my-sm-0" style="color: white; border-radius: 20px;"> Acceder</a>
+
+	  	@endif
 
 	</nav>
 

@@ -12,7 +12,7 @@
         
         <div class="col-sm-6">
           
-          <h1>Mis documentos por imprimir</h1>
+          <h1>Mis Documentos por Imprimir</h1>
           
         </div>
         
@@ -35,31 +35,40 @@
 
   <section class="content">
 
-<div class="card">
+    <div class="card">
+      <div class="card-header">
+        Nota:
+      </div>
+      <div class="card-body">
+        <p>Estos documentos sólo se pueden imprimir en una sóla ocasión, pues llevan registro de fecha. Si quieres conservarlos, asegurate de guardarlos como PDF.</p>
+      </div>
+    </div>
 
-  <div class="card-body">
+    <div class="card">
 
-  <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+      <div class="card-body">
 
-    <table class="table table-bordered table-hover tableDocuments">
+      <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 
-      <thead>
+        <table class="table table-bordered table-hover tableDocuments">
 
-        <tr>
-          <th style="width: 10px">#</th>
-          <th>Nombre</th>
-          <th>Acciones</th>
-        </tr>
+          <thead>
 
-      </thead>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
 
-    </table>
+          </thead>
 
-  </div>
+        </table>
 
-</div>
+      </div>
 
-</section>
+    </div>
+
+  </section>
 
 </div>
 

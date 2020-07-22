@@ -12,6 +12,7 @@ $("#next").click(function()
 	$("#hidden-1").fadeOut(500,function(){
 		$("#hidden-2").fadeIn(500);
 		$("#back").fadeIn(500);
+		$("#payment_title").text("Métodos de pago");
 	});
 	// $(this).attr("data-toggle","modal");
 	// $(this).attr("data-target","#modalPago");
@@ -25,6 +26,7 @@ $("#back").click(function()
 			$("#next").fadeIn(500);
 			$("#extra").fadeIn(500);
 			$("#hidden-1").fadeIn(500);
+			$("#payment_title").text("Adeudos pendientes");
 		});
 	});
 });
