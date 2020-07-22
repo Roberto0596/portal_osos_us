@@ -51,7 +51,8 @@ class DebitController extends Controller
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
-                $value->concept,
+                getDebitType($value->debit_type_id)->concept,
+                $value->description,
                 "$".number_format($value->amount,2),
                 $current_user->name,
                 $alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
@@ -69,14 +70,15 @@ class DebitController extends Controller
 	{
        
         $debit = Debit::find($request->input("DebitId"));
-        $alumn = selectSicoes("Alumno","AlumnoId",$debit->id_alumno)[0];
+        $alumn = selectTable("users", "id_alumno",$debit->id_alumno,"si");
         $data = array(
-        "concept"   =>$debit->concept,
-        "alumnName" =>$alumn["Nombre"].$alumn["ApellidoPrimero"],
-        "amount"    =>$debit->amount,
-        "debitId"   => $debit->id,
-        "alumnId" => $alumn['AlumnoId'],
-        "status"    => $debit->status
+            "concept"   =>getDebitType($debit->debit_type_id)->name,
+            "alumnName" =>$alumn->name." ".$alumn->lastname,
+            'description'=>$debit->description,
+            "amount"    =>$debit->amount,
+            "debitId"   => $debit->id,
+            "alumnId" => $alumn->id_alumno,
+            "status"    => $debit->status
                     
         );
         return response()->json($data);
@@ -86,48 +88,45 @@ class DebitController extends Controller
     // sirve para editar un adeudo 
     public function update(Request $request)
     {
-        $array = $request->input();
         try 
         {
+            $array = $request->input();
             $debit = Debit::find($request->input("DebitId"));
+
             if (array_key_exists("EditStatus", $array))
             {
                 $debit->id_alumno = $request->input("EditId_alumno");
-                $debit->status    = $request->input("EditStatus");
+                $debit->status = $request->input("EditStatus");
+                $debit->amount = $request->input("EditAmount");
 
-                if ($array["concept"] == "Pago de colegiatura") 
+                if ($debit->debit_type_id == 1 && $debit->status == 1) 
                 {
-                    $alumn = User::where("id_alumno","=",$debit->id_alumno)->get()[0];
-                    $inscripcionData = getLastThing("Inscripcion","AlumnoId",$alumn->id_alumno,"InscripcionId");
+                    $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
+                    $enrollement = realizarInscripcion($alumn->id_alumno);
 
-                    //verificamos que es un alumno nuevo y no se esta inscribiendo
-                    if (!$inscripcionData)
+                    if ($enrollement!=false)
                     {
-                        //traemos la matricula para el alumno que acaba de pagar
-                        $sicoesAlumn = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
-                        $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
-                        updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
-                        $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
-                        $semester = 1;
-                    } 
+                        if (!$enrollement) 
+                        {
+                            updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
+                            $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx"; 
+                        }
+
+                        $alumn->inscripcion=3;
+                        $alumn->save();
+                        addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
+                        //generamos los documentos de inscripcion
+                        insertInscriptionDocuments($alumn->id);
+                    }
                     else
                     {
-                        $semester = $inscripcionData["Semestre"]+1;
-                    }   
-
-                    //inscribimos al alumno despues de pagar
-                    $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$alumn->id_alumno);
-                    $inscribir = inscribirAlumno($inscription);
-                    $alumn->inscripcion=3;
-                    $alumn->save();
-                    addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
-                    //generamos los documentos de inscripcion
-                    insertInscriptionDocuments($alumn->id);
+                        session()->flash("messages","error|No pudimos guardar los datos");
+                        return redirect()->back();
+                    }
                 }
-
             }
-            $debit->concept   = $request->input("concept");
-            $debit->amount    = $request->input("amount");
+
+            $debit->description = $request->input("EditDescription");
             $debit->save();
             session()->flash("messages","success|Se guardó correctamente");
             return redirect()->back();
@@ -143,7 +142,8 @@ class DebitController extends Controller
     public function save(Request $request) 
     {
         $request->validate([
-            'concept' => 'required',
+            'description' => 'required',
+            'debit_type_id'=>'required',
             'amount' => 'required',
             'id_alumno'=>'required',
         ]);
@@ -151,8 +151,9 @@ class DebitController extends Controller
         try 
         {
             $debit = new Debit();
-            $debit->concept = $request->input("concept");
+            $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
+            $debit->description = $request->input("description");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = Auth::guard("finance")->user()->id;
             $debit->save();

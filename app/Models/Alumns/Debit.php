@@ -11,7 +11,8 @@ class Debit extends Model
 
     protected $fillable = [
     	'id',
-        'concept',
+        'debit_type_id',
+        'description',
         'amount',
         'admin_id',
         'id_alumno',

@@ -80,6 +80,7 @@
             <tr>
               <th style="width: 10px">#</th>
               <th>Concepto</th>
+              <th>Descripción</th>
               <th>Monto</th>
               <th>Encargado</th>
               <th>Alumno</th>
@@ -106,7 +107,7 @@
 
     <div class="modal-content">
 
-        <form method="post" action="{{route('computo.debit.save')}}">
+        <form method="post" action="{{route('library.debit.save')}}">
             
             {{ csrf_field() }}
 
@@ -133,7 +134,12 @@
                                 <i class="fas fa-credit-card"></i></span>
                             </div>
 
-                            <input type="text" name="concept" id="concept" placeholder="¿Cual es el concepto?" class="form-control form-control-lg" required>
+                            <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg">
+                              <option value="" disabled selected>Seleccione un concepto</option>
+                              @foreach(getDebitType() as $key => $value)
+                              <option value="{{$value->id}}">{{$value->concept}}</option>
+                              @endforeach
+                            </select>
 
                         </div>
 
@@ -174,6 +180,21 @@
                                 @endforeach
 
                             </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-ad"></i></span>
+                            </div>
+
+                            <textarea type="text" name="description" id="description" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
 
                         </div>
 
@@ -236,6 +257,7 @@
                 <thead>
                     <tr>
                         <th>Concepto</th>
+                        <th>Descripcion</th>
                         <th>Alumno</th>
                         <th>Monto</th>
                     </tr>
@@ -245,7 +267,7 @@
             </table>
             <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">
             <br>
-            <form action="{{route('computo.debit.update')}}" method="POST">
+            <form action="{{route('library.debit.update')}}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" id="DebitId" name="DebitId">
                 <div class="modal-footer">

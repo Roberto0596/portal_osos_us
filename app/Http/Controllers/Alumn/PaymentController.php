@@ -79,18 +79,18 @@ class PaymentController extends Controller
       } 
       catch (\Conekta\ProcessingError $error)
       {
-          session()->flash("messages","error|".$error->getMessage());
-          return redirect()->back();
+        session()->flash("messages","error|".$error->getMessage());
+        return redirect()->back();
       } 
       catch (\Conekta\ParameterValidationError $error)
       {
-          session()->flash("messages","error|".$error->getMessage());
-          return redirect()->back();
+        session()->flash("messages","error|".$error->getMessage());
+        return redirect()->back();
       }
       catch (\Conekta\Handler $error)
       {
-          session()->flash("messages","error|".$error->getMessage());
-          return redirect()->back();
+        session()->flash("messages","error|".$error->getMessage());
+        return redirect()->back();
       }
 
       foreach ($debits as $key => $value)
@@ -157,7 +157,7 @@ class PaymentController extends Controller
 
       //preparamos los datos.
       $tokenId = $request->input("conektaTokenId");
-      $current_user = User::find(Auth::guard("alumn")->user()->id);
+      $current_user = Auth::guard("alumn")->user();
       $sicoesAlumn = selectSicoes("alumno","alumnoid",$current_user->id_alumno)[0];
 
       //traer los conceptos que se deben del alumno
@@ -168,7 +168,7 @@ class PaymentController extends Controller
 
       foreach ($debits as $key => $value)
       {
-          $items = array('name' => $value->concept,
+          $items = array('name' => getDebitType($value->debit_type_id)->concept,
                           "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);

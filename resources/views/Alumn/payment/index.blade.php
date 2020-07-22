@@ -82,7 +82,7 @@
               @foreach($debit as $key => $value)
                 <tr>
                   <td>{{($key+1)}}</td>
-                  <td>{{$value->concept}}</td>
+                  <td>{{getDebitType($value->debit_type_id)->concept}}</td>
                   <td>{{selectAdmin($value->admin_id)->name}}</td>
                   <td>{{$value->created_at}}</td>
                   <td>${{number_format($value->amount,2)}}</td>

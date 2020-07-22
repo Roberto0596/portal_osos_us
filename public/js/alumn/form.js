@@ -70,7 +70,7 @@ $(document).ready(function()
     });
 
     $("#button-sumbit").click(function(event){
-        var route = 'form/save';
+        var route = '/alumn/form/save';
         var token = $('#token').val();
         var data = new FormData();
         var tempData = JSON.parse(localStorage.getItem('tempData'));

@@ -99,6 +99,7 @@
             <tr>
               <th style="width: 10px">#</th>
               <th>Concepto</th>
+              <th>Descripción</th>
               <th>Monto</th>
               <th>Encargado</th>
               <th>Alumno</th>
@@ -153,7 +154,12 @@
                                 <i class="fas fa-credit-card"></i></span>
                             </div>
 
-                            <input type="text" name="concept" id="concept" placeholder="¿Cual es el concepto?" class="form-control form-control-lg" required>
+                            <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg">
+                              <option value="" disabled selected>Seleccione un concepto</option>
+                              @foreach(getDebitType() as $key => $value)
+                              <option value="{{$value->id}}">{{$value->concept}}</option>
+                              @endforeach
+                            </select>
 
                         </div>
 
@@ -165,7 +171,7 @@
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
+                                <i class="fas fa-dollar-sign"></i></span>
                             </div>
 
                             <input type="number" step="any" min="0" name="amount" id="amount" placeholder="¿Cual es el monto?" class="form-control form-control-lg" required>
@@ -180,7 +186,7 @@
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
+                                <i class="fas fa-user"></i></span>
                             </div>
 
                             <select class="form-control form-control-lg" id="id_alumno" name="id_alumno" style="width:88%" require>
@@ -194,6 +200,21 @@
                                 @endforeach
 
                             </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-ad"></i></span>
+                            </div>
+
+                            <textarea type="text" name="description" id="description" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
 
                         </div>
 
@@ -245,11 +266,10 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">
 
         <form method="post" action="{{route('finance.debit.update')}}">
-            @method('PUT')
             
             {{ csrf_field() }}
-            <input type="hidden" id="DebitIdUpdate" name="DebitId">
-           
+
+            <input type="hidden" id="DebitIdUpdate" name="DebitId">           
 
             <div class="modal-header">
 
@@ -271,50 +291,10 @@
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
-                            </div>
-
-                            <input type="text" name="concept" id="EditConcept" placeholder="¿Cual es el concepto?" class="form-control form-control-lg" required>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">           
-
-                        <div class="input-group mb-3">
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
+                                <i class="fas fa-dollar-sign"></i></span>
                             </div>
 
                             <input type="number" step="any" min="0" name="amount" id="EditAmount" placeholder="¿Cual es el monto?" class="form-control form-control-lg" required>
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">           
-
-                        <div class="input-group mb-3">
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
-                            </div>
-
-                            <select class="form-control form-control-lg" id="EditId_alumno" name="id_alumno" style="width:88%" require>
-                                <option value="">Seleccione un alumno</option>
-                                @php
-                                    $alumnos = selectSicoes("Alumno");
-                                @endphp
-
-                                @foreach($alumnos as $key => $value)
-                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
-                                @endforeach
-
-                            </select>
 
                         </div>
 
@@ -337,7 +317,47 @@
 
                       </div>
 
-                  </div>
+                    </div>
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-user"></i></span>
+                            </div>
+
+                            <select class="form-control form-control-lg" id="EditId_alumno" name="id_alumno" style="width:88%" require>
+                                <option value="">Seleccione un alumno</option>
+                                @php
+                                    $alumnos = selectSicoes("Alumno");
+                                @endphp
+
+                                @foreach($alumnos as $key => $value)
+                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-ad"></i></span>
+                            </div>
+
+                            <textarea type="text" name="EditDescription" id="EditDescription" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
+
+                        </div>
+
+                    </div>
 
                 </div>
 

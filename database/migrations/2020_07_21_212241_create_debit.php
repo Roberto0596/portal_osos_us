@@ -10,8 +10,11 @@ class CreateDebit extends Migration
     {
         Schema::create('debit', function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->string("concept");
+            $table->bigInteger("debit_type_id")->unsigned();
+            $table->foreign("debit_type_id")->references("id")->on("debit_type")->onDelete('cascade');
+            $table->string("description")->nullable();
             $table->float("amount");
+            $table->string("payment_method")->nullable();
             $table->bigInteger("admin_id")->unsigned();
 
             $table->foreign("admin_id")->references("id")->on("admin_users")->onDelete('cascade');

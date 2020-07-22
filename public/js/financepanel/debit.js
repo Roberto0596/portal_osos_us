@@ -68,6 +68,8 @@ $(".tableDebits tbody").on("click","button.edit",function()
                 $('#EditStatus').attr("readonly","readonly");
                 $('#EditId_alumno').removeAttr("name");
                 $('#EditId_alumno').attr("readonly","readonly");
+                $('#EditAmount').removeAttr("name");
+                $('#EditAmount').attr("readonly","readonly");
             }  
             else
             {
@@ -75,12 +77,15 @@ $(".tableDebits tbody").on("click","button.edit",function()
                 $('#EditStatus').removeAttr("readonly");
                 $('#EditId_alumno').attr("name","EditId_alumno");
                 $('#EditId_alumno').removeAttr("readonly");
+                $('#EditAmount').attr("name","EditAmount");
+                $('#EditAmount').removeAttr("readonly");
             }        
             $('#EditConcept').val(response['concept']);
             $('#EditAmount').val(response['amount']);
             $('#EditId_alumno').val(response['alumnId']);
             $('#EditStatus').val(response['status']);
-            $('#DebitIdUpdate').val(response['debitId']);           
+            $('#DebitIdUpdate').val(response['debitId']);
+            $('#EditDescription').val(response['description']);           
            
         }});
 });

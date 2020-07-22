@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
+use App\Models\Alumns\DebitType;
 use DB;
 use Input;
 use Auth;

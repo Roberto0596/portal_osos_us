@@ -2,6 +2,7 @@
 
 use App\Models\AdminUsers\AdminUser;
 use App\Models\Alumns\Notify;
+use App\Models\Alumns\DebitType;
 
 //seccion del sistema
 function addNotify($text,$id,$route)
@@ -11,6 +12,37 @@ function addNotify($text,$id,$route)
   $notify->alumn_id = $id;
   $notify->route = $route;
   $notify->save();
+}
+
+function getDebitType($id = null)
+{
+  if ($id == null)
+  {
+    return DebitType::all();
+  }
+  else
+  {
+    return DebitType::find($id);
+  }
+}
+
+function selectTable($tableName, $item=null,$value=null,$limit=null)
+{
+  if ($item == null)
+  {
+    return DB::table($tableName)->get();
+  }
+  else
+  {
+    if ($limit==null)
+    {
+      return DB::table($tableName)->where($item,"=",$value)->get();
+    }
+    else
+    {
+      return DB::table($tableName)->where($item,"=",$value)->first();
+    }
+  }
 }
 
 function insertIntoPortal($tableName,$array)
@@ -35,6 +67,37 @@ function ConectSqlDatabase()
 	$link = new PDO("sqlsrv:Server=.\SQLEXPRESS01;Database=Sicoes;", $user, $password);
   $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
+}
+
+//funcion para inscribir al alumno
+function realizarInscripcion($id_alumno)
+{
+   $inscripcionData = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+
+  //verificamos que es un alumno nuevo y no se esta inscribiendo
+  if (!$inscripcionData)
+  {
+      //traemos la matricula para el alumno que acaba de pagar
+      $sicoesAlumn = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
+      $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);           
+      $semester = 1;
+  } 
+  else
+  {
+      $semester = $inscripcionData["Semestre"]+1;
+  }
+
+  //inscribimos al alumno despues de pagar
+  $inscribir = inscribirAlumno(['Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$id_alumno]);
+
+  if ($inscribir)
+  {
+    return !$inscripcionData?$enrollement:true;
+  }
+  else
+  {
+      return false;
+  }
 }
 
 //este metodo servira para trarnos el periodo actual o en curso

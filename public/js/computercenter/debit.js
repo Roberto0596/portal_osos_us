@@ -59,11 +59,13 @@ $(".tableDebits tbody").on("click","button.pay",function()
         processData:false,
         success:function(response)
         {
+            $("#body-table").empty();
             $("#body-table").append("<tr>"+
                     "<td>"+response["concept"]+"</td>"+
+                    "<td>"+response["description"]+"</td>"+
                     "<td>"+response["alumnName"]+"</td>"+
                     "<td>"+response["amount"]+"</td>"+
                 "</tr>");
-            $("#DebitId").val(response["DebitId"]);
+            $("#DebitId").val(response["debitId"]);
         }});
 });

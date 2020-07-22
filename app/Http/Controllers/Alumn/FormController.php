@@ -119,7 +119,8 @@ class FormController extends Controller
             $current_user->save();
             $mytime = \Carbon\Carbon::now();
             DB::table('debit')->insert(
-                ['concept' => 'Pago de colegiatura',
+                ['debit_type_id' => 1,
+                 'description' => 'Pago semestral de inscripcion',
                  'amount' => 1950.00,
                  'admin_id'=> 2,
                  'id_alumno'=>$current_user->id_alumno,
@@ -146,25 +147,33 @@ class FormController extends Controller
         
         if($captcha == null)
         {
-            if($dataArray != null)
+            try
             {
-                for ($i = 0; $i < count($dataArray); $i++)
+                if($dataArray != null)
                 {
-                    updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
+                    for ($i = 0; $i < count($dataArray); $i++)
+                    {
+                        updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
+                    }
                 }
+                $current_user->inscripcion = 1;
+                $current_user->save();
+                $mytime = \Carbon\Carbon::now();
+                DB::table('debit')->insert(
+                    ['debit_type_id' => 1,
+                     'description' => 'Pago semestral de inscripcion',
+                     'amount' => 1950.00,
+                     'admin_id'=> 2,
+                     'id_alumno'=>$current_user->id_alumno,
+                     'created_at'=>$mytime->toDateTimeString(),
+                     'updated_at'=>$mytime->toDateTimeString()]
+                );
+                return response()->json('ok');
             }
-            $current_user->inscripcion = 1;
-            $current_user->save();
-            $mytime = \Carbon\Carbon::now();
-            DB::table('debit')->insert(
-                ['concept' => 'Pago de colegiatura',
-                 'amount' => 1950.00,
-                 'admin_id'=> 3,
-                 'id_alumno'=>$currentId,
-                 'created_at'=>$mytime->toDateTimeString(),
-                 'updated_at'=>$mytime->toDateTimeString()]
-            );
-            return response()->json('ok');
+            catch(\Exception $e)
+            {
+                return response()->json('error');
+            }
         }
         else
         {

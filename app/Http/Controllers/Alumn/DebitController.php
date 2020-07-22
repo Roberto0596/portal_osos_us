@@ -29,10 +29,11 @@ class DebitController extends Controller
         {
             $adminUser = AdminUser::find($value->admin_id);
             $buttons="<div class='btn-group'><button class='btn btn-success'><i class='fas fa-dollar-sign'></i></button></div>";
-  
+            
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
-                $value->concept,
+                getDebitType($value->debit_type_id)->concept,
+                $value->description,
                 "$".number_format($value->amount,2),
                 $adminUser->name,
                 $current_user->name,

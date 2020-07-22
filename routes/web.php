@@ -247,7 +247,7 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 
 
 			//sirve para actualizar el estado de un adeudo
-			Route::put('/debit/update', [
+			Route::post('/debit/update', [
 		        'uses' => 'DebitController@update', 
 		        'as' => 'debit.update'
 			]);

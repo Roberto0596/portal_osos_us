@@ -654,7 +654,7 @@ td{
 .box-enrollement
 {
     width: 40%;
-    height: 60vh;
+    height: 450px;
     border-radius: 
     22px;
 }
@@ -664,21 +664,21 @@ td{
     margin-left: 70%;
 }
 
-@media (max-width: 992px)
+/*@media (max-width: 992px)
 {
   .box-enrollement
   {
     width: 80%;
-    height: 60vh;
+    height: 400px;
   }
-}
+}*/
 
 @media (max-width: 992px)
 {
   .box-enrollement
   {
-    width: 80%;
-    height: 60vh;
+    width: 85%;
+    height: 400px;
   }
 
   .margin-responsivo

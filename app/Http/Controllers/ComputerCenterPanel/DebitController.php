@@ -40,7 +40,8 @@ class DebitController extends Controller
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
-                $value->concept,
+                getDebitType($value->debit_type_id)->concept,                
+                $value->description,
                 "$".number_format($value->amount,2),
                 $current_user->name,
                 $alumn["Nombre"],
@@ -56,11 +57,17 @@ class DebitController extends Controller
 	public function seeDebit(Request $request) 
 	{
         $debit = Debit::find($request->input("DebitId"));
-        $alumn = selectSicoes("Alumno","AlumnoId",$debit->id_alumno)[0];
-        $data = array("concept"=>$debit->concept,
-                        "alumnName"=>$alumn["Nombre"].$alumn["ApellidoPrimero"],
-                        "amount"=>$debit->amount,
-                        "DebitId" => $debit->id);
+        $alumn = selectTable("users", "id_alumno",$debit->id_alumno,"si");
+        $data = array(
+            "concept"   =>getDebitType($debit->debit_type_id)->concept,
+            "alumnName" =>$alumn->name." ".$alumn->lastname,
+            'description'=>$debit->description,
+            "amount"    =>$debit->amount,
+            "debitId"   => $debit->id,
+            "alumnId" => $alumn->id_alumno,
+            "status"    => $debit->status
+                    
+        );
         return response()->json($data);
     }
 
@@ -81,14 +88,10 @@ class DebitController extends Controller
         }
     }
 
-    public function delete($id)
-    {
-    }
-
     public function save(Request $request) 
     {
         $request->validate([
-            'concept' => 'required',
+            'debit_type_id' => 'required',
             'amount' => 'required',
             'id_alumno'=>'required',
         ]);
@@ -96,8 +99,9 @@ class DebitController extends Controller
         try 
         {
             $debit = new Debit();
-            $debit->concept = $request->input("concept");
+            $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
+            $debit->description = $request->input("description");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = Auth::guard("computercenter")->user()->id;
             $debit->save();

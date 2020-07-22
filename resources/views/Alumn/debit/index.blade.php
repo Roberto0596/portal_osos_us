@@ -7,14 +7,13 @@
     background-color: #fd7e14;
     border-color: #fd7e14;
   }
+
   .textAndButton{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-  }
-
-  
+  }  
  
   .custom{
     background-color: #fd7e14;
@@ -77,6 +76,7 @@
             <tr>
               <th style="width: 10px">#</th>
               <th>Concepto</th>
+              <th>Descripción</th>
               <th>Monto</th>
               <th>Encargado</th>
               <th>Alumno</th>

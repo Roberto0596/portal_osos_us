@@ -122,7 +122,7 @@
 
                         </div>
 
-                        <div class="row" style="margin-top: 35px; margin-bottom: -35px;">
+                        <div class="row" style="margin-top: 25px; margin-bottom: -15px;">
                             <div class="col-md-6">
                                 <p class="parrafo-login text-center">¿Aun no tienes cuenta?</p>
                             </div>

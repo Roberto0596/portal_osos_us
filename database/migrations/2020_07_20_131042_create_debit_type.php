@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterDebit extends Migration
+class CreateDebitType extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AlterDebit extends Migration
      */
     public function up()
     {
-        Schema::table('debit', function (Blueprint $table) {
-            $table->string("payment_method")->nullable();
+        Schema::create('debit_type', function (Blueprint $table) {
+            $table->bigIncrements("id");
+            $table->string("concept",100);
+            $table->timestamps();
         });
     }
 
@@ -25,6 +27,6 @@ class AlterDebit extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('debit_type');
     }
 }
