@@ -37,8 +37,8 @@ $(document).ready(function()
     if(data != null)
     {
         swal.fire({
-            title: "Parece que la última vez no terminaste de completar el fromulario",
-            text: "Si cambiaste algunos datos y avanzaste a pasos posteriores algunos cambios se guardaron ",
+            title: "Parece que la última vez no terminaste de completar el formulario",
+            text: "Si cambiaste algunos datos y avanzaste en el proceso tus datos se han guardardado",
             type: 'success',
         });
         data.forEach(element =>
