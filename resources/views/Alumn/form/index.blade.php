@@ -32,13 +32,22 @@
 
                         <div class="form-register_header">
 
-                            <ul class="progressbar">
+                            <ul class="progressbar max-size">
                                 <li class="progressbar-option active"> Datos Personales I</li>
                                 <li class="progressbar-option"> Datos Personales II</li>
                                 <li class="progressbar-option"> Datos Escolares</li>
                                 <li class="progressbar-option"> Datos Familiares</li>
                                 <li class="progressbar-option"> Datos Generales</li>
                                 <li class="progressbar-option"> Protesta de Reglamento</li>
+                            </ul>
+
+                            <ul class="progressbar min-size">
+                                <li class="progressbar-option active"></li>
+                                <li class="progressbar-option"></li>
+                                <li class="progressbar-option"> </li>
+                                <li class="progressbar-option"></li>
+                                <li class="progressbar-option"></li>
+                                <li class="progressbar-option"></li>
                             </ul>
 
                         </div>
