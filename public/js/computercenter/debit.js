@@ -3,6 +3,7 @@ var route = "/computo/debit/show";
 
 $(".tableDebits").dataTable({
     "destroy": true,
+    "responsive": true,
     "ajax":
     {
         url: route,
