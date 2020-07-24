@@ -13,12 +13,12 @@ use DB;
 
 class PaymentController extends Controller
 {
-	public function index()
-	{
+  public function index()
+  {
     $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
     $debit = Debit::where($query)->get();
     $total = $debit->sum("amount");
-		return view('Alumn.payment.index')->with(["debit" => $debit,"total"=>$total]);
+    return view('Alumn.payment.index')->with(["debit" => $debit,"total"=>$total]);
   }
   
   public function pay_card(Request $request)
@@ -41,7 +41,7 @@ class PaymentController extends Controller
 
       foreach ($debits as $key => $value)
       {
-          $items = array('name' => $value->concept,
+          $items = array('name' => getDebitType($value->debit_type_id)->concept,
                           "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);
@@ -119,6 +119,9 @@ class PaymentController extends Controller
 
       //inscribimos al alumno despues de pagar
       $inscription = array('Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
+      
+      //generamos los documentos de inscripcion
+      $insertDocuments = insertInscriptionDocuments($current_user->id);
       try
       {
         if (inscribirAlumno($inscription))
@@ -126,18 +129,15 @@ class PaymentController extends Controller
           $current_user->inscripcion = 3;
           $current_user->save();
           session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
-          return redirect()->route("alumn.charge");
+          return redirect()->route("alumn.home");
         }
         else
         {
           $current_user->inscripcion = 3;
           $current_user->save();
           session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
-          return redirect()->route("alumn.charge");
+          return redirect()->route("alumn.home");
         }
-
-        //generamos los documentos de inscripcion
-        insertInscriptionDocuments($current_user->id);
       }
       catch(\Exception $e)
       {
@@ -255,7 +255,7 @@ class PaymentController extends Controller
 
       foreach ($debits as $key => $value)
       {
-          $items = array('name' => $value->concept,
+          $items = array('name' => getDebitType($value->debit_type_id)->concept,
                           "unit_price" => $value->amount*100,
                           "quantity" => 1);
           array_push($item_array, $items);

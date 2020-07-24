@@ -277,7 +277,7 @@ function getEstados(elementName, EstadoId)
   });
 }
 
-$('.date').inputmask({"mask": "99-99-9999", "placeholder": 'dd-mm-yyyy'});
+$('.date').inputmask({"mask": "9999-99-99", "placeholder": 'yyyy-mm-dd'});
 
 $(".date").blur(function()
 {

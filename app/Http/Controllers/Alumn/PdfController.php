@@ -24,7 +24,7 @@ class PdfController extends Controller
 
         foreach($documents as $key => $value)
         {
-            $buttons="<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."'  title='Imprimir'>
+            $buttons="<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."' title='Imprimir'>
             <i class='fa fa-file'></i></a>
             </div>";
 
@@ -38,9 +38,14 @@ class PdfController extends Controller
         return response()->json($res);
     }
 
-    public function getGenerarCedula(Request $request, Document $document)
+    public function getGenerarCedula(Request $request, $id)
     {
         $current_user = Auth::guard("alumn")->user();
+
+        $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
+        if ($document==null) {
+            return redirect()->back();
+        }
 
         $alumno = getDataByIdAlumn($current_user->id_alumno);
 
@@ -71,7 +76,7 @@ class PdfController extends Controller
         $fontData = $defaultFontConfig['fontdata'];
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
-        $document->status = 1;
+        // $document->status = 1;
         $document->save();
         
         $mpdf->SetDisplayMode('fullpage');
@@ -80,9 +85,15 @@ class PdfController extends Controller
         return redirect(Request::url());     
     }
 
-    public function getGenerarConstancia(Request $request, Document $document)
+    public function getGenerarConstancia(Request $request, $id)
     {      
         $current_user = Auth::guard("alumn")->user();
+
+        $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
+        if ($document==null) {
+            return redirect()->back();
+        }
+
         $alumno = getDataByIdAlumn($current_user->id_alumno);
  
         $html = view('Alumn.pdf.constancia')->with('alumno', $alumno)->render();
@@ -93,23 +104,9 @@ class PdfController extends Controller
  
         $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
         $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new Mpdf(
-        [
-            'fontDir' => array_merge($fontDirs, 
-            [
-                public_path() . '/fonts',
-            ]),
-            'fontdata' => $fontData + [
-                'arial' => [
-                    'R' => 'arial.ttf',
-                    'B' => 'arialbd.ttf',
-                ],
-            ],
-            'default_font' => 'arial',
-            "format" => [210,297],
-        ]);
+        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
-        $document->status = 1;
+        // $document->status = 1;
         $document->save();
        
         $mpdf->SetDisplayMode('fullpage');

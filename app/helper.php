@@ -47,7 +47,15 @@ function selectTable($tableName, $item=null,$value=null,$limit=null)
 
 function insertIntoPortal($tableName,$array)
 {
-  $insertar = DB::table($tableName)->insert($array);
+  try
+  {
+    $insertar = DB::table($tableName)->insert($array);
+    return true;
+  }
+  catch(\Exception $e)
+  {
+    return false;
+  }
 }
 
 function insertInscriptionDocuments($id)
@@ -55,7 +63,8 @@ function insertInscriptionDocuments($id)
   $getCurrentPeriod = selectCurrentPeriod();
   $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id]
         ];
-  insertIntoPortal("document",$array);
+  $insertDocument = insertIntoPortal("document",$array);
+  return $insertDocument;
 }
 
 //seccion de sicoes
@@ -73,7 +82,6 @@ function ConectSqlDatabase()
 function realizarInscripcion($id_alumno)
 {
    $inscripcionData = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
-
   //verificamos que es un alumno nuevo y no se esta inscribiendo
   if (!$inscripcionData)
   {
@@ -92,7 +100,7 @@ function realizarInscripcion($id_alumno)
 
   if ($inscribir)
   {
-    return !$inscripcionData?$enrollement:true;
+    return !$inscripcionData?$enrollement:"reinscripcion";
   }
   else
   {
