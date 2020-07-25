@@ -3,6 +3,7 @@ var route = "/finance/debit/show";
 
 $(".tableDebits").dataTable({
     "destroy": true,
+    "responsive": true,
     "ajax":
     {
         url: route,

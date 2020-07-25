@@ -3,6 +3,7 @@ var route = "/alumn/documents/show";
 
 $(".tableDocuments").dataTable({
     "destroy": true,
+    "responsive": true,
     "ajax":
     {
         url: route,

@@ -103,15 +103,14 @@ class DebitController extends Controller
                 {
                     $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
                     $enrollement = realizarInscripcion($alumn->id_alumno);
-
+                    
                     if ($enrollement!=false)
                     {
-                        if (!$enrollement) 
+                        if ($enrollement!="reinscripcion") 
                         {
                             updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
                             $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx"; 
                         }
-
                         $alumn->inscripcion=3;
                         $alumn->save();
                         addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
