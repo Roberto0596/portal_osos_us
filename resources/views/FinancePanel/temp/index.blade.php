@@ -13,7 +13,10 @@
 					<img src="{{ asset('img/logo.jpg') }}"  alt="" style="width: 15%">
 				</td>
 				<td>
-					<h1>{{$data[1]["Grupo"]}}</h1>
+				@foreach($data as $key => $value)
+
+				@endforeach
+					<h1>{{$value["Grupo"]}}</h1>
 				</td>
 			</tr>
 		</table>

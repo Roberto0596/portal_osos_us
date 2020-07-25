@@ -14,28 +14,27 @@ class PendingsController extends Controller
     {
         if (!DB::table('pendings')->count())
         {
-            $alumns = selectSicoes("Alumno");   
-
-            foreach($alumns as $value)
+            $alumns = getAlumnLastPeriod(); 
+            if ($alumns != false) 
             {
-                $EncGrupoId = getInscriptionData($value["AlumnoId"]);
-                if ($EncGrupoId != false) 
-                {
+                foreach($alumns as $value)
+                {                    
                     $pendig = new Pending();
                     $pass = $this->generatePasssword();
                     $pendig->enrollment = $value['Matricula'];
                     $pendig->PlanEstudioId = $value['PlanEstudioId'];
-                    $pendig->EncGrupoId = $EncGrupoId["EncGrupoId"];
+                    $pendig->EncGrupoId = $value["EncGrupoId"];
                     $pendig->password   = $pass;
-                    $pendig->save(); 
-                } 
-                else
-                {
-
-                }         
+                    $pendig->save();         
+                }
+                session()->flash('messages', 'success|Datos cargados correctamente');
+                return redirect()->back();
             }
-            session()->flash('messages', 'success|Datos cargados correctamente');
-            return redirect()->back();
+            else
+            {
+                session()->flash('messages', 'error|no se pudo cargar los datos');
+                return redirect()->back();
+            }
         }
         else
         {
@@ -106,7 +105,6 @@ class PendingsController extends Controller
     {
         if (!session()->has("data") && DB::table('pendings')->count())
         {
-            $current_user = Auth::guard("alumn")->user(); 
             $pendings = Pending::all();
 
             $planEstudio = getGroups("pendings","PlanEstudioId");

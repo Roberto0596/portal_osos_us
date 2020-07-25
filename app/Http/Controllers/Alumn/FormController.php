@@ -14,23 +14,21 @@ class FormController extends Controller
 {
     public function index()
     {
-        $estados = getItemClaveAndNamesFromTables("Estado");
-        try 
-        {
-            $currentId = Auth::guard('alumn')->user()->id_alumno;
-            $data = getDataByIdAlumn($currentId); 
-            $inscripcion = getLastThing("Inscripcion","AlumnoId",$currentId,"InscripcionId");
-            $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"]);
+        // $estados = getItemClaveAndNamesFromTables("Estado");
+        // try 
+        // {
+            $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
+            dd($group);
             return view('Alumn.form.index')->with(["estados"=> $estados , 
                                                 "data"=>$data, "currentId"=>$currentId,
                                                 "group" => $group]);
-        } 
-        catch (\Exception $th) 
-        {
-            $current_user = Auth::guard('alumn')->user();   
-            return view('Alumn.form.inscription')->with(["estados"=> $estados , 
-                                                "user"=>$current_user]);
-        }
+        // } 
+        // catch (\Exception $th) 
+        // {
+        //     $current_user = Auth::guard('alumn')->user();   
+        //     return view('Alumn.form.inscription')->with(["estados"=> $estados , 
+        //                                         "user"=>$current_user]);
+        // }
     }
 
     public function saveInscription(Request $request)

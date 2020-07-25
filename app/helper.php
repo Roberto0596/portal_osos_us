@@ -616,9 +616,9 @@ function getDateCustom()
   return $date.'T'.$hour;
 }
 
-function obtenerGrupo($semestre,$planEstudioId)
+function obtenerGrupo($semestre,$planEstudioId,$periodoId)
 {
-  $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM EncGrupo where Semestre = '$semestre' and PlanEstudioId = '$planEstudioId' order by EncGrupoId");
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * FROM EncGrupo where Semestre = '$semestre' and PlanEstudioId = '$planEstudioId' and PeriodoId = '$periodoId' order by EncGrupoId");
   $stmt->execute();
   return $stmt->fetch();
   $stmt = null;
@@ -632,3 +632,37 @@ function getActiveCarrer()
   $stmt = null;
 }
 
+function getLastPeriod()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(2)* from Periodo where Semestre <> 'CURSO DE VERANO' order by PeriodoId desc;");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+
+function getAlumnLastPeriod()
+{
+  $lastPeriod = getLastPeriod();
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Matricula, a.PlanEstudioId, e.EncGrupoId from Alumno as a inner join Inscripcion as i on a.AlumnoId = i.AlumnoId
+  inner Join EncGrupo as e on i.EncGrupoId = e.EncGrupoId where e.PeriodoId = :PeriodoId order by a.Matricula desc");
+  $stmt->bindParam(":PeriodoId",$lastPeriod[1]["PeriodoId"],PDO::PARAM_INT);
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+
+function getAlumnGroup($id_alumno)
+{
+  $data = getDataByIdAlumn($id_alumno); 
+  $inscripcion = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+  $currentPeriod = selectCurrentPeriod();
+  if ($inscripcion!=false)
+  {
+    $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod["PeriodoId"]);
+  }
+  else
+  {
+    $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod["PeriodoId"]);
+  }
+  return $group;
+}
