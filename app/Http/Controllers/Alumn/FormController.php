@@ -14,21 +14,29 @@ class FormController extends Controller
 {
     public function index()
     {
-        // $estados = getItemClaveAndNamesFromTables("Estado");
-        // try 
-        // {
+        $estados = getItemClaveAndNamesFromTables("Estado");
+        try 
+        {
             $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
-            dd($group);
-            return view('Alumn.form.index')->with(["estados"=> $estados , 
+            if ($group!=false)
+            {
+                return view('Alumn.form.index')->with(["estados"=> $estados , 
                                                 "data"=>$data, "currentId"=>$currentId,
                                                 "group" => $group]);
-        // } 
-        // catch (\Exception $th) 
-        // {
-        //     $current_user = Auth::guard('alumn')->user();   
-        //     return view('Alumn.form.inscription')->with(["estados"=> $estados , 
-        //                                         "user"=>$current_user]);
-        // }
+            }
+            else
+            {
+                session()->flash("messages","error|Posiblemente los grupos no han sido creados");
+                return redirect()->back();
+            }
+            
+        } 
+        catch (\Exception $th) 
+        {
+            $current_user = Auth::guard('alumn')->user();   
+            return view('Alumn.form.inscription')->with(["estados"=> $estados , 
+                                                "user"=>$current_user]);
+        }
     }
 
     public function saveInscription(Request $request)
