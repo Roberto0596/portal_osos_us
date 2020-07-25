@@ -18,16 +18,16 @@ $("#TrabajaActualmente").change(function()
 $("#TransporteUniversidad").change(function()
 {
   var flag = $(this).val();
+
   if($(this).val() === "1")
   {
-    $("#Transporte").removeAttr("readonly");
+    $("#Transporte").removeAttr("disabled");
   }
   else
   {
-    $("#Transporte").attr("readonly","readonly");   
+    $("#Transporte").attr("disabled");   
   }
-});     
-
+}); 
 $(document).ready(function()
 {
     //se verifica si hay datos en el local sotrage 
