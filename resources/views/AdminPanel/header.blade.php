@@ -14,8 +14,8 @@
 
         <a href="#" class = "dropdown-toggle" data-toggle="dropdown"> 
 
-            <img src="{{ asset(Auth::guard('finance')->user()->photo) }}" class="user-image">                       
-            <span class = "hidden-xs" style="color: white !important;">{{ Auth::guard('finance')->user()->email }}</span>
+            <img src="{{ asset(Auth::guard('admin')->user()->photo) }}" class="user-image">                       
+            <span class = "hidden-xs" style="color: white !important;">{{ Auth::guard('admin')->user()->email }}</span>
 
         </a>
 
@@ -25,7 +25,7 @@
 
             <div class = "pull-right">
               
-              <a href="{{ route('finance.logout') }}" class="btn btn-default btn-flat">salir</a>
+              <a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat">salir</a>
               
             </div>
 

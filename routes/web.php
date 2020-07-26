@@ -103,6 +103,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'home'
 		    ]);
 
+		    Route::post('/home/save-problem', [
+		        'uses' => 'HomeController@saveProblem', 
+		        'as' => 'home.problem'
+		    ]);
+
 		   	Route::group(["middleware" => ["inscription"]
 			],function(){
 
@@ -164,6 +169,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'uses' => 'PaymentController@note', 
 			        'as' => 'payment.note'
 				]);
+
+				Route::post('/pay-rollback/{orderId?}', [
+			        'uses' => 'PaymentController@rollBack', 
+			        'as' => 'pay.rollback'
+			    ]);
 			});
 
 		    Route::group(["middleware"=>["inscriptionFaseFour"]
@@ -429,4 +439,59 @@ Route::group(['namespace' => 'Website'],function()
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
     ]);
+});
+
+Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
+{
+  	Route::name('admin.')->group(function()
+  	{
+  		Route::get('/sign-in',[
+	        'uses' => 'AuthController@login', 
+	        'as' => 'login'
+	    ]);
+
+	    Route::post('/sign-in',[
+	        'uses' => 'AuthController@postLogin', 
+	    ]);
+
+	    Route::get('/sign-out', [
+	        'uses' => 'AuthController@logout', 
+	        'as' => 'logout'
+	    ]);
+
+  		Route::group(['middleware' => ['admin.user']
+		], function()
+		{
+			Route::get('/', [
+		        'uses' => 'HomeController@index', 
+		        'as' => 'home'
+			]);
+
+			Route::get('/problems', [
+		        'uses' => 'ProblemController@index', 
+		        'as' => 'problem'
+			]);
+
+			Route::put('/problem/show', [
+		        'uses' => 'ProblemController@show', 
+		        'as' => 'problem.show'
+			]);
+
+		    Route::post('/problem/see', [
+		        'uses' => 'ProblemController@seeProblem', 
+		        'as' => 'problem.see'
+		    ]);
+
+			//user
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
+			Route::get('/user', [
+		        'uses' => 'UserController@index', 
+		        'as' => 'user'
+			]);
+		});
+  	});
 });

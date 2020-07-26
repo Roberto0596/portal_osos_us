@@ -21,6 +21,9 @@ class AreaSedeer extends Seeder
             DB::table('area')->insert([
                 'name' => 'Biblioteca',
             ]);
+            DB::table('area')->insert([
+                'name' => 'Administracion',
+            ]);
             $out = new \Symfony\Component\Console\Output\ConsoleOutput();
             $out->writeln("<info>areas created</info>");
         }

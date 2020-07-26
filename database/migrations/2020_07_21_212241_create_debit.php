@@ -22,6 +22,7 @@ class CreateDebit extends Migration
             $table->integer("id_alumno");
             $table->string("id_order",100)->nullable();
             $table->integer("status")->default(0);
+            $table->integer("cancelled")->default(0);
             $table->timestamps();
         });
     }

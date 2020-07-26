@@ -327,6 +327,7 @@ class PaymentController extends Controller
   public function note() 
   {
     $debit = DB::table("debit")->where("id_alumno",Auth::guard("alumn")->user()->id_alumno)->orderby("id","desc")->get();
+
     $method = $debit[0]->payment_method;
 
     if($method == "transfer")
@@ -348,15 +349,17 @@ class PaymentController extends Controller
 
       if($method == "oxxo_cash")
       {
-        $totalAndReference = array('total' => $total,
+        $data = array('total' => $total,
+                                    'id_order'=>$order->id,
                                 'reference'=>$order->charges[0]->payment_method->reference);
-        return view('Alumn.payment.oxxo_pay')->with(["order"=>$totalAndReference]);
+        return view('Alumn.payment.oxxo_pay')->with(["order"=>$data]);
       }
       else if($method == "spei")
       {
-        $totalAndReference = array('total' => $total,
+        $data = array('total' => $total,
+                                    'id_order'=>$order->id,
                                 'reference'=>$order->charges[0]->payment_method->receiving_account_number);
-        return view('Alumn.payment.spei_pay')->with(["order"=>$totalAndReference]);
+        return view('Alumn.payment.spei_pay')->with(["order"=>$data]);
       }
     }
   }
@@ -366,15 +369,13 @@ class PaymentController extends Controller
     $current_user = User::find(Auth::guard("alumn")->user()->id);
     $current_sicoes = getLastSemester($current_user->id_alumno);
     $file = $request->file('file');
-    $name = "../../../wwwroot/img/comprobantes".str_replace("_"," ",$current_user->name) . $current_sicoes.".pdf";
-    $tmp_name = $_FILES["file"]["tmp_name"];
-    move_uploaded_file($tmp_name, $name);
+    $name = str_replace("_"," ",$current_user->name) . $current_sicoes.".pdf";
 
-    // if(!\Storage::disk('public_uploads')->put($name,  \File::get($file)))
-    // {
-    //     session()->flash("messages","error|No fue posible guardar el comprobante, intentelo de nuevo");
-    //     return redirect()->back();
-    // }
+    if(!\Storage::disk('public_uploads')->put($name,  \File::get($file)))
+    {
+        session()->flash("messages","error|No fue posible guardar el comprobante, intentelo de nuevo");
+        return redirect()->back();
+    }
     //traer los conceptos que se deben del alumno
     $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
     $debits = Debit::where($query)->get();
@@ -388,5 +389,28 @@ class PaymentController extends Controller
     $current_user->inscripcion = 2;
     $current_user->save();
     return redirect()->route("alumn.payment.note");
+  }
+
+  public function rollBack(Request $request, $orderId)
+  {
+    $debits = Debit::where("id_order","=",$orderId)->get();
+    if ($debits[0]->cancelled!=1)
+    {
+      foreach ($debits as $key => $value) 
+      {
+        $value->cancelled = 1;
+        $value->id_order = null;
+        $value->save();
+      }
+      $current_user = Auth::guard("alumn")->user();
+      $current_user->inscripcion = 1;
+      $current_user->save();
+      return redirect()->route("alumn.payment");
+    }
+    else
+    {
+      session()->flash("messages","error|Ya cencelaste una vez, contactate con el departamento de finanzas");
+      return redirect()->back();
+    }
   }
 }

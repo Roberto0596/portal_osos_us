@@ -3,27 +3,28 @@
 <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 
 <style>
-    @media (max-width: 599px){
 
-.progressbar.max-size{
-    display: none !important;
+@media (max-width: 599px)
+{
+    .progressbar.max-size{
+        display: none !important;
+    }
+
+    .progressbar.min-size{
+        display: flex;
+    }
 }
 
-.progressbar.min-size{
-    display: flex;
-}
+@media (min-width: 600px)
+{
 
-}
+    .progressbar.min-size{
+        display: none;
+    }
 
-@media (min-width: 600px){
-
-.progressbar.min-size{
-    display: none;
-}
-
-.progressbar.max-size{
-    display: flex;
-}
+    .progressbar.max-size{
+        display: flex;
+    }
 
 }
 

@@ -18,7 +18,8 @@ class FormController extends Controller
         try 
         {
             $data = selectSicoes("Alumno","AlumnoId",Auth::guard('alumn')->user()->id_alumno)[0];
-            $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
+            // $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
+            $group = ["Nombre" => "Hola"];
             if ($group!=false)
             {
                 return view('Alumn.form.index')->with(["estados"=> $estados , 

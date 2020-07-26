@@ -2,11 +2,44 @@
 
 @section('content-alumn')
 
+<style>
+  .page-item.active .page-link {
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+  }
+
+  .textAndButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }  
+ 
+  .custom{
+    background-color: #fd7e14;
+    border-color: #fd7e14;
+    color: white;
+  }
+
+  .custom:hover{
+    background-color: #e96c06;
+    border-color: #e96c06;
+    color: white;
+  }
+  .modal-header{
+    background-color: #28a745;
+    color: white;
+  }
+ 
+ 
+</style>
+
 @php
   $box = $status?"bg-success":"bg-danger";
   $boxDocuments = count($documents) == 0?"bg-default":"bg-primary";
   $boxDebits = $debits == 0?"bg-default":"bg-warning";
   $styleBox = $debits == 0?"style='color:white;'":"";
+  $boxCorreo = strpos(Auth::guard('alumn')->user()->email, "@unisierra.edu.mx")?"bg-info":"bg-danger";
 @endphp
 
 <div class="content-wrapper">
@@ -46,6 +79,40 @@
       <div class="card-body">
 
         <div class="row">
+
+          <div class="col-md-12">
+
+                <h4>Mi tablero</h4> 
+
+          </div>
+
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box {{$boxCorreo}}">
+
+              <div class="inner">
+
+                <h3>Mi correo</h3>
+
+                <p>{{Auth::guard("alumn")->user()->email}}</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fa fa-user"></i>
+
+              </div>
+
+              @if(strpos(Auth::guard('alumn')->user()->email, "@unisierra.edu.mx"))
+              <a href="{{route('alumn.user')}}" class="small-box-footer">Ver mi perfil<i class="fas fa-arrow-circle-right"></i></a>
+              @else
+              <a href="#" class="small-box-footer">Termina tu inscripción<i class="fas fa-arrow-circle-right"></i></a>
+              @endif
+
+            </div>
+            
+          </div>
 
           <div class="col-md-3 col-sm-12">
 
@@ -133,8 +200,122 @@
 
     </div>
 
+    <div class="card">
+
+      <div class="card-body">
+
+        <div class="row">
+
+          <div class="col-md-5">
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <h4>Mis Acciones</h4> 
+
+              </div>
+
+              <div class="col-md-12">
+
+                <div class="col-md-12 col-sm-12">
+
+                  <div class="small-box bg-danger" style="background: #4e4e4e !important">
+
+                    <div class="inner">
+
+                      <h3>Reportar problema</h3>
+
+                      <p>Ayudanos a mejorar</p>
+
+                    </div>
+
+                    <div class="icon">
+
+                      <i class="fa fa-archive"></i>
+
+                    </div>
+
+                    <a data-toggle="modal" data-target="#modalProblems" style="cursor: pointer;" class="small-box-footer">Enviar problema<i class="fas fa-arrow-circle-right"></i></a>
+
+                  </div>
+                  
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
 </div>
+
+<div class="modal fade" id="modalProblems">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3>Problemas encontrados en el sistema</h3>
+
+      </div>
+        
+        <div class="modal-body">
+
+          <form action="{{route('alumn.home.problem')}}" method="post" enctype="multipart/form-data">
+              
+            {{ csrf_field() }}
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group">
+
+                <div class="panel">Describe el problema</div>
+
+                  <textarea name="text" class="form-control form-control-lg" cols="30" rows="5" placeholder="Describe aquí"></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+                    <button class="btn btn-success" type="submit">subir</button>
+                  
+                </div>
+
+              </div>
+
+            </div>
+              
+          </form>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="{{asset('js/alumn/home.js')}}"></script>
 
 @stop

@@ -40,6 +40,15 @@ class AdminSeeder extends Seeder
                 'first_time' => 1
             ]);
 
+            DB::table('admin_users')->insert([
+                'name' => 'Administrador',
+                'lastname' => 'Administrador',
+                'email' => 'demo_administracion@unisierra.edu.mx',
+                'password' => bcrypt("demo"),
+                'area_id' => 4,
+                'first_time' => 1
+            ]);
+
             $out = new \Symfony\Component\Console\Output\ConsoleOutput();
             $out->writeln("<info>Admin users created</info>");
         }
