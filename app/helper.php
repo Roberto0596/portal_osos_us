@@ -67,6 +67,20 @@ function insertInscriptionDocuments($id)
   return $insertDocument;
 }
 
+function insertInscriptionDebit($id_alumno)
+{
+  $mytime = \Carbon\Carbon::now();
+  DB::table('debit')->insert(
+      ['debit_type_id' => 1,
+       'description' => 'Pago semestral de inscripcion',
+       'amount' => 1950.00,
+       'admin_id'=> 2,
+       'id_alumno'=>$id_alumno,
+       'created_at'=>$mytime->toDateTimeString(),
+       'updated_at'=>$mytime->toDateTimeString()]
+  );
+}
+
 //seccion de sicoes
 function ConectSqlDatabase()
 {

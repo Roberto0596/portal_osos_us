@@ -125,15 +125,7 @@ class FormController extends Controller
             $current_user->id_alumno = $insert;
             $current_user->save();
             $mytime = \Carbon\Carbon::now();
-            DB::table('debit')->insert(
-                ['debit_type_id' => 1,
-                 'description' => 'Pago semestral de inscripcion',
-                 'amount' => 1950.00,
-                 'admin_id'=> 2,
-                 'id_alumno'=>$current_user->id_alumno,
-                 'created_at'=>$mytime->toDateTimeString(),
-                 'updated_at'=>$mytime->toDateTimeString()]
-            );
+            $debit = insertInscriptionDebit($current_user->id_alumno);
             session()->flash("messages","success|Ya casi eres un alumno unisierra");
             return redirect()->route("alumn.payment");
         }       
@@ -166,15 +158,7 @@ class FormController extends Controller
                 $current_user->inscripcion = 1;
                 $current_user->save();
                 $mytime = \Carbon\Carbon::now();
-                DB::table('debit')->insert(
-                    ['debit_type_id' => 1,
-                     'description' => 'Pago semestral de inscripcion',
-                     'amount' => 1950.00,
-                     'admin_id'=> 2,
-                     'id_alumno'=>$current_user->id_alumno,
-                     'created_at'=>$mytime->toDateTimeString(),
-                     'updated_at'=>$mytime->toDateTimeString()]
-                );
+                $debit = insertInscriptionDebit($current_user->id_alumno);
                 return response()->json('ok');
             }
             catch(\Exception $e)
