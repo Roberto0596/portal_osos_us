@@ -17,11 +17,12 @@ class FormController extends Controller
         $estados = getItemClaveAndNamesFromTables("Estado");
         try 
         {
+            $data = selectSicoes("Alumno","AlumnoId",Auth::guard('alumn')->user()->id_alumno)[0];
             $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
             if ($group!=false)
             {
                 return view('Alumn.form.index')->with(["estados"=> $estados , 
-                                                "data"=>$data, "currentId"=>$currentId,
+                                                "data"=>$data, "currentId"=>Auth::guard('alumn')->user()->id_alumno,
                                                 "group" => $group]);
             }
             else

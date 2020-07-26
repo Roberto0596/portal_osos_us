@@ -111,7 +111,7 @@ function realizarInscripcion($id_alumno)
 //este metodo servira para trarnos el periodo actual o en curso
 function selectCurrentPeriod()
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * from Periodo order by PeriodoId desc;");
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * from Periodo where Semestre <> 'CURSO DE VERANO' order by PeriodoId desc;");
     $stmt->execute();
     return $stmt->fetch();
     $stmt = null;
