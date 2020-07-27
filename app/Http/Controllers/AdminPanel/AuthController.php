@@ -24,7 +24,7 @@ class AuthController extends Controller
         $email = $request->input('email');
         $pass = $request->input('password');
 
-        $user = AdminUser::where('email', "=" ,$email)->first();
+        $user = AdminUser::where([['email', "=" ,$email],['area_id',"=","4"]])->first();
 
         if (!$user) {
             session()->flash('messages', 'error|No Existe un usuario con ese correo');

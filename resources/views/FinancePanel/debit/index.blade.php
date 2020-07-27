@@ -2,58 +2,6 @@
 
 @section('content-finance')
 
-<style>
-  .page-item.active .page-link {
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-  }
-  .textAndButton{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  
- 
-  .custom{
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-    color: white;
-  }
-
-  .custom:hover{
-    background-color: #e96c06;
-    border-color: #e96c06;
-    color: white;
-  }
-  .modal-header{
-    background-color: #28a745;
-    color: white;
-  }
-
-  .custom-modal{
-      text-align: center;
-  }
-
-  .loader {
-  border: 10px solid #f3f3f3; 
-  border-top: 10px solid #28a745; 
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  animation: spin 2s linear infinite;
-  margin-left: 40%
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
- 
- 
-</style>
-
 <div class="content-wrapper">
 
   <section class="content-header">

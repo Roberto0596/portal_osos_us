@@ -5,7 +5,6 @@ namespace App\Http\Controllers\AdminPanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUsers\AdminUser;
-use Input;
 use Auth;
 
 class UserController extends Controller

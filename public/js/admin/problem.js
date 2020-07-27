@@ -54,6 +54,55 @@ $(".tableProblem tbody").on("click","button.btnDescription",function()
         processData:false,
         success:function(response)
         {
+            $('#loader').hide();
             $("#parraf-problem").text(response["text"]);
-        }});
-})
+        }
+    });
+});
+
+$(".tableProblem tbody").on("click","button.btnDelete",function()
+{
+    var problemId = $(this).attr("idProblem");
+    swal.fire({
+        title: '¿estas seguro de eliminar este problema?',
+        text: "¡Si no lo estas puedes cancelar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, estoy seguro'
+    }).then((result)=>
+    {
+      if (result.value)
+      {
+        window.location = "/admin/problem/delete/"+problemId
+      }
+    })
+});
+
+$(".tableProblem tbody").on("click","button.btnFixed",function()
+{
+    var problemId = $(this).attr("idProblem");
+    swal.fire({
+        title: '¿Estas seguro de que el problema esta solucionado?',
+        text: "¡Si no lo estas puedes ir a verificar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, estoy seguro'
+    }).then((result)=>
+    {
+      if (result.value)
+      {
+        window.location = "/admin/problem/fixed/"+problemId
+      }
+    })
+});
+
+$("#dimiss").click(function(){
+    $("#parraf-problem").text("");
+    $('#loader').fadeIn(3000);
+});

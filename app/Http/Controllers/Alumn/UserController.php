@@ -6,11 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Notify;
-use Input;
-use Auth;
-use Illuminate\Support\Collection;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Website\Pending;
+use Auth;
 
 class UserController extends Controller
 {

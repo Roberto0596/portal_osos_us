@@ -2,38 +2,6 @@
 
 @section('content-admin')
 
-<style>
-  .page-item.active .page-link {
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-  }
-
-  .textAndButton{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }  
- 
-  .custom{
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-    color: white;
-  }
-
-  .custom:hover{
-    background-color: #e96c06;
-    border-color: #e96c06;
-    color: white;
-  }
-  .modal-header{
-    background-color: #28a745;
-    color: white;
-  }
- 
- 
-</style>
-
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
@@ -93,7 +61,7 @@
 
 </div>
 
-<div class="modal fade" id="modalProblems">
+<div class="modal fade" id="modalProblems" data-backdrop='static' data-keyboard=false>
 
   <div class="modal-dialog modal-lg">
 
@@ -108,6 +76,8 @@
         <div class="modal-body">
               
             <div class="row">
+
+              <div id="loader" class="loader"></div>
 
               <div class="col-md-12">
 
@@ -127,7 +97,7 @@
 
                 <div class="form-group" id="pay-now" style="margin-top: 10vh;">
 
-                    <button class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                    <button class="btn btn-success" data-dismiss="modal" id="dimiss">Aceptar</button>
                   
                 </div>
 

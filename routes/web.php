@@ -467,6 +467,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'home'
 			]);
 
+			//problemas
 			Route::get('/problems', [
 		        'uses' => 'ProblemController@index', 
 		        'as' => 'problem'
@@ -482,6 +483,16 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'problem.see'
 		    ]);
 
+		    Route::get('/problem/delete/{id?}', [
+		        'uses' => 'ProblemController@delete', 
+		        'as' => 'problem.see'
+		    ]);
+
+		    Route::get('/problem/fixed/{id?}', [
+		        'uses' => 'ProblemController@fixed', 
+		        'as' => 'problem.see'
+		    ]);
+
 			//user
 			Route::post('/user/save/{user?}', [
 		        'uses' => 'UserController@save', 
@@ -491,6 +502,28 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::get('/user', [
 		        'uses' => 'UserController@index', 
 		        'as' => 'user'
+			]);
+
+			//users
+			Route::get('/users', [
+		        'uses' => 'UsersController@index', 
+		        'as' => 'users'
+			]);
+
+			Route::put('/users/show', [
+		        'uses' => 'UsersController@show', 
+		        'as' => 'users.show'
+			]);
+
+			//alumnos
+			Route::get('/alumns', [
+		        'uses' => 'AlumnController@index', 
+		        'as' => 'alumns'
+			]);
+
+			Route::put('/alumns/show', [
+		        'uses' => 'AlumnController@show', 
+		        'as' => 'alumns.show'
 			]);
 		});
   	});

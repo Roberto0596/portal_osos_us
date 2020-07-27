@@ -33,11 +33,36 @@
                     </a>
                 </li>
 
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Usuarios externos
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.alumns')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Alumnos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.users')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
                 <li class="nav-item">
                     <a href="{{route('admin.problem')}}" class="nav-link">
                         <i class="nav-icon fas fa-archive"></i>
                         <p>
-                            Inicio
+                            Problemas
                         </p>
                     </a>
                 </li>

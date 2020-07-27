@@ -24,6 +24,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/modals.css') }}"> 
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
    

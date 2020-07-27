@@ -25,9 +25,11 @@ class ProblemController extends Controller
         $res = [ "data" => []];
         foreach($problems as $key => $value)
         {
+            $disabled = $value->status==0?"btnFixed":"";
             $buttons="<div class='btn-group'>
-                <button class='btn btn-danger btnDescription' idProblem = '".$value->id."' data-toggle='modal' data-target='#modalProblems' title='Ver descripción'><i class='fa fa-eye'></i></button></div>
-                <button class='btn btn-warning btnFixed' title='Corregido'><i class='fa fa-th'></i></button></div>";
+                <button class='btn btn-info btnDescription' idProblem = '".$value->id."' data-toggle='modal' data-target='#modalProblems' title='Ver descripción'><i class='fa fa-eye'></i></button></div>
+                <button class='btn btn-warning ".$disabled."' idProblem = '".$value->id."' title='Corregir'><i class='fa fa-th' style='color:white'></i></button></div>
+                <button class='btn btn-danger btnDelete' idProblem = '".$value->id."' title='Eliminar'><i class='fa fa-times'></i></button></div>";
 
             if ($value->status==0)
             {
@@ -47,5 +49,37 @@ class ProblemController extends Controller
             ]);
         }
         return response()->json($res);
+    }
+
+    public function delete($id)
+    {
+        try
+        {
+           $delete = Problem::destroy($id);
+           session()->flash("messages","success|Problema eliminado con éxito");
+           return redirect()->back();
+        }
+        catch(\Exception $e)
+        {
+            session()->flash("messages","error|Tuvimos problemas eliminando el problema");
+           return redirect()->back();
+        }        
+    }
+
+    public function fixed($id)
+    {
+        try
+        {
+           $delete = Problem::find($id);
+           $delete->status = 1;
+           $delete->save();
+           session()->flash("messages","success|El problema ya no causara mas problemas");
+           return redirect()->back();
+        }
+        catch(\Exception $e)
+        {
+           session()->flash("messages","error|Tuvimos problemas eliminando el problema");
+           return redirect()->back();
+        }        
     }
 }
