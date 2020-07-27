@@ -51,6 +51,7 @@
               <th>Monto</th>
               <th>Encargado</th>
               <th>Alumno</th>
+              <th>Email</th>
               <th>Estado</th>
               <th>Fecha</th>
               <th>Acciones</th>

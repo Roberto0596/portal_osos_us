@@ -29,6 +29,9 @@ class HomeController extends Controller
 
     public function saveProblem(Request $request)
     {
+        $request->validate([
+            'text' => 'required',
+        ]);
         try
         {
             $problem = new Problem();

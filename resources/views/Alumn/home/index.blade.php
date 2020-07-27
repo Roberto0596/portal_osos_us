@@ -237,46 +237,52 @@
         <h3>Problemas encontrados en el sistema</h3>
 
       </div>
-        
+
+      <form action="{{route('alumn.home.problem')}}" method="post" enctype="multipart/form-data">
+
         <div class="modal-body">
+            
+          {{ csrf_field() }}
 
-          <form action="{{route('alumn.home.problem')}}" method="post" enctype="multipart/form-data">
-              
-            {{ csrf_field() }}
+          <div class="row">
 
-            <div class="row">
+            <div class="col-md-12">
 
-              <div class="col-md-12">
+              <div class="form-group">
 
-                <div class="form-group">
+              <div class="panel">Describe el problema</div>
 
-                <div class="panel">Describe el problema</div>
-
-                  <textarea name="text" class="form-control form-control-lg" cols="30" rows="5" placeholder="Describe aquí"></textarea>
-
-                </div>
+                <textarea name="text" class="form-control form-control-lg" cols="30" rows="5" placeholder="Describe aquí" required></textarea>
 
               </div>
 
             </div>
 
+          </div>
+            
+        </div>
+
+        <div class="modal-footer justify-content">
+
+          <div class="col-sm container-fluid">
+
             <div class="row">
 
-              <div class="col-md-12">
+              <div class="col-md-6 btn-group">
+                  <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Eliminar</button>
+              </div>
 
-                <div class="form-group" id="pay-now" style="margin-top: 10vh;">
-
-                    <button class="btn btn-success" type="submit">subir</button>
-                  
-                </div>
-
+              <div class="col-md-6 btn-group">
+                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> subir</button>
               </div>
 
             </div>
-              
-          </form>
 
         </div>
+
+      </form>
+
+    </div>
 
     </div>
 

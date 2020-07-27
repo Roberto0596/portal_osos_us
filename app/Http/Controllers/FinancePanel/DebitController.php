@@ -39,7 +39,7 @@ class DebitController extends Controller
                     <button class='btn btn-success showPdf' route='".$value->id_order."''><i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
             }
 
-            if ($value->status == 1 && $value->payment_method != 'transfer') 
+            if ($value->payment_method != 'transfer' && $value->id_order!=null) 
             {
                 $buttons.="
                     <button class='btn btn-success details' data-toggle='modal' data-target='#modalShowDetails' is='".$value->payment_method."' DebitId='".$value->id."'>
@@ -56,6 +56,7 @@ class DebitController extends Controller
                 "$".number_format($value->amount,2),
                 $current_user->name,
                 $alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
+                strtolower( $alumn["Email"]),
                 ($value->status==1)?"Pagada":"Pendiente",
                 substr($value->created_at,0,11),
                 $buttons
