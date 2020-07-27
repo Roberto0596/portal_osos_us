@@ -12,6 +12,19 @@
       <div style="float: right; padding: 8px;">
         <button class="btn btn-success" id="print">Imprimir</button>
       </div>
+      <div style="float: right; padding: 8px;">
+
+        <form method="POST" action="{{ route('alumn.pay.rollback',$order['id_order']) }}" id="form-rollback">
+
+          {{ csrf_field() }}
+
+          <input type="hidden" value="ok" name="validator">
+
+          <button class="btn btn-danger">Usar otro método</button>
+
+        </form>
+
+      </div>
     </div>
   </div>
 
@@ -88,9 +101,33 @@
 </div>
 
 <script>
-    $("#print").click(function(){
-      window.print();
+
+  $("#print").click(function(){
+    window.print();
+  });
+
+  $("#form-rollback").submit(function(e)
+  {
+    e.preventDefault();
+    var $form = $("#form-rollback");
+    swal.fire({
+        title: '¿estas seguro de cancelar spei?',
+        text: "¡solo puedes cancelar una vez!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, estoy seguro'
+    }).then((result)=>
+    {
+      if (result.value)
+      {
+        $form.get(0).submit();
+      }
     })
+  });
+
 </script>
 
 @stop

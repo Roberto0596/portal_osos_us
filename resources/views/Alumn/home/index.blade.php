@@ -2,38 +2,6 @@
 
 @section('content-alumn')
 
-<style>
-  .page-item.active .page-link {
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-  }
-
-  .textAndButton{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }  
- 
-  .custom{
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-    color: white;
-  }
-
-  .custom:hover{
-    background-color: #e96c06;
-    border-color: #e96c06;
-    color: white;
-  }
-  .modal-header{
-    background-color: #28a745;
-    color: white;
-  }
- 
- 
-</style>
-
 @php
   $box = $status?"bg-success":"bg-danger";
   $boxDocuments = count($documents) == 0?"bg-default":"bg-primary";
@@ -100,7 +68,7 @@
 
               <div class="icon">
 
-                <i class="fa fa-user"></i>
+                <i class="fa fa-envelope"></i>
 
               </div>
 
@@ -152,7 +120,7 @@
 
               <div class="icon">
 
-                <i class="fa fa-user"></i>
+                <i class="fa fa-folder"></i>
 
               </div>
 
@@ -180,7 +148,7 @@
 
               <div class="icon">
 
-                <i class="fa fa-user"></i>
+                <i class="fa fa-file-invoice-dollar"></i>
 
               </div>
 

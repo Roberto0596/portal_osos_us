@@ -130,7 +130,7 @@
 
           <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
-            <form action="{{ route('alumn.pay.cash') }}" method="post">
+            <form action="{{ route('alumn.pay.cash') }}" method="post" id="form-oxxo">
 
               {{ csrf_field() }}
 
@@ -169,7 +169,7 @@
 
               <div class="container-custom">
 
-                  <form method="post" action="{{route('alumn.pay.spei')}}">
+                  <form method="post" action="{{route('alumn.pay.spei')}}" id="form-spei">
 
                     {{ csrf_field() }}
 

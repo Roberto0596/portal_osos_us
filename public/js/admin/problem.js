@@ -78,7 +78,7 @@ $(".tableProblem tbody").on("click","button.btnDelete",function()
       {
         window.location = "/admin/problem/delete/"+problemId
       }
-    })
+    });
 });
 
 $(".tableProblem tbody").on("click","button.btnFixed",function()
