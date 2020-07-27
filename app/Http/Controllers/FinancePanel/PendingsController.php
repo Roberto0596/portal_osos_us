@@ -107,20 +107,15 @@ class PendingsController extends Controller
         {
             $pendings = Pending::all();
 
-            $planEstudio = getGroups("pendings","PlanEstudioId");
             $groups = getGroups("pendings","EncGrupoId");
-
             $data = [];
 
-            foreach ($planEstudio as $key => $value)
+            foreach ($groups as $key => $value)
             {
-                foreach ($groups as $key2 => $value2) 
+                $aux = agruparPorSalon($value["EncGrupoId"]);
+                if(count($aux)!=0)
                 {
-                    $aux = agruparPorSalon($value["PlanEstudioId"],$value2["EncGrupoId"]);
-                    if(count($aux)!=0)
-                    {
-                        array_push($data, $aux);
-                    }
+                    array_push($data, $aux);
                 }
             }
 

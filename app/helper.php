@@ -592,10 +592,9 @@ function getEncGrupo()
   $stmt = null;
 }
 
-function agruparPorSalon($PlanEstudioId,$EncGrupoId)
+function agruparPorSalon($EncGrupoId)
 {
-  $stmt = ConectSqlDatabase()->prepare("SELECT a.Nombre, a.Matricula, g.Nombre as Grupo from Alumno as a inner join PlanEstudio as p on a.PlanEstudioId = p.PlanEstudioId inner join EncGrupo as g on g.PlanEstudioId = p.PlanEstudioId where p.PlanEstudioId = :PlanEstudioId and g.EncGrupoId = :EncGrupoId and a.Baja = 0;");
-  $stmt->bindParam(":PlanEstudioId", $PlanEstudioId, PDO::PARAM_STR);
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Nombre, a.Matricula, e.Nombre as Grupo from Alumno as a inner join Inscripcion as i on a.AlumnoId = i.AlumnoId inner join EncGrupo as e on i.EncGrupoId = e.EncGrupoId where e.EncGrupoId = :EncGrupoId;");
   $stmt->bindParam(":EncGrupoId", $EncGrupoId, PDO::PARAM_STR);
   $stmt->execute();
   $nombre = $stmt->fetchAll();
@@ -617,7 +616,7 @@ function getGroups($table, $field)
 {
   $link = new \PDO("mysql:host=localhost;dbname=portal","root","");
   $link->exec("set names utf8");
-  $stmt = $link->prepare("SELECT count($field), $field FROM $table GROUP by $field");
+  $stmt = $link->prepare("SELECT count($field) as total, $field FROM $table GROUP by $field");
   $stmt->execute();
   return $stmt->fetchAll();
 }
