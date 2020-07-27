@@ -75,16 +75,7 @@
         <tr>
         
             <td colspan="2" class="info"><b>MONTO DEL PAGO: </b>
-                
-                <?php
-
-                    $total_pagar = 1950.00;
-                    if($deuda_total != 0){
-                        $total_pagar += $deuda_total;
-                    }
-
-                ?>
-            ${{  number_format($total_pagar,2)}}
+            ${{  number_format($deuda_total,2)}}
             </td>
         
         </tr>
