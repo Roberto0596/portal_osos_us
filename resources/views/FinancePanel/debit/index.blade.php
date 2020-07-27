@@ -50,6 +50,7 @@
               <th>Descripción</th>
               <th>Monto</th>
               <th>Encargado</th>
+              <th>Matricula</th>
               <th>Alumno</th>
               <th>Email</th>
               <th>Estado</th>

@@ -55,6 +55,7 @@ class DebitController extends Controller
                 $value->description,
                 "$".number_format($value->amount,2),
                 $current_user->name,
+                $alumn["Matricula"],
                 $alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
                 strtolower($alumn["Email"]),
                 ($value->status==1)?"Pagada":"Pendiente",
