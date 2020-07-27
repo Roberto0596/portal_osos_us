@@ -56,7 +56,7 @@ class DebitController extends Controller
                 "$".number_format($value->amount,2),
                 $current_user->name,
                 $alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
-                strtolower( $alumn["Email"]),
+                strtolower($alumn["Email"]),
                 ($value->status==1)?"Pagada":"Pendiente",
                 substr($value->created_at,0,11),
                 $buttons

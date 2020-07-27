@@ -28,6 +28,30 @@ $("#TransporteUniversidad").change(function()
   }
 }); 
 
+$("#form-inscription").submit(function(e)
+{ 
+  var $form = $("#form-inscription");
+  e.preventDefault();
+  swal.fire({
+    title: '¿Estas seguro/a que tus datos estan correctos?',
+    text: "¡puedes volver a revisar!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Volver a revisar',
+    confirmButtonText: 'Si, estoy seguro'
+    }).then((result)=>
+    {
+      if (result.value)
+      {
+        var tempData = JSON.parse(localStorage.getItem('tempData'));
+        $("#dataAlumn").val(JSON.stringify(tempData));
+        $form.get(0).submit();
+      }
+    });  
+});
+
 $(document).ready(function()
 {
     //se verifica si hay datos en el local sotrage 
@@ -67,52 +91,6 @@ $(document).ready(function()
       
     $(".button-back").click(function(event){
         event.preventDefault();
-    });
-
-    $("#button-sumbit").click(function(event)
-    { 
-      swal.fire({
-        title: '¿Estas seguro/a que tus datos estan correctos?',
-        text: "¡puedes volver a revisar!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Volver a revisar',
-        confirmButtonText: 'Si, estoy seguro'
-        }).then((result)=>
-        {
-          if (result.value)
-          {
-            var route = '/alumn/form/save';
-            var token = $('#token').val();
-            var data = new FormData();
-            var tempData = JSON.parse(localStorage.getItem('tempData'));
-            data.append('data', JSON.stringify(tempData));
-            data.append('recaptcha',grecaptcha.getResponse());
-            $.ajax({
-              url:route,
-              headers:{'X-CSRF-TOKEN': token},
-              method:'POST',
-              data:data,
-              cache:false,
-              contentType:false,
-              processData:false,
-              success:function(response)
-              {
-                if(response == 'ok')
-                {
-                    localStorage.removeItem('tempData');
-                    window.location = '/alumn/payment';
-                }
-                else
-                {
-                    toastr.error("Tiene que verificar que no es un robot");
-                }
-              }
-            });
-          }
-        });  
     });
 });
 

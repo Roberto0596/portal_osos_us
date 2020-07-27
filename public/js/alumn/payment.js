@@ -152,43 +152,45 @@ $('#ticket').change(function()
 
   $("#form-oxxo").submit(function(e)
 {
-  e.preventDefault();
-  swal.fire({
-      title: '¿estas seguro de pagar con oxxo pay?',
-      text: "¡solo pudes cancelar una sola vez!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si, estoy seguro'
-  }).then((result)=>
-  {
-    if (result.value)
-    {
-      $form.get(0).submit();
-    }
-  });
+	var $form = $("#form-oxxo");
+	e.preventDefault();
+	swal.fire({
+		title: '¿estas seguro de pagar con oxxo pay?',
+		text: "¡solo pudes cancelar una sola vez!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		cancelButtonText: 'Cancelar',
+		confirmButtonText: 'Si, estoy seguro'
+	}).then((result)=>
+	{
+		if (result.value)
+		{
+			$form.get(0).submit();
+		}
+	});
 });
 
 $("#form-spei").submit(function(e)
 {
-  e.preventDefault();
-  swal.fire({
-      title: '¿estas seguro de pagar con SPEI?',
-      text: "¡solo pudes cancelar una sola vez!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si, estoy seguro'
-  }).then((result)=>
-  {
-    if (result.value)
-    {
-      $form.get(0).submit();
-    }
-  });
+    var $form = $("#form-spei");
+  	e.preventDefault();
+	swal.fire({
+		title: '¿estas seguro de pagar con SPEI?',
+		text: "¡solo pudes cancelar una sola vez!",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		cancelButtonText: 'Cancelar',
+		confirmButtonText: 'Si, estoy seguro'
+	}).then((result)=>
+	{
+		if (result.value)
+		{
+		$form.get(0).submit();
+		}
+	});
 });
   

@@ -138,47 +138,44 @@ class FormController extends Controller
     }
 
     public function save(Request $request)
-    {
-        $current_user = Auth::guard('alumn')->user();
-        $currentId = $current_user->id_alumno;       
-        $dataAsString = $request->input('data');
-        $dataArray = json_decode($dataAsString);
-        $captcha = $request->input('recaptcha');
-        
-        if($captcha != null)
+    {       
+        try
         {
-            try
+             $this->validate($request,[
+                'g-recaptcha-response' => 'required|recaptcha',
+            ]);
+            $current_user = Auth::guard('alumn')->user();
+            $currentId = $current_user->id_alumno;       
+            $data = json_decode($request->input('data'));
+            if($data != null)
             {
-                if($dataArray != null)
+                for ($i = 0; $i < count($data); $i++)
                 {
-                    for ($i = 0; $i < count($dataArray); $i++)
-                    {
-                        updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
-                    }
+                    updateByIdAlumn($currentId, $data[$i]->name, $data[$i]->value);
                 }
-                $debit = insertInscriptionDebit($current_user->id_alumno);
-
-                //validacion para saber si es de promedio alto
-                if($debit!=0)
-                {
-                    $current_user->inscripcion = 3;
-                    $current_user->save();
-                }
-                else
-                {
-                    $current_user->inscripcion = 1;
-                    $current_user->save();
-                }
-                return response()->json('ok');
             }
-            catch(\Exception $e)
+            $debit = insertInscriptionDebit($current_user->id_alumno);
+
+            //validacion para saber si es de promedio alto
+            if($debit!=0)
             {
-                return response()->json('error');
+                $current_user->inscripcion = 3;
+                $current_user->save();
+                session()->flash("messages","success|Felicidades por tu promedio, no pagaras inscripción");
+                return redirect()->route("alumn.home");
+            }
+            else
+            {
+                $current_user->inscripcion = 1;
+                $current_user->save();
+                session()->flash("messages","success|Se completo la verificación de tu información");
+                return redirect()->route("alumn.payment");
             }
         }
-        else
+        catch(\Exception $e)
         {
-            return response()->json('error');
+            session()->flash("messages","error|Ocurrio un error, no pudimos guardar el registro");
+            return redirect()->back();
         }
     }
 
