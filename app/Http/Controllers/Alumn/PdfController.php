@@ -117,9 +117,7 @@ class PdfController extends Controller
 
     public function getGenerarFicha(Request $request , $tipo,$accion, $pago)
     {
-       
-
-        
+ 
 
         $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
         $total = Debit::where($query)->get()->sum("amount");

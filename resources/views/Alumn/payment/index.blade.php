@@ -420,7 +420,7 @@
 
     	<div class="modal-header">
 
-    		<h3>Deposito en banco o transferencia bancara</h3>
+    		<h3>Deposito en Banco o Transferencia Bancaria</h3>
 
     	</div>
         

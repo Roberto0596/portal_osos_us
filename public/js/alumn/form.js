@@ -69,23 +69,37 @@ $(document).ready(function()
         event.preventDefault();
     });
 
-    $("#button-sumbit").click(function(event){
-        var route = '/alumn/form/save';
-        var token = $('#token').val();
-        var data = new FormData();
-        var tempData = JSON.parse(localStorage.getItem('tempData'));
-        data.append('data', JSON.stringify(tempData));
-        data.append('recaptcha',grecaptcha.getResponse());
-        $.ajax({
-            url:route,
-            headers:{'X-CSRF-TOKEN': token},
-            method:'POST',
-            data:data,
-            cache:false,
-            contentType:false,
-            processData:false,
-            success:function(response)
-            {
+    $("#button-sumbit").click(function(event)
+    { 
+      swal.fire({
+        title: '¿Estas seguro/a que tus datos estan correctos?',
+        text: "¡puedes volver a revisar!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Volver a revisar',
+        confirmButtonText: 'Si, estoy seguro'
+        }).then((result)=>
+        {
+          if (result.value)
+          {
+            var route = '/alumn/form/save';
+            var token = $('#token').val();
+            var data = new FormData();
+            var tempData = JSON.parse(localStorage.getItem('tempData'));
+            data.append('data', JSON.stringify(tempData));
+            data.append('recaptcha',grecaptcha.getResponse());
+            $.ajax({
+              url:route,
+              headers:{'X-CSRF-TOKEN': token},
+              method:'POST',
+              data:data,
+              cache:false,
+              contentType:false,
+              processData:false,
+              success:function(response)
+              {
                 if(response == 'ok')
                 {
                     localStorage.removeItem('tempData');
@@ -95,7 +109,10 @@ $(document).ready(function()
                 {
                     toastr.error("Tiene que verificar que no es un robot");
                 }
-        }});
+              }
+            });
+          }
+        });  
     });
 });
 

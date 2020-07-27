@@ -43,9 +43,9 @@ class FormController extends Controller
 
     public function saveInscription(Request $request)
     {
-        // $this->validate($request,[
-        //     'g-recaptcha-response' => 'required|recaptcha',
-        // ]);
+        $this->validate($request,[
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
         $current_user = Auth::guard('alumn')->user();
         $data = $request->input();
 
@@ -145,7 +145,7 @@ class FormController extends Controller
         $dataArray = json_decode($dataAsString);
         $captcha = $request->input('recaptcha');
         
-        if($captcha == null)
+        if($captcha != null)
         {
             try
             {
@@ -156,10 +156,19 @@ class FormController extends Controller
                         updateByIdAlumn($currentId, $dataArray[$i]->name, $dataArray[$i]->value);
                     }
                 }
-                $current_user->inscripcion = 1;
-                $current_user->save();
-                $mytime = \Carbon\Carbon::now();
                 $debit = insertInscriptionDebit($current_user->id_alumno);
+
+                //validacion para saber si es de promedio alto
+                if($debit!=0)
+                {
+                    $current_user->inscripcion = 3;
+                    $current_user->save();
+                }
+                else
+                {
+                    $current_user->inscripcion = 1;
+                    $current_user->save();
+                }
                 return response()->json('ok');
             }
             catch(\Exception $e)

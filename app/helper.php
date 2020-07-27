@@ -3,6 +3,7 @@
 use App\Models\AdminUsers\AdminUser;
 use App\Models\Alumns\Notify;
 use App\Models\Alumns\DebitType;
+use App\Models\Alumns\HighAverages;
 
 //seccion del sistema
 function addNotify($text,$id,$route)
@@ -12,6 +13,19 @@ function addNotify($text,$id,$route)
   $notify->alumn_id = $id;
   $notify->route = $route;
   $notify->save();
+}
+
+function validateHighAverage($enrollement)
+{
+    $validate = HighAverages::where("enrollment","=",$enrollement)->get();
+    if(count($validate)!=0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
 }
 
 function getDebitType($id = null)
@@ -69,16 +83,34 @@ function insertInscriptionDocuments($id)
 
 function insertInscriptionDebit($id_alumno)
 {
-  $mytime = \Carbon\Carbon::now();
-  DB::table('debit')->insert(
-      ['debit_type_id' => 1,
-       'description' => 'Pago semestral de inscripcion',
-       'amount' => 1950.00,
-       'admin_id'=> 2,
-       'id_alumno'=>$id_alumno,
-       'created_at'=>$mytime->toDateTimeString(),
-       'updated_at'=>$mytime->toDateTimeString()]
-  );
+  $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
+  $validate = validateHighAverage($data["Matricula"]);
+  if($validate)
+  {
+    $inscription = realizarInscripcion($id_alumno);
+    if($inscription!=false)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else
+  {
+    $mytime = \Carbon\Carbon::now();
+    DB::table('debit')->insert(
+        ['debit_type_id' => 1,
+         'description' => 'Pago semestral de inscripcion',
+         'amount' => 1950.00,
+         'admin_id'=> 2,
+         'id_alumno'=>$id_alumno,
+         'created_at'=>$mytime->toDateTimeString(),
+         'updated_at'=>$mytime->toDateTimeString()]
+    );
+    return 0;
+  }
 }
 
 //seccion de sicoes
@@ -478,10 +510,6 @@ function updateByIdAlumn($id_alumn,$colName,$value)
     $stmt= ConectSqlDatabase()->prepare($sql);
     $stmt->execute($datos);
 }   
-
-function getCarreraFromIdAlumn($id_alumn){
-
-}
 	
 function selectAdmin($id = null)
 {
