@@ -347,7 +347,7 @@
 <!-- TerminaModal -->
 
  <!-- Modal  de detalles de pago -->
- <div class="modal fade" id="modalShowDetails">
+ <div class="modal fade" id="modalShowDetails" data-backdrop='static' data-keyboard=false>
 
     <div class="modal-dialog modal-lg">
   
@@ -365,19 +365,18 @@
   
                   <h4 class="modal-title">DETALLES DEL PAGO</h4>
   
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+                  
   
               </div>
           
               <div class="modal-body custom-modal">
+
                 <div id="loader" class="loader"></div>
                 <h6 id="detail-id"></h6>
                 <h6 id="detail-paymentMethod"></h6>
                 <h6 id="detail-reference"></h6>
                 <h6 id="detail-amount"></h6>
-                <h6 id="detail-order"></h6>
+               
   
               </div>
   
@@ -389,7 +388,7 @@
   
                           <div class=" col-sm-6 btn-group">
   
-                          <button id="cancelEdit" type="button" class="btn btn-danger .px-2 " 
+                          <button id="closeDetails" type="button" class="btn btn-danger .px-2 " 
                           data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
   
                           </div>
@@ -407,6 +406,8 @@
     </div>
   
   </div>
+
+ 
 
   <script src="{{asset('js/financePanel/debit.js')}}"></script>
  

@@ -171,6 +171,8 @@ class DebitController extends Controller
     // accedemos a este método con ajax para cargar los datos de la orden 
     public function showPayementDetails(Request $request)
     {
+
+       
         $debit = Debit::find($request->input("DebitId"));
         require_once("conekta/Conekta.php");
         \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
@@ -183,10 +185,7 @@ class DebitController extends Controller
             "id"   => $order->id,
                 "paymentMethod" => "Tarjeta",
                 "amount"        =>  "$". $order->amount/100 . $order->currency,
-                "order"         => $order->line_items[0]->quantity .
-                                      "-". $order->line_items[0]->name .
-                                      "- $". $order->line_items[0]->unit_price/100,
-                  "type"=>"card"                   
+                "type"=>"card"                   
             );
         }
         else
@@ -196,11 +195,10 @@ class DebitController extends Controller
                 "paymentMethod" => $order->charges[0]->payment_method->service_name,
                 "reference"     => $order->charges[0]->payment_method->reference,
                 "amount"        => "$".$order->amount/100 ." ". $order->currency,
-                "order"         => $order->line_items[0]->quantity .
-                                    "-". $order->line_items[0]->name .
-                                    "- $". $order->line_items[0]->unit_price/100,
                 "type"=> "nocard"                  
             );
+
+           
         }
         return response()->json($data);
     }    
