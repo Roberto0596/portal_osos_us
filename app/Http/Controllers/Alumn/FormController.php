@@ -52,13 +52,16 @@ class FormController extends Controller
         //traer el plan de esudio y el ultimo alumno de esa carrera con ese plan de estudios
         $planEstudio = getLastThing("planEstudio","CarreraId",$data["Carrera"],"PlanEstudioId");
 
-        //Edad, Matricula y el plan de estudio
+        //Edad, el plan de estudio
         $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["FechaNacimiento"]));
         $edad = intval(floor($aux / (365*60*60*24)));
         $planEstudio = $planEstudio["PlanEstudioId"];
 
+        //Matricula
+        $tempEnrollment = generateTempMatricula();
+
         //preparando los datos.
-        $array = array('Matricula' => 'Aspirante',
+        $array = array('Matricula' => $tempEnrollment,
                    'Nombre' => strtoupper($data["Nombre"]),
                    'ApellidoPrimero'=> strtoupper($data["ApellidoPrimero"]),
                    'ApellidoSegundo' => array_key_exists("ApellidoSegundo",$data)?strtoupper($data["ApellidoSegundo"]):null,

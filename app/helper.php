@@ -707,3 +707,26 @@ function getAlumnGroup($id_alumno)
   }
   return $group;
 }
+
+function getMatriculaTemp()
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where Matricula like 'Aspirante%' order by AlumnoId desc");
+  $stmt->execute();
+  $alumno = $stmt->fetch();
+  return $alumno;
+  $stmt = null;
+}
+
+function generateTempMatricula()
+{
+  $temp = getMatriculaTemp();
+  $tempNumber = substr($temp["Matricula"],9)+1;
+  if ($temp!=false)
+  {
+    return "Aspirante".$tempNumber;
+  }
+  else
+  {
+    return "Aspirante1";
+  }
+}
