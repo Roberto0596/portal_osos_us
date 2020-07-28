@@ -52,7 +52,6 @@ class DebitController extends Controller
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
                 getDebitType($value->debit_type_id)->concept,
-                $value->description,
                 "$".number_format($value->amount,2),
                 $current_user->name,
                 $alumn["Matricula"],

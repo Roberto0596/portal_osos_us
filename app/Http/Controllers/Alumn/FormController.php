@@ -161,6 +161,8 @@ class FormController extends Controller
             {
                 $current_user->inscripcion = 3;
                 $current_user->save();
+                //generamos los documentos de inscripcion
+      			$insertDocuments = insertInscriptionDocuments($current_user->id);
                 session()->flash("messages","success|Felicidades por tu promedio, no pagaras inscripción");
                 return redirect()->route("alumn.home");
             }

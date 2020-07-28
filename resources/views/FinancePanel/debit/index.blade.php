@@ -47,7 +47,6 @@
             <tr>
               <th style="width: 10px">#</th>
               <th>Concepto</th>
-              <th>Descripción</th>
               <th>Monto</th>
               <th>Encargado</th>
               <th>Matricula</th>
