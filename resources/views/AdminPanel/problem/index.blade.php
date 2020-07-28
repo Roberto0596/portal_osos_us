@@ -43,7 +43,10 @@
 
             <tr>
               <th style="width: 10px">#</th>
+              <th>Matricula</th>
               <th>Alumno</th>
+              <th>Telefono</th>
+              <th>Email</th>
               <th>Estado</th>
               <th>Fecha</th>
               <th>Acciones</th>

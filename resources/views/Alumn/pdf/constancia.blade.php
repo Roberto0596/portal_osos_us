@@ -84,7 +84,7 @@
     <p id="texto-constancia">
         Nombre del alumno: <b>{{$alumno['Nombre']}} {{$alumno['ApellidoPrimero']}} {{$alumno['ApellidoSegundo']}}</b>
         No tiene adeudo alguno, por concepto de préstamo de libros, equipo prestado ó dañado, 
-        impresiones, cuotas escolares etc,. a la fecha, po lo que puede proceder a efectuar el trámite
+        impresiones, cuotas escolares etc,. a la fecha, por lo que puede proceder a efectuar el trámite
         correspondiente.
     </p>
 
