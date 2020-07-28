@@ -118,7 +118,7 @@ class PaymentController extends Controller
       }  
 
       //traer el grupo
-      $group = getAlumnGroup($current_user->id_alumno); 
+      $group = getAlumnGroup($current_user->id_alumno);   
 
       //inscribimos al alumno despues de pagar
       $inscription = array('Semestre' => $semester,'EncGrupoId'=> $grupo["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
