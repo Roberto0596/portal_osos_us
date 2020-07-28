@@ -48,10 +48,11 @@ class PdfController extends Controller
         }
 
         $alumno = getDataByIdAlumn($current_user->id_alumno);
+        $currentPeriod = selectCurrentPeriod();
 
         $inscripcion = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");  
         //traer el grupo
-        $group = getAlumnGroup($current_user->id_alumno);           
+        $group = obtenerGrupo($inscripcion["Semestre"],$alumno["PlanEstudioId"],$currentPeriod["PeriodoId"]); 
 
         $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
         $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);
