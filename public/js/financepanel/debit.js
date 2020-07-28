@@ -1,3 +1,5 @@
+
+
 var token = $("#token").val();
 var route = "/finance/debit/show";
 
@@ -42,6 +44,7 @@ $(".tableDebits").dataTable({
 $("#id_alumno").select2({
     width: 'resolve'
 });
+
 
 
 
@@ -116,26 +119,58 @@ $(".tableDebits tbody").on("click","button.details",function()
         processData:false,
         success:function(response)
         {     
+            $('#loader').hide();
+          
             if (response["type"]=="card")
             {
-                $('#loader').hide();
+              
                 $('#detail-id').text("ID: " +response['id']);
                 $('#detail-paymentMethod').text("Método de pago: " +response['paymentMethod']);
                 $('#detail-reference').text("Sin referencia");
                 $('#detail-amount').text("Monto: " +response['amount']);
-                $('#detail-order').text("Orden: " +response['order']);
+              
             }   
             else
             {
-                $('#loader').hide();
+              
                 $('#detail-id').text("ID: " +response['id']);
                 $('#detail-paymentMethod').text("Método de pago: " +response['paymentMethod']);
                 $('#detail-reference').text("Referencia: " +response['reference']);
                 $('#detail-amount').text("Monto: " +response['amount']);
-                $('#detail-order').text("Orden: " +response['order']);
-            }                      
+               
+            }      
+
+            $('#detail-id').show();
+            $('#detail-paymentMethod').show();
+            $('#detail-reference').show();
+            $('#detail-amount').show();     
+
+                       
         }
     });
     $('#loader').show();
+
+
+
+    $("#modalShowDetails").on('hidden.bs.modal', function () {
+        $('#detail-id').hide();
+        $('#detail-paymentMethod').hide();
+        $('#detail-reference').hide();
+        $('#detail-amount').hide();
+    });
+
+   
+
+ 
+   
 });
+
+
+
+
+
+
+
+
+
 
