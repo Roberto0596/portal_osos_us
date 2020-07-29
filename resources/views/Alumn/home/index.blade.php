@@ -168,46 +168,84 @@
 
     </div>
 
-    <div class="card">
+    <div class="row">
 
-      <div class="card-body">
+      <div class="col-md-5">
 
-        <div class="row">
+        <div class="card">
 
-          <div class="col-md-5">
+          <div class="card-body">
 
             <div class="row">
 
               <div class="col-md-12">
 
-                <h4>Mis Acciones</h4> 
+                <div class="row">
+
+                  <div class="col-md-12">
+
+                    <h4>Mis Acciones</h4> 
+
+                  </div>
+
+                  <div class="col-md-12">
+
+                    <div class="col-md-12 col-sm-12">
+
+                      <div class="small-box bg-danger" style="background: #4e4e4e !important">
+
+                        <div class="inner">
+
+                          <h3>Reportar problema</h3>
+
+                          <p>Ayudanos a mejorar</p>
+
+                        </div>
+
+                        <div class="icon">
+
+                          <i class="fa fa-archive"></i>
+
+                        </div>
+
+                        <a data-toggle="modal" data-target="#modalProblems" style="cursor: pointer;" class="small-box-footer">Enviar problema<i class="fas fa-arrow-circle-right"></i></a>
+
+                      </div>
+                      
+                    </div>
+
+                  </div>
+
+                </div>
 
               </div>
 
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-7">
+
+        <div class="card">
+
+          <div class="card-body">
+
+            <div class="row">
+
               <div class="col-md-12">
 
-                <div class="col-md-12 col-sm-12">
+                <div class="row">
 
-                  <div class="small-box bg-danger" style="background: #4e4e4e !important">
+                  <div class="col-md-12">
 
-                    <div class="inner">
-
-                      <h3>Reportar problema</h3>
-
-                      <p>Ayudanos a mejorar</p>
-
-                    </div>
-
-                    <div class="icon">
-
-                      <i class="fa fa-archive"></i>
-
-                    </div>
-
-                    <a data-toggle="modal" data-target="#modalProblems" style="cursor: pointer;" class="small-box-footer">Enviar problema<i class="fas fa-arrow-circle-right"></i></a>
+                    <h4>Mis Acciones</h4> 
 
                   </div>
-                  
+
                 </div>
 
               </div>
