@@ -202,7 +202,7 @@
 
 						<div class="col-md-12 col-custom">
 
-							<button type="button" class="btn btn-warning button-custom sent">Ser aspirante</button>
+							<button type="button" class="btn btn-warning button-custom sent">Registrarse como aspirante</button>
 							
 						</div>
 

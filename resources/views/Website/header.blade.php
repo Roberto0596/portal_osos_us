@@ -18,7 +18,9 @@
 
 	  	@if(Route::currentRouteName()=='home')
 
-	  		<span class="header-link" style="margin-right: 1%">Estoy Registrado/Ya soy Alumno -> </span> <a href="{{route('alumn.home')}}" class="btn btn-success my-2 my-sm-0" style="color: white; border-radius: 20px;"> Acceder</a>
+	  		<span class="header-link" style="margin-right: 1%">Estoy Registrado/Ya soy Alumno -> </span> 
+			<a href="{{route('alumn.home')}}" class="btn btn-success my-2 my-sm-0" style="color: white; border-radius: 20px;"> Alumnos</a>
+			<a href="{{route('alumn.home')}}" class="btn btn-success my-2 my-sm-0" style="color: white; border-radius: 20px;"> Aspirantess</a>
 
 	  	@endif
 
