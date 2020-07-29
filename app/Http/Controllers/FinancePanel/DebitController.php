@@ -110,7 +110,7 @@ class DebitController extends Controller
                         if ($enrollement!="reinscripcion") 
                         {
                             updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
-                            $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx"; 
+                            // $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx"; 
                         }
                         $alumn->inscripcion=3;
                         $alumn->save();

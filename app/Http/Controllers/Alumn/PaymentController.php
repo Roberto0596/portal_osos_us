@@ -109,7 +109,7 @@ class PaymentController extends Controller
         //traemos la matricula para el alumno que acaba de pagar
         $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
         updateByIdAlumn($current_user->id_alumno,"Matricula",$enrollement);
-        $current_user->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
+        // $current_user->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
         $semester = 1;
       } 
       else
