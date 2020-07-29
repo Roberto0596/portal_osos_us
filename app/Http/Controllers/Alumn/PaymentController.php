@@ -369,7 +369,8 @@ class PaymentController extends Controller
     $current_user = User::find(Auth::guard("alumn")->user()->id);
     $current_sicoes = getLastSemester($current_user->id_alumno);
     $file = $request->file('file');
-    $name = str_replace("_"," ",$current_user->name) . $current_sicoes.".pdf";
+    $originalExtention = explode(".", $_FILES["file"]["name"])[1];
+    $name = str_replace("_"," ",$current_user->name) . $current_sicoes.".".$originalExtention;
 
     if(!\Storage::disk('public_uploads')->put($name,  \File::get($file)))
     {

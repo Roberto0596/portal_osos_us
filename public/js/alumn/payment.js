@@ -66,7 +66,7 @@ $('#ticket').change(function()
 	console.log(ext);
 	if ($(this).val() != '') 
 	{
-	  if(ext == "application/pdf")
+	  if(ext == "application/pdf" || ext == "image/jpeg")
 	  {
 		if(file["size"] > 1048576)
 		{
@@ -81,7 +81,7 @@ $('#ticket').change(function()
 	  else
 	  {
 		$(this).val('');
-		alert("Extensión no permitida: " + ext);
+		toastr.success("Extensión no permitida: " + ext);
 	  }
 	}
   });
