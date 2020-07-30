@@ -242,7 +242,7 @@
 
                   <div class="col-md-12">
 
-                    <h4>Mis Acciones</h4> 
+                    <h4>Proximamente</h4> 
 
                   </div>
 
@@ -290,7 +290,7 @@
 
               <div class="panel">Describe el problema</div>
 
-                <textarea name="text" class="form-control form-control-lg" cols="30" rows="5" placeholder="Describe aquí" required></textarea>
+                <textarea name="text" class="form-control form-control-lg" cols="30" rows="5" placeholder="Intente describir el problema, sea específico, intente ser lo mas conciso que pueda para poder ofrecerle una mejor ayuda." required></textarea>
 
               </div>
 
@@ -307,11 +307,11 @@
             <div class="row">
 
               <div class="col-md-6 btn-group">
-                  <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Eliminar</button>
+                  <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
               </div>
 
               <div class="col-md-6 btn-group">
-                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> subir</button>
+                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Enviar</button>
               </div>
 
             </div>

@@ -40,8 +40,8 @@ class ProblemController extends Controller
             	$status = "Corregido";
             }
 
-            $alumnData = selectSicoes("Alumno","AlumnoId", $value->alumn_id)[0];
             $portalUserData = selectTable("users","id",$value->alumn_id,1);
+            $alumnData = selectSicoes("Alumno","AlumnoId", $portalUserData->id_alumno)[0];
             array_push($res["data"],[
                 (count($problems)-($key+1)+1),
                 $alumnData["Matricula"],
