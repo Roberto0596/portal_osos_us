@@ -43,7 +43,7 @@ $(".tableResetPass tbody").on("click","button.resetPassword",function()
    
 
     var id = $(this).attr("id");
-    var route = '/admin/reset-passwords/send-pass/';
+    var route = '/admin/reset-passwords/send-pass';
     var token = $(this).attr("token");
     var data = new FormData();
     data.append('id', id);

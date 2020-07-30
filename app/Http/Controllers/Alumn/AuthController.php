@@ -47,56 +47,35 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-
     public function requestRestorePass() 
-    {   
-        
+    {       
         return view('Alumn.auth.request-pass');
     }
 
-    public function sendRequest(Request $request){
-
-
+    public function sendRequest(Request $request)
+    {
         //buscamos el usuario por el email
-        $user = User::where('email', '=', $request->email)->get();
-
-      
-
-       
-       
-        if(count($user)!= 0){
-            try{
-                
-                //se crea una solicitud Para Restaurar Contraseña
-                $RequestPass = new RequestPass;
-
-                //se le asocia un usuario
-                $RequestPass->id_user = $user[0]->id;
-
-                //se guarda en la bd
-                $RequestPass->save();
-        
-                session()->flash("messages","success| Solicitud Enviada");
-                return redirect()->back();
-        
-
-            }catch (\Exception $e){
-
-                session()->flash("messages","error| Ya tienes una solicitud enviada");
-                return redirect()->back();
-
-            }
-        }else{
-
-            session()->flash("messages","error| No existe un usuario con este correo");
+        $user = User::where('email', '=', $request->email)->get(); 
+        if(!$user)
+        {
+            session()->flash("messages","error|No existe un usuario con este correo");
             return redirect()->back();
-
-
+        }     
+        try
+        {            
+            //se crea una solicitud Para Restaurar Contraseña
+            $RequestPass = new RequestPass;
+            //se le asocia un usuario
+            $RequestPass->id_user = $user[0]->id;
+            //se guarda en la bd
+            $RequestPass->save();    
+            session()->flash("messages","success|Solicitud Enviada");
+            return redirect()->route("alumn.login");
         }
-
-
-        
-    }
-
-   
+        catch (\Exception $e)
+        {
+            session()->flash("messages","error|Ya tienes una solicitud enviada");
+            return redirect()->back();
+        }    
+    } 
 }

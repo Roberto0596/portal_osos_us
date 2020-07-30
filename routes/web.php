@@ -537,12 +537,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::put('/alumns/show', [
 		        'uses' => 'AlumnController@show', 
 		        'as' => 'alumns.show'
-			]);
-
-
-			
-		
-			
+			]);		
 
 			//reiniciar constraseñas
 
@@ -551,8 +546,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::get('/reset-passwords', [
 		        'uses' => 'ResetPassController@index', 
 		        'as' => 'reset-pass'
-			]);
-			
+			]);			
 
 			//carga los datos de esta tabla
 			Route::put('/reset-passwords/show', [
@@ -564,11 +558,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::post('/reset-passwords/send-pass', [
 		        'uses' => 'ResetPassController@sendPass', 
 		        'as' => 'reset-pass-pass'
-			]);
-
-			
-
-
+			]);	
 		});
   	});
 });

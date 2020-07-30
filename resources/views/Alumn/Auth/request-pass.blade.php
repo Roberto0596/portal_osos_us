@@ -76,9 +76,7 @@
 
                             <button id="send" type="submit" class="btn btn-primary btn-block boton" style="border-radius: 19px;">Solicitar</button>
 
-                        </div>
-
-                       
+                        </div>                       
 
                     </form> 
 
@@ -91,6 +89,8 @@
     </div>
 
 </div>
+
+@stop
 
 
 

@@ -730,3 +730,17 @@ function generateTempMatricula()
     return "Aspirante1";
   }
 }
+
+//auxiliari methods
+function generatePasssword()
+{
+    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $numbers = '1234567890';
+    $password = '';
+    for($i = 0; $i < 4; $i++){
+        $randomIndexLetras = mt_rand(0,strlen($letters) - 1);
+        $randomIndexNumbers = mt_rand(0,strlen($numbers) - 1);
+        $password = $password.$letters[$randomIndexLetras].$numbers[$randomIndexNumbers];  
+    }
+    return $password;
+}
