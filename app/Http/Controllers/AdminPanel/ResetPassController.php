@@ -22,12 +22,15 @@ class ResetPassController extends Controller
         $res = [ "data" => []];       
 
         foreach($requests as $key => $value)
-        {  
-
+        {
             $user = User::find($value->id_user);
 
-            $buttons = "<div class='btn-group'><button style='color:white' class='btn btn-danger custom resetPassword' id = '".$value->id_user."' token = '".csrf_token()."'><i class='fa fa-check' title='Aprobar'></i></button></div>";
-
+            $buttons = "<form class='from-password' method='post' action='".route("admin.reset.pass.save")."'>
+                <div class='btn-group'>".csrf_field()."                    
+                    <input type='hidden' name='user_id' value='".$value->id_user."'>
+                    <button type='submit' style='color:white' class='btn btn-danger custom'><i class='fa fa-check' title='Aprobar'></i></button>
+                </div>
+                </form>"; 
         
             array_push($res["data"],[
                 (count($requests)-($key+1)+1),
@@ -48,7 +51,7 @@ class ResetPassController extends Controller
         try
         { 
             //se busca el usuario por el id
-            $user = User::find( $request->id);
+            $user = User::find($request->user_id);
             $newPass = generatePasssword();                
             $user->password = bcrypt($newPass);                
             $user->save();
@@ -59,20 +62,17 @@ class ResetPassController extends Controller
             ];
             $subject = 'Restablecer Cuenta';
             Mail::to($user->email)->queue(new ResetPassword($subject,$data));             
-            // Mail::send('AdminPanel.RequestPass.email-template',['data' => $data], function ($msj) use ($user)
-            // {
-            //     $msj->subject();
-            //     $msj->to($user->email);
-                
-            // });  
+
             //una vez enviado el email se borra el registro
-            RequestPass::where('id_user' , $request->id)->delete();
-            return response()->json('ok');                  
+            RequestPass::where('id_user' , $request->user_id)->delete();
+            session()->flash("messages","success|Se envio la nueva contraseña con exito");
+            addNotify("No olvides tu contraseña",$user->id,"alumn.home");
+            return redirect()->back();                  
         }
         catch(\Exception $e)
         {
-            dd($e);
-            return response()->json("error");
+            session()->flash("messages","error|Algo salio mal");
+            return redirect()->back();
         }
 	}
 }

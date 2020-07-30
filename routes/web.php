@@ -557,7 +557,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			//envia el id del usuario que desea cambiar el pass	
 			Route::post('/reset-passwords/send-pass', [
 		        'uses' => 'ResetPassController@sendPass', 
-		        'as' => 'reset-pass-pass'
+		        'as' => 'reset.pass.save'
 			]);	
 		});
   	});
