@@ -40,15 +40,11 @@ $(".tableResetPass").dataTable({
 
 $(".tableResetPass tbody").on("click","button.resetPassword",function()
 {
-   
-
     var id = $(this).attr("id");
     var route = '/admin/reset-passwords/send-pass';
     var token = $(this).attr("token");
     var data = new FormData();
-    data.append('id', id);
-
-
+    data.append('id', id)
     swal.fire({
         title: '¿Está seguro de aprobar esta solicitud para reiniciar la contraseña?',
         text: "Una vez aprobada se eliminará esta solicitud",
@@ -60,6 +56,7 @@ $(".tableResetPass tbody").on("click","button.resetPassword",function()
         confirmButtonText: 'Si, estoy seguro'
     }).then((result)=>
     {
+      $(this).attr("disabled",true);
       if (result.value)
       {
         $.ajax({
@@ -72,7 +69,8 @@ $(".tableResetPass tbody").on("click","button.resetPassword",function()
             processData:false,
             success:function(response)
             {
-              if(response === 'ok' ){
+              if(response === 'ok' )
+              {
                 swal.fire({
                     title: 'Constraseña enviada al correo',
                     type: 'warning',
@@ -84,7 +82,9 @@ $(".tableResetPass tbody").on("click","button.resetPassword",function()
                     }
                 });
 
-              }else{
+              }
+              else
+              {
                 swal.fire({
                     title: 'Hubo un error',
                     type: 'error',
@@ -92,19 +92,9 @@ $(".tableResetPass tbody").on("click","button.resetPassword",function()
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'cerrar',
                 });
-
-              }
-
-        
+              }        
             }
-        });
-      
+        });      
       }
     });
-    
-  
-
-
-
-   
 });
