@@ -131,6 +131,10 @@
                             </div>
                         </div>
 
+                        <div class=" text-center"  style="margin-top: 25px; margin-bottom: -15px;">
+                            <a href="{{route('alumn.RequestRestorePass')}}" style="text-decoration:underline; color:#fd7e14;">Olvidé mi contraseña</a>
+                        </div>
+
                     </form> 
 
                 </div> 

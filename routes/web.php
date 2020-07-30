@@ -14,6 +14,19 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	    Route::post('/sign-in',[
 	        'uses' => 'AuthController@postLogin', 
 		]); 
+
+		//te lleva  a a la vista para enviar la peticion de restaurar pass
+		Route::get('/restore-pass',[
+	        'uses' => 'AuthController@requestRestorePass', 
+	        'as' => 'RequestRestorePass'
+		]);
+		
+
+		//envia la peticion de restaurar pass
+		Route::post('/restore-pass',[
+	        'uses' => 'AuthController@sendRequest', 
+	        'as' => 'sendRequest'
+	    ]);
 	 
 
 	    Route::get('/sign-out', [
@@ -525,6 +538,37 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'AlumnController@show', 
 		        'as' => 'alumns.show'
 			]);
+
+
+			
+		
+			
+
+			//reiniciar constraseñas
+
+			//te lleva al tabla de solicitudes apra restaurar pass
+
+			Route::get('/reset-passwords', [
+		        'uses' => 'ResetPassController@index', 
+		        'as' => 'reset-pass'
+			]);
+			
+
+			//carga los datos de esta tabla
+			Route::put('/reset-passwords/show', [
+		        'uses' => 'ResetPassController@show', 
+		        'as' => 'reset-pass.show'
+			]);
+
+			//envia el id del usuario que desea cambiar el pass	
+			Route::post('/reset-passwords/send-pass', [
+		        'uses' => 'ResetPassController@sendPass', 
+		        'as' => 'reset-pass-pass'
+			]);
+
+			
+
+
 		});
   	});
 });
