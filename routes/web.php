@@ -559,6 +559,11 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'ResetPassController@sendPass', 
 		        'as' => 'reset.pass.save'
 			]);	
+
+			Route::post('/period/save/{period?}', [
+		        'uses' => 'HomeController@savePeriod', 
+		        'as' => 'period.save'
+			]);	
 		});
   	});
 });

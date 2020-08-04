@@ -42,9 +42,8 @@ $(document).ready(function()
 
 	var successResponseHandler = function(token){
 	  var $form = $("#card-form");
-    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
-    $form.get(0).submit();
-    
+      $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+      $form.get(0).submit();    
 	}
 
 	var errorResponseHandler = function(error){
@@ -54,7 +53,7 @@ $(document).ready(function()
 	$("#card-form").submit(function(e)
 	{
 	  e.preventDefault();
-    var $form = $("#card-form");
+      var $form = $("#card-form");
 	  Conekta.Token.create($form,successResponseHandler,errorResponseHandler);
 	});
 });

@@ -78,6 +78,7 @@ class ProblemController extends Controller
            $delete = Problem::find($id);
            $delete->status = 1;
            $delete->save();
+           addNotify("El problema que reporto fue resuelto",$delete->alumn_id,"alumn.home");
            session()->flash("messages","success|El problema ya no causara mas problemas");
            return redirect()->back();
         }

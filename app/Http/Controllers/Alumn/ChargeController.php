@@ -28,7 +28,46 @@ class ChargeController extends Controller
 
     public function save(Request $request,User $user) 
     {
-        $getCurrentPeriod = selectCurrentPeriod();
+        $currentPeriod = selectCurrentPeriod();
+
+        //convertimos el array de las asginaturas que debe llevar y quitamos los campos que no necesitamos
+        $currentAsignatures = $this->cleanArray(json_decode($request->input("currentAsignatures"),true),11,1,true,false);
+
+        $array = $this->cleanArray($request->all(),["DetGrupoId","_token","currentAsignatures"],3,false); 
+
+        if (count($array)<1)
+        {
+            session()->flash("messages","error|Hay un minimo de materias por llevar, favor de no jugar con el sistema");
+            return redirect()->back();
+        }  
+
+        $successArray = [];
+        
+        foreach ($currentAsignatures as $key => $value)
+        {
+            if (in_array($value["DetGrupoId"], $array))
+            {
+                $baja = 0;
+            }
+            else
+            {
+                $baja = 1;
+            }
+
+            $temple = array(["Baja"=>$baja,
+                            "DetGrupoId"=>$value["DetGrupoId"],
+                            "PeriodoId"=>$currentPeriod->id,
+                            "AlumnoId"=>$user->id_alumno]);
+            
+            $insert = insertCharge($temple[0]);
+            array_push($successArray, $insert);
+        }
+
+        if (in_array(false, $successArray)) {
+            deleteCharge($successArray);
+            session()->flash("messages","error|No fue posible guardar los datos, favor de reintentar");
+            return redirect()->back();
+        }
         $user->inscripcion = 4;
         $user->save();
         session()->flash("messages","success|Concluiste tu registro");
@@ -37,44 +76,6 @@ class ChargeController extends Controller
 
     public function cleanArray($array,$indexstoclean,$rounds,$flag,$mode=true)
     {
-                // //convertimos el array de las asginaturas que debe llevar y quitamos los campos que no necesitamos
-        // $currentAsignatures = $this->cleanArray(json_decode($request->input("currentAsignatures"),true),11,1,true,false);
-
-        // $array = $this->cleanArray($request->all(),["DetGrupoId","_token","currentAsignatures"],3,false); 
-
-        // if (count($array)<1)
-        // {
-        //     session()->flash("messages","error|Hay un minimo de materias por llevar, favor de no jugar con el sistema");
-        //     return redirect()->back();
-        // }  
-
-        // $successArray = [];
-        
-        // foreach ($currentAsignatures as $key => $value)
-        // {
-        //     if (in_array($value["DetGrupoId"], $array))
-        //     {
-        //         $baja = 0;
-        //     }
-        //     else
-        //     {
-        //         $baja = 1;
-        //     }
-
-        //     $temple = array(["Baja"=>$baja,
-        //                     "DetGrupoId"=>$value["DetGrupoId"],
-        //                     "PeriodoId"=>$getCurrentPeriod["PeriodoId"],
-        //                     "AlumnoId"=>$user->id_alumno]);
-            
-        //     $insert = insertCharge($temple[0]);
-        //     array_push($successArray, $insert);
-        // }
-
-        // if (in_array(false, $successArray)) {
-        //     deleteCharge($successArray);
-        //     session()->flash("messages","error|No fue posible guardar los datos, favor de reintentar");
-        //     return redirect()->back();
-        // }
         for ($i=0; $i < $rounds; $i++)
         {
             if ($mode)

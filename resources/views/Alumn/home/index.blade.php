@@ -48,7 +48,7 @@
 
         <div class="row">
 
-          <div class="col-md-12">
+          <div class="col-md-12"> 
 
                 <h4>Mi tablero</h4> 
 

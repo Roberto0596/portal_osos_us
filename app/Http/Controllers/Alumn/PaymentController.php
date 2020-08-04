@@ -115,31 +115,28 @@ class PaymentController extends Controller
       else
       {
         $semester = $inscripcionData["Semestre"]+1;
-      }  
-
+      }
       //traer el grupo
-      $group = getAlumnGroup($current_user->id_alumno);   
-
-      //inscribimos al alumno despues de pagar
-      $inscription = array('Semestre' => $semester,'EncGrupoId'=> $grupo["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
-      
-      //generamos los documentos de inscripcion
-      $insertDocuments = insertInscriptionDocuments($current_user->id);
+      $group = getAlumnGroup($current_user->id_alumno);      
       try
       {
+        //inscribimos al alumno despues de pagar
+        $inscription = array('Semestre' => $semester,'EncGrupoId'=> $group["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
+        //generamos los documentos de inscripcion
+        $insertDocuments = insertInscriptionDocuments($current_user->id);
         if (inscribirAlumno($inscription))
         {
           $current_user->inscripcion = 3;
           $current_user->save();
           session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
-          return redirect()->route("alumn.home");
+          return redirect()->route("alumn.charge");
         }
         else
         {
           $current_user->inscripcion = 3;
           $current_user->save();
           session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
-          return redirect()->route("alumn.home");
+          return redirect()->route("alumn.charge");
         }
       }
       catch(\Exception $e)
@@ -147,7 +144,7 @@ class PaymentController extends Controller
         $current_user->inscripcion = 4;
         $current_user->save();
         session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
-        return redirect()->route("alumn.charge");
+        return redirect()->route("alumn.home");
       }
   }
 

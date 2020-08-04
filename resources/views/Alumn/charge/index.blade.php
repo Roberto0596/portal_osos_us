@@ -116,11 +116,23 @@
 
             </table>
 
-<!--             <div class="form-group row">
+            @php
+              $inscription = selectSicoes("Inscripcion","AlumnoId",Auth::guard("alumn")->user()->id_alumno)[0];
+            @endphp            
+
+            <div class="form-group row">
+
+              @if($inscription["Semestre"] ==1)
 
               <button type="submit" class="btn btn-warnign flotante" title="Guardar" style="background: green !important;bottom: 60px !important;"><i class="fa fa-save" style="color: white !important;"></i></button>
 
-            </div> -->
+              @else
+
+                <a href="{{route('alumn.home')}}" class="btn btn-warnign flotante" title="ir a inicio" style="background: green !important;bottom: 60px !important;"><i class="fas fa-home" style="color: white !important;"></i></a>
+                
+              @endif
+
+            </div>
 
             </form>
 

@@ -4,6 +4,7 @@ use App\Models\AdminUsers\AdminUser;
 use App\Models\Alumns\Notify;
 use App\Models\Alumns\DebitType;
 use App\Models\Alumns\HighAverages;
+use App\Models\PeriodModel;
 
 //seccion del sistema
 function addNotify($text,$id,$route)
@@ -59,6 +60,20 @@ function selectTable($tableName, $item=null,$value=null,$limit=null)
   }
 }
 
+//este metodo servira para trarnos el periodo actual o en curso
+function selectCurrentPeriod()
+{
+    $currentPeriod = PeriodModel::all();
+    if (count($currentPeriod))
+    {
+      return $currentPeriod[0];
+    }
+    else
+    {
+      return "error";
+    }
+}
+
 function insertIntoPortal($tableName,$array)
 {
   try
@@ -74,8 +89,8 @@ function insertIntoPortal($tableName,$array)
 
 function insertInscriptionDocuments($id)
 {
-  $getCurrentPeriod = selectCurrentPeriod();
-  $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $getCurrentPeriod["PeriodoId"], 'alumn_id' => $id]
+  $currentPeriod = selectCurrentPeriod();
+  $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id]
         ];
   $insertDocument = insertIntoPortal("document",$array);
   return $insertDocument;
@@ -152,15 +167,6 @@ function realizarInscripcion($id_alumno)
   {
       return false;
   }
-}
-
-//este metodo servira para trarnos el periodo actual o en curso
-function selectCurrentPeriod()
-{
-    $stmt = ConectSqlDatabase()->prepare("SELECT top(1) * from Periodo where Semestre <> 'CURSO DE VERANO' order by PeriodoId desc;");
-    $stmt->execute();
-    return $stmt->fetch();
-    $stmt = null;
 }
 
 //metodo auxiliar para saber las ultimas cargas del alumno
@@ -278,8 +284,7 @@ function insertCharge($array)
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
-    $baja = chr($array["Baja"]);
-    $array = array('Baja' => $baja,
+    $array = array('Baja' => $array["Baja"],
                     'AlumnoId'=>$array["AlumnoId"],
                     'DetGrupoId'=>$array["DetGrupoId"],
                     'PeriodoId'=>$array["PeriodoId"]);
@@ -592,6 +597,7 @@ function generateCarnet($planEstudioId)
   $year = substr($date["year"], -2);
   $clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
   $lastAlumn = lastEnrollement($planEstudioId,$clave["Clave"],$year);
+  // dd($lastAlumn);
   if (!$lastAlumn)
   {
     return $year."-".$clave["Clave"]."-0001";
@@ -601,7 +607,7 @@ function generateCarnet($planEstudioId)
     $sum = substr($lastAlumn["Matricula"],-4) + 1;
     if (strlen($sum)==1)
       $lastDate = "000".$sum;
-    else if (strlen($sum)=="") 
+    else if (strlen($sum)==2) 
       $lastDate = "00".$sum;
     else 
       $lastDate = "0".$sum;
@@ -694,16 +700,16 @@ function getAlumnLastPeriod()
 
 function getAlumnGroup($id_alumno)
 {
-  $data = getDataByIdAlumn($id_alumno); 
+  $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0]; 
   $inscripcion = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
   $currentPeriod = selectCurrentPeriod();
   if ($inscripcion!=false)
   {
-    $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod["PeriodoId"]);
+    $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod->id);
   }
   else
   {
-    $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod["PeriodoId"]);
+    $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod->id);
   }
   return $group;
 }
@@ -720,9 +726,9 @@ function getMatriculaTemp()
 function generateTempMatricula()
 {
   $temp = getMatriculaTemp();
-  $tempNumber = substr($temp["Matricula"],9)+1;
   if ($temp!=false)
   {
+    $tempNumber = substr($temp["Matricula"],9)+1;
     return "Aspirante".$tempNumber;
   }
   else
