@@ -117,7 +117,8 @@
             </table>
 
             @php
-              $inscription = selectSicoes("Inscripcion","AlumnoId",Auth::guard("alumn")->user()->id_alumno)[0];
+              $id_alumno = Auth::guard("alumn")->user()->id_alumno;
+              $inscription = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
             @endphp            
 
             <div class="form-group row">

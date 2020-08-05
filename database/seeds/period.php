@@ -9,11 +9,11 @@ class period extends Seeder
         if (! DB::table('period')->count())
         {
             DB::table('period')->insert([
-                'id' => '4026',
-                'clave' => '2020-01',
+                'id' => '4027',
+                'clave' => '2020-02',
                 'año' => '2020',
-                'ciclo' => '2019-2020',
-                'semestre' => '1',
+                'ciclo' => '2020-2021',
+                'semestre' => '2',
                 'created_at' => now()
             ]);
 

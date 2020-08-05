@@ -46,7 +46,7 @@ class FormController extends Controller
             {
                 $current_user->id_alumno = null;
                 $current_user->save();
-                session()->flash("messages","info|Lamentamos informarte que fuiste dado de baja de la carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
+                session()->flash("messages","info|No podemos inscribirte en esta carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
                 return view('Alumn.form.inscription')->with(["estados"=> $estados, 
                                                 "user"=>$current_user]);
             }                       

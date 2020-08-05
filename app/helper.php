@@ -598,7 +598,6 @@ function generateCarnet($planEstudioId)
   $year = substr($date["year"], -2);
   $clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
   $lastAlumn = lastEnrollement($planEstudioId,$clave["Clave"],$year);
-  // dd($lastAlumn);
   if (!$lastAlumn)
   {
     return $year."-".$clave["Clave"]."-0001";
@@ -788,7 +787,7 @@ function validateStatusAlumn($id_alumno)
   }
   else
   {
-    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],2);
+    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
     return $group;
   }
 }
