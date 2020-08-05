@@ -46,15 +46,17 @@
 
             <tr>
               <th style="width: 10px">#</th>
-              <th>Concepto</th>
-              <th>Monto</th>
-              <th>Encargado</th>
-              <th>Matricula</th>
+              <th>Acciones</th>
               <th>Alumno</th>
               <th>Email</th>
+              <th>Descripción</th>
+              <th>Importe</th>
+              <th>Matricula</th>
               <th>Estado</th>
               <th>Fecha</th>
-              <th>Acciones</th>
+              <th>Carrera</th>
+              <th>Localidad</th>
+             
             </tr>
 
           </thead>
