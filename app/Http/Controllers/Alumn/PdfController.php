@@ -52,7 +52,7 @@ class PdfController extends Controller
 
         $inscripcion = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");  
         //traer el grupo
-        $group = obtenerGrupo($inscripcion["Semestre"],$alumno["PlanEstudioId"],$currentPeriod->id); 
+        $group = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0]; 
 
         $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
         $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);

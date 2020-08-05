@@ -28,10 +28,9 @@ $("#TransporteUniversidad").change(function()
   }
 }); 
 
-$("#form-inscription").submit(function(e)
+$("#submit-form").click(function(e)
 { 
   var $form = $("#form-inscription");
-  e.preventDefault();
   swal.fire({
     title: '¿Estas seguro/a que tus datos estan correctos?',
     text: "¡puedes volver a revisar!",

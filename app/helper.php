@@ -155,9 +155,10 @@ function realizarInscripcion($id_alumno)
   {
       $semester = $inscripcionData["Semestre"]+1;
   }
+  $validateStatus = validateStatusAlumn($id_alumno);
 
   //inscribimos al alumno despues de pagar
-  $inscribir = inscribirAlumno(['Semestre' => $semester,'EncGrupoId'=> 14466,'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$id_alumno]);
+  $inscribir = inscribirAlumno(['Semestre' => $semester,'EncGrupoId'=> $validateStatus["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$id_alumno]);
 
   if ($inscribir)
   {
@@ -714,6 +715,21 @@ function getAlumnGroup($id_alumno)
   return $group;
 }
 
+//auxiliari methods
+function generatePasssword()
+{
+    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $numbers = '1234567890';
+    $password = '';
+    for($i = 0; $i < 4; $i++){
+        $randomIndexLetras = mt_rand(0,strlen($letters) - 1);
+        $randomIndexNumbers = mt_rand(0,strlen($numbers) - 1);
+        $password = $password.$letters[$randomIndexLetras].$numbers[$randomIndexNumbers];  
+    }
+    return $password;
+}
+
+//metodos para generar la matricula
 function getMatriculaTemp()
 {
   $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where Matricula like 'Aspirante%' order by AlumnoId desc");
@@ -737,16 +753,91 @@ function generateTempMatricula()
   }
 }
 
-//auxiliari methods
-function generatePasssword()
+//verificar si un alumno reprobo una materia
+function validateStatusAlumn($id_alumno)
 {
-    $letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $numbers = '1234567890';
-    $password = '';
-    for($i = 0; $i < 4; $i++){
-        $randomIndexLetras = mt_rand(0,strlen($letters) - 1);
-        $randomIndexNumbers = mt_rand(0,strlen($numbers) - 1);
-        $password = $password.$letters[$randomIndexLetras].$numbers[$randomIndexNumbers];  
+  $inscripcionData = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+  $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
+  $periodoData = selectCurrentPeriod();
+
+  if ($inscripcionData) 
+  {
+    $encGrupoData = selectSicoes("EncGrupo","EncGrupoId",$inscripcionData["EncGrupoId"]);
+    $periodo = $encGrupoData[0]["PeriodoId"];
+    $charge = getChargeByPeriod($periodo,$id_alumno);
+    $prom = calculateProm($charge);
+    
+    if ($prom >= 70)
+    {
+      $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]+1));
+      return $group;
     }
-    return $password;
+    else
+    {
+      $group = getGroupByPeriod($periodo,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
+      if ($group["Semestre"] != $inscripcionData["Semestre"])
+      {
+        return false;
+      }
+      else
+      {
+        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
+        return $group;
+      }
+    }
+  }
+  else
+  {
+    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],2);
+    return $group;
+  }
+}
+
+function getGroupByPeriod($periodo,$plan,$semestre)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$plan' and Semestre = '$semestre';");
+  $stmt->execute();
+  return $stmt->fetch();
+}
+
+//metodo que nos trae la carga del alumno
+function getChargeByPeriod($period,$id_alumno)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from Carga where PeriodoId = '$period' and AlumnoId = '$id_alumno';");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+
+//metodo para calcular el promedio
+function calculateProm($array)
+{
+  $prom=0;
+  foreach ($array as $key => $value)
+  {
+    $prom = $prom + $value["Calificacion"];
+  }
+  $prom = $prom/count($array);
+  return $prom;
+}
+
+//validar si no es un alumno en baja
+function validateDown($id_alumno)
+{
+  try
+  {
+    $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
+    if ($alumnoData["Baja"]==0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  catch(\Exception $e)
+  {
+    return false;
+  }
 }

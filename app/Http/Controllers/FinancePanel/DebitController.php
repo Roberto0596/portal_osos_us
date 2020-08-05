@@ -104,7 +104,6 @@ class DebitController extends Controller
                 {
                     $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
                     $enrollement = realizarInscripcion($alumn->id_alumno);
-                    
                     if ($enrollement!=false)
                     {
                         if ($enrollement!="reinscripcion") 
@@ -114,7 +113,7 @@ class DebitController extends Controller
                         }
                         $alumn->inscripcion=3;
                         $alumn->save();
-                        addNotify("Pago de colegiatura",$alumn->id,"alumn.home");
+                        addNotify("Pago de colegiatura",$alumn->id,"alumn.charge");
                         //generamos los documentos de inscripcion
                         insertInscriptionDocuments($alumn->id);
                     }
@@ -133,6 +132,7 @@ class DebitController extends Controller
         } 
         catch (\Exception $th) 
         {
+            dd($th);
             session()->flash("messages","error|No pudimos guardar los datos");
             return redirect()->back();
         }        

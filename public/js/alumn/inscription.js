@@ -229,11 +229,11 @@ form.addEventListener('click',function(e)
 
 $(".select2").select2();
 
-// $('.phone').mask('0000000000');
+$('.phone').mask('0000000000');
 
-// $('.eleven').mask('00000000000');
+$('.eleven').mask('00000000000');
 
-// $('.codigo').mask('00000');
+$('.codigo').mask('00000');
 
 $("#EstadoDom").change(function()
 {

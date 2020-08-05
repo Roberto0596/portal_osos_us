@@ -651,14 +651,7 @@
 
                                                 <label for="Periodo" data-alias="Periodo" class="control-label">Periodo</label>
 
-                                                <select class="form-control " disabled>
-                                                    @if ($data != null)
-                                                    @php
-                                                        $period = selectCurrentPeriod();
-                                                    @endphp
-                                                    <option value="{{ $period['PeriodoId']}}" disabled="" selected="">{{$period['Clave']}}</option>
-                                                    @endif
-                                                </select>
+                                                <input type="text" disabled class="form-control" value="{{$group['PeriodoId']}}">
 
                                             </div>
 
@@ -670,14 +663,7 @@
 
                                                 <label for="Semestre" data-alias="Semestre" class="control-label">Semestre</label>
 
-                                                <select class="form-control" disabled>
-                                                    @if ($data != null)
-                                                    @php
-                                                        $lastSemester =getLastSemester($currentId) + 1;
-                                                    @endphp
-                                                    <option disabled="" selected="">{{$lastSemester}}</option>
-                                                    @endif
-                                                </select>
+                                                <input type="text" disabled class="form-control" value="{{$group['Semestre']}}">
 
                                             </div>
 

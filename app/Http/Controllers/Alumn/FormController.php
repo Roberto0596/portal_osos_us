@@ -15,28 +15,45 @@ class FormController extends Controller
     public function index()
     {
         $estados = getItemClaveAndNamesFromTables("Estado");
+        $current_user = Auth::guard('alumn')->user();
         try 
         {
             $data = selectSicoes("Alumno","AlumnoId",Auth::guard('alumn')->user()->id_alumno)[0];
-            // $group = getAlumnGroup(Auth::guard('alumn')->user()->id_alumno);
-            $group = ["Nombre" => "Hola"];
-            if ($group!=false)
+            //validar si un alumno no esta dado de baja
+            if (validateDown($current_user->id_alumno)) 
             {
-                return view('Alumn.form.index')->with(["estados"=> $estados , 
-                                                "data"=>$data, "currentId"=>Auth::guard('alumn')->user()->id_alumno,
-                                                "group" => $group]);
+                $validateStatus = validateStatusAlumn($data["AlumnoId"]);
+
+                if ($validateStatus=="error")
+                {
+                    session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
+                    return redirect()->back();
+                }
+                
+                if ($validateStatus!=false)
+                {
+                    return view('Alumn.form.index')->with(["estados"=> $estados, 
+                                                    "data"=>$data, "currentId"=>Auth::guard('alumn')->user()->id_alumno,
+                                                    "group" => $validateStatus]);
+                }
+                else
+                {
+                    session()->flash("messages","error|Probablemente no puedes inscribirte este semestre, contactate con servicios escolares");
+                    return redirect()->back();
+                } 
             }
             else
             {
-                session()->flash("messages","error|Posiblemente los grupos no han sido creados");
-                return redirect()->back();
-            }
-            
+                $current_user->id_alumno = null;
+                $current_user->save();
+                session()->flash("messages","info|Lamentamos informarte que fuiste dado de baja de la carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
+                return view('Alumn.form.inscription')->with(["estados"=> $estados, 
+                                                "user"=>$current_user]);
+            }                       
         } 
         catch (\Exception $th) 
-        {
-            $current_user = Auth::guard('alumn')->user();   
-            return view('Alumn.form.inscription')->with(["estados"=> $estados , 
+        {       
+            return view('Alumn.form.inscription')->with(["estados"=> $estados, 
                                                 "user"=>$current_user]);
         }
     }

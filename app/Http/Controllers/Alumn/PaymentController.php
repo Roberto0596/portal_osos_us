@@ -117,11 +117,12 @@ class PaymentController extends Controller
         $semester = $inscripcionData["Semestre"]+1;
       }
       //traer el grupo
-      $group = getAlumnGroup($current_user->id_alumno);      
+      $validateStatus = validateStatusAlumn($current_user->id_alumno);
+
       try
       {
         //inscribimos al alumno despues de pagar
-        $inscription = array('Semestre' => $semester,'EncGrupoId'=> $group["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
+        $inscription = array('Semestre' => $semester,'EncGrupoId'=> $validateStatus["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
         //generamos los documentos de inscripcion
         $insertDocuments = insertInscriptionDocuments($current_user->id);
         if (inscribirAlumno($inscription))
