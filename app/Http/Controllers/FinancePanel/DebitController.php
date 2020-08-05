@@ -20,6 +20,8 @@ class DebitController extends Controller
     public function showDebit(Request $request)
     {
         $current_user = Auth::guard("finance")->user();
+
+      
         $res = [ "data" => []];
         $debits = Debit::all();
 
@@ -49,17 +51,29 @@ class DebitController extends Controller
             $buttons.="</div>";            
 
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
+            $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
+            $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
+
+            $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];
+
+           
+          
+
+           
+
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
+                $buttons,
+                $alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
+                strtolower($alumn["Email"]),
                 getDebitType($value->debit_type_id)->concept,
                 "$".number_format($value->amount,2),
-                $current_user->name,
                 $alumn["Matricula"],
-                $alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
-                strtolower($alumn["Email"]),
                 ($value->status==1)?"Pagada":"Pendiente",
                 substr($value->created_at,0,11),
-                $buttons
+                $carrera['Nombre'],
+                $alumn["Localidad"].", ".$estadoDom['Nombre']
+               
             ]);
         }
 

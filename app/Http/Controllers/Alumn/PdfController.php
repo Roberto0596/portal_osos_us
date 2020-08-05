@@ -139,8 +139,10 @@ class PdfController extends Controller
         }else{
            if($pago == 'ficha'){
 
+              
+
                 $html = view('Alumn.pdf.ficha',
-                ['alumno' => $alumno,
+                ['alumno' => $current_user,
                 'deuda_total' => $total])->render();
             }
             

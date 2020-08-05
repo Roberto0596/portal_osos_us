@@ -88,7 +88,7 @@
 
         <tr>
         
-            <td colspan="2" class="info" ><b>REFERENCIA: </b>{{$alumno['Matricula']}}</td>
+            <td colspan="2" class="info" ><b>REFERENCIA: </b>{{$alumno->email}}</td>
         
         </tr>
 
