@@ -31,7 +31,7 @@ class DebitController extends Controller
             $buttons="<div class='btn-group'>";
 
             $buttons.="
-            <button class='btn btn-danger custom edit' data-toggle='modal' data-target='#modalEdit' DebitId='".$value->id."' title='Editar Adeudo'>
+            <button class='btn btn-warning edit' data-toggle='modal' data-target='#modalEdit' DebitId='".$value->id."' title='Editar Adeudo'>
             <i class='fa fa-pen' style='color:white'></i></button>
             ";
 
@@ -44,8 +44,8 @@ class DebitController extends Controller
             if ($value->payment_method != 'transfer' && $value->id_order!=null) 
             {
                 $buttons.="
-                    <button class='btn btn-success details' data-toggle='modal' data-target='#modalShowDetails' is='".$value->payment_method."' DebitId='".$value->id."'>
-                    <i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
+                    <button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='".$value->payment_method."' DebitId='".$value->id."'>
+                    <i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
             }
 
             $buttons.="</div>";            
@@ -55,11 +55,7 @@ class DebitController extends Controller
             $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
 
             $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];
-
-           
-          
-
-           
+            
 
             array_push($res["data"],[
                 (count($debits)-($key+1)+1),
@@ -146,7 +142,7 @@ class DebitController extends Controller
         } 
         catch (\Exception $th) 
         {
-            dd($th);
+           dd($th);
             session()->flash("messages","error|No pudimos guardar los datos");
             return redirect()->back();
         }        
