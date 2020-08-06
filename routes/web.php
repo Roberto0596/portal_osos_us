@@ -564,6 +564,12 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'HomeController@savePeriod', 
 		        'as' => 'period.save'
 			]);	
+
+			//reportes
+			Route::get('/report', [
+		        'uses' => 'ReportController@index', 
+		        'as' => 'report'
+			]);
 		});
   	});
 });
