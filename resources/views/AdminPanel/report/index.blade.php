@@ -15,7 +15,7 @@
           <thead>
 
             <tr>
-              <th style="width: 10px">#</th>
+              <th>Clave</th>
               <th>Matricula</th>
               <th>Alumno</th>
               <th>Telefono</th>
@@ -28,7 +28,7 @@
           <tbody>
             @foreach($alumn as $key => $value)
               <tr>
-                <td>{{$key+1}}</td>
+                <td>{{$value["Clave"]}}</td>
                 <td>{{$value["Matricula"]}}</td>
                 <td>{{$value["Alumno"]}}</td>
                 <td>{{$value["Telefono"]}}</td>

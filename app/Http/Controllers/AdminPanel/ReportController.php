@@ -19,6 +19,8 @@ class ReportController extends Controller
 			if ($alumnData!=false)
 			{
 				$alumnData = $alumnData[0];
+				$plan = selectSicoes("PlanEstudio","PlanEstudioId",$alumnData["PlanEstudioId"])[0];
+				$clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
 				switch ($value->inscripcion) {
 					case 0:
 						$status = "Sin llenar formulario";
@@ -45,7 +47,8 @@ class ReportController extends Controller
 					$nombre = $alumnData["Nombre"]." ".$alumnData["ApellidoPrimero"];
 				}
 				$telefono = $alumnData["Telefono"]!=null?$alumnData["Telefono"]:"Sin telefono";
-				array_push($res, ["Matricula"=>$alumnData["Matricula"],
+				array_push($res, ["Clave" => $clave["Nombre"],
+								  "Matricula"=>$alumnData["Matricula"],
 								  "Alumno"=>$nombre,
 								  "Telefono"=>$telefono,
 								  "Email" => $value->email,
