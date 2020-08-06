@@ -57,6 +57,14 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('admin.report')}}" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie" aria-hidden="true"></i>
+                        <p>
+                            Reportes
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{route('admin.problem')}}" class="nav-link">

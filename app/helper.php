@@ -584,7 +584,7 @@ function getAlumnoId($matricula){
 function lastEnrollement($planEstudioId,$clave,$fecha)
 {
     $like = $fecha."-".$clave."-%";
-    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by AlumnoId desc");
+    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by Matricula desc");
     $stmt->execute();
     $alumno = $stmt->fetch();
     return $alumno;
@@ -755,7 +755,7 @@ function generateTempMatricula()
 //verificar si un alumno reprobo una materia
 function validateStatusAlumn($id_alumno)
 {
-  $inscripcionData = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+  $inscripcionData = getInscription($id_alumno);
   $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
   $periodoData = selectCurrentPeriod();
 
@@ -790,6 +790,13 @@ function validateStatusAlumn($id_alumno)
     $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
     return $group;
   }
+}
+
+function getInscription($id_alumno)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1)* from Inscripcion where AlumnoId = '$id_alumno' and Semestre <> 'E' order by InscripcionId desc;");
+  $stmt->execute();
+  return $stmt->fetch();
 }
 
 function getGroupByPeriod($periodo,$plan,$semestre)
