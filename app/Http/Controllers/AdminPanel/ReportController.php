@@ -11,7 +11,7 @@ class ReportController extends Controller
 {
 	public function index()
 	{
-		$alumns = User::all();
+		$alumns = User::select()->orderBy('email', 'asc')->get();
 		$res = [];
 		foreach ($alumns as $key => $value) 
 		{
