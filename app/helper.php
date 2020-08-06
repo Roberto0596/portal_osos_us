@@ -583,8 +583,8 @@ function getAlumnoId($matricula){
 
 function lastEnrollement($planEstudioId,$clave,$fecha)
 {
-    $like = $fecha."-".$clave."-%";
-    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by Matricula desc");
+    $like = $fecha."-".$clave."-%%%%";
+    $stmt = ConectSqlDatabase()->prepare("SELECT Matricula FROM Alumno where PlanEstudioId = '$planEstudioId' and Matricula like '$like' order by AlumnoId desc");
     $stmt->execute();
     $alumno = $stmt->fetch();
     return $alumno;

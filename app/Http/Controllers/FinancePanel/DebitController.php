@@ -188,7 +188,6 @@ class DebitController extends Controller
         \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
         \Conekta\Conekta::setApiVersion("2.0.0");
         $order = \Conekta\Order::find($debit->id_order);
-
         if ($request->input('is')=="card")
         {
             $data = array(
@@ -198,6 +197,16 @@ class DebitController extends Controller
                 "type"=>"card"                   
             );
         }
+        else if($request->input('is')=="spei")
+        {
+            $data = array(
+                "id"   => $order->id,
+                "paymentMethod" => "SPEI",
+                "reference"     => $order->charges[0]->payment_method->receiving_account_number,
+                "amount"        => "$". $order->amount/100 . $order->currency,
+                "type"=> "spei"                  
+            );           
+        }
         else
         {
             $data = array(
@@ -206,9 +215,7 @@ class DebitController extends Controller
                 "reference"     => $order->charges[0]->payment_method->reference,
                 "amount"        => "$".$order->amount/100 ." ". $order->currency,
                 "type"=> "nocard"                  
-            );
-
-           
+            );  
         }
         return response()->json($data);
     }    
