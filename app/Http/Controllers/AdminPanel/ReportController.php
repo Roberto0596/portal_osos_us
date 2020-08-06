@@ -50,8 +50,7 @@ class ReportController extends Controller
 								  "Telefono"=>$telefono,
 								  "Email" => $value->email,
 								  "Status"=>$status]);
-			}
-			
+			}			
 		}
 		return view('AdminPanel.report.index')->with(["alumn"=>$res]);
     }
