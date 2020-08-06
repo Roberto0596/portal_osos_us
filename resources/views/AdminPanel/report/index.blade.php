@@ -3,6 +3,48 @@
 @section('report-content')  
 
 <div class="card">
+
+    <div class="card-header">
+      <button class="btn btn-success" id="print">Imprimir</button>
+    </div>
+
+      <div class="card-body">
+
+        <table class="table table-bordered table-hover tableReport">
+
+          <thead>
+
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>Matricula</th>
+              <th>Alumno</th>
+              <th>Telefono</th>
+              <th>Email</th>
+              <th>Estado</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+            @foreach($alumn as $key => $value)
+              <tr>
+                <td>{{$key+1}}</td>
+                <td>{{$value["Matricula"]}}</td>
+                <td>{{$value["Alumno"]}}</td>
+                <td>{{$value["Telefono"]}}</td>
+                <td>{{$value["Email"]}}</td>
+                <td>{{$value["Status"]}}</td>
+              </tr>
+            @endforeach
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+<!-- <div class="card">
   
   <div class="card-body">
 
@@ -20,7 +62,7 @@
 
           <div class="inner">
 
-            <h3>Periodo</h3>
+            <h3>correos</h3>
 
             <p></p>
 
@@ -42,6 +84,15 @@
 
   </div>
 
-</div>
+</div> -->
+<script>
+  $(".tableReport").dataTable({
+    "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
+  });
 
+  $("#print").click(function(){
+    window.print();
+  });
+
+</script>
 @stop
