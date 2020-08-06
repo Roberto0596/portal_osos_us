@@ -765,8 +765,7 @@ function validateStatusAlumn($id_alumno)
     $periodo = $encGrupoData[0]["PeriodoId"];
     $charge = getChargeByPeriod($periodo,$id_alumno);
     $prom = calculateProm($charge);
-    
-    if ($prom >= 70)
+    if ($prom < 4)
     {
       $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]+1));
       return $group;
@@ -818,14 +817,26 @@ function getChargeByPeriod($period,$id_alumno)
 //metodo para calcular el promedio
 function calculateProm($array)
 {
-  $prom=0;
+  $count=0;
   foreach ($array as $key => $value)
   {
-    $prom = $prom + $value["Calificacion"];
+    if ($value["Calificacion"] < 70){
+      $count++;
+    }
   }
-  $prom = $prom/count($array);
-  return $prom;
+  return $count;
 }
+
+// function calculateProm($array)
+// {
+//   $prom=0;
+//   foreach ($array as $key => $value)
+//   {
+//     $prom = $prom + $value["Calificacion"];
+//   }
+//   $prom = $prom/count($array);
+//   return $prom;
+// }
 
 //validar si no es un alumno en baja
 function validateDown($id_alumno)
