@@ -838,7 +838,7 @@ function calculateProm($array)
 //   return $prom;
 // }
 
-//validar si no es un alumno en baja
+//validar si no es un alumno en baja 
 function validateDown($id_alumno)
 {
   try
