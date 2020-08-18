@@ -775,7 +775,7 @@ function validateStatusAlumn($id_alumno)
       $group = getGroupByPeriod($periodo,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
       if ($group["Semestre"] != $inscripcionData["Semestre"])
       {
-        return false;
+        return true;
       }
       else
       {
