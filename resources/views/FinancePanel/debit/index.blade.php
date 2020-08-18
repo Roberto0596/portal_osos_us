@@ -12,7 +12,48 @@
 
         <div class="col-sm-6">
 
-          <h1>Procesar pagos</h1>
+          <div class="row">
+            <div class="col-md-5"><h1>Procesar pagos</h1></div>
+            <div class="col-md-7">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                    <i class="fas fa-th"></i></span>
+                </div>
+
+                <select id="mode" class="form-control form-control-lg">
+                  @php
+                  $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
+                                ["value" => "1","text"=>"Pagados", "selected"=>false],
+                                ["value" => "2","text"=>"Todos", "selected"=>false]];
+                  @endphp
+
+                  @if(session()->has('mode'))
+                    @php
+                      $mode = session()->get('mode');
+                      switch($mode)
+                      {
+                        case 0:
+                          $array[0]["selected"]=true;
+                          break;
+                        case 1:
+                          $array[1]["selected"]=true;
+                          break;
+                        case 2:
+                          $array[2]["selected"]=true;
+                          break;
+                      }
+                    @endphp
+                  @else
+                    $array[0]["selected"]=true;
+                  @endif
+                  @foreach($array as $key => $value)
+                    <option value="{{$value['value']}}" @if($value['selected']==true) selected @endif>{{$value['text']}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+          </div>
 
         </div>
 

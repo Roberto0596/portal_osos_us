@@ -19,15 +19,32 @@ class DebitController extends Controller
     //le agregamos los botones a la tabla y los datos
     public function showDebit(Request $request)
     {
-        $current_user = Auth::guard("finance")->user();
-
-      
+        $current_user = Auth::guard("finance")->user();      
         $res = [ "data" => []];
-        $debits = Debit::all();
+
+        //metemos a la sesion el modo en el que estaba
+        if (session()->has('mode')) 
+        {
+            session()->forget('mode');
+        }
+
+        session(["mode"=>$request->input('mode')]);
+
+        switch ($request->input('mode')) {
+            case 0:
+                $debits = Debit::where("status","=","0")->get();
+                break;
+            
+            case 1:
+                $debits = Debit::where("status","=","1")->get();
+                break;
+            case 2:
+                $debits = Debit::all();
+                break;
+        }        
 
         foreach($debits as $key => $value)
         {
-
             $buttons="<div class='btn-group'>";
 
             $buttons.="
