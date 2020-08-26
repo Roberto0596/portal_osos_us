@@ -19,8 +19,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		Route::get('/restore-pass',[
 	        'uses' => 'AuthController@requestRestorePass', 
 	        'as' => 'RequestRestorePass'
-		]);
-		
+		]);		
 
 		//envia la peticion de restaurar pass
 		Route::post('/restore-pass',[
@@ -537,7 +536,27 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::put('/alumns/show', [
 		        'uses' => 'AlumnController@show', 
 		        'as' => 'alumns.show'
-			]);		
+			]);	
+
+			Route::get('/alumns/delete/{id}', [
+		        'uses' => 'AlumnController@delete', 
+		        'as' => 'alumns.delete'
+			]);	
+
+			Route::post('/alumns/update', [
+		        'uses' => 'AlumnController@update', 
+		        'as' => 'alumns.update'
+			]);	
+
+			Route::post('/alumns/alumnDada', [
+		        'uses' => 'AlumnController@seeAlumnData', 
+		        'as' => 'alumns.alumnDada'
+			]);	
+
+			Route::post('/alumns/generateEnrollment', [
+		        'uses' => 'AlumnController@generateEnrollment', 
+		        'as' => 'alumns.enrollment'
+			]);
 
 			//reiniciar constraseñas
 

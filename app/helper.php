@@ -7,6 +7,8 @@ use App\Models\Alumns\HighAverages;
 use App\Models\PeriodModel;
 
 //seccion del sistema
+
+//agregar una nueva notificacion
 function addNotify($text,$id,$route)
 {
   $notify = new Notify();
@@ -16,6 +18,7 @@ function addNotify($text,$id,$route)
   $notify->save();
 }
 
+//validar en la tabla de promedios altos
 function validateHighAverage($enrollement)
 {
     $validate = HighAverages::where("enrollment","=",$enrollement)->get();
@@ -456,36 +459,6 @@ function InsertAlumn($array)
     $stmt = null;
 }
 
-
-function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
-{
-    $ruta;
-    list($ancho,$alto) = getimagesize($foto["tmp_name"]);
-    if($flag==false)
-    {
-        mkdir("img/".$folder."/".$id,0755);
-    }  
-    if ($foto["type"] == "image/jpeg")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".jpg";
-        $origen = imagecreatefromjpeg($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagejpeg($destino,$ruta);
-    }
-    if ($foto["type"] == "image/png")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".png";
-        $origen = imagecreatefrompng($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagepng($destino,$ruta);
-    }
-    return $ruta;
-}
-
 //aplica para tablas que tiene un campo nombre 
 
 function getItemClaveAndNamesFromTables($table_name)
@@ -495,12 +468,7 @@ function getItemClaveAndNamesFromTables($table_name)
 	return $stmt->fetchAll();
 
 }
-function getDataByIdAlumn($id_alumn){
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM alumno WHERE alumnoid = $id_alumn");
-    $stmt->execute();
-    $response = $stmt->fetchAll();
-	return  $response[0];
-}
+
 function getCarreras()
 {
     $stmt = ConectSqlDatabase()->prepare("SELECT Carreraid,Nombre FROM Carrera");
@@ -516,23 +484,6 @@ function updateByIdAlumn($id_alumn,$colName,$value)
     $stmt= ConectSqlDatabase()->prepare($sql);
     $stmt->execute($datos);
 }   
-	
-function selectAdmin($id = null)
-{
-    if ($id!=null)
-    {
-        return AdminUser::find($id);
-    }
-}
-
-function getAlumno($matricula)
-{
-    $stmt = ConectSqlDatabase()->prepare("SELECT * FROM Alumno where Matricula = '$matricula'");
-    $stmt->execute();
-    $alumno = $stmt->fetch();
-    return $alumno;
-    $stmt = null;
-}
 
 function getEstadoMunicipio($matricula, $desicion){
 
@@ -767,15 +718,30 @@ function validateStatusAlumn($id_alumno)
     $prom = calculateProm($charge);
     if ($prom < 4)
     {
-      $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]+1));
-      return $group;
+      if($inscripcionData["Semestre"]<9)
+      {
+        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]+1));
+      }
+      else
+      {
+        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
+      }
+      if($group!=false)
+      { 
+        return $group;
+      }      
+      else
+      {
+        $group = getLastThing("EncGrupo","PlanEstudioId",$alumnoData["PlanEstudioId"],"EncGrupoId");
+        return $group;
+      }
     }
     else
     {
       $group = getGroupByPeriod($periodo,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
       if ($group["Semestre"] != $inscripcionData["Semestre"])
       {
-        return true;
+        return $group;
       }
       else
       {
@@ -786,8 +752,16 @@ function validateStatusAlumn($id_alumno)
   }
   else
   {
-    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
-    return $group;
+    if ($alumnoData["PlanEstudioId"]==11)
+    {
+      $group = getGroupByPeriod($periodoData->id,7,1);
+      return $group;
+    }
+    else
+    {
+      $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
+      return $group;
+    }
   }
 }
 
@@ -857,4 +831,50 @@ function validateDown($id_alumno)
   {
     return false;
   }
+}
+
+//actualizar individual
+
+function updateSicoes($table, $field, $value, $item, $valueItem)
+{
+    $sql = "UPDATE $table SET $field = '$value' where $item = '$valueItem'";
+    $stmt= ConectSqlDatabase()->prepare($sql);
+    if($stmt->execute())
+    {
+      return "success";
+    }
+    else
+    {
+      return "error";
+    }
+}
+
+//otros
+function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
+{
+    $ruta;
+    list($ancho,$alto) = getimagesize($foto["tmp_name"]);
+    if($flag==false)
+    {
+        mkdir("img/".$folder."/".$id,0755);
+    }  
+    if ($foto["type"] == "image/jpeg")
+    {
+        $aleatorio = mt_rand(100,999);
+        $ruta = "img/".$folder."/".$id."/".$aleatorio.".jpg";
+        $origen = imagecreatefromjpeg($foto["tmp_name"]);
+        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+        imagejpeg($destino,$ruta);
+    }
+    if ($foto["type"] == "image/png")
+    {
+        $aleatorio = mt_rand(100,999);
+        $ruta = "img/".$folder."/".$id."/".$aleatorio.".png";
+        $origen = imagecreatefrompng($foto["tmp_name"]);
+        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+        imagepng($destino,$ruta);
+    }
+    return $ruta;
 }

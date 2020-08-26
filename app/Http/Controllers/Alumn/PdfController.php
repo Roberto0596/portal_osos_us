@@ -43,21 +43,32 @@ class PdfController extends Controller
         $current_user = Auth::guard("alumn")->user();
 
         $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
+        $currentPeriod = selectCurrentPeriod();
+         
         if ($document==null) {
             return redirect()->back();
         }
 
-        $alumno = getDataByIdAlumn($current_user->id_alumno);
-        $currentPeriod = selectCurrentPeriod();
-
-        $inscripcion = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");  
-        //traer el grupo
-        $group = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0]; 
+        try
+        {
+            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
+            $inscripcion = getInscription($current_user->id_alumno);
+            $group = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0];
+        }
+        catch(\Exception $e)
+        {
+            session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
+            return redirect()->back();
+        }   
 
         $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
         $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);
 
-        $bachiller = selectSicoes("Escuela","EscuelaId",$alumno['EscuelaProcedenciaId'])[0];
+        try {
+            $bachiller = selectSicoes("Escuela","EscuelaId",$alumno['EscuelaProcedenciaId'])[0];        
+        } catch (\Exception $e) {
+            $bachiller = ['Nombre' => 'Sin dato'];
+        }       
 
         $datos_escolares = array('carrera' => getCarrera($alumno['Matricula']),
                                  'periodo' => $currentPeriod->clave,
@@ -96,7 +107,15 @@ class PdfController extends Controller
             return redirect()->back();
         }
 
-        $alumno = getDataByIdAlumn($current_user->id_alumno);
+        try
+        {
+            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
+        }
+        catch(\Exception $e)
+        {
+            session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
+            return redirect()->back();
+        }
  
         $html = view('Alumn.pdf.constancia')->with('alumno', $alumno)->render();
         $namefile = 'CONSTANCIA'.time().'.pdf';
@@ -117,37 +136,23 @@ class PdfController extends Controller
         return redirect(Request::url());   
     }
 
-    public function getGenerarFicha(Request $request , $tipo,$accion, $pago)
+    public function getGenerarFicha(Request $request, $tipo, $accion, $pago)
     {
- 
-
         $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
-        $total = Debit::where($query)->get()->sum("amount");
-
-        
-        
+        $total = Debit::where($query)->get()->sum("amount");        
         $current_user = Auth::guard("alumn")->user();
-        $alumno = getDataByIdAlumn($current_user->id_alumno);
-
-        $accion = $accion;
-        $data['tipo'] = $tipo;
-        
-        
-        
-        if($accion=='html'){
-            return view('Alumn.pdf.pago_transferencia',$alumno);
-        }else{
-           if($pago == 'ficha'){
-
-              
-
-                $html = view('Alumn.pdf.ficha',
-                ['alumno' => $current_user,
-                'deuda_total' => $total])->render();
-            }
-            
-            
+        try
+        {
+            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
         }
+        catch(\Exception $e)
+        {
+            session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
+            return redirect()->back();
+        }
+        $data['tipo'] = $tipo;                   
+
+        $html = view('Alumn.pdf.ficha',['alumno' => $alumno,'deuda_total' => $total])->render();
         $namefile = 'CONSTANCIA'.time().'.pdf';
  
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -170,21 +175,14 @@ class PdfController extends Controller
         ]);
        
         $mpdf->SetDisplayMode('fullpage');
-
-        
-
         $mpdf->WriteHTML($html);
-        
-
-
-        if($accion=='ver'){
+        if($accion=='ver')
+        {
             $mpdf->Output($namefile,"I");
-        }elseif($accion=='descargar'){
-            $mpdf->Output($namefile,"D");
         }
-    
-       
-    }
-    
-   
+        else if($accion=='descargar')
+        {
+            $mpdf->Output($namefile,"D");
+        }      
+    }  
 }
