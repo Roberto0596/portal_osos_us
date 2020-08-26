@@ -83,7 +83,7 @@
                 <tr>
                   <td>{{($key+1)}}</td>
                   <td>{{getDebitType($value->debit_type_id)->concept}}</td>
-                  <td>{{selectAdmin($value->admin_id)->name}}</td>
+                  <td>{{selectTable("admin_users","id",$value->admin_id,1)->name}}</td>
                   <td>{{$value->created_at}}</td>
                   <td>${{number_format($value->amount,2)}}</td>
                 </tr>
