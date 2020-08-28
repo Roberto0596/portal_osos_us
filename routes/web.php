@@ -458,15 +458,10 @@ Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
 
 Route::group(['namespace' => 'Website'],function()
 {
-	Route::group(["middleware"=>["inscriptionOpen"]],function(){
-
-		Route::get('/', [
-	        'uses' => 'WebsiteController@index', 
-	        'as' => 'home'
-	    ]);
-
-	});
-	
+	Route::get('/', [
+        'uses' => 'WebsiteController@index', 
+        'as' => 'home'
+    ]);	
 });
 
 Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
