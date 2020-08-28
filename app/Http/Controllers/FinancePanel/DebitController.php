@@ -65,7 +65,8 @@ class DebitController extends Controller
                     <i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
             }
 
-            $buttons.="</div>";            
+            $buttons.="<button class='btn btn-danger btnDeleteDebit' DebitId='".$value->id."'>
+                    <i class='fa fa-times' title='Eliminar adedudo' style='color:white'></i></button></div>";            
 
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
             $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
@@ -235,5 +236,17 @@ class DebitController extends Controller
             );  
         }
         return response()->json($data);
+    }
+
+    public function delete($id)
+    {
+        try{
+            Debit::destroy($id);
+            session()->flash("messages","success|Se borro el adeudo con exito");
+            return redirect()->back();
+        } catch(\Exception $e) {
+            session()->flash("messages","error|No se pudo eliminar el adeudo");
+            return redirect()->back();
+        }
     }    
 }

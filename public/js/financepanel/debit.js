@@ -83,10 +83,29 @@ function changeMode(mode){
             }
         });
     });
+
     $(".tableDebits tbody").on("click","button.showPdf",function()
     {
       var route = $(this).attr("route");
       window.open("/"+route,"_blank");
+    });
+
+    $(".tableDebits tbody").on("click","button.btnDeleteDebit",function()
+    {
+        var id = $(this).attr("DebitId");
+        swal.fire({
+            title: '¿estas seguro de eliminar este adeudo?',
+            text: "¡se eliminara de los registros!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, estoy seguro'
+        }).then((result)=>
+        {
+            window.location = "/finance/debit/delete/"+id;
+        });
     })
 
     $(".tableDebits tbody").on("click","button.details",function()
