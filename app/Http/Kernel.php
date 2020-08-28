@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'admin.user' => \App\Http\Middleware\AuthAdmin::class,
         'candidate' => \App\Http\Middleware\candidateMiddleware::class,
         'inscription' => \App\Http\Middleware\inscriptionMiddleware::class,
+        'inscriptionOpen' => \App\Http\Middleware\inscriptionOpenMiddleware::class,
         'inscriptionFaseTwo' => \App\Http\Middleware\inscriptionFaseTwoMiddleware::class,
         'inscriptionFaseThree' => \App\Http\Middleware\inscriptionFaseThreeMiddleware::class,
         'inscriptionFaseFour' => \App\Http\Middleware\inscriptionFaseFour::class,

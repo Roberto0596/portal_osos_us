@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(DebitSeeder::class);
         $this->call(period::class);
+        $this->call(ConfigSeeder::class);
     }
 }

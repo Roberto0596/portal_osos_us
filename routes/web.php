@@ -120,73 +120,79 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 		        'as' => 'home.problem'
 		    ]);
 
-		   	Route::group(["middleware" => ["inscription"]
+		    Route::group(["middleware"=>["inscriptionOpen"]
 			],function(){
 
-				Route::get('/form',[
-					'uses' => 'FormController@index', 
-					'as' => 'form'
-				]);
-		
-				Route::post('form/save', [
-					'uses' => 'FormController@save',
-					'as'   => 'form.save'
-				]);
+				Route::group(["middleware" => ["inscription"]
+				],function(){
 
-				Route::post('form/save/inscription', [
-					'uses' => 'FormController@saveInscription',
-					'as'   => 'save.inscription'
-				]);
+					Route::get('/form',[
+						'uses' => 'FormController@index', 
+						'as' => 'form'
+					]);
+			
+					Route::post('form/save', [
+						'uses' => 'FormController@save',
+						'as'   => 'form.save'
+					]);
 
-				Route::post('form/getMunicipio', [
-					'uses' => 'FormController@getMunicipios',
-					'as'   => 'form.getMunicipio'
-				]);
+					Route::post('form/save/inscription', [
+						'uses' => 'FormController@saveInscription',
+						'as'   => 'save.inscription'
+					]);
+
+					Route::post('form/getMunicipio', [
+						'uses' => 'FormController@getMunicipios',
+						'as'   => 'form.getMunicipio'
+					]);
+			    });
+
+			    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
+				],function(){
+
+				    //Pago de inscription
+				    Route::get('/payment', [
+				        'uses' => 'PaymentController@index', 
+				        'as' => 'payment'
+					]);
+					
+				    Route::post('/pay-card', [
+					        'uses' => 'PaymentController@pay_card', 
+					        'as' => 'pay.card'
+					]);
+
+					Route::post('/pay-cash', [
+					        'uses' => 'PaymentController@pay_cash', 
+					        'as' => 'pay.cash'
+					]);
+
+					Route::post('/pay-spei', [
+					        'uses' => 'PaymentController@pay_spei', 
+					        'as' => 'pay.spei'
+					]);
+
+					Route::post('/pay-upload', [
+						'uses' => 'PaymentController@pay_upload', 
+						'as' => 'pay.upload'
+					]);
+				});
+
+				Route::group(["middleware"=>["inscriptionFaseThree"]
+				],function()
+				{
+					Route::get('/payment/note', [
+				        'uses' => 'PaymentController@note', 
+				        'as' => 'payment.note'
+					]);
+
+					Route::post('/pay-rollback/{orderId?}', [
+				        'uses' => 'PaymentController@rollBack', 
+				        'as' => 'pay.rollback'
+				    ]);
+				});
 		    });
 
-		    Route::group(["middleware"=> ["inscriptionFaseTwo"] 
-			],function(){
-
-			    //Pago de inscription
-			    Route::get('/payment', [
-			        'uses' => 'PaymentController@index', 
-			        'as' => 'payment'
-				]);
-				
-			    Route::post('/pay-card', [
-				        'uses' => 'PaymentController@pay_card', 
-				        'as' => 'pay.card'
-				]);
-
-				Route::post('/pay-cash', [
-				        'uses' => 'PaymentController@pay_cash', 
-				        'as' => 'pay.cash'
-				]);
-
-				Route::post('/pay-spei', [
-				        'uses' => 'PaymentController@pay_spei', 
-				        'as' => 'pay.spei'
-				]);
-
-				Route::post('/pay-upload', [
-					'uses' => 'PaymentController@pay_upload', 
-					'as' => 'pay.upload'
-				]);
-			});
-
-			Route::group(["middleware"=>["inscriptionFaseThree"]
-			],function()
-			{
-				Route::get('/payment/note', [
-			        'uses' => 'PaymentController@note', 
-			        'as' => 'payment.note'
-				]);
-
-				Route::post('/pay-rollback/{orderId?}', [
-			        'uses' => 'PaymentController@rollBack', 
-			        'as' => 'pay.rollback'
-			    ]);
-			});
+		   
 
 		    Route::group(["middleware"=>["inscriptionFaseFour"]
 			],function(){
@@ -452,10 +458,15 @@ Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
 
 Route::group(['namespace' => 'Website'],function()
 {
-	Route::get('/', [
-        'uses' => 'WebsiteController@index', 
-        'as' => 'home'
-    ]);
+	Route::group(["middleware"=>["inscriptionOpen"]],function(){
+
+		Route::get('/', [
+	        'uses' => 'WebsiteController@index', 
+	        'as' => 'home'
+	    ]);
+
+	});
+	
 });
 
 Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()

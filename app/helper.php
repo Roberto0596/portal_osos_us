@@ -5,6 +5,7 @@ use App\Models\Alumns\Notify;
 use App\Models\Alumns\DebitType;
 use App\Models\Alumns\HighAverages;
 use App\Models\PeriodModel;
+use App\Models\ConfigModel;
 
 //seccion del sistema
 
@@ -16,6 +17,13 @@ function addNotify($text,$id,$route)
   $notify->alumn_id = $id;
   $notify->route = $route;
   $notify->save();
+}
+
+//ver configuracion
+function getConfig()
+{
+  $config = ConfigModel::find(1);
+  return $config;
 }
 
 //validar en la tabla de promedios altos
