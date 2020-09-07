@@ -43,11 +43,15 @@ class DebitController extends Controller
         }        
 
         foreach($debits as $key => $value)
-        {   
-            $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
-            $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
-            $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
-            $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];         
+        {
+            try {
+                $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
+                $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
+                $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
+                $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];      
+            } catch (Exception $e) {
+               
+            }                   
 
             array_push($res["data"],[
                 "#" => (count($debits)-($key+1)+1),
