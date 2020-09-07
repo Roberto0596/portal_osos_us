@@ -11,6 +11,31 @@ function changeMode(mode){
             type: "PUT",
             data: {mode:mode}
         },
+        "columns":[
+            {"data": "#"},
+            {"data": null, orderable: false, "render": function(data){
+                var res="<div class='btn-group'>"+
+                "<button class='btn btn-warning edit' data-toggle='modal' data-target='#modalEdit' DebitId='"+data.debitId+"' title='Editar Adeudo'>"+
+                  "<i class='fa fa-edit' style='color:white'></i></button>";
+
+                if (data.method=="transfer") {
+                    res+="<button class='btn btn-success showPdf' route='"+data.id_order+"'><i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
+                } else if(data.id_order != null) {
+                    res+="<button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='"+data.method+"' DebitId='"+data.debitId+"'>"+
+                    "<i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
+                }
+                return res;
+            }},
+            {"data": "Alumno"},
+            {"data": "Email"},
+            {"data": "Descripción"},
+            {"data": "Importe"},
+            {"data": "Matricula"},
+            {"data": "Estado"},
+            {"data": "Fecha"},
+            {"data": "Carrera"},
+            {"data": "Localidad"},
+        ],
         "language": {
 
             "sProcessing":     "Procesando...",

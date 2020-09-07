@@ -27,7 +27,6 @@ class DebitController extends Controller
         {
             session()->forget('mode');
         }
-
         session(["mode"=>$request->input('mode')]);
 
         switch ($request->input('mode')) {
@@ -44,50 +43,27 @@ class DebitController extends Controller
         }        
 
         foreach($debits as $key => $value)
-        {
-            $buttons="<div class='btn-group'>";
-
-            $buttons.="
-            <button class='btn btn-warning edit' data-toggle='modal' data-target='#modalEdit' DebitId='".$value->id."' title='Editar Adeudo'>
-            <i class='fa fa-pen' style='color:white'></i></button>
-            ";
-
-            if ($value->payment_method == 'transfer') 
-            {
-                $buttons.="
-                    <button class='btn btn-success showPdf' route='".$value->id_order."''><i class='fa fa-file' title='Ver detalles del pago' style='color:white'></i></button>";
-            }
-
-            if ($value->payment_method != 'transfer' && $value->id_order!=null) 
-            {
-                $buttons.="
-                    <button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='".$value->payment_method."' DebitId='".$value->id."'>
-                    <i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
-            }
-
-            $buttons.="<button class='btn btn-danger btnDeleteDebit' DebitId='".$value->id."'>
-                    <i class='fa fa-times' title='Eliminar adedudo' style='color:white'></i></button></div>";            
-
+        {   
             $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
             $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
             $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
-
-            $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];
-            
+            $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];         
 
             array_push($res["data"],[
-                (count($debits)-($key+1)+1),
-                $buttons,
-                $alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
-                strtolower($alumn["Email"]),
-                getDebitType($value->debit_type_id)->concept,
-                "$".number_format($value->amount,2),
-                $alumn["Matricula"],
-                ($value->status==1)?"Pagada":"Pendiente",
-                substr($value->created_at,0,11),
-                $carrera['Nombre'],
-                $alumn["Localidad"].", ".$estadoDom['Nombre']
-               
+                "#" => (count($debits)-($key+1)+1),
+                "Alumno" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
+                "Email" =>strtolower($alumn["Email"]),
+                "Descripción" =>getDebitType($value->debit_type_id)->concept,
+                "Importe" =>"$".number_format($value->amount,2),
+                "Matricula" =>$alumn["Matricula"],
+                "Estado" =>($value->status==1)?"Pagada":"Pendiente",
+                "Fecha" => substr($value->created_at,0,11),
+                "Carrera" =>$carrera['Nombre'],
+                "Localidad" =>$alumn["Localidad"].", ".$estadoDom['Nombre'],
+                "edit" => $value->id,
+                "method" => $value->payment_method,
+                "debitId" => $value->id,
+                "id_order" => $value->id_order              
             ]);
         }
 
