@@ -896,10 +896,10 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
 
 function getDataAlumnDebit($id_alumn)
 {
-  $stmt = ConectSqlDatabase()->prepare("SELECT a.Matricula, a.Nombre, a.ApellidoPrimero, a.Email, a.Localidad, a.ApellidoSegundo, c.Nombre, e.Nombre from Alumno as a
-                                        inner join PlanEstudio as p on p.PlanEstudioId = a.PlanEstudioId
-                                        inner join Carrera as c on p.CarreraId = c.CarreraId
-                                        inner join Estado as e on e.EstadoId = a.EstadoDom where AlumnoId = '$id_alumn'");
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Matricula, a.Nombre, a.ApellidoPrimero, a.Email, a.Localidad, a.ApellidoSegundo, c.Nombre as nombreCarrera, e.Nombre as nombreEstado from Alumno as a
+                                      inner join PlanEstudio as p on p.PlanEstudioId = a.PlanEstudioId
+                                      inner join Carrera as c on p.CarreraId = c.CarreraId
+                                      inner join Estado as e on e.EstadoId = a.EstadoDom where AlumnoId = '$id_alumn'");
   $stmt->execute();
   return $stmt->fetch();
 }

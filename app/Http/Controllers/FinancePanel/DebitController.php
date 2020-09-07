@@ -57,8 +57,8 @@ class DebitController extends Controller
                 "Matricula" =>$alumn["Matricula"],
                 "Estado" =>($value->status==1)?"Pagada":"Pendiente",
                 "Fecha" => substr($value->created_at,0,11),
-                "Carrera" =>$alumn['Nombre'],
-                "Localidad" =>$alumn["Localidad"].", ".$alumn['Nombre'],
+                "Carrera" =>$alumn['nombreCarrera'],
+                "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
                 "method" => $value->payment_method,
                 "debitId" => $value->id,
                 "id_order" => $value->id_order              
