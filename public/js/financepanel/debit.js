@@ -1,11 +1,9 @@
-function changeMode(mode){
+function changeMode(mode, period){
     var token = $("#token").val();
     var route = "/finance/debit/show";
     $(".tableDebits").dataTable({
-        serverSide: true,
         "destroy": true,
         "deferRender": true,
-        "retrieve": true,
         "processing": true,
         "responsive": true,
         "ajax":
@@ -13,7 +11,7 @@ function changeMode(mode){
             url: route,
             headers:{'X-CSRF-TOKEN':token},
             type: "PUT",
-            data: {mode:mode}
+            data: {mode:mode,period:period}
         },
         "columns":[
             {"data": "#"},
@@ -204,12 +202,16 @@ $("#id_alumno").select2({
 });
 
 $(document).ready(function(){
-    changeMode($("#mode").val());
+    changeMode($("#mode").val(),$("#period").val());
 })
 
 $("#mode").change(function(){
-    changeMode($("#mode").val());
-})
+    changeMode($("#mode").val(),$("#period").val());
+});
+
+$("#period").change(function(){
+    changeMode($("#mode").val(),$("#period").val());
+});
 
 
 

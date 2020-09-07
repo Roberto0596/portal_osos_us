@@ -10,11 +10,11 @@
 
       <div class="row mb-2">
 
-        <div class="col-sm-6">
+        <div class="col-sm-9">
 
           <div class="row">
-            <div class="col-md-5"><h1>Procesar pagos</h1></div>
-            <div class="col-md-7">
+            <div class="col-md-4"><h1>Procesar pagos</h1></div>
+            <div class="col-md-4">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">
@@ -24,8 +24,7 @@
                 <select id="mode" class="form-control form-control-lg">
                   @php
                   $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
-                                ["value" => "1","text"=>"Pagados", "selected"=>false],
-                                ["value" => "2","text"=>"Todos", "selected"=>false]];
+                                ["value" => "1","text"=>"Pagados", "selected"=>false]];
                   @endphp
 
                   @if(session()->has('mode'))
@@ -39,9 +38,6 @@
                         case 1:
                           $array[1]["selected"]=true;
                           break;
-                        case 2:
-                          $array[2]["selected"]=true;
-                          break;
                       }
                     @endphp
                   @else
@@ -53,11 +49,25 @@
                 </select>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                    <i class="fas fa-th"></i></span>
+                </div>
+
+                <select id="period" class="form-control form-control-lg">
+                  @foreach(selectTable('period') as $key => $value)
+                    <option value="{{$value->id}}">{{$value->clave}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
           </div>
 
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-3">
 
           <ol class="breadcrumb float-sm-right">
 

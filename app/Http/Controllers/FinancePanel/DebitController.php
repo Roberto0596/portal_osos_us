@@ -29,42 +29,29 @@ class DebitController extends Controller
         }
         session(["mode"=>$request->input('mode')]);
 
-        switch ($request->input('mode')) {
-            case 0:
-                $debits = Debit::where("status","=","0")->get();
-                break;
-            
-            case 1:
-                $debits = Debit::where("status","=","1")->get();
-                break;
-            case 2:
-                $debits = Debit::all();
-                break;
-        }        
+        $debits = Debit::where([["status","=",$request->input('mode')],["period_id","=",$request->input('period')]])->get();     
 
         foreach($debits as $key => $value)
         {
-            try {
+            if ($value->id_alumno != null) {
                 $alumn = getDataAlumnDebit($value->id_alumno);
-            } catch (Exception $e) {
+                array_push($res["data"],[
+                    "#" => (count($debits)-($key+1)+1),
+                    "Alumno" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
+                    "Email" =>strtolower($alumn["Email"]),
+                    "Descripción" => $value->description,
+                    "Importe" => "$".number_format($value->amount,2),
+                    "Matricula" =>$alumn["Matricula"],
+                    "Estado" =>($value->status==1)?"Pagada":"Pendiente",
+                    "Fecha" => substr($value->created_at,0,11),
+                    "Carrera" =>$alumn['nombreCarrera'],
+                    "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
+                    "method" => $value->payment_method,
+                    "debitId" => $value->id,
+                    "id_order" => $value->id_order              
+                ]);
             }
-            array_push($res["data"],[
-                "#" => (count($debits)-($key+1)+1),
-                "Alumno" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
-                "Email" =>strtolower($alumn["Email"]),
-                "Descripción" =>getDebitType($value->debit_type_id)->concept,
-                "Importe" =>"$".number_format($value->amount,2),
-                "Matricula" =>$alumn["Matricula"],
-                "Estado" =>($value->status==1)?"Pagada":"Pendiente",
-                "Fecha" => substr($value->created_at,0,11),
-                "Carrera" =>$alumn['nombreCarrera'],
-                "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
-                "method" => $value->payment_method,
-                "debitId" => $value->id,
-                "id_order" => $value->id_order              
-            ]);
         }
-
         return response()->json($res);
     }
 
@@ -172,9 +159,7 @@ class DebitController extends Controller
 
     // accedemos a este método con ajax para cargar los datos de la orden 
     public function showPayementDetails(Request $request)
-    {
-
-       
+    {       
         $debit = Debit::find($request->input("DebitId"));
         require_once("conekta/Conekta.php");
         \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
