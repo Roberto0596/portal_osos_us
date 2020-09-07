@@ -2,7 +2,11 @@ function changeMode(mode){
     var token = $("#token").val();
     var route = "/finance/debit/show";
     $(".tableDebits").dataTable({
+        serverSide: true,
         "destroy": true,
+        "deferRender": true,
+        "retrieve": true,
+        "processing": true,
         "responsive": true,
         "ajax":
         {
