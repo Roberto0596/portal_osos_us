@@ -45,14 +45,9 @@ class DebitController extends Controller
         foreach($debits as $key => $value)
         {
             try {
-                $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
-                $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$alumn['PlanEstudioId'])[0];
-                $carrera = selectSicoes("Carrera","CarreraID",$planEstudio['CarreraId'])[0];
-                $estadoDom = selectSicoes("Estado","EstadoId",$alumn['EstadoDom'])[0];      
+                $alumn = getDataAlumnDebit($value->id_alumno);
             } catch (Exception $e) {
-               
-            }                   
-
+            }
             array_push($res["data"],[
                 "#" => (count($debits)-($key+1)+1),
                 "Alumno" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
@@ -62,9 +57,8 @@ class DebitController extends Controller
                 "Matricula" =>$alumn["Matricula"],
                 "Estado" =>($value->status==1)?"Pagada":"Pendiente",
                 "Fecha" => substr($value->created_at,0,11),
-                "Carrera" =>$carrera['Nombre'],
-                "Localidad" =>$alumn["Localidad"].", ".$estadoDom['Nombre'],
-                "edit" => $value->id,
+                "Carrera" =>$alumn['Nombre'],
+                "Localidad" =>$alumn["Localidad"].", ".$alumn['Nombre'],
                 "method" => $value->payment_method,
                 "debitId" => $value->id,
                 "id_order" => $value->id_order              

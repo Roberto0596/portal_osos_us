@@ -74,10 +74,10 @@ function selectTable($tableName, $item=null,$value=null,$limit=null)
 //este metodo servira para trarnos el periodo actual o en curso
 function selectCurrentPeriod()
 {
-    $currentPeriod = PeriodModel::all();
-    if (count($currentPeriod))
+    $config = ConfigModel::all();
+    if (count($config))
     {
-      return $currentPeriod[0];
+      return $config[0]->period_id;
     }
     else
     {
@@ -109,32 +109,28 @@ function insertInscriptionDocuments($id)
 
 function insertInscriptionDebit($id_alumno)
 {
+  $mytime = \Carbon\Carbon::now();
+  $debit_array = ['debit_type_id' => 1,
+                  'description' => 'Pago semestral de inscripcion',
+                  'amount' => 1950.00,
+                  'admin_id'=> 2,
+                  'id_alumno' => $id_alumno,
+                  'created_at' => $mytime->toDateTimeString(),
+                  'updated_at' => $mytime->toDateTimeString(),
+                  'period_id' => getConfig()->period_id];
+
   $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
   $validate = validateHighAverage($data["Matricula"]);
   if($validate)
   {
+    $debit_array["amount"] = 0;
+    $create_debit = insertIntoPortal("debit",$debit_array);
     $inscription = realizarInscripcion($id_alumno);
-    if($inscription!=false)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
+    return ($inscription!=false)?true:false;
   }
   else
   {
-    $mytime = \Carbon\Carbon::now();
-    DB::table('debit')->insert(
-        ['debit_type_id' => 1,
-         'description' => 'Pago semestral de inscripcion',
-         'amount' => 1950.00,
-         'admin_id'=> 2,
-         'id_alumno'=>$id_alumno,
-         'created_at'=>$mytime->toDateTimeString(),
-         'updated_at'=>$mytime->toDateTimeString()]
-    );
+    $create_debit = insertIntoPortal("debit",$debit_array);
     return 0;
   }
 }
@@ -471,18 +467,16 @@ function InsertAlumn($array)
 
 function getItemClaveAndNamesFromTables($table_name)
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT Clave,Nombre FROM $table_name");
-    $stmt->execute();
-	return $stmt->fetchAll();
-
+  $stmt = ConectSqlDatabase()->prepare("SELECT Clave,Nombre FROM $table_name");
+  $stmt->execute();
+  return $stmt->fetchAll();
 }
 
 function getCarreras()
 {
-    $stmt = ConectSqlDatabase()->prepare("SELECT Carreraid,Nombre FROM Carrera");
-    $stmt->execute();
+  $stmt = ConectSqlDatabase()->prepare("SELECT Carreraid,Nombre FROM Carrera");
+  $stmt->execute();
 	return $stmt->fetchAll();
-
 }
 
 function updateByIdAlumn($id_alumn,$colName,$value)
@@ -773,20 +767,6 @@ function validateStatusAlumn($id_alumno)
   }
 }
 
-function getInscription($id_alumno)
-{
-  $stmt = ConectSqlDatabase()->prepare("SELECT top(1)* from Inscripcion where AlumnoId = '$id_alumno' and Semestre <> 'E' order by InscripcionId desc;");
-  $stmt->execute();
-  return $stmt->fetch();
-}
-
-function getGroupByPeriod($periodo,$plan,$semestre)
-{
-  $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$plan' and Semestre = '$semestre';");
-  $stmt->execute();
-  return $stmt->fetch();
-}
-
 //metodo que nos trae la carga del alumno
 function getChargeByPeriod($period,$id_alumno)
 {
@@ -809,16 +789,6 @@ function calculateProm($array)
   return $count;
 }
 
-// function calculateProm($array)
-// {
-//   $prom=0;
-//   foreach ($array as $key => $value)
-//   {
-//     $prom = $prom + $value["Calificacion"];
-//   }
-//   $prom = $prom/count($array);
-//   return $prom;
-// }
 
 //validar si no es un alumno en baja 
 function validateDown($id_alumno)
@@ -842,7 +812,6 @@ function validateDown($id_alumno)
 }
 
 //actualizar individual
-
 function updateSicoes($table, $field, $value, $item, $valueItem)
 {
     $sql = "UPDATE $table SET $field = '$value' where $item = '$valueItem'";
@@ -855,6 +824,44 @@ function updateSicoes($table, $field, $value, $item, $valueItem)
     {
       return "error";
     }
+}
+
+function checkGroupData($id_alumn)
+{
+    $inscripcionData = getInscription($id_alumn);
+    $alumnData = selectSicoes("Alumno","AlumnoId",$id_alumn)[0];
+    $config = getConfig();
+
+    if ($inscripcionData!=false) {
+      
+    }
+    else
+    {
+      if ($alumnoData["PlanEstudioId"] == $config->lata_id)
+      {
+        $group = getGroupByPeriod($config->period_id, $config->laep_id, 1);
+        return $group;
+      }
+      else
+      {
+        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
+        return $group;
+      }
+    }    
+}
+
+function getInscription($id_alumno)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT top(1)* from Inscripcion where AlumnoId = '$id_alumno' and Semestre <> 'E' order by InscripcionId desc;");
+  $stmt->execute();
+  return $stmt->fetch();
+}
+
+function getGroupByPeriod($periodo,$plan,$semestre)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$plan' and Semestre = '$semestre';");
+  $stmt->execute();
+  return $stmt->fetch();
 }
 
 //otros
@@ -885,4 +892,14 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
         imagepng($destino,$ruta);
     }
     return $ruta;
+}
+
+function getDataAlumnDebit($id_alumn)
+{
+  $stmt = ConectSqlDatabase()->prepare("SELECT a.Matricula, a.Nombre, a.ApellidoPrimero, a.Email, a.Localidad, a.ApellidoSegundo, c.Nombre, e.Nombre from Alumno as a
+                                        inner join PlanEstudio as p on p.PlanEstudioId = a.PlanEstudioId
+                                        inner join Carrera as c on p.CarreraId = c.CarreraId
+                                        inner join Estado as e on e.EstadoId = a.EstadoDom where AlumnoId = '$id_alumn'");
+  $stmt->execute();
+  return $stmt->fetch();
 }
