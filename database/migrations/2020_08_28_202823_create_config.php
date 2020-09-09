@@ -14,7 +14,6 @@ class CreateConfig extends Migration
     public function up()
     {
         Schema::create('config', function (Blueprint $table) {
-            $period = selectCurrentPeriod();
             $table->bigIncrements("id");
             $table->integer('open_inscription');
             $table->integer("period_id");
