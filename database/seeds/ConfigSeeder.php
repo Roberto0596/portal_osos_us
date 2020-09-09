@@ -6,7 +6,7 @@ class ConfigSeeder extends Seeder
 {
     public function run()
     {
-        $period = selectCurrentPeriod();
+        $period = selectTable("period")[0];
         if (! DB::table('config')->count())
         {
             DB::table('config')->insert([
