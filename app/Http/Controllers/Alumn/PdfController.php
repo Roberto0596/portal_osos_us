@@ -51,7 +51,7 @@ class PdfController extends Controller
 
         try
         {
-            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
+            $alumno = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
             $inscripcion = getInscription($current_user->id_alumno);
             $group = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0];
         }
@@ -76,9 +76,10 @@ class PdfController extends Controller
                                  'escuela_procedencia'=>$bachiller["Nombre"],
                                  'grupo' => $group["Nombre"]);
 
-        $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal'];    
 
-        $html = view('Alumn.pdf.generar',['alumno' => $alumno,'lugar_nacimiento' => $localidad_nacimiento,
+        $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal']; 
+
+        $html = view('Alumn.pdf.generar', ['alumno' => $alumno,'lugar_nacimiento' => $localidad_nacimiento,
         'direccion' => $localidad_residencia,'datos_escolares' => $datos_escolares])->render();
         
         $namefile = 'CEDULA'.time().'.pdf'; 

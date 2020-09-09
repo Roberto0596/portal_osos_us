@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
-use Input;
-use Auth;
 use Illuminate\Support\Collection;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Website\Pending;
+use Input;
+use Auth;
 
 class AccountController extends Controller
 {

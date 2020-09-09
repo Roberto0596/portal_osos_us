@@ -18,41 +18,38 @@ class FormController extends Controller
         $current_user = Auth::guard('alumn')->user();
         try 
         {
-            $data = selectSicoes("Alumno","AlumnoId",Auth::guard('alumn')->user()->id_alumno)[0];
+            $data = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
+
             //validar si un alumno no esta dado de baja
             if (validateDown($current_user->id_alumno)) 
             {
-                $validateStatus = validateStatusAlumn($data["AlumnoId"]);
+                $checkGroup = checkGroupData($data["AlumnoId"]);
 
-                if ($validateStatus=="error")
+                if ($checkGroup=="error")
                 {
                     session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
                     return redirect()->back();
                 }
                 
-                if ($validateStatus!=false)
+                if ($checkGroup==false || $checkGroup==null)
                 {
-                    return view('Alumn.form.index')->with(["estados"=> $estados, 
-                                                    "data"=>$data, "currentId"=>Auth::guard('alumn')->user()->id_alumno,
-                                                    "group" => $validateStatus]);
-                }
-                else
-                {
-                    session()->flash("messages","error|Probablemente no puedes inscribirte este semestre, contactate con servicios escolares");
-                    return redirect()->back();
+                    $checkGroup = ["Nombre" => "ninguno",
+                                   "PeriodoId" => selectTable('period',null,null,1)[0]->clave,
+                                   "Semestre" => "sin asignar"];
                 } 
+                return view('Alumn.form.index')->with(["estados" => $estados, 
+                                                    "data" => $data, 
+                                                    "currentId" => $current_user->id_alumno,
+                                                    "group" => $checkGroup]);
             }
             else
             {
-                $current_user->id_alumno = null;
-                $current_user->save();
                 session()->flash("messages","info|No podemos inscribirte en esta carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
-                return view('Alumn.form.inscription')->with(["estados"=> $estados, 
-                                                "user"=>$current_user]);
+                return redirect()->back();
             }                       
         } 
         catch (\Exception $th) 
-        {       
+        { 
             return view('Alumn.form.inscription')->with(["estados"=> $estados, 
                                                 "user"=>$current_user]);
         }

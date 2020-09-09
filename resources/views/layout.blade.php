@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('css/modals.css') }}"> 
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('bower/dropzone/dist/dropzone.css')}}" />
    
     <!-- scripts -->
     
@@ -65,6 +66,7 @@
     <script src="{{ asset('js/temple.js') }}"></script>
     <script src="{{ asset('push/push.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    <script src="{{asset('bower/dropzone/dist/dropzone.js')}}"></script>
     {!! htmlScriptTagJsApi() !!}
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">

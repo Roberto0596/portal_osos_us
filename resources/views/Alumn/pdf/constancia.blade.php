@@ -51,9 +51,6 @@
     </tr>
 </table>
 
-
-
-
 <div class="tabla-div">
 
     <table class="tabla-fecha">

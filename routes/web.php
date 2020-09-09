@@ -218,6 +218,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'uses' => 'PaymentController@pay_cash_spei', 
 				        'as' => 'pay.spei.view'
 			]);
+
+			Route::post('/save/document', [
+				        'uses' => 'PaymentController@pay_cash_spei', 
+				        'as' => 'pay.spei.view'
+			]);
 		});
   	});
 });

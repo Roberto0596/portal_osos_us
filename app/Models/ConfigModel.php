@@ -15,5 +15,7 @@ class ConfigModel extends Model
         'period_id',
         'created_at',
         'updated_at',
+        'laep_id',
+        'lata_id'
     ];
 }

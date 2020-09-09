@@ -6,6 +6,7 @@ use App\Models\Alumns\DebitType;
 use App\Models\Alumns\HighAverages;
 use App\Models\PeriodModel;
 use App\Models\ConfigModel;
+use App\Models\Alumns\Document;
 
 //seccion del sistema
 
@@ -133,6 +134,21 @@ function insertInscriptionDebit($id_alumno)
     $create_debit = insertIntoPortal("debit",$debit_array);
     return 0;
   }
+}
+
+function validateDocumentInscription($id_alumno, $name)
+{
+  $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["name","=",$name]])->get();
+  if ($document->isEmpty()) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function current_user($guard = null)
+{
+    return \Auth::guard($guard==null?"alumn":$guard)->user();
 }
 
 //seccion de sicoes
