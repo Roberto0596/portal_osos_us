@@ -43,8 +43,8 @@ $(".tableDocuments tbody").on("click","button.reload",function(){
 });
 
 $(".open-modal").click(function(){
-    var name = $(this).attr("name-document");
-    $("#name-document").val(name);
+    var type = $(this).attr("document-type");
+    $("#document-type").val(type);
 });
 
 $(".tap-change").click(function(){

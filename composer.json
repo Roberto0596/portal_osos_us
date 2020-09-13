@@ -16,7 +16,8 @@
         "igorescobar/jquery-mask-plugin": "^1.14",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "doctrine/dbal": "2.5.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

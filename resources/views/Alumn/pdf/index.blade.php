@@ -99,6 +99,9 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Periodo</th>
+                  <th>Fecha de creacion</th>
                   <th>Acciones</th>
                 </tr>
 
@@ -176,11 +179,11 @@
 
             @php
               $user = current_user();
-              $acta = explode("|",validateDocumentInscription($user->id,"acta de nacimiento"));
-              $fotografia = explode("|",validateDocumentInscription($user->id,"fotografia"));
-              $certificado = explode("|",validateDocumentInscription($user->id,"certificado"));
-              $curp = explode("|",validateDocumentInscription($user->id,"curp"));
-              $imss = explode("|",validateDocumentInscription($user->id,"imss"));
+              $acta = explode("|",validateDocumentInscription($user->id,1));
+              $fotografia = explode("|",validateDocumentInscription($user->id,5));
+              $certificado = explode("|",validateDocumentInscription($user->id,2));
+              $curp = explode("|",validateDocumentInscription($user->id,3));
+              $imss = explode("|",validateDocumentInscription($user->id,4));
             @endphp
 
             <div class="row">
@@ -205,7 +208,7 @@
 
                   @if($acta[0] != 'bg-success')
 
-                  <a data-toggle="modal" data-target="#modalDocumentos"  class="small-box-footer pointer-link open-modal" name-document = "acta de nacimiento">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  <a data-toggle="modal" data-target="#modalDocumentos"  class="small-box-footer pointer-link open-modal" document-type="1">Subir <i class="fas fa-arrow-circle-right"></i></a>
 
                   @endif
 
@@ -233,7 +236,7 @@
 
                   @if($fotografia[0] != 'bg-success')
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "fotografia">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="5">Subir <i class="fas fa-arrow-circle-right"></i></a>
 
                   @endif
 
@@ -261,7 +264,7 @@
 
                   @if($certificado[0] != 'bg-success')
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "certificado">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="2">Subir <i class="fas fa-arrow-circle-right"></i></a>
 
                   @endif
 
@@ -289,7 +292,7 @@
 
                   @if($curp[0] != 'bg-success')
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "CURP">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="3">Subir <i class="fas fa-arrow-circle-right"></i></a>
 
                   @endif
 
@@ -317,7 +320,7 @@
 
                   @if($imss[0] != 'bg-success')
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "IMSS">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="4">Subir <i class="fas fa-arrow-circle-right"></i></a>
 
                   @endif
 
@@ -366,7 +369,7 @@
                 
               {{ csrf_field() }}
                 
-              <input type="hidden" id="name-document" name="name-document">
+              <input type="hidden" id="document-type" name="document-type">
 
               <div class="row">
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
+use App\Models\Alumns\DocumentType;
+use App\Models\PeriodModel;
 
 class PdfController extends Controller
 {
@@ -16,7 +18,8 @@ class PdfController extends Controller
 
     public function showDocuments(Request $request)
     {
-        $current_user = Auth::guard("alumn")->user();
+        $current_user = current_user();
+
         $res = [ "data" => []];
 
         $documents = Document::where("alumn_id","=",$current_user->id)->get();
@@ -33,9 +36,15 @@ class PdfController extends Controller
                 </div>";
             }
 
+            $document_type = DocumentType::find($value->document_type_id);
+            $period = PeriodModel::find($value->PeriodoId);
+
             array_push($res["data"],[
                 (count($documents)-($key+1)+1),
-                $value->name,
+                $document_type->name,
+                $value->description,
+                $period->clave,
+                $value->created_at,
                 $buttons
             ]);
         }
@@ -207,8 +216,10 @@ class PdfController extends Controller
     public function saveDocument(Request $request)
     {
         $file = $request->file('file-document');
-        $name = $request->input('name-document');
-        $path = "documentos/".current_user()->id;
+        $rDocument = $request->input('document-type');
+        $alumnData = selectSicoes("Alumno","AlumnoId",current_user()->id_alumno);
+        $path = "documentos/".$alumnData[0]["Matricula"];
+        $document_type = DocumentType::find($rDocument);
 
         if ($file->getClientOriginalExtension()!="pdf") {
             session()->flash("messages","warning|El documento no tiene el formato requerido");
@@ -220,7 +231,7 @@ class PdfController extends Controller
         } catch(\ErrorException $e) {
         }
 
-        $documentName = current_user()->name."_".$name.".".$file->getClientOriginalExtension();
+        $documentName = current_user()->name."_".$document_type->name.".".$file->getClientOriginalExtension();
 
         if (!file_exists($path."/".$documentName)) {
             $file->move($path, $documentName);
@@ -234,12 +245,13 @@ class PdfController extends Controller
             }
         }
 
-        $document->name = $name;
+        $document->description = "Documento de inscripción";
         $document->route = "/".$path."/".$documentName;
         $document->status = 1;
         $document->PeriodoId = selectCurrentPeriod();
         $document->alumn_id = current_user()->id;
         $document->type = 1;
+        $document->document_type_id = $document_type->id;
         $document->save();
 
         session()->flash("messages","success|El documento se guardo con exito");
