@@ -45,7 +45,28 @@ $(".tableDocuments tbody").on("click","button.reload",function(){
 $(".open-modal").click(function(){
     var name = $(this).attr("name-document");
     $("#name-document").val(name);
-})
+});
+
+$(".tap-change").click(function(){
+    var val = $(this).attr("data-value");
+    var route = 'tab/see';
+    var token = $("#token").val();
+    var data = new FormData();
+    data.append("tab",val);
+    $.ajax({
+      url:route,
+      headers:{'X-CSRF-TOKEN': token},
+      method:'POST',
+      data:data,
+      cache:false,
+      contentType:false,
+      processData:false,
+      success:function(response)
+      {
+         
+      }
+  });
+});
 
 $('#document-upload').change(function()
 {
