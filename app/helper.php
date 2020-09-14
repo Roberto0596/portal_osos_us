@@ -7,6 +7,7 @@ use App\Models\Alumns\HighAverages;
 use App\Models\PeriodModel;
 use App\Models\ConfigModel;
 use App\Models\Alumns\Document;
+use App\Models\Alumns\DocumentType;
 
 //seccion del sistema
 
@@ -102,8 +103,10 @@ function insertIntoPortal($tableName,$array)
 function insertInscriptionDocuments($id)
 {
   $currentPeriod = selectCurrentPeriod();
-  $array =[['name' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id],['name' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id]
-        ];
+  $array =[
+    ['description' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id' => 6],
+    ['description' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id'=> 7]
+  ];
   $insertDocument = insertIntoPortal("document",$array);
   return $insertDocument;
 }
@@ -136,13 +139,15 @@ function insertInscriptionDebit($id_alumno)
   }
 }
 
-function validateDocumentInscription($id_alumno, $name)
+function validateDocumentInscription($id_alumno, $document_type_id)
 {
-  $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["name","=",$name]])->get();
-  if ($document->isEmpty()) {
-    return false;
+  $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["document_type_id","=",$document_type_id]])->first();
+  if (!$document || $document->status == 0) {
+    return "bg-danger|No se ha registrado el documento";
+  } else if($document->status == 1){
+    return "bg-warning|Falta validación";
   } else {
-    return true;
+    return "bg-success|Todo esta en orden";
   }
 }
 
@@ -154,10 +159,9 @@ function current_user($guard = null)
 //seccion de sicoes
 function ConectSqlDatabase()
 {
-  $password = "admin123";
-  $user = "robert";
-  $rutaServidor = "127.0.0.1";
-	$link = new PDO("sqlsrv:Server=.\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+  $password = env('SQL_SERVER_PASSWORD');
+  $user = env('SQL_SERVER_USER');
+	$link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
   $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -301,10 +305,9 @@ function deleteCharge($array)
 
 function insertCharge($array)
 {
-    $password = "admin123";
-    $user = "robert";
-    $rutaServidor = "127.0.0.1";
-    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $password = env('SQL_SERVER_PASSWORD');
+    $user = env('SQL_SERVER_USER');
+    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
@@ -340,10 +343,10 @@ function inscribirAlumno($array)
 
 function InsertAlumn($array)
 {
-    $password = "admin123";
-    $user = "robert";
+    $password = env('SQL_SERVER_PASSWORD');
+    $user = env('SQL_SERVER_USER');
     $rutaServidor = "127.0.0.1";
-    $link = new PDO("sqlsrv:Server=DESKTOP-UP7PDGG\SQLEXPRESS01;Database=Sicoes;", $user, $password);
+    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $link->prepare("INSERT INTO Alumno(

@@ -27,7 +27,6 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 	        'as' => 'sendRequest'
 	    ]);
 	 
-
 	    Route::get('/sign-out', [
 	        'uses' => 'AuthController@logout', 
 	        'as' => 'logout'
@@ -88,6 +87,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses'=>'PdfController@getGenerarFicha', 
 					'as' => 'fichas'
 				]);
+
+				Route::post('/tab/see',[
+			        'uses' => 'PdfController@tabCache', 
+			        'as' => 'tab.see'
+			    ]);
 
 				Route::get('/user', [
 			        'uses' => 'UserController@index', 
@@ -190,9 +194,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				        'as' => 'pay.rollback'
 				    ]);
 				});
-		    });
-
-		   
+		    });		   
 
 		    Route::group(["middleware"=>["inscriptionFaseFour"]
 			],function(){
@@ -208,6 +210,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'as' => 'charge.save'
 			    ]);
 			});
+
+			Route::post('/save/document/inscription', [
+				        'uses' => 'PdfController@saveDocument', 
+				        'as' => 'save.document.inscription'
+			]);
 
 		    Route::get('/pay-cash-oxxo', [
 				        'uses' => 'PaymentController@pay_cash_oxxo', 

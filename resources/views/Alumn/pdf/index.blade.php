@@ -19,7 +19,7 @@
         
         <div class="col-sm-6">
           
-          <h1>Mis Documentos por Imprimir</h1>
+          <h1>Documentos</h1>
           
         </div>
         
@@ -40,6 +40,17 @@
     
   </section>
 
+  @php
+   if(session()->has('tab'))
+   {
+      $aux = session()->get('tab');
+   } else {
+      $aux = 0;
+   }
+  @endphp
+
+  <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
   <section class="content">
 
     <div class="card">
@@ -52,13 +63,13 @@
 
             <li class="nav-item">
 
-              <a class="nav-link " id="document" data-toggle="tab" href="#document-panel" role="tab" aria-controls="documents" aria-selected="true">Document</a>
+              <a class="nav-link {{$aux == 0?'active':''}} tap-change" id="document" data-toggle="tab" href="#document-panel" role="tab" aria-controls="documents" aria-selected="true" data-value="0">Expediente</a>
 
             </li>
 
             <li class="nav-item">
 
-              <a class="nav-link active" id="document-inscription" data-toggle="tab" href="#inscription-panel" role="tab" aria-controls="documents_inscription" aria-selected="false">Documentos de inscripcion</a>
+              <a class="nav-link {{$aux == 1?'active':''}} tap-change" id="document-inscription" data-toggle="tab" href="#inscription-panel" role="tab" aria-controls="documents_inscription" aria-selected="false" data-value="1">Cargar Documentos</a>
 
             </li>
 
@@ -70,13 +81,14 @@
 
     </div>
 
-    <div class="card">
 
-      <div class="card-body">
+    <div class="tab-content" id="myTabContent">
 
-        <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show {{$aux == 0?'active':''}}" id="document-panel" role="tabpanel" aria-labelledby="home-tab">
 
-          <div class="tab-pane fade show" id="document-panel" role="tabpanel" aria-labelledby="home-tab">
+        <div class="card">
+
+          <div class="card-body">
 
             <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 
@@ -87,6 +99,9 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Periodo</th>
+                  <th>Fecha de creacion</th>
                   <th>Acciones</th>
                 </tr>
 
@@ -96,26 +111,92 @@
 
           </div>
 
-          <div class="tab-pane fade show active" id="inscription-panel" role="tabpanel" aria-labelledby="home-tab">
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade show {{$aux == 1?'active':''}}" id="inscription-panel" role="tabpanel" aria-labelledby="home-tab">
+
+        <div class="card collapsed-card">
+
+          <div class="card-header">
+
+            <h3 class="card-title">Ayuda</h3>
+
+            <div class="card-tools">
+
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fas fa-minus"></i></button>
+
+            </div>
+
+          </div>
+
+          <div class="card-body">
+            <p>Hola, {{ucfirst(strtolower(current_user()->name))}}, podras subir tus documentos oficiales en este apartado, hay tres estados posibles</p>
+
+<!--             <div class="row">
+              <div class="col-md-4"> -->
+                <div class="callout callout-danger">
+                  <h5>Rojo</h5>
+                  <p>este estado es cuando todavia no esta el documento, podras subirlo en la parte de abajo, dando clic en su ficha.</p>
+                </div>
+<!--               </div> -->
+<!--               <div class="col-md-4"> -->
+                <div class="callout callout-warning">
+                  <h5>Amarillo</h5>
+                  <p>este estado es cuando ya tenemos el documento, pero falta que sea validado por el Departamento de Servicios Escolares, en este estado es posible que se te pida que vuelvas a subir el documento, si no cumple con los lineamientos de la Universidad.</p>
+                </div>
+<!--               </div>
+              <div class="col-md-4"> -->
+                <div class="callout callout-success">
+                  <h5>Verde</h5>
+                  <p>este estado es cuando ya esta el documento arriba y el Departamento de Servicios Escolares hizo la validación y se aprobó, entonces las cajas de abajo apareceran en verde.</p>
+                </div>
+<!--               </div>
+            </div>  -->              
+                
+          </div>
+
+        </div>
+
+        <div class="card collapsed-card">
+
+          <div class="card-header">
+
+            <h3 class="card-title">Fichas</h3>
+
+            <div class="card-tools">
+
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                <i class="fas fa-minus"></i></button>
+
+            </div>
+            
+          </div>
+
+          <div class="card-body">
 
             @php
               $user = current_user();
-              $acta = validateDocumentInscription($user->id,"acta de nacimiento");
-              $kardex = validateDocumentInscription($user->id,"kardex");
-              $certificado = validateDocumentInscription($user->id,"certificado");
+              $acta = explode("|",validateDocumentInscription($user->id,1));
+              $fotografia = explode("|",validateDocumentInscription($user->id,5));
+              $certificado = explode("|",validateDocumentInscription($user->id,2));
+              $curp = explode("|",validateDocumentInscription($user->id,3));
+              $imss = explode("|",validateDocumentInscription($user->id,4));
             @endphp
 
             <div class="row">
             
               <div class="col-md-4 col-sm-12">
 
-                <div class="small-box {{$acta?'bg-success':'bg-danger'}}">
+                <div class="small-box {{$acta[0]}}" style="color: white !important;">
 
                   <div class="inner">
 
                     <h3>Acta de nacimiento</h3>
 
-                    <p>No has registrado tu acta</p>
+                    <p>{{$acta[1]}}</p>
 
                   </div>
 
@@ -125,7 +206,11 @@
 
                   </div>
 
-                  <a data-toggle="modal" data-target="#modalDocumentos"  class="small-box-footer pointer-link open-modal" name-document = "acta de nacimiento">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  @if($acta[0] != 'bg-success')
+
+                  <a data-toggle="modal" data-target="#modalDocumentos"  class="small-box-footer pointer-link open-modal" document-type="1">Subir <i class="fas fa-arrow-circle-right"></i></a>
+
+                  @endif
 
                 </div>
                 
@@ -133,13 +218,13 @@
 
               <div class="col-md-4 col-sm-12">
 
-                <div class="small-box {{$kardex?'bg-success':'bg-danger'}}">
+                <div class="small-box {{$fotografia[0]}}" style="color: white !important;">
 
                   <div class="inner">
 
-                    <h3>Kardex</h3>
+                    <h3>Fotografía</h3>
 
-                    <p>No has registrado tu kardex</p>
+                    <p>{{$fotografia[1]}}</p>
 
                   </div>
 
@@ -149,7 +234,11 @@
 
                   </div>
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "kardex">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  @if($fotografia[0] != 'bg-success')
+
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="5">Subir <i class="fas fa-arrow-circle-right"></i></a>
+
+                  @endif
 
                 </div>
                 
@@ -157,13 +246,13 @@
 
               <div class="col-md-4 col-sm-12">
 
-                <div class="small-box {{$certificado?'bg-success':'bg-danger'}}">
+                <div class="small-box {{$certificado[0]}}" style="color: white !important;">
 
                   <div class="inner">
 
                     <h3>Certificado</h3>
 
-                    <p>No has registrado tu certificado</p>
+                    <p>{{$certificado[1]}}</p>
 
                   </div>
 
@@ -173,7 +262,67 @@
 
                   </div>
 
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" name-document = "certificado">Subir <i class="fas fa-arrow-circle-right"></i></a>
+                  @if($certificado[0] != 'bg-success')
+
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="2">Subir <i class="fas fa-arrow-circle-right"></i></a>
+
+                  @endif
+
+                </div>
+                
+              </div>
+
+              <div class="col-md-6 col-sm-12">
+
+                <div class="small-box {{$curp[0]}}" style="color: white !important;">
+
+                  <div class="inner">
+
+                    <h3>CURP</h3>
+
+                    <p>{{$curp[1]}}</p>
+
+                  </div>
+
+                  <div class="icon">
+
+                    <i class="fa fa-file"></i>
+
+                  </div>
+
+                  @if($curp[0] != 'bg-success')
+
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="3">Subir <i class="fas fa-arrow-circle-right"></i></a>
+
+                  @endif
+
+                </div>
+                
+              </div>
+
+              <div class="col-md-6 col-sm-12">
+
+                <div class="small-box {{$imss[0]}}" style="color: white !important;">
+
+                  <div class="inner">
+
+                    <h3>IMSS</h3>
+
+                    <p>{{$imss[1]}}</p>
+
+                  </div>
+
+                  <div class="icon">
+
+                    <i class="fa fa-file"></i>
+
+                  </div>
+
+                  @if($imss[0] != 'bg-success')
+
+                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="4">Subir <i class="fas fa-arrow-circle-right"></i></a>
+
+                  @endif
 
                 </div>
                 
@@ -197,9 +346,9 @@
 
   <div class="modal-dialog modal-lg">
 
-    <div class="modal-content">
+    <div class="modal-content" style="border-radius: 20px;">
 
-      <div class="modal-header">
+      <div class="modal-header" style="border-radius: 20px;">
 
         <h3>Subir un documento</h3>
 
@@ -215,18 +364,56 @@
                 </div>
             </div>
 
-            <form action="/file-upload" enctype="multipart/form-data" class="dropzone"  id="my-awesome-dropzone">
+            <!-- <form action="/file-upload" enctype="multipart/form-data" class="dropzone"  id="my-awesome-dropzone"> -->
+              <form action="{{route('alumn.save.document.inscription')}}" method="post" enctype="multipart/form-data">
                 
               {{ csrf_field() }}
                 
-              <input type="hidden" id="name-document" name="name-document">
+              <input type="hidden" id="document-type" name="document-type">
 
-              <div class="dz-message needsclick">
+              <div class="row">
+
+                <div class="col-md-12">
+                  
+                  <div class="form-group">
+
+                  <div class="panel">SUBIR DOCUMENTO</div>
+
+                    <input accept="application/pdf" type="file" name="file-document" id="file-document" required>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- <div class="dz-message needsclick">
                   <strong>Arrastra archivos a cualquier lugar para subirlos.</strong><br /><br />
                   <span class="note needsclick">
                   <span class="glyphicon glyphicon-open" aria-hidden="true" style="font-size:60px;"></span>
                   </span>
+              </div> -->
+
+              <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button type="button" class="btn btn-danger" style="width: 100%;" data-dimiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                    </div> 
+                    <div class="col-md-6">
+                      <button class="btn btn-success" style="width: 100%;" type="submit"><i class="fas fa-check"></i> subir</button>
+                    </div>  
+                  </div>
+                  
+                </div>
+
               </div>
+
+            </div>
                 
             </form>
 
@@ -241,12 +428,12 @@
 </div>
 
 <script type="text/javascript">
-  $("#my-awesome-dropzo").dropzone({ 
-    url: "/file/post",
-    uploadMultiple: false,
-    maxFiles: 1,
-    acceptedFiles: "application/pd"
-  });
+  // $("#my-awesome-dropzo").dropzone({ 
+    // url: "/file/post",
+    // uploadMultiple: false,
+    // maxFiles: 1,
+    // acceptedFiles: "application/pd"
+  // });
 </script>
 
 <script src="{{ asset('js/alumn/pdf.js')}}"></script>

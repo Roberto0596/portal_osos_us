@@ -11,7 +11,7 @@ class Document extends Model
 
     protected $fillable = [
     	'id',
-        'name',
+        'description',
         'route',
         'status',
         'PeriodoId',
@@ -19,5 +19,11 @@ class Document extends Model
         'created_at',
         'updated_at',
         'type',
+        'document_type_id',
     ];
+
+    public function DocumentType()
+    {
+        return $this->hasOne('App\Models\Alumns\DocumentType','id','document_type_id');
+    }
 }
