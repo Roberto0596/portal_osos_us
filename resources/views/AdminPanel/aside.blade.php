@@ -74,6 +74,20 @@
                         </p>
                     </a>
                 </li>
+
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.document') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            Documentos
+                        </p>
+                    </a>
+                </li>
+
+
+
+
                 <li class="nav-item">
                     <a href="{{route('admin.reset-pass')}}" class="nav-link">
                         <i class="nav-icon fas fa-key"></i>
