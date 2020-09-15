@@ -625,8 +625,17 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			//carga datos de tabla documentos
 			Route::put('/documents/show', [
 		        'uses' => 'DocumentController@show', 
-		        'as' => 'reset-pass.show'
+		        'as' => 'show'
 			]);
+
+			//Sirve para cambiar el estado de un documento
+			Route::post('/document/update-status',[
+				'uses'=>'DocumentController@updateStatus', 
+				'as' => 'updatestatus'
+			]);
+
+
+			
 
 		});
   	});

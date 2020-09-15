@@ -33,53 +33,52 @@ class DocumentController extends Controller
             $countSuccess = 0;
             foreach($documents as $value)
             {
-                if($value->status === 1){
+                if($value->status === 2){
                     $countSuccess++;
                 }
             }
-
-            if($countSuccess === 5){
-
-                $statusButton = "<button type='submit' class='btn btn-success'>
-                <i class='fa fa-check-circle' title='Completado'></i></button> &nbsp&nbsp&nbsp ".$countSuccess." / 5 Validados";
-
-            }else{
-
-                $statusButton = "<button type='submit' class='btn btn-danger custom'>
-                <i class='fa fa-exclamation-circle' title='Sin Validar'></i></button> &nbsp&nbsp&nbsp ".$countSuccess." / 5 Validados";
-            }
-
+          
 
             $files = DB::table('document')->where('alumn_id',$value->alumn_id )->get();
-            ///dd(count($files));
+            $files_to_send = json_encode($files);
 
-
-
-            $showFiles =  "<button class='btn btn-warning custom ShowFiles' files='".$files."'
-              data-toggle='modal'  data-target='#modalDocuments' title='Ver documentos'><i class='fa fa-eye'></i> 
-             &nbsp&nbsp Ver </button></div>  &nbsp&nbsp&nbsp ".count($files)." / 5 Subidos";
-          
            
 
             array_push( $res["data"],[
-                (count($alums_list)-($key+1)+1),
-                $querySicoes[0]["Matricula"],
-                $alumn->name." ".$alumn->lastname,
-                $statusButton,
-                $showFiles
-               
+                "#"         => (count($alums_list)-($key+1)+1),
+                "Matricula" => $querySicoes[0]["Matricula"],
+                "Alumno"    => $alumn->name." ".$alumn->lastname,
+                "files"     => $files_to_send,
+                "countFiles"=> count($files),
+                "count"     => $countSuccess
             ]);
         }
         
         return response()->json($res);  
 
-       
-       
-
-        
-
-       
-
     }
+
+    public function updateStatus(Request $request)
+    {
+
+        try {
+            
+            $document = Document::find($request->document_id);
+            $document->status = $request->value;
+            $document->save();
+
+            return response()->json("ok");  
+
+
+        } catch (\Throwable $th) {
+            return response()->json("error");  
+        }
+
+     
+
+     
+          
+    }
+
     
 }
