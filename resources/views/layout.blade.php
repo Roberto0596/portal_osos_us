@@ -28,6 +28,8 @@
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('bower/dropzone/dist/dropzone.css')}}" />
+    <!-- bootstrap toggle -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
    
     <!-- scripts -->
     
@@ -37,6 +39,8 @@
     <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+     <!-- bootstrap toggle -->
+     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <!-- daterangepicker -->
     <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
     <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
@@ -67,6 +71,7 @@
     <script src="{{ asset('push/push.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="{{asset('bower/dropzone/dist/dropzone.js')}}"></script>
+    
     {!! htmlScriptTagJsApi() !!}
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">

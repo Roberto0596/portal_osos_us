@@ -612,6 +612,31 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'ReportController@index', 
 		        'as' => 'report'
 			]);
+
+
+			//Document
+
+			//te lleva a la tabla de documentos
+			Route::get('/document', [
+		        'uses' => 'DocumentController@index', 
+		        'as' => 'document'
+			]);		
+
+			//carga datos de tabla documentos
+			Route::put('/documents/show', [
+		        'uses' => 'DocumentController@show', 
+		        'as' => 'show'
+			]);
+
+			//Sirve para cambiar el estado de un documento
+			Route::post('/document/update-status',[
+				'uses'=>'DocumentController@updateStatus', 
+				'as' => 'updatestatus'
+			]);
+
+
+			
+
 		});
   	});
 });
