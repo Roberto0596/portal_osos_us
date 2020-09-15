@@ -17,8 +17,7 @@ class HomeController extends Controller
         	$status = $user->inscripcion < 3? false:true;
 
         //documentos
-        $query = [["alumn_id","=",$user->id],["status","=","0"]];
-        $documents = Document::where($query)->get();
+        $documents = Document::where("alumn_id","=",$user->id)->get();
 
         //adeudos
         $query = [["id_alumno","=",$user->id_alumno],["status","=","0"]];

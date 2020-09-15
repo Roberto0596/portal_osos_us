@@ -48,7 +48,7 @@ class DebitController extends Controller
                     "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
                     "method" => $value->payment_method,
                     "debitId" => $value->id,
-                    "id_order" => $value->id_order              
+                    "id_order" => $value->id_order,
                 ]);
             }
         }
