@@ -15,19 +15,27 @@ class DocumentController extends Controller
     return view('AdminPanel.document.index'); 
    }
 
-    public function show()
+    public function show(Request $request)
     {     
-        $alums_list = DB::table('document')->distinct()->get(['alumn_id']);
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $alums_list = User::all();
+
+        if($alums_list) {
+            $alums_list->skip($start)->take($length);
+        } else {
+            $alums_list = User::skip($start)->take($length);
+        }
 
         $res = [ "data" => []];      
 
         foreach($alums_list as $key => $value)
         {
-            $alumn = User::find($value->alumn_id);
-            $countSuccess = Document::where([['alumn_id',$value->alumn_id],["status", 2]])->get()->count();
-            $querySicoes = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno);           
+            $alumn = User::find($value["id"]);
+            $countSuccess = Document::where([['alumn_id',$value["id"]],["status", 2]])->get()->count();
+            $querySicoes = selectSicoes("Alumno","AlumnoId",$alumn["id_alumno"]);           
 
-            $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value->alumn_id)->get();
+            $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->get();
 
             array_push( $res["data"],[
                 "#"         => (count($alums_list)-($key+1)+1),
