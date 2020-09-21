@@ -19,13 +19,13 @@ class DocumentController extends Controller
     {     
         $start = $request->get('start');
         $length = $request->get('length');
-        $alums_list = User::all();
+        $alums_list = User::skip($start)->take($length);
 
-        if($alums_list) {
-            $alums_list->skip($start)->take($length);
-        } else {
-            $alums_list = User::skip($start)->take($length);
-        }
+        // if($alums_list) {
+        //     $alums_list->skip($start)->take($length);
+        // } else {
+        //     $alums_list = User::skip($start)->take($length);
+        // }
 
         $res = [ "data" => []];      
 
