@@ -29,7 +29,7 @@ class DocumentController extends Controller
                 $countSuccess = Document::where([['alumn_id',$value["id"]],["status", 2]])->get()->count();
                 $querySicoes = selectSicoes("Alumno","AlumnoId",$value["id_alumno"]);           
 
-                $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where([['alumn_id',$value["id"],["type",1]]])->get();
+                $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->where("document.type",1)->get();
 
                 array_push( $res["data"],[
                     "#"         => ($key+1),
