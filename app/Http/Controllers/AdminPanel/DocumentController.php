@@ -32,22 +32,20 @@ class DocumentController extends Controller
         foreach($alums_list as $key => $value)
         {
             try {
-                $alumn = User::find($value["id"]);
                 $countSuccess = Document::where([['alumn_id',$value["id"]],["status", 2]])->get()->count();
-                $querySicoes = selectSicoes("Alumno","AlumnoId",$alumn["id_alumno"]);           
+                $querySicoes = selectSicoes("Alumno","AlumnoId",$value["id_alumno"]);           
 
                 $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->get();
 
                 array_push( $res["data"],[
                     "#"         => (count($alums_list)-($key+1)+1),
                     "Matricula" => $querySicoes[0]["Matricula"],
-                    "Alumno"    => $alumn->name." ".$alumn->lastname,
+                    "Alumno"    => $value["name"]." ".$value["lastname"],
                     "files"     => json_encode($files),
                     "countFiles"=> count($files),
                     "count"     => $countSuccess
                 ]);  
             } catch(\Exception $e) {
-                dd($e);
             }            
         }
         
