@@ -19,7 +19,7 @@ class DocumentController extends Controller
     {     
         $start = $request->get('start');
         $length = $request->get('length');
-        $data = User::skip($start)->take($length);
+        $data = User::skip($start)->take($length)->get();
 
         // if($data) {
         //     $data->skip($start)->take($length);
