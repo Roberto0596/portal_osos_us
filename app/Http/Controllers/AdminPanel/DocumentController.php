@@ -19,13 +19,7 @@ class DocumentController extends Controller
     {     
         $start = $request->get('start');
         $length = $request->get('length');
-        $data = User::skip($start)->take($length)->get();
-
-        // if($data) {
-        //     $data->skip($start)->take($length);
-        // } else {
-        //     $data = User::skip($start)->take($length);
-        // }
+        $data = User::skip($start)->take($length)->orderByDesc('id')->get();
 
         $res = [ "data" => []];      
 
@@ -38,7 +32,7 @@ class DocumentController extends Controller
                 $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->get();
 
                 array_push( $res["data"],[
-                    "#"         => (count($data)-($key+1)+1),
+                    "#"         => ($key+1),
                     "Matricula" => $querySicoes[0]["Matricula"],
                     "Alumno"    => $value["name"]." ".$value["lastname"],
                     "files"     => json_encode($files),
