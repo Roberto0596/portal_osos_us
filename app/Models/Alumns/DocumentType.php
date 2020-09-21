@@ -16,8 +16,13 @@ class DocumentType extends Model
         'updated_at',
     ];
 
-    public function Document()
+    // public function DocumentType()
+    // {
+    //     return $this->belongsTo('App\Models\Alumns\Document','id','document_type_id');
+    // }
+
+     public function DocumentType()
     {
-        return $this->belongsTo('App\Models\Alumns\Document');
+        return $this->hasOne('App\Models\Alumns\Document');
     }
 }

@@ -79,121 +79,28 @@
   
         </div>
           
-          <div class="modal-body">
-
-
-            
+          <div class="modal-body">           
                 
-              <div class="row">
-  
-               
+              <div class="row">             
   
                 <div class="col-md-12">
   
                   <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">
-
-
-
                   
-                    <div class="row"  style="margin-top: 20px">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Nombre del documento</th>
+                          <th>Ver</th>
+                          <th>Modificar</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbody-documents">
+                        
+                      </tbody>
 
-                       <div  class="col-md-4">
-                          <h5>Acta de Naciemiento</h5>
-                       </div>
+                    </table>
 
-                       <div class="col-md-4">
-                          <button type="button" disabled id="1" class="btn btn-danger custom ">
-                            <i class='fa fa-file' title='Sin Validar'></i></button>
-                       </div>
-
-                       <div  class="col-md-4">
-                          <input type="checkbox" class="switch" id="switch1" data-width="150"  data-toggle="toggle" data-on="Aprobado" 
-                          data-off="Sin Aprobar" disabled data-onstyle="success" data-offstyle="default">
-                       </div>
-                       
-                    </div>
-
-
-
-                    <div class="row" style="margin-top: 20px">
-
-                        <div class="col-md-4">
-                          <h5>Certificado Bachillerato</h5>
-                        </div>
-
-                        <div class="col-md-4">
-                          <button type="button" id="2" disabled class="btn btn-danger custom">
-                            <i class='fa fa-file' title='Sin Validar'></i></button>
-                        </div>
-
-                        <div  class="col-md-4">
-                          <input type="checkbox" class="switch" id="switch2" data-width="150"  data-toggle="toggle" data-on="Aprobado" 
-                          data-off="Sin Aprobar" disabled data-onstyle="success" data-offstyle="default">
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="row" style="margin-top: 20px">
-
-                      <div class="col-md-4">
-                        <h5>Curp</h5>
-                      </div>
-
-                      <div class="col-md-4">
-                        <button type="button" id="3" disabled class="btn btn-danger custom">
-                            <i class='fa fa-file' title='Sin Validar'></i></button>
-                      </div>
-
-                      <div  class="col-md-4">
-                        <input type="checkbox" class="switch" id="switch3" data-width="150"  data-toggle="toggle" data-on="Aprobado" 
-                        data-off="Sin Aprobar" disabled data-onstyle="success" data-offstyle="default">
-                      </div>
-
-                    </div>
-
-
-                    <div class="row" style="margin-top: 20px">
-
-                      <div class="col-md-4">
-                        <h5>No.Seguro Social</h5>
-                      </div>
-
-                      <div class="col-md-4">
-                        <button type="button" id="4" disabled class="btn btn-danger custom">
-                            <i class='fa fa-file' title='Sin Validar'></i></button>
-                      </div>
-
-                      <div  class="col-md-4">
-                        <input type="checkbox" class="switch" id="switch4" data-width="150"  data-toggle="toggle" data-on="Aprobado" 
-                        data-off="Sin Aprobar" disabled data-onstyle="success" data-offstyle="default">
-                      </div>
-
-                    </div>
-
-
-
-                    <div class="row" style="margin-top: 20px">
-
-                      <div class="col-md-4">
-                        <h5>Fotografía</h5>
-                      </div>
-
-                      <div class="col-md-4">
-                        <button type="button" id="5" disabled class="btn btn-danger custom">
-                            <i class='fa fa-file' title='Sin Validar'></i></button>
-                      </div>
-
-                      <div  class="col-md-4">
-                        <input type="checkbox"  class="switch"  id="switch5" data-width="150"  data-toggle="toggle" data-on="Aprobado" 
-                        data-off="Sin Aprobar" disabled data-onstyle="success" data-offstyle="default">
-                      </div>
-
-                    </div>
-
-
-  
                 </div>
   
               </div>

@@ -1,6 +1,5 @@
-
-function loadDatatable(){ 
-    var token = $("#token").val();
+function loadDatatable() { 
+  var token = $("#token").val();
   var route = "/admin/documents/show";
   $('.tableDocuments tbody').remove();
   $(".tableDocuments").dataTable({
@@ -69,103 +68,77 @@ function loadDatatable(){
           }
       }
   });
-  
-  
-    $(".tableDocuments tbody").on("click","button.ShowFiles",function()
-      {
-  
-       console.log("hola");
-        var files = $(this).attr("files");
-        var decodedData = JSON.parse(files);
-  
-        
-  
-        decodedData.forEach( file => {
-  
-          $("#" + file["document_type_id"]).attr("disabled", false);
-  
-          $("#switch" + file["document_type_id"]).attr("disabled", false);
-  
-          if(file["status"]  === 2   || file["status"]  == 2){
-            $("#switch" + file["document_type_id"]).bootstrapToggle('on')
-          }
-  
-         
-          $("#" + file["document_type_id"]).click(function(){
-            window.open(file["route"],"_blank");
-          });
-  
-          $("#switch" + file["document_type_id"]).attr("document", file["id"]);
-          $("#switch" + file["document_type_id"]).attr("status", file["status"]);
-  
-  
-      });
-  
-          
-        
-  });
-  
-  }
-  
-  
-  
-  $(".switch").change(function(){  
-  
-    var document_id = $(this).attr("document");
     
-      if( document_id  != undefined){
-            var route = '/admin/document/update-status';
-            var status = $(this).attr("status");
-  
-            // console.log(status + "status");
-            var document_id = $(this).attr("document");
-            var token = $('#tokenModal').val();
-            var data = new FormData();
-  
-            let value = (status == 1 ) ? 2 : 1;
-  
-            data.append('document_id', document_id);
-            data.append('value', value);
-  
-            $.ajax({
-              url:route,
-              headers:{'X-CSRF-TOKEN': token},
-              method:'POST',
-              data:data,
-              cache:false,
-              contentType:false,
-              processData:false,
-              success:function(response)
-              {
-                if(response === 'ok'){
-                  Swal.fire(
-                    'Listo!',
-                    'Estado de documento actualizado',
-                    'success',
-                  );
-                }else{
-                  Swal.fire(
-                    'Error!',
-                    'No se pudo actualizar el estado del documento',
-                    'error',
-                  );
-                }
-              }
-                 
-            });
-            $(this).attr("document",undefined);
+  $(".tableDocuments tbody").on("click","button.ShowFiles",function()
+  {
+      $("#tbody-documents").empty()
+      var files = $(this).attr("files");
+      var decodedData = JSON.parse(files);      
+      var collection = "";
+      decodedData.forEach( file => {
+        var res = '<tr><td>'+file.name+'</td>'+
+          '<td><a href="'+file.route+'" target="_blank" class="btn btn-danger custom">';
+        if (file.status  === 2   || file.status == 2) {
+          res += '<i class="fa fa-file" title="Probado"></i></a>';
+        } else {
+          res += '<i class="fa fa-file" title="No Probado"></i></a>';
         }
-              });
+        res += '</td><td>';
+        if (file.status  === 2   || file.status == 2) {
+          res += '<input class="toggle-bootstrap" type="checkbox" data-width="150"  data-toggle="toggle" data-on="Aprobado" data-off="Sin Aprobar" checked data-onstyle="success" data-offstyle="default" document = "'+file.id+'" status = "'+file.status+'">';
+        } else {
+          res += '<input class="toggle-bootstrap" type="checkbox" data-width="150"  data-toggle="toggle" data-on="Aprobado" data-off="Sin Aprobar" data-onstyle="success" data-offstyle="default" document = "'+file.id+'" status = "'+file.status+'"';
+        }            
+        res += '</td></tr>';
+        collection += res;
+    }); 
+    $("#tbody-documents").append(collection);
+    $(".toggle-bootstrap").bootstrapToggle(); 
+    $(".toggle-bootstrap").change(function(){  
+      var document_id = $(this).attr("document");    
+      var route = '/admin/document/update-status';
+      var status = $(this).attr("status");
+      var token = $('#tokenModal').val();
+      var data = new FormData();
+      let value = (status == 1 ) ? 2 : 1;
+
+      data.append('document_id', document_id);
+      data.append('value', value);
+
+      $.ajax({
+        url:route,
+        headers:{'X-CSRF-TOKEN': token},
+        method:'POST',
+        data:data,
+        cache:false,
+        contentType:false,
+        processData:false,
+        success:function(response)
+        {
+          if(response === 'ok'){
+            Swal.fire(
+              'Listo!',
+              'Estado de documento actualizado',
+              'success',
+            );
+          }else{
+            Swal.fire(
+              'Error!',
+              'No se pudo actualizar el estado del documento',
+              'error',
+            );
+          }
+        }                 
+      });
+    }); 
+  });  
+}
     
   
-  $(document).ready(function(){
+$(document).ready(function(){
     loadDatatable();
-  })
+})
   
-  $("#modalDocuments").on('hidden.bs.modal', function () {
-  loadDatatable();
-  
-    
-   // table.draw("full-reset");
-  
-  });
+$("#modalDocuments").on('hidden.bs.modal', function () {
+  loadDatatable();  
+});
