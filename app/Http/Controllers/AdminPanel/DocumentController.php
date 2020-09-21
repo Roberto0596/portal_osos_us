@@ -19,17 +19,17 @@ class DocumentController extends Controller
     {     
         $start = $request->get('start');
         $length = $request->get('length');
-        $alums_list = User::skip($start)->take($length);
+        $data = User::skip($start)->take($length);
 
-        // if($alums_list) {
-        //     $alums_list->skip($start)->take($length);
+        // if($data) {
+        //     $data->skip($start)->take($length);
         // } else {
-        //     $alums_list = User::skip($start)->take($length);
+        //     $data = User::skip($start)->take($length);
         // }
 
         $res = [ "data" => []];      
 
-        foreach($alums_list as $key => $value)
+        foreach($data as $key => $value)
         {
             try {
                 $countSuccess = Document::where([['alumn_id',$value["id"]],["status", 2]])->get()->count();
@@ -38,7 +38,7 @@ class DocumentController extends Controller
                 $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->get();
 
                 array_push( $res["data"],[
-                    "#"         => (count($alums_list)-($key+1)+1),
+                    "#"         => (count($data)-($key+1)+1),
                     "Matricula" => $querySicoes[0]["Matricula"],
                     "Alumno"    => $value["name"]." ".$value["lastname"],
                     "files"     => json_encode($files),
