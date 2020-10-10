@@ -6,6 +6,7 @@ function loadDatatable() {
       "destroy": true,
       "processing":true,
       "responsive": true,
+      stateSave: true,
       "ajax":
       {
           url: route,
@@ -143,7 +144,7 @@ function loadDatatable() {
   
 $(document).ready(function(){
     loadDatatable();
-})
+});
   
 $("#modalDocuments").on('hidden.bs.modal', function () {
   loadDatatable();  
