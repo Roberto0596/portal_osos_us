@@ -27,7 +27,8 @@ class DocumentController extends Controller
         if($filter) {
             $query = $query->where(function($query) use ($filter){
                 $query->orWhere('name', 'like', '%'. $filter .'%')
-                    ->orWhere('lastname', 'like', '%'. $filter . '%');
+                    ->orWhere('lastname', 'like', '%'. $filter . '%')
+                    ->orWhere('email', 'like', '%'. $filter . '%');
             });
             $filtered = $query->count();
         } else {
