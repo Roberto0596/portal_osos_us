@@ -45,7 +45,7 @@
                
                 @if(Auth::guard('alumn')->user()->inscripcion < 3 && getConfig()->open_inscription==1)
                 <li class="nav-item">
-                    <a href="{{route('alumn.form')}}" class="nav-link">
+                    <a href="{{isNoob(Auth::guard('alumn')->user()->id)}}" class="nav-link">
                         <i class="nav-icon fas fa-pen"></i>
                         <p>
                            {{ Auth::guard('alumn')->user()->id_alumno != null ?  'Reinscripción' : 'Inscripción'}}

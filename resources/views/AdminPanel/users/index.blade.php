@@ -18,13 +18,9 @@
 
         <div class="col-sm-6">
 
-          <ol class="breadcrumb float-sm-right">
-
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-
-            <li class="breadcrumb-item active"><a href="#">Usuarios</a></li>
-
-          </ol>
+          <div class="pull-right" style="float: right;">
+            <a href="{{route('admin.users.create')}}" class="btn btn-success"><i class="fa fa-user" aria-hidden="true"></i> Crear usuario</a>
+          </div>
 
         </div>
 
@@ -36,7 +32,7 @@
 
   <section class="content">
 
-    <div class="card">
+    <div class="card" id="card">
 
       <div class="card-body">
 

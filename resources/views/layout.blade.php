@@ -88,6 +88,7 @@
     </div>
     
     @yield('content')
+    
     <script>
         $(document).ready(function () 
         {

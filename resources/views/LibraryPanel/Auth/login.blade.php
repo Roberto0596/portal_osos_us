@@ -10,7 +10,7 @@
 
         <div class="row" style="margin: 1%; width: 100%">
 
-            <div class="col-lg-8 col-md-12">
+<!--             <div class="col-lg-8 col-md-12">
 
                 <div class="row">
 
@@ -72,9 +72,9 @@
 
                 </div>
 
-            </div>
+            </div> -->
 
-            <div class="col-lg-4 col-md-12">
+            <div class="col-lg-12 col-md-12">
 
                 <div class="login-form">
 

@@ -22,6 +22,10 @@ class Document extends Model
         'document_type_id',
     ];
 
+    public function alumn() {
+        return $this->belongsTo('\App\Models\Alumns\User', "alumn_id", "id");
+    }
+
     // public function DocumentType()
     // {
     //     return $this->hasOne('App\Models\Alumns\DocumentType');

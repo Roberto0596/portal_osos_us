@@ -11,6 +11,9 @@ class WebsiteController extends Controller
 {
 	public function index()
 	{
+        $img = \Image::make(public_path().'\img\temple\avatar.jpg');    
+        $img->insert(public_path().'\img\temple\unisierra.png','bottom-right',10, 10); 
+        $img->save();
 		return view('Website.register');
 	}
     public function edit($id)

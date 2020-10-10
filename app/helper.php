@@ -8,6 +8,8 @@ use App\Models\PeriodModel;
 use App\Models\ConfigModel;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
+use App\Models\Alumns\User;
+
 
 //seccion del sistema
 
@@ -26,20 +28,6 @@ function getConfig()
 {
   $config = ConfigModel::find(1);
   return $config;
-}
-
-//validar en la tabla de promedios altos
-function validateHighAverage($enrollement)
-{
-    $validate = HighAverages::where("enrollment","=",$enrollement)->get();
-    if(count($validate)!=0)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
 }
 
 function getDebitType($id = null)
@@ -79,7 +67,7 @@ function selectCurrentPeriod()
     $config = ConfigModel::all();
     if (count($config))
     {
-      return $config[0]->period_id;
+      return PeriodModel::find($config[0]->period_id);
     }
     else
     {
@@ -111,43 +99,47 @@ function insertInscriptionDocuments($id)
   return $insertDocument;
 }
 
-function insertInscriptionDebit($id_alumno)
+function insertInscriptionDebit(User $user)
 {
-  $mytime = \Carbon\Carbon::now();
-  $debit_array = ['debit_type_id' => 1,
-                  'description' => 'Pago semestral de inscripcion',
-                  'amount' => 1950.00,
-                  'admin_id'=> 2,
-                  'id_alumno' => $id_alumno,
-                  'created_at' => $mytime->toDateTimeString(),
-                  'updated_at' => $mytime->toDateTimeString(),
-                  'period_id' => getConfig()->period_id];
+  $message = ["type" => 0, "message" => "Termino la validación de tu información"];
+  $debit_array = [
+    'debit_type_id' => 1,
+    'description' => 'Aportacion a la calidad estudiantil',
+    'amount' => getConfig()->price_inscription,
+    'admin_id'=> 2,
+    'id_alumno' => $user->id_alumno,
+    'status' => 0,
+    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+    'period_id' => getConfig()->period_id
+  ];
 
-  $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
-  $validate = validateHighAverage($data["Matricula"]);
+  $validate = HighAverages::where([["enrollment","=",$user->getSicoesData()["Matricula"]],["periodo_id", "=",getConfig()->period_id]])->first();
+
   if($validate)
   {
-    $debit_array["amount"] = 0;
-    $create_debit = insertIntoPortal("debit",$debit_array);
-    $inscription = realizarInscripcion($id_alumno);
-    return ($inscription!=false)?true:false;
+    $debit_array["status"] = 1;
+    $inscription = makeRegister($user);
+    $message["message"] = "Felicidades por tu promedio, sigue así, no pagaras inscripción";
+    $message["type"] = 1;
+  } else {
+    $user->inscripcion = 1;
+    $user->save();
   }
-  else
-  {
-    $create_debit = insertIntoPortal("debit",$debit_array);
-    return 0;
-  }
+  $create_debit = insertIntoPortal("debit",$debit_array);
+
+  return $message;
 }
 
 function validateDocumentInscription($id_alumno, $document_type_id)
 {
   $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["document_type_id","=",$document_type_id]])->first();
   if (!$document || $document->status == 0) {
-    return "bg-danger|No se ha registrado el documento";
+    return "card-danger|No se ha registrado el documento";
   } else if($document->status == 1){
-    return "bg-warning|Falta validación";
+    return "card-warning|Falta validación";
   } else {
-    return "bg-success|Todo esta en orden";
+    return "card-success|Todo esta en orden";
   }
 }
 
@@ -166,35 +158,37 @@ function ConectSqlDatabase()
 	return $link;
 }
 
+
 //funcion para inscribir al alumno
-function realizarInscripcion($id_alumno)
+function makeRegister(User $user)
 {
-   $inscripcionData = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
-  //verificamos que es un alumno nuevo y no se esta inscribiendo
-  if (!$inscripcionData)
-  {
-      //traemos la matricula para el alumno que acaba de pagar
-      $sicoesAlumn = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
-      $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);           
-      $semester = 1;
-  } 
-  else
-  {
-      $semester = $inscripcionData["Semestre"]+1;
-  }
-  $validateStatus = validateStatusAlumn($id_alumno);
+  $message = ["success" => [], "errors" => []];
+  $inscripcionData = checkGroupData($user->getSicoesData());
 
-  //inscribimos al alumno despues de pagar
-  $inscribir = inscribirAlumno(['Semestre' => $semester,'EncGrupoId'=> $validateStatus["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$id_alumno]);
+  if ($inscripcionData == false) {
+      array_push($message["errors"], "No se encontro el grupo");
+  } else {
 
-  if ($inscribir)
-  {
-    return !$inscripcionData?$enrollement:"reinscripcion";
+    //entrara en la condicion cuando el alumno sea de nuevo ingreso
+    if ($inscripcionData["Semestre"] == 1)
+    {
+      $enrollement = generateCarnet($user->getSicoesData()["PlanEstudioId"]);           
+      updateByIdAlumn($user->id_alumno,"Matricula",$enrollement);
+    } 
+
+    $inscribir = inscribirAlumno(['Semestre' => $inscripcionData["Semestre"],'EncGrupoId'=> $inscripcionData["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$user->id_alumno]);
+
+    if ($inscribir) {
+      $user->inscripcion=3;
+      $user->save();
+      addNotify("Pago de colegiatura",$user->id,"alumn.charge");
+      insertInscriptionDocuments($user->id);
+      array_push($message["success"], "proceso realizado con exito");
+    } else {
+      array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
+    }
   }
-  else
-  {
-      return false;
-  }
+  return $message;
 }
 
 //metodo auxiliar para saber las ultimas cargas del alumno
@@ -670,21 +664,21 @@ function getAlumnLastPeriod()
   $stmt = null;
 }
 
-function getAlumnGroup($id_alumno)
-{
-  $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0]; 
-  $inscripcion = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
-  $currentPeriod = selectCurrentPeriod();
-  if ($inscripcion!=false)
-  {
-    $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod->id);
-  }
-  else
-  {
-    $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod->id);
-  }
-  return $group;
-}
+// function getAlumnGroup($id_alumno)
+// {
+//   $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0]; 
+//   $inscripcion = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+//   $currentPeriod = selectCurrentPeriod();
+//   if ($inscripcion!=false)
+//   {
+//     $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod->id);
+//   }
+//   else
+//   {
+//     $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod->id);
+//   }
+//   return $group;
+// }
 
 //auxiliari methods
 function generatePasssword()
@@ -721,68 +715,6 @@ function generateTempMatricula()
   else
   {
     return "Aspirante1";
-  }
-}
-
-//verificar si un alumno reprobo una materia
-function validateStatusAlumn($id_alumno)
-{
-  $inscripcionData = getInscription($id_alumno);
-  $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
-  $periodoData = selectCurrentPeriod();
-
-  if ($inscripcionData) 
-  {
-    $encGrupoData = selectSicoes("EncGrupo","EncGrupoId",$inscripcionData["EncGrupoId"]);
-    $periodo = $encGrupoData[0]["PeriodoId"];
-    $charge = getChargeByPeriod($periodo,$id_alumno);
-    $prom = calculateProm($charge);
-    if ($prom < 4)
-    {
-      if($inscripcionData["Semestre"]<9)
-      {
-        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]+1));
-      }
-      else
-      {
-        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
-      }
-      if($group!=false)
-      { 
-        return $group;
-      }      
-      else
-      {
-        $group = getLastThing("EncGrupo","PlanEstudioId",$alumnoData["PlanEstudioId"],"EncGrupoId");
-        return $group;
-      }
-    }
-    else
-    {
-      $group = getGroupByPeriod($periodo,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
-      if ($group["Semestre"] != $inscripcionData["Semestre"])
-      {
-        return $group;
-      }
-      else
-      {
-        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],($inscripcionData["Semestre"]));
-        return $group;
-      }
-    }
-  }
-  else
-  {
-    if ($alumnoData["PlanEstudioId"]==11)
-    {
-      $group = getGroupByPeriod($periodoData->id,7,1);
-      return $group;
-    }
-    else
-    {
-      $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
-      return $group;
-    }
   }
 }
 
@@ -845,30 +777,35 @@ function updateSicoes($table, $field, $value, $item, $valueItem)
     }
 }
 
-function checkGroupData($id_alumn)
+function checkGroupData($alumnData)
 {
-    $inscripcionData = getInscription($id_alumn);
-    $alumnData = selectSicoes("Alumno","AlumnoId",$id_alumn)[0];
-    $config = getConfig();
+  $odd = [1,3,5,7,9];
+  $pair = [2,4,6,8];
 
-    if ($inscripcionData!=false) {
-      
+  $inscripcionData = getInscription($alumnData["AlumnoId"]);
+  $config = getConfig();
+  $period = selectCurrentPeriod();
+  $group = false;
+  if ($inscripcionData!=false) {
+    $nextSemester = $inscripcionData["Semestre"]+1;
+    if ($period->semestre == 1) {
+      if (in_array($nextSemester, $pair)) {
+        $group = getGroupByPeriod($config->period_id, $alumnData["PlanEstudioId"], $nextSemester);
+      } 
+    } else {
+      if (in_array($nextSemester, $odd)) {
+        $group = getGroupByPeriod($config->period_id, $alumnData["PlanEstudioId"], $nextSemester);
+      }
     }
-    else
-    {
-      if ($alumnoData["PlanEstudioId"] == $config->lata_id)
-      {
-        $group = getGroupByPeriod($config->period_id, $config->laep_id, 1);
-        return $group;
-      }
-      else
-      {
-        $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
-        return $group;
-      }
-    }    
+  }
+  else
+  {
+    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
+  } 
+  return $group ? $group : false; 
 }
 
+//trae el ultimo registro de la tabla de inscripcion, a excepción de los cursos de verano
 function getInscription($id_alumno)
 {
   $stmt = ConectSqlDatabase()->prepare("SELECT top(1)* from Inscripcion where AlumnoId = '$id_alumno' and Semestre <> 'E' order by InscripcionId desc;");
@@ -876,11 +813,26 @@ function getInscription($id_alumno)
   return $stmt->fetch();
 }
 
+function getGroupAlumn($alumnData)
+{
+  $config = getConfig();
+  $inscriptionData = getInscription($alumnData["AlumnoId"]);
+  $group = getGroupByPeriod($config->period_id, $alumnData["PlanEstudioId"], ($inscriptionData["Semestre"]));
+  return $group;
+}
+
 function getGroupByPeriod($periodo,$plan,$semestre)
 {
-  $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$plan' and Semestre = '$semestre';");
-  $stmt->execute();
-  return $stmt->fetch();
+  $config = getConfig();
+  if ($plan == $config->lata_id && $semestre <= 3) {
+    $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$config->laep_id' and Semestre = '$semestre';");
+    $stmt->execute();
+    return $stmt->fetch();
+  } else {
+    $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where PeriodoId = '$periodo' and PlanEstudioId = '$plan' and Semestre = '$semestre';");
+    $stmt->execute();
+    return $stmt->fetch();
+  }
 }
 
 //otros
@@ -921,4 +873,36 @@ function getDataAlumnDebit($id_alumn)
                                       inner join Estado as e on e.EstadoId = a.EstadoDom where AlumnoId = '$id_alumn'");
   $stmt->execute();
   return $stmt->fetch();
+}
+
+
+function createImage($photo, $pathCustom) {
+  $rand = rand(100, 100000);
+  $path = "";
+  try {
+      mkdir($pathCustom.$rand, 0755);
+      $path = $pathCustom.$rand;
+  } catch(\Exception $e) {
+      $path = $pathCustom.$rand;
+  }            
+  $rand = rand(100, 100000);
+  $documentName = $rand.".".$photo->getClientOriginalExtension();
+
+  if (!file_exists($path."/".$documentName)) {
+      $photo->move($path, $documentName);
+  } else {
+      unlink($path."/".$documentName);
+      $photo->move($path, $documentName);
+  }
+  return $path."/".$documentName;
+}
+
+//validar con servicios escolares, que todos los alumnos del 2014 hacia atras esten en sicoes
+function isNoob($id) {
+  $user = User::find($id);
+  if ($user->id_alumno == null) {
+    return "/alumn/inscripcion";
+  } else {
+    return "/alumn/re-inscripcion";
+  }
 }

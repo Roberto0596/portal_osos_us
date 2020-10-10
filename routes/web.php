@@ -130,10 +130,15 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 				Route::group(["middleware" => ["inscription"]
 				],function(){
 
-					Route::get('/form',[
-						'uses' => 'FormController@index', 
-						'as' => 'form'
-					]);
+					Route::get('/re-inscripcion',[
+						'uses' => 'FormController@indexForm', 
+						'as' => 'form.inscription'
+					])->middleware('notnoob');
+
+					Route::get('/inscripcion',[
+						'uses' => 'FormController@indexInscription', 
+						'as' => 'form.reinscription'
+					])->middleware('noob');
 			
 					Route::post('form/save', [
 						'uses' => 'FormController@save',
@@ -550,6 +555,26 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'users.show'
 			]);
 
+			Route::get('/users/create/user', [
+		        'uses' => 'UsersController@create', 
+		        'as' => 'users.create'
+			]);
+
+			Route::get('/users/edit/user/{id?}', [
+		        'uses' => 'UsersController@edit', 
+		        'as' => 'users.edit'
+			]);
+
+			Route::post('/users/create/save/{user?}', [
+		        'uses' => 'UsersController@save', 
+		        'as' => 'users.save'
+			]);
+
+			Route::get('/users/delete/{id?}', [
+		        'uses' => 'UsersController@delete', 
+		        'as' => 'users.delete'
+			]);
+
 			//alumnos
 			Route::get('/alumns', [
 		        'uses' => 'AlumnController@index', 
@@ -632,10 +657,17 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::post('/document/update-status',[
 				'uses'=>'DocumentController@updateStatus', 
 				'as' => 'updatestatus'
-			]);
+			]);		
 
+			Route::get('/settings', [
+		        'uses' => 'SettingsController@index', 
+		        'as' => 'settings'
+			]);	
 
-			
+			Route::post('/settings/save/{instance?}', [
+		        'uses' => 'SettingsController@save', 
+		        'as' => 'save.setting'
+			]);	
 
 		});
   	});

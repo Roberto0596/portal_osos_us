@@ -23,4 +23,29 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
     ];
+
+    public function document() {
+        return $this->hasMany('\App\Models\Alumns\Document', "alumn_id", "id");
+    }
+
+    public function getSicoesData() {
+        $data = selectSicoes("Alumno","AlumnoId",$this->id_alumno);
+
+        if ($data) {
+            return $data[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function getMatricula() {
+        $data = selectSicoes("Alumno","AlumnoId",$this->id_alumno);
+
+        if ($data) {
+            return $data[0]["Matricula"];
+        } else {
+            return null;
+        }
+
+    }
 }

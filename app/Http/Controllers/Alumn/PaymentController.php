@@ -101,52 +101,14 @@ class PaymentController extends Controller
           $value->save();
       }
 
-      $inscripcionData = getLastThing("Inscripcion","AlumnoId",$current_user->id_alumno,"InscripcionId");
+      $register = makeRegister($current_user);
 
-      //verificamos que es un alumno nuevo y no se esta inscribiendo
-      if (!$inscripcionData)
-      {
-        //traemos la matricula para el alumno que acaba de pagar
-        $enrollement = generateCarnet($sicoesAlumn["PlanEstudioId"]);
-        updateByIdAlumn($current_user->id_alumno,"Matricula",$enrollement);
-        // $current_user->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx";
-        $semester = 1;
-      } 
-      else
-      {
-        $semester = $inscripcionData["Semestre"]+1;
-      }
-      //traer el grupo
-      $validateStatus = validateStatusAlumn($current_user->id_alumno);
-
-      try
-      {
-        //inscribimos al alumno despues de pagar
-        $inscription = array('Semestre' => $semester,'EncGrupoId'=> $validateStatus["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$current_user->id_alumno);
-        //generamos los documentos de inscripcion
-        $insertDocuments = insertInscriptionDocuments($current_user->id);
-        if (inscribirAlumno($inscription))
-        {
-          $current_user->inscripcion = 3;
-          $current_user->save();
+      if (count($register["errors"]) == 0) {
           session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);
-          return redirect()->route("alumn.charge");
-        }
-        else
-        {
-          $current_user->inscripcion = 3;
-          $current_user->save();
-          session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
-          return redirect()->route("alumn.charge");
-        }
+      } else {
+          session()->flash("messages","success|El pago se realizo con exito, pero no se completo la inscripcion, reporta este problema a servicios escolares");
       }
-      catch(\Exception $e)
-      {
-        $current_user->inscripcion = 4;
-        $current_user->save();
-        session()->flash("messages","info|No pudimos inscribirte, pero no te preocupes, tu registro esta intacto solo debes notificar sobre este fallo");
-        return redirect()->route("alumn.home");
-      }
+      return redirect()->route("alumn.charge");
   }
 
   public function pay_cash(Request $request)

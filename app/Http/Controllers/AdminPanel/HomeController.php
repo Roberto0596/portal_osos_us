@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
 	public function index()
 	{
-		$period = PeriodModel::all();
-		return view('AdminPanel.home.index')->with(["period" => $period[0]]);
+		$config = getConfig();
+		return view('AdminPanel.home.index')->with(["config" => $config]);
     }
 
     public function savePeriod(Request $request, PeriodModel $period)

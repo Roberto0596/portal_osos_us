@@ -12,47 +12,47 @@ use DB;
 
 class FormController extends Controller
 {
-    public function index()
+    public function indexForm()
+    {
+        $estados = getItemClaveAndNamesFromTables("Estado");
+        $current_user = User::find(Auth::guard('alumn')->user()->id);
+
+        //validar si un alumno no esta dado de baja
+        if (validateDown($current_user->id_alumno)) 
+        {
+            $checkGroup = checkGroupData($current_user->getSicoesData());
+
+            if ($checkGroup=="error")
+            {
+                session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
+                return redirect()->back();
+            }
+            
+            if ($checkGroup==false || $checkGroup==null)
+            {
+                $checkGroup = ["Nombre" => "ninguno",
+                               "PeriodoId" => selectTable('period',null,null,1)[0]->clave,
+                               "Semestre" => "sin asignar"];
+            } 
+            return view('Alumn.form.index')->with(["estados" => $estados, 
+                                                "data" => $current_user->getSicoesData(), 
+                                                "currentId" => $current_user->id_alumno,
+                                                "group" => $checkGroup]);
+        }
+        else
+        {
+            session()->flash("messages","info|No podemos inscribirte en esta carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
+            return redirect()->back();
+        }                       
+    }
+
+    public function indexInscription()
     {
         $estados = getItemClaveAndNamesFromTables("Estado");
         $current_user = Auth::guard('alumn')->user();
-        try 
-        {
-            $data = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
 
-            //validar si un alumno no esta dado de baja
-            if (validateDown($current_user->id_alumno)) 
-            {
-                $checkGroup = checkGroupData($data["AlumnoId"]);
-
-                if ($checkGroup=="error")
-                {
-                    session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
-                    return redirect()->back();
-                }
-                
-                if ($checkGroup==false || $checkGroup==null)
-                {
-                    $checkGroup = ["Nombre" => "ninguno",
-                                   "PeriodoId" => selectTable('period',null,null,1)[0]->clave,
-                                   "Semestre" => "sin asignar"];
-                } 
-                return view('Alumn.form.index')->with(["estados" => $estados, 
-                                                    "data" => $data, 
-                                                    "currentId" => $current_user->id_alumno,
-                                                    "group" => $checkGroup]);
-            }
-            else
-            {
-                session()->flash("messages","info|No podemos inscribirte en esta carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
-                return redirect()->back();
-            }                       
-        } 
-        catch (\Exception $th) 
-        { 
-            return view('Alumn.form.inscription')->with(["estados"=> $estados, 
+        return view('Alumn.form.inscription')->with(["estados"=> $estados, 
                                                 "user"=>$current_user]);
-        }
     }
 
     public function saveInscription(Request $request)
@@ -138,12 +138,9 @@ class FormController extends Controller
         $insert = InsertAlumn($array);
         if ($insert!=false)
         {
-            //guardamos el nuevo correo del usuario
-            $current_user->inscripcion=1;
             $current_user->id_alumno = $insert;
             $current_user->save();
-            $mytime = \Carbon\Carbon::now();
-            $debit = insertInscriptionDebit($current_user->id_alumno);
+            $debit = insertInscriptionDebit($current_user);
             session()->flash("messages","success|Ya casi eres un alumno unisierra");
             return redirect()->route("alumn.payment");
         }       
@@ -158,9 +155,9 @@ class FormController extends Controller
     {       
         try
         {
-             $this->validate($request,[
-                'g-recaptcha-response' => 'required|recaptcha',
-            ]);
+            //  $this->validate($request,[
+            //     'g-recaptcha-response' => 'required|recaptcha',
+            // ]);
             $current_user = Auth::guard('alumn')->user();
             $currentId = $current_user->id_alumno;       
             $data = json_decode($request->input('data'));
@@ -171,25 +168,15 @@ class FormController extends Controller
                     updateByIdAlumn($currentId, $data[$i]->name, $data[$i]->value);
                 }
             }
-            $debit = insertInscriptionDebit($current_user->id_alumno);
+            $debit = insertInscriptionDebit($current_user);
 
-            //validacion para saber si es de promedio alto
-            if($debit!=0)
-            {
-                $current_user->inscripcion = 3;
-                $current_user->save();
-                //generamos los documentos de inscripcion
-      			$insertDocuments = insertInscriptionDocuments($current_user->id);
-                session()->flash("messages","success|Felicidades por tu promedio, no pagaras inscripción");
-                return redirect()->route("alumn.home");
+            if ($debit["type"] == 1) {
+                session()->flash("messages","success|".$debit["message"]);
+                return redirect()->route("alumn.charge");
             }
-            else
-            {
-                $current_user->inscripcion = 1;
-                $current_user->save();
-                session()->flash("messages","success|Se completo la verificación de tu información");
-                return redirect()->route("alumn.payment");
-            }
+
+            session()->flash("messages","success|".$debit["message"]);
+            return redirect()->route("alumn.payment");
         }
         catch(\Exception $e)
         {

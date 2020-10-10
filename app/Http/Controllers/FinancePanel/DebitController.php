@@ -80,48 +80,36 @@ class DebitController extends Controller
     {
         try 
         {
+            $message = "Datos guardados con exito";
             $array = $request->input();
             $debit = Debit::find($request->input("DebitId"));
-
             if (array_key_exists("EditStatus", $array))
             {
                 $debit->id_alumno = $request->input("EditId_alumno");
-                $debit->status = $request->input("EditStatus");
                 $debit->amount = $request->input("EditAmount");
 
-                if ($debit->debit_type_id == 1 && $debit->status == 1) 
+                if ($debit->debit_type_id == 1 && $debit->status == 0) 
                 {
                     $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
-                    $enrollement = realizarInscripcion($alumn->id_alumno);
-                    if ($enrollement!=false)
-                    {
-                        if ($enrollement!="reinscripcion") 
-                        {
-                            updateByIdAlumn($alumn->id_alumno,"Matricula",$enrollement);
-                            // $alumn->email = "a".str_replace("-","",$enrollement)."@unisierra.edu.mx"; 
-                        }
-                        $alumn->inscripcion=3;
-                        $alumn->save();
-                        addNotify("Pago de colegiatura",$alumn->id,"alumn.charge");
-                        //generamos los documentos de inscripcion
-                        insertInscriptionDocuments($alumn->id);
-                    }
-                    else
-                    {
-                        session()->flash("messages","error|No pudimos guardar los datos");
-                        return redirect()->back();
+                    $register = makeRegister($alumn);
+
+                    if (count($register["errors"]) == 0) {
+                        $message = $register["success"][0];
+                        $debit->status = $request->input("EditStatus");
+                    } else {
+                        $message = $register["errors"][0];
                     }
                 }
             }
 
             $debit->description = $request->input("EditDescription");
             $debit->save();
-            session()->flash("messages","success|Se guardó correctamente");
+            session()->flash("messages","success|".$message);
             return redirect()->back();
         } 
         catch (\Exception $th) 
         {
-           dd($th);
+            dd($th);
             session()->flash("messages","error|No pudimos guardar los datos");
             return redirect()->back();
         }        

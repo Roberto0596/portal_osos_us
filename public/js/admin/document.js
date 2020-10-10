@@ -2,8 +2,9 @@ function loadDatatable() {
   var token = $("#token").val();
   var route = "/admin/documents/show";
   $('.tableDocuments tbody').remove();
-  $(".tableDocuments").dataTable({
+  let table = $(".tableDocuments").DataTable({
       "destroy": true,
+      "processing":true,
       "responsive": true,
       "ajax":
       {
@@ -11,6 +12,7 @@ function loadDatatable() {
           headers:{'X-CSRF-TOKEN':token},
           type: "PUT",
       },
+      serverSide: true,
       "columns":[
               {"data": "#"},
               {"data": "Matricula"},
@@ -131,6 +133,10 @@ function loadDatatable() {
         }                 
       });
     }); 
+  });
+  table.on('click', 'tr', function () {
+    var data = table.row(this).data();
+    console.log(data);  
   });  
 }
     

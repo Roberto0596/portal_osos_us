@@ -160,7 +160,7 @@
 
         </div>
 
-        <div class="card collapsed-card">
+        <div class="card">
 
           <div class="card-header">
 
@@ -187,145 +187,180 @@
             @endphp
 
             <div class="row">
-            
-              <div class="col-md-4 col-sm-12">
 
-                <div class="small-box {{$acta[0]}}" style="color: white !important;">
+              <div class="col-md-3">
 
-                  <div class="inner">
+                <div class="card {{$acta[0]}} collapsed-card">
 
-                    <h3>Acta de nacimiento</h3>
+                  <div class="card-header">
 
-                    <p>{{$acta[1]}}</p>
+                    <h3 class="card-title" style="color:white !important">Acta de nacimiento</h3>
+
+                    <div class="card-tools">
+
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div class="icon">
+                  <div class="card-body" style="display: block;">
 
-                    <i class="fa fa-file"></i>
+                    <div class="btn-group" style="width: 100%">
+
+                      @if($acta[0] != 'card-success')
+                      <button data-toggle="modal" data-target="#modalDocumentos"  class="btn btn-default open-modal" document-type="1">Subir Acta <i class="fas fa-arrow-circle-right"></i></button> 
+                      @else
+                      <button class="btn btn-success">¡Gracias! <i class="fas fa-check"></i></button>
+                      @endif
+
+                    </div>
 
                   </div>
-
-                  @if($acta[0] != 'bg-success')
-
-                  <a data-toggle="modal" data-target="#modalDocumentos"  class="small-box-footer pointer-link open-modal" document-type="1">Subir <i class="fas fa-arrow-circle-right"></i></a>
-
-                  @endif
 
                 </div>
-                
+
               </div>
 
-              <div class="col-md-4 col-sm-12">
+              <div class="col-md-3">
 
-                <div class="small-box {{$fotografia[0]}}" style="color: white !important;">
+                <div class="card {{$fotografia[0]}} collapsed-card">
 
-                  <div class="inner">
+                  <div class="card-header">
 
-                    <h3>Fotografía</h3>
+                    <h3 class="card-title" style="color:white !important">Fotografía</h3>
 
-                    <p>{{$fotografia[1]}}</p>
+                    <div class="card-tools">
+
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div class="icon">
+                  <div class="card-body" style="display: block;">
 
-                    <i class="fa fa-file"></i>
+                    <div class="btn-group" style="width: 100%">
+
+                      @if($fotografia[0] != 'card-success')
+                      <button data-toggle="modal" data-target="#modalDocumentos"  class="btn btn-default open-modal" document-type="5">Subir foto <i class="fas fa-arrow-circle-right"></i></button> 
+                      @else
+                      <button class="btn btn-success">¡Gracias! <i class="fas fa-check"></i></button>
+                      @endif
+
+                    </div>
 
                   </div>
-
-                  @if($fotografia[0] != 'bg-success')
-
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="5">Subir <i class="fas fa-arrow-circle-right"></i></a>
-
-                  @endif
 
                 </div>
-                
+
               </div>
 
-              <div class="col-md-4 col-sm-12">
+              <div class="col-md-3">
 
-                <div class="small-box {{$certificado[0]}}" style="color: white !important;">
+                <div class="card {{$certificado[0]}} collapsed-card">
 
-                  <div class="inner">
+                  <div class="card-header">
 
-                    <h3>Certificado</h3>
+                    <h3 class="card-title" style="color:white !important">Certificado</h3>
 
-                    <p>{{$certificado[1]}}</p>
+                    <div class="card-tools">
+
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div class="icon">
+                  <div class="card-body" style="display: block;">
 
-                    <i class="fa fa-file"></i>
+                    <div class="btn-group" style="width: 100%">
+
+                      @if($certificado[0] != 'card-success')
+                      <button data-toggle="modal" data-target="#modalDocumentos"  class="btn btn-default open-modal" document-type="2">Subir certificado <i class="fas fa-arrow-circle-right"></i></button> 
+                      @else
+                      <button class="btn btn-success">¡Gracias! <i class="fas fa-check"></i></button>
+                      @endif
+
+                    </div>
 
                   </div>
-
-                  @if($certificado[0] != 'bg-success')
-
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="2">Subir <i class="fas fa-arrow-circle-right"></i></a>
-
-                  @endif
 
                 </div>
-                
+
               </div>
 
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-3">
 
-                <div class="small-box {{$curp[0]}}" style="color: white !important;">
+                <div class="card {{$curp[0]}} collapsed-card">
 
-                  <div class="inner">
+                  <div class="card-header">
 
-                    <h3>CURP</h3>
+                    <h3 class="card-title" style="color:white !important">CURP</h3>
 
-                    <p>{{$curp[1]}}</p>
+                    <div class="card-tools">
+
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div class="icon">
+                  <div class="card-body" style="display: block;">
 
-                    <i class="fa fa-file"></i>
+                    <div class="btn-group" style="width: 100%">
+
+                      @if($curp[0] != 'card-success')
+                      <button data-toggle="modal" data-target="#modalDocumentos"  class="btn btn-default open-modal" document-type="3">Subir CURP <i class="fas fa-arrow-circle-right"></i></button> 
+                      @else
+                      <button class="btn btn-success">¡Gracias! <i class="fas fa-check"></i></button>
+                      @endif
+
+                    </div>
 
                   </div>
-
-                  @if($curp[0] != 'bg-success')
-
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="3">Subir <i class="fas fa-arrow-circle-right"></i></a>
-
-                  @endif
 
                 </div>
-                
+
               </div>
 
-              <div class="col-md-6 col-sm-12">
+              <div class="col-md-3">
 
-                <div class="small-box {{$imss[0]}}" style="color: white !important;">
+                <div class="card {{$imss[0]}} collapsed-card">
 
-                  <div class="inner">
+                  <div class="card-header">
 
-                    <h3>IMSS</h3>
+                    <h3 class="card-title" style="color:white !important">IMSS</h3>
 
-                    <p>{{$imss[1]}}</p>
+                    <div class="card-tools">
+
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+
+                    </div>
 
                   </div>
 
-                  <div class="icon">
+                  <div class="card-body" style="display: block;">
 
-                    <i class="fa fa-file"></i>
+                    <div class="btn-group" style="width: 100%">
+
+                      @if($imss[0] != 'card-success')
+                      <button data-toggle="modal" data-target="#modalDocumentos" class="btn btn-default open-modal" document-type="4">Subir imss <i class="fas fa-arrow-circle-right"></i></button> 
+                      @else
+                      <button class="btn btn-success">¡Gracias! <i class="fas fa-check"></i></button>
+                      @endif
+
+                    </div>
 
                   </div>
-
-                  @if($imss[0] != 'bg-success')
-
-                  <a data-toggle="modal" data-target="#modalDocumentos" class="small-box-footer pointer-link open-modal" document-type="4">Subir <i class="fas fa-arrow-circle-right"></i></a>
-
-                  @endif
 
                 </div>
-                
+
               </div>
 
             </div>
@@ -402,7 +437,7 @@
 
                   <div class="row">
                     <div class="col-md-6">
-                      <button type="button" class="btn btn-danger" style="width: 100%;" data-dimiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+                      <button type="button" class="btn btn-danger" style="width: 100%;" data-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
                     </div> 
                     <div class="col-md-6">
                       <button class="btn btn-success" style="width: 100%;" type="submit"><i class="fas fa-check"></i> subir</button>
@@ -426,15 +461,6 @@
   </div>
 
 </div>
-
-<script type="text/javascript">
-  // $("#my-awesome-dropzo").dropzone({ 
-    // url: "/file/post",
-    // uploadMultiple: false,
-    // maxFiles: 1,
-    // acceptedFiles: "application/pd"
-  // });
-</script>
 
 <script src="{{ asset('js/alumn/pdf.js')}}"></script>
 

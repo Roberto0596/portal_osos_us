@@ -221,7 +221,7 @@ class PdfController extends Controller
         $path = "documentos/".$alumnData[0]["Matricula"];
         $document_type = DocumentType::find($rDocument);
 
-        if ($file->getClientOriginalExtension()!="pdf") {
+        if ($file->getClientOriginalExtension() != "pdf") {
             session()->flash("messages","warning|El documento no tiene el formato requerido");
             return redirect()->back();
         }
@@ -248,7 +248,7 @@ class PdfController extends Controller
         $document->description = "Documento de inscripción";
         $document->route = "/".$path."/".$documentName;
         $document->status = 1;
-        $document->PeriodoId = selectCurrentPeriod();
+        $document->PeriodoId = getConfig()->period_id;
         $document->alumn_id = current_user()->id;
         $document->type = 1;
         $document->document_type_id = $document_type->id;
