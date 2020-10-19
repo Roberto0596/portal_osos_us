@@ -23,6 +23,6 @@ class DocumentType extends Model
 
      public function DocumentType()
     {
-        return $this->hasOne('App\Models\Alumns\Document');
+        return $this->hasMany('App\Models\Alumns\Document', "id", "document_type_id");
     }
 }

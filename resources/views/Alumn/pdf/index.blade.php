@@ -69,6 +69,12 @@
 
             <li class="nav-item">
 
+              <a class="nav-link tap-change {{$aux == 2?'active':''}}" id="getDocument" data-toggle="tab" href="#getDocument-panel" role="tab" aria-controls="documents" aria-selected="true" data-value="2">Solicitar</a>
+
+            </li>
+
+            <li class="nav-item">
+
               <a class="nav-link {{$aux == 1?'active':''}} tap-change" id="document-inscription" data-toggle="tab" href="#inscription-panel" role="tab" aria-controls="documents_inscription" aria-selected="false" data-value="1">Cargar Documentos</a>
 
             </li>
@@ -108,6 +114,80 @@
               </thead>
 
             </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade show {{$aux == 2?'active':''}}" id="getDocument-panel" role="tabpanel" aria-labelledby="home-tab">
+
+        <div class="card">
+          
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Selecciona el documento que quieres solicitar</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            
+            <div class="row">
+
+              @php
+                $documents = getOfficialDocuments();
+              @endphp
+
+              @foreach($documents as $value)
+              
+                <div class="col-md-3">
+
+                  <div class="card card-success collapsed-card">
+
+                    <div class="card-header">
+
+                      <h3 class="card-title" style="color:white !important">{{ $value->name}} </h3>
+
+                      <div class="card-tools">
+
+                        <button type="submit" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                    <div class="card-body" style="display: block;">
+
+                      <div class="row">
+                        <div class="col-md-12 text-center">
+                          <h4>${{ number_format($value->cost,2) }}</h4>
+                        </div>
+                      </div>
+
+                      <form action="{{ route('alumn.pdf.getDocument', $value) }}" method="post" class="form-document">
+
+                        {{ csrf_field() }}
+
+                        <div class="btn-group" style="width: 100%">
+
+                            <button  class="btn btn-default btn-get-document">Solicitar <i class="fas fa-arrow-circle-right"></i></button> 
+
+                        </div>
+
+                      </form>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              @endforeach
+            </div>
 
           </div>
 

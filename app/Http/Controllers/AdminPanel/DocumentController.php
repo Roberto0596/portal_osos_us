@@ -18,6 +18,7 @@ class DocumentController extends Controller
     public function show(Request $request)
     {     
         $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
+        
         $start = $request->get('start');
         $length = $request->get('length');
 
@@ -65,8 +66,7 @@ class DocumentController extends Controller
             "recordsTotal" => User::count(),
             "recordsFiltered" => $filtered,
             "data" => $res
-        ]);  
-
+        ]);
     }
 
     public function updateStatus(Request $request)

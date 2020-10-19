@@ -16,28 +16,49 @@ class DebitController extends Controller
 		return view('FinancePanel.debit.index');
     }
 
-    //le agregamos los botones a la tabla y los datos
     public function showDebit(Request $request)
-    {
-        $current_user = Auth::guard("finance")->user();      
-        $res = [ "data" => []];
+    {      
+        $res = [];
 
-        //metemos a la sesion el modo en el que estaba
         if (session()->has('mode')) 
         {
             session()->forget('mode');
         }
-        session(["mode"=>$request->input('mode')]);
+        session([
+            "mode"=>[
+                "mode" => $request->input('mode'), 
+                "period" => $request->input('period'),
+                "concept" => $request->input('concept')
+            ]
+        ]);
 
-        $debits = Debit::where([["status","=",$request->input('mode')],["period_id","=",$request->input('period')]])->get();     
+        $filter = isset($request->get('search')['value']) && $request->get('search')  ?$request->get('search')['value']:false;
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $filtered = 0;
+        $query = Debit::where([["status","=",$request->input('mode')],["period_id","=",$request->input('period')]]);
+
+        if ($request->get('concept') != "all") {
+            $query->where("debit_type_id", $request->get('concept'));
+        }
+
+        if ($filter) {
+           $query = $query->where(function($query) use ($filter){
+                $query->orWhere('description', 'like', '%'. $filter .'%');
+            });
+           $filtered = $query->count();
+        } 
+        $filtered = $query->count();
+        $query->skip($start)->take($length)->get();
+        $debits = $query->get();
 
         foreach($debits as $key => $value)
         {
             if ($value->id_alumno != null) {
                 $alumn = getDataAlumnDebit($value->id_alumno);
-                array_push($res["data"],[
-                    "#" => (count($debits)-($key+1)+1),
-                    "Alumno" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"],
+                array_push($res,[
+                    "#" => ($key+1),
+                    "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
                     "Email" =>strtolower($alumn["Email"]),
                     "Descripción" => $value->description,
                     "Importe" => "$".number_format($value->amount,2),
@@ -49,28 +70,34 @@ class DebitController extends Controller
                     "method" => $value->payment_method,
                     "debitId" => $value->id,
                     "id_order" => $value->id_order,
+                    "debit_type_id" => $value->debit_type_id
                 ]);
             }
         }
-        return response()->json($res);
+        return response()->json([
+            "recordsTotal" => Debit::count(),
+            "recordsFiltered" => $filtered,
+            "data" => $res
+        ]);
     }
 
     //este metodo lo usamos con ajax para cargar los datos del adeudo para despues pasarlos al modal
 	public function seeDebit(Request $request) 
-	{
-       
+	{       
         $debit = Debit::find($request->input("DebitId"));
-        $alumn = selectTable("users", "id_alumno",$debit->id_alumno,"si");
+        $alumn = selectSicoes("Alumno","AlumnoId",$debit->id_alumno)[0];
         $data = array(
-            "concept"   =>getDebitType($debit->debit_type_id)->name,
-            "alumnName" =>$alumn->name." ".$alumn->lastname,
+            "concept"   => $debit->debitType->concept,
+            "alumnName" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
             'description'=>$debit->description,
             "amount"    =>$debit->amount,
             "debitId"   => $debit->id,
-            "alumnId" => $alumn->id_alumno,
-            "status"    => $debit->status
-                    
+            "alumnId" => $debit->id_alumno,
+            "status"    => $debit->status,
+            "id_order" => $debit->id_order, 
+            "method" => $debit->payment_method,
         );
+
         return response()->json($data);
     }
 
@@ -78,41 +105,48 @@ class DebitController extends Controller
     // sirve para editar un adeudo 
     public function update(Request $request)
     {
-        try 
-        {
-            $message = "Datos guardados con exito";
-            $array = $request->input();
-            $debit = Debit::find($request->input("DebitId"));
-            if (array_key_exists("EditStatus", $array))
-            {
-                $debit->id_alumno = $request->input("EditId_alumno");
-                $debit->amount = $request->input("EditAmount");
+        $array = $request->input();
+        $debit = Debit::find($request->input("debitId"));        
+        if ($debit) {
+            $debit->amount = $request->input("amount");
+            $debit->id_alumno = $request->input("id_alumno");
+            $debit->status = $request->get("status") == "on" ? 1 : 0;
+            $debit->description = $request->input("description");
+            $debit->save();
+            session()->flash("messages","success|Guardado correcto");
+            return redirect()->back(); 
+        } else {
+            session()->flash("messages","error|Guardado incorrecto");
+            return redirect()->back();
+        }      
+    }
 
-                if ($debit->debit_type_id == 1 && $debit->status == 0) 
-                {
-                    $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
-                    $register = makeRegister($alumn);
+    public function validateDebit(Request $request) {
+        $value = $request->get("verification") == "on" ? 1 : 0;
+        $debit = Debit::find($request->input('debit_id'));
 
-                    if (count($register["errors"]) == 0) {
-                        $message = $register["success"][0];
-                        $debit->status = $request->input("EditStatus");
-                    } else {
-                        $message = $register["errors"][0];
-                    }
+        if ($debit) {
+
+            if ($value == 1) {
+                $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
+                $register = makeRegister($alumn);
+                if (count($register["errors"]) == 0) {
+                    $message = $register["success"][0];
+                } else {
+                    $message = $register["errors"][0];
                 }
             }
 
-            $debit->description = $request->input("EditDescription");
+            $debit->status = $value;
             $debit->save();
-            session()->flash("messages","success|".$message);
+            session()->flash("messages", "info|Guardado correcto");
             return redirect()->back();
-        } 
-        catch (\Exception $th) 
-        {
-            dd($th);
-            session()->flash("messages","error|No pudimos guardar los datos");
+
+        } else {
+            session()->flash("messages", "error|No fue posible encontrar el adeudo");
             return redirect()->back();
-        }        
+        }
+        
     }
 
     //creamos un nuevo adeudos y se guarda el taba de debits

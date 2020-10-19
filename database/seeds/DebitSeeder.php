@@ -1,32 +1,30 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Alumns\DebitType;
 
 class DebitSeeder extends Seeder
 {
     public function run()
     {
-        if (! DB::table('debit_type')->count() ) 
-        {
-            DB::table('debit_type')->insert([
-                'concept' => 'Inscripción',
-            ]);
-            DB::table('debit_type')->insert([
-                'concept' => 'Danio Material',
-            ]);
-            DB::table('debit_type')->insert([
-                'concept' => 'Retrasos',
-            ]);
-            DB::table('debit_type')->insert([
-                'concept' => 'Robo',
-            ]);
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("<info>conceptos de pago creados created</info>");
+        $array = [
+            ["concept" => "Inscripción"], 
+            ["concept" => "Danio Material"], 
+            ["concept" => "Retrasos"], 
+            ["concept" => "Robo"], 
+            ["concept" => "Documento oficial"]
+        ];
+
+        foreach ($array as $key => $value) {
+            $select = DebitType::where("concept", "=", $value["concept"])->first();
+            if (!$select) {
+                $select = new DebitType();
+            }
+            $select->concept = $value["concept"];
+            $select->save();
         }
-        else
-        {
-        	$out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("<warning>nothing to Seeder</warning>");
-        }
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("<info>conceptos de pago creados created</info>");
     }
 }

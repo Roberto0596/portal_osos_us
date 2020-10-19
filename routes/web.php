@@ -78,6 +78,16 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'as' => 'cedula'
 				]);
 
+				Route::get('pdf/delete/document/{id?}',[
+					'uses'=>'PdfController@deleteDocument', 
+					'as' => 'delete.document'
+				]);
+
+				Route::post('pdf/getDocument/{documentType?}',[
+					'uses'=>'PdfController@getOfficialDocument', 
+					'as' => 'pdf.getDocument'
+				]);
+
 				Route::get('pdf/generar/{document?}',[
 					'uses'=>'PdfController@getGenerarConstancia', 
 					'as' => 'constancia'
@@ -306,6 +316,11 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 			Route::post('/debit/save', [
 		        'uses' => 'DebitController@save', 
 		        'as' => 'debit.save'
+			]);
+
+			Route::post('/debit/validate', [
+		        'uses' => 'DebitController@validateDebit', 
+		        'as' => 'debit.validate'
 			]);
 
 			//sirve para ver los detalles del pago

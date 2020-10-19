@@ -30,11 +30,12 @@ class PaymentController extends Controller
 
       //preparamos los datos.
       $tokenId = $request->input("conektaTokenId");
-      $current_user = User::find(Auth::guard("alumn")->user()->id);
+      $current_user = current_user();
       $sicoesAlumn = selectSicoes("alumno","alumnoid",$current_user->id_alumno)[0];
 
       //traer los conceptos que se deben del alumno
       $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
+      
       $debits = Debit::where($query)->get();
 
       $item_array = [];

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use App\Models\Alumns\DocumentType;
 class document_type extends Seeder
 {
     /**
@@ -11,50 +11,30 @@ class document_type extends Seeder
      */
     public function run()
     {
-        if (! DB::table('document_type')->count())
-        {
-            DB::table('document_type')->insert([
-                'name' => 'Acta de Nacimiento',
-                'created_at' => now()
-            ]);
+        $array = [
+            ["name" => "Acta de Nacimiento", "type" => 0, "cost" => null], 
+            ["name" => "Kardex o Constancia", "type" => 0, "cost" => null], 
+            ["name" => "CURP", "type" => 0, "cost" => null], 
+            ["name" => "IMSS", "type" => 0, "cost" => null], 
+            ["name" => "Fotografia", "type" => 0, "cost" => null],
+            ["name" => "Constancia de no adeudo", "type" => 0, "cost" => null],
+            ["name" => "Cedula", "type" => 0, "cost" => null],
+            ["name" => "Contancia de estudio", "type" => 1, "cost" => 35],
+            ["name" => "Kardex", "type" => 1, "cost" => 200]
+        ];
 
-            DB::table('document_type')->insert([
-                'name' => 'Kardex o Constancia',
-                'created_at' => now()
-            ]);
-
-            DB::table('document_type')->insert([
-                'name' => 'CURP',
-                'created_at' => now()
-            ]);
-
-            DB::table('document_type')->insert([
-                'name' => 'IMSS',
-                'created_at' => now()
-            ]);
-
-            DB::table('document_type')->insert([
-                'name' => 'Fotografia',
-                'created_at' => now()
-            ]);
-
-            DB::table('document_type')->insert([
-                'name' => 'Constancia de no adeudo',
-                'created_at' => now()
-            ]);
-
-            DB::table('document_type')->insert([
-                'name' => 'Cedula',
-                'created_at' => now()
-            ]);
-
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("<info>documents types created</info>");
+        foreach ($array as $key => $value) {
+            $select = DocumentType::where("name", "=", $value["name"])->first();
+            if (!$select) {
+                $select = new DocumentType();
+            }
+            $select->name = $value["name"];
+            $select->type = $value["type"];
+            $select->cost = $value["cost"];
+            $select->save();
         }
-        else
-        {
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("<warning>nothing to created</warning>");
-        }
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("<info>documents types created</info>");
     }
 }

@@ -13,6 +13,10 @@ use App\Models\Alumns\User;
 
 //seccion del sistema
 
+function getOfficialDocuments() {
+  return DocumentType::where("type", "=", 1)->get();
+}
+
 //agregar una nueva notificacion
 function addNotify($text,$id,$route)
 {
@@ -865,6 +869,8 @@ function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
     return $ruta;
 }
 
+
+//metodo para traer un join con los datos del alumno
 function getDataAlumnDebit($id_alumn)
 {
   $stmt = ConectSqlDatabase()->prepare("SELECT a.Matricula, a.Nombre, a.ApellidoPrimero, a.Email, a.Localidad, a.ApellidoSegundo, c.Nombre as nombreCarrera, e.Nombre as nombreEstado from Alumno as a

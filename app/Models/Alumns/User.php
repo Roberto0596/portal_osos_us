@@ -48,4 +48,8 @@ class User extends Authenticatable
         }
 
     }
+
+    public function debit() {
+        return $this->hasMany('\App\Models\Alumns\Debit', "id", "id_alumno");
+    }
 }

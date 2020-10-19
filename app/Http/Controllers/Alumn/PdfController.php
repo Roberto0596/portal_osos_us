@@ -18,38 +18,116 @@ class PdfController extends Controller
 
     public function showDocuments(Request $request)
     {
+        $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
+        $start = $request->get('start');
+        $length = $request->get('length');
         $current_user = current_user();
 
-        $res = [ "data" => []];
+        $query = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$current_user->id)->orderByDesc("document.id");
 
-        $documents = Document::where("alumn_id","=",$current_user->id)->get();
+        $total = $query->count();
+        $filtered = $query->count();
 
+        if ($filter) {
+            $query = $query->where(function($query) use ($filter){
+                $query->orWhere('document_type.name', 'like', '%'. $filter .'%')
+                    ->orWhere('document.description', 'like', '%'. $filter . '%')
+                    ->orWhere('document.PeriodoId', 'like', '%'. $filter . '%');
+            });
+            $filtered = $query->count();
+        }
+
+        $query->skip($start)->take($length)->get();
+
+        $documents = $query->get();
+        $res = [];
         foreach($documents as $key => $value)
         {
-            try {
-                $buttons="<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."' title='Imprimir'>
-                <i class='fa fa-file'></i></a>
-                </div>";
-            } catch(\Exception $e) {
-                $buttons="<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='".$value->route."' title='Imprimir'>
-                <i class='fa fa-file'></i></a>
-                </div>";
+            $buttons = "";
+            if ($value->payment == 0) {
+                $buttons .= "<div class='btn-group'><button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='".$value->id."'>
+                    <i class='fa fa-times'></i></button>
+                    </div>";
+            } else {
+                try {
+                    $buttons .= "<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."' title='Imprimir'>
+                    <i class='fa fa-file'></i></a>
+                    </div>";
+                } catch(\Exception $e) {
+                    $buttons .= "<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='".$value->route."' title='Imprimir'>
+                    <i class='fa fa-file'></i></a>
+                    </div>";
+                }
             }
 
-            $document_type = DocumentType::find($value->document_type_id);
             $period = PeriodModel::find($value->PeriodoId);
 
-            array_push($res["data"],[
-                (count($documents)-($key+1)+1),
-                $document_type->name,
-                $value->description,
-                $period->clave,
-                $value->created_at,
-                $buttons
+            array_push($res,[
+                "#" => ($key+1),
+                "Nombre" => $value->name,
+                "Descripción" => $value->description,
+                "Periodo" => $period->clave,
+                "Fecha de creacion" => $value->created_at,
+                "Acciones" => $buttons
             ]);
         }
 
-        return response()->json($res);
+        return response()->json([
+            "recordsTotal" => $total,
+            "recordsFiltered" => $filtered,
+            "data" => $res
+        ]);
+    }
+
+    public function getOfficialDocument(DocumentType $documentType) {
+        try {
+            if ($documentType->type == 1) {
+                $debit = new Debit();
+                $create_debit = [
+                    'debit_type_id' => 5,
+                    'description' => 'Documento oficial unisierra',
+                    'amount' => $documentType->cost,
+                    'admin_id'=> 2,
+                    'id_alumno' => current_user()->id_alumno,
+                    'status' => 0,
+                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'period_id' => getConfig()->period_id
+                ];
+
+                foreach ($create_debit as $key => $value) {
+                    $debit->$key = $value;
+                }
+
+                $debit->save();
+
+                if ($create_debit) {
+                    $document =  new Document();
+                    $document->description = 'Documento oficial unisierra';
+                    $document->route = ''; 
+                    $document->PeriodoId = getConfig()->period_id; 
+                    $document->alumn_id = current_user()->id;
+                    $document->document_type_id = $documentType->id;
+                    $document->created_at = \Carbon\Carbon::now()->toDateTimeString();
+                    $document->updated_at = \Carbon\Carbon::now()->toDateTimeString();
+                    $document->payment = 0;
+                    $document->id_debit = $debit->id;
+                    $document->save();
+
+                    session()->flash("messages", "success|Se agrego a tu lista de documentos, no olvides pagar tu nuevo adeudo");
+                    return redirect()->back();
+                } else {
+                    session()->flash("messages", "error|No se pudo agregar el adeudo");
+                    return redirect()->back();
+                }
+            } else {
+                session()->flash("messages", "error|Este documento no se puede agregar");
+                return redirect()->back();
+            }
+        } catch(\Exception $e) {
+            session()->flash("messages", "error|No fue posible generar el adeudo");
+            return redirect()->back();
+        }
     }
 
     public function getGenerarCedula(Request $request, $id)
@@ -58,7 +136,7 @@ class PdfController extends Controller
 
         $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
         $currentPeriod = selectCurrentPeriod();
-         
+
         if ($document==null) {
             return redirect()->back();
         }
@@ -110,7 +188,7 @@ class PdfController extends Controller
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
         $mpdf->Output($namefile,"I"); 
-        return redirect(Request::url());     
+        // return redirect(Request::url());     
     }
 
     public function getGenerarConstancia(Request $request, $id)
@@ -124,7 +202,7 @@ class PdfController extends Controller
 
         try
         {
-            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
+            $alumno = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
         }
         catch(\Exception $e)
         {
@@ -134,21 +212,15 @@ class PdfController extends Controller
  
         $html = view('Alumn.pdf.constancia')->with('alumno', $alumno)->render();
         $namefile = 'CONSTANCIA'.time().'.pdf';
- 
-        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
- 
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
+
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
 
-        // $document->status = 1;
         $document->save();
        
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
         $mpdf->Output($namefile,"I");   
-        return redirect(Request::url());   
+        // return redirect(Request::url());   
     }
 
     public function getGenerarFicha(Request $request, $tipo, $accion, $pago)
@@ -256,5 +328,18 @@ class PdfController extends Controller
 
         session()->flash("messages","success|El documento se guardo con exito");
         return redirect()->back();
+    }
+
+    public function deleteDocument($id) {
+        try {
+            $document = Document::find($id);
+            Document::destroy($id);
+            Debit::destroy($document->id_debit);
+            session()->flash("messages","success|Se elimino con exito");
+            return redirect()->back();
+        } catch(\Exception $e) {
+            session()->flash("messages","error|No te podras deshacer de este adeudo");
+            return redirect()->back();
+        }
     }
 }

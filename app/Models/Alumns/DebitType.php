@@ -15,4 +15,8 @@ class DebitType extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function debitType() {
+        return $this->hasMany('\App\Models\Alumns\Debit', "id", "debit_type_id");
+    }
 }

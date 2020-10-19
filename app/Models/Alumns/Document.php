@@ -28,10 +28,10 @@ class Document extends Model
 
     // public function DocumentType()
     // {
-    //     return $this->hasOne('App\Models\Alumns\DocumentType');
+    //     return $this->belongsTo('App\Models\Alumns\DocumentType');
     // }
 
-    public function DocumentType()
+    public function documentType()
     {
         return $this->belongsTo('App\Models\Alumns\DocumentType','document_type_id','id');
     }

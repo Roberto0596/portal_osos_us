@@ -1,46 +1,83 @@
 var token = $("#token").val();
 var route = "/alumn/documents/show";
 
-$(".tableDocuments").dataTable({
-    "destroy": true,
-    "responsive": true,
-    "ajax":
-    {
-        url: route,
-        headers:{'X-CSRF-TOKEN':token},
-        type: "PUT",
-    },
-    "language": {
+function loadTable() {
+  $(".tableDocuments").dataTable({
+      "destroy": true,
+      "processing":true,
+      "responsive": true,
+      serverSide: true,
+      stateSave: true,
+      "ajax":
+      {
+          url: route,
+          headers:{'X-CSRF-TOKEN':token},
+          type: "PUT",
+      },
+      "columns":[
+          {"data": "#"},
+          {"data": "Nombre"},
+          {"data": "Descripción"},
+          {"data": "Periodo"},
+          {"data": "Fecha de creacion"},
+          {"data": "Acciones"}
+      ],
+      "language": {
 
-        "sProcessing":     "Procesando...",
-        "sLengthMenu":     "Mostrar _MENU_ registros",
-        "sZeroRecords":    "No se encontraron resultados",
-        "sEmptyTable":     "Ningún dato disponible en esta tabla",
-        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
-        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-        "sInfoPostFix":    "",
-        "sSearch":         "Buscar:",
-        "sUrl":            "",
-        "sInfoThousands":  ",",
-        "sLoadingRecords": "Cargando...",
-        "oPaginate": {
-        "sFirst":    "Primero",
-        "sLast":     "Último",
-        "sNext":     "Siguiente",
-        "sPrevious": "Anterior"
-        },
-        "oAria": {
-            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-        }
+          "sProcessing":     "Procesando...",
+          "sLengthMenu":     "Mostrar _MENU_ registros",
+          "sZeroRecords":    "No se encontraron resultados",
+          "sEmptyTable":     "Ningún dato disponible en esta tabla",
+          "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+          "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
+          "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+          "sInfoPostFix":    "",
+          "sSearch":         "Buscar:",
+          "sUrl":            "",
+          "sInfoThousands":  ",",
+          "sLoadingRecords": "Cargando...",
+          "oPaginate": {
+          "sFirst":    "Primero",
+          "sLast":     "Último",
+          "sNext":     "Siguiente",
+          "sPrevious": "Anterior"
+          },
+          "oAria": {
+              "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+              "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+          }
 
-    }
-});
+      }
+  });
 
-$(".tableDocuments tbody").on("click","button.reload",function(){
+  $(".tableDocuments tbody").on("click","button.reload",function(){
     location.reload();
-});
+  });
+
+  $(".tableDocuments tbody").on("click","button.btnCancelDocument",function(){
+    var id =  $(this).attr("id_document");
+      swal.fire({
+        title: '¿Estas seguro/a de que quieres cancelar este documento?',
+        text: "¡Si lo haces se borrara el registro!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, estoy seguro'
+      }).then((result)=>
+      {
+        if (result.value)
+        {
+            window.location = "/alumn/pdf/delete/document/"+id;
+        }
+      });
+  });
+}
+  
+$(document).ready(function() {
+  loadTable();
+})
 
 $(".open-modal").click(function(){
     var type = $(this).attr("document-type");
@@ -49,6 +86,11 @@ $(".open-modal").click(function(){
 
 $(".tap-change").click(function(){
     var val = $(this).attr("data-value");
+
+    if (val == 0) {
+      loadTable();
+    }
+    
     var route = 'tab/see';
     var token = $("#token").val();
     var data = new FormData();
@@ -66,6 +108,28 @@ $(".tap-change").click(function(){
          
       }
   });
+});
+
+$(".form-document").submit(function(e)
+{
+    var $form = $(this);
+    e.preventDefault();
+    swal.fire({
+      title: '¿Estas seguro/a de que quieres solicitar este documento?',
+      text: "¡Si aceptas se generara un adeudo!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, estoy seguro'
+    }).then((result)=>
+    {
+      if (result.value)
+      {
+      $form.get(0).submit();
+      }
+    });
 });
 
 $('#document-upload').change(function()

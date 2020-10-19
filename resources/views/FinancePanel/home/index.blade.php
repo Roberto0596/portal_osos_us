@@ -7,7 +7,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Bienvenido {{Auth::guard("finance")->user()->name}}</h1>
+          <h1>Bienvenido <small>{{Auth::guard("finance")->user()->name}}</small></h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -24,7 +24,36 @@
       
       <div class="card-body">
 
-        Proximamente este sera el panel
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Tablero</h4>
+          </div>
+
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box {{$debits == 0 ? 'bg-default' : 'bg-info'}}">
+
+              <div class="inner">
+
+                <h3>Adeudos</h3>
+
+                <p>{{$debits == 0 ? 'sin adeudos' : 'hay '.$debits.' nuevos adeudos'}}</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fas fa-credit-card"></i>
+
+              </div>
+
+              <a href="{{ route('finance.debit') }}" class="small-box-footer">Ver <i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+            
+          </div>
+
+        </div>
 
       </div>
 

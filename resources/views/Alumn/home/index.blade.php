@@ -114,7 +114,7 @@
 
                 <h3>Documentos</h3>
 
-                <p>{{count($documents) == 0?"No hay documentos":"tienes algunos documentos"}}</p>
+                <p>¡Revisalos!</p>
 
               </div>
 
@@ -124,11 +124,7 @@
 
               </div>
 
-              @if(count($documents) != 0)
-              <a href="{{route('alumn.documents')}}" class="small-box-footer">Imprimir<i class="fas fa-arrow-circle-right"></i></a>
-              @else
-              <a href="#" class="small-box-footer">Vacio<i class="fas fa-arrow-circle-right"></i></a>
-              @endif
+              <a href="{{route('alumn.documents')}}" class="small-box-footer">Ver<i class="fas fa-arrow-circle-right"></i></a>
 
             </div>
             
