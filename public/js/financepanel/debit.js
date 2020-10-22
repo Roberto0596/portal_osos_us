@@ -12,7 +12,7 @@ function changeMode(mode, period, concept){
         {
             url: route,
             headers:{'X-CSRF-TOKEN':token},
-            type: "PUT",
+            type: "POST",
             data: {mode:mode,period:period,concept:concept}
         },
         "columns":[

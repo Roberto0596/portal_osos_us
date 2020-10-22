@@ -83,7 +83,7 @@ $('#ticket').change(function()
 		toastr.success("Extensión no permitida: " + ext);
 	  }
 	}
-  });
+});
   
 
 
@@ -149,7 +149,7 @@ $('#ticket').change(function()
 	});
   }, 500);
 
-  $("#form-oxxo").submit(function(e)
+$("#form-oxxo").submit(function(e)
 {
 	var $form = $("#form-oxxo");
 	e.preventDefault();

@@ -9,9 +9,24 @@ use App\Models\ConfigModel;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\Alumns\User;
+use App\Models\Alumns\Debit;
 
 
 //seccion del sistema
+
+function validateDebitsWithOrderId($id_order, $status)
+{
+  $debits = Debit::where("id_order", $id_order)->get();
+  foreach ($debits as $key => $value) {
+    $value->status = $status;
+    $value->save();
+  }
+}
+
+function getTotalDebitWithOtherConcept() {
+  $debit = Debit::where([["id_alumno","=",current_user()->id_alumno],["debit_type_id", "<>", 1]])->get();
+  return $debit->sum("amount");
+}
 
 function getOfficialDocuments() {
   return DocumentType::where("type", "=", 1)->get();
@@ -30,8 +45,12 @@ function addNotify($text,$id,$route)
 //ver configuracion
 function getConfig()
 {
-  $config = ConfigModel::find(1);
-  return $config;
+  if(session()->has('config-model')) {
+    return session()->get('config-model');
+  } else {
+    $config = ConfigModel::first();
+    return $config;
+  }
 }
 
 function getDebitType($id = null)
@@ -911,4 +930,55 @@ function isNoob($id) {
   } else {
     return "/alumn/re-inscripcion";
   }
+}
+
+function getTotalWithComission($total, $tipo, $flag = true) {
+  if ($tipo == "card") {
+    $comission = (1 - (0.029 * 1.16));
+    $comission_fixed = 2.5 * 1.16;
+    $total_payment = ($total + $comission_fixed)/$comission;
+    $total_comission = $total_payment - $total;
+  } else if ($tipo == "oxxo") {
+    $comission = (1 - (0.039 * 1.16));
+    $total_payment = $total/$comission;
+    $total_comission = $total_payment - $total;
+  } else if ($tipo == "spei") {
+    $comission = 12.5 * 1.16;
+    $total_payment = $total + $comission;
+    $total_comission = $total_payment - $total;
+  }
+
+  if ($flag) {
+    return ceil($total_payment);
+  } else {
+    return ceil($total_comission);
+  }
+}
+
+function getArrayItem($debits, $type) {
+    $item_array = [];
+    $total = $debits->sum("amount");
+    foreach ($debits as $key => $value)
+    {
+        $items = array('name' => $value->debitType->concept,
+                        "unit_price" => $value->amount*100,
+                        "quantity" => 1);
+        array_push($item_array, $items);
+    }
+
+    //agregamos la comision bancaria correspondiente.
+    $commission = array('name' => 'comision bancaria',
+                      'unit_price' => floatval((getTotalWithComission($total,$type,false)*100)),
+                      'quantity'=>1);
+    array_push($item_array, $commission);
+    return $item_array;
+}
+
+function getDebitByArray($array) {
+    $collection = collect();
+    foreach ($array as $key => $value) {
+       $debit = Debit::find($value["id"]);
+       $collection->push($debit);
+    }
+    return $collection;
 }

@@ -8,7 +8,7 @@ $(".tableDebits").dataTable({
     {
         url: route,
         headers:{'X-CSRF-TOKEN':token},
-        type: "PUT",
+        type: "POST",
     },
     "lengthMenu":[[5,10, 20, 25, 50, -1], [5,10, 20, 25, 50, "Todos"]],
     "language": {

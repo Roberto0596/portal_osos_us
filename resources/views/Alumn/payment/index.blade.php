@@ -1,12 +1,10 @@
 @extends('Alumn.main')
 
 @section('content-alumn')
-<head>
-  <link rel="stylesheet" href="{{ asset('css/card.css') }}"> 
+<link rel="stylesheet" href="{{ asset('css/card.css') }}"> 
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Inconsolata'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Inconsolata'>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
-</head>
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 
 <div class="content-wrapper">
@@ -98,104 +96,106 @@
           
           <div class="row">
 
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
-
-            <div class="container-custom">
-
-                <div style="cursor: pointer;">
-
-                    <div class="card2">
-
-                      <div class="front-card">
-
-                        <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Tarjeta Débido/Crédito</h4>
-                        
-                      </div>
-                      
-                      <div class="back-card">
-                        <p class="parrafo-back"> <b>Total a Pagar: $ 2020.89</b><br><br>
-                          $1950.00 de Inscripción + <br>$70.89 por comisión bancaria.</p>
-                        <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
-
-                      </div> 
-
-                    </div>
-
-                </div>
-
-            </div>
-
-          </div>
-
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
-
-            <form action="{{ route('alumn.pay.cash') }}" method="post" id="form-oxxo">
-
-              {{ csrf_field() }}
+            <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
               <div class="container-custom">
 
-                  <a href="{{ route('alumn.pay.cash') }}">
+                  <div style="cursor: pointer;">
 
                       <div class="card2">
 
                         <div class="front-card">
 
-                          <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Efectivo <br> Pago en Oxxo</h4>
+                          <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Tarjeta Débido/Crédito</h4>
                           
-                        
                         </div>
-
                         <div class="back-card">
+                          <p class="parrafo-back"> <b style="font-size: 20px;">Total a Pagar: ${{ number_format(getTotalWithComission($total, "card"),2) }}</b><br><br>
+                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br> ${{ number_format(getTotalWithComission($total, "card", false),2) }} por comisión bancaria.</p>
+                          <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
-                          <p class="parrafo-back"> <b>Total a Pagar: $ 2042.39</b><br><br>
-                            $1950.00 de Inscripción + <br>$92.39 por comisión bancaria.</p>
-                          <button class="btn btn-success">Realiza un pago en oxxo</button>
-                      
+                        </div> 
+
+                      </div>
+
+                  </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
+
+              <form action="{{ route('alumn.pay.cash') }}" method="post" id="form-oxxo">
+
+                {{ csrf_field() }}
+
+                <div class="container-custom">
+
+                    <a href="{{ route('alumn.pay.cash') }}">
+
+                        <div class="card2">
+
+                          <div class="front-card">
+
+                            <img src="{{asset('img/alumn/payment methods/money_white.png')}}" alt="" class="card-image-rob">
+                            <h4 class="titulo-cards">Efectivo <br> Pago en Oxxo</h4>
+                            
+                          
+                          </div>
+
+                          <div class="back-card">
+
+                            <p class="parrafo-back"> <b style="font-size: 20px;">Total a Pagar: $ {{ number_format(getTotalWithComission($total, "oxxo"),2) }}</b><br><br>
+                              $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br>${{ number_format(getTotalWithComission($total, "oxxo", false),2) }} por comisión bancaria.</p>
+                            <button class="btn btn-success">Realiza un pago en oxxo</button>
+                        
+                          </div>
+
+                        </div>
+                    </a>
+
+                </div>
+
+              </form>
+
+            </div>
+
+            <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
+
+                <div class="container-custom">
+
+                    <form method="post" action="{{route('alumn.pay.spei')}}" id="form-spei">
+
+                      {{ csrf_field() }}
+
+                      <div class="card2">
+
+                        <div class="front-card">
+
+                          <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
+                          <h4 class="titulo-cards">Paga desde otro Banco (SPEI)</h4>
+                         
+
+                        </div>
+                        
+                        <div class="back-card">
+                          <p class="parrafo-back"> 
+                            <b style="font-size: 20px;">Total a Pagar: $ {{ number_format(getTotalWithComission($total, "spei"),2) }}</b>
+                            <br>
+                            <br>
+                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br>${{ number_format(getTotalWithComission($total, "spei", false),2) }} por comisión bancaria.</p>
+                          <button class="btn btn-success">Realiza una transferencia SPEI</button>
                         </div>
 
                       </div>
-                  </a>
+                        
+                    </form>
 
-              </div>
+                </div>
 
-            </form>
-
-          </div>
-
-          <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
-
-              <div class="container-custom">
-
-                  <form method="post" action="{{route('alumn.pay.spei')}}" id="form-spei">
-
-                    {{ csrf_field() }}
-
-                    <div class="card2">
-
-                      <div class="front-card">
-
-                        <img src="{{asset('img/alumn/payment methods/transfer_white.png')}}" alt="" class="card-image-rob">
-                        <h4 class="titulo-cards">Paga desde otro Banco (SPEI)</h4>
-                       
-
-                      </div>
-                      
-                      <div class="back-card">
-                        <p class="parrafo-back"> <b>Total a Pagar: $ 1964.50</b><br><br>
-                          $1950.00 de Inscripción + <br>$14.50 por comisión bancaria.</p>
-                        <button class="btn btn-success">Realiza una transferencia SPEI</button>
-                      </div>
-
-                    </div>
-                      
-                  </form>
-
-              </div>
-
-          </div>
+            </div>
 
             <div class="col-md-3 col-sm-12" style="margin-bottom: 55px;">
 
@@ -211,7 +211,7 @@
                         </div>
                         
                         <div class="back-card">
-                          <p class="parrafo-back"> <b>Total a Pagar: $ 1950.00</b><br><br>
+                          <p class="parrafo-back"> <b style="font-size: 20px">Total a Pagar: $ 1950.00</b><br><br>
                             $1950.00 de Inscripción  <br>Después del pago escanea tu recibo o captura tu comprobante.</p>
                           
                           <form target="_blank"  method="POST" action="{{ route('alumn.fichas',['digital','ver','ficha'])}}" style="width: 100%; margin: 5%;padding-left:10%">
@@ -231,11 +231,11 @@
 
             </div>
           
+          </div>
+
         </div>
 
       </div>
-
-    </div>
 
       <div class="card-footer">
 
@@ -404,7 +404,6 @@
               <button class="btn btn-success" id="confirm-purchase">PAGAR</button>
             </div>
           </fieldset>
-          </div>
         </form>
       </div>
     

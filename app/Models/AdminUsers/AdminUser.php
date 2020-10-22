@@ -23,4 +23,8 @@ class AdminUser extends Authenticatable
         'created_at',
         'updated_at',
     ];
+
+    public function debit() {
+        return $this->hasMany('\App\Models\Alumns\Debit', "id", "admin_id");
+    }
 }

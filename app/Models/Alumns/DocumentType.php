@@ -21,8 +21,8 @@ class DocumentType extends Model
     //     return $this->belongsTo('App\Models\Alumns\Document','id','document_type_id');
     // }
 
-     public function DocumentType()
+     public function document()
     {
-        return $this->hasMany('App\Models\Alumns\Document', "id", "document_type_id");
+        return $this->hasOne('App\Models\Alumns\Document', "id", "document_type_id");
     }
 }

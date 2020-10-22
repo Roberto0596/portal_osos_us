@@ -12,6 +12,7 @@
       <div style="float: right; padding: 8px;">
         <button class="btn btn-success" id="print">Imprimir</button>
       </div>
+        @if(!isset($inscripcionNo))
       <div style="float: right; padding: 8px;">
 
         <form method="POST" action="{{ route('alumn.pay.rollback',$order['id_order']) }}" id="form-rollback">
@@ -25,11 +26,12 @@
         </form>
 
       </div>
+      @endif
     </div>
   </div>
 
   <section class="content">
-
+    @if(!isset($inscripcionNo))
     <div class="container">
 
       <div class="row">
@@ -65,6 +67,7 @@
       </div>  
 
     </div>
+    @endif
        
     <div class="ps">
         <div class="ps-header">

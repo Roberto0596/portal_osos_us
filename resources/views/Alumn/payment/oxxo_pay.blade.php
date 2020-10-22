@@ -16,7 +16,7 @@
         <button class="btn btn-success" id="print">Imprimir</button>
 
       </div>
-
+      @if(!isset($inscripcionNo))
       <div style="float: right; padding: 8px;">
 
         <form method="POST" action="{{ route('alumn.pay.rollback',$order['id_order']) }}" id="form-rollback">
@@ -30,13 +30,15 @@
         </form>
 
       </div>
+      @endif
 
     </div>
 
   </div>
 
-  <section class="content">
 
+  <section class="content">
+    @if(!isset($inscripcionNo))
     <div class="card">
 
       <div class="card-header">
@@ -60,7 +62,7 @@
       </div>
 
     </div>
-       
+    @endif 
     <div class="opps">
       <div class="opps-header">
         <div class="opps-reminder">Ficha digital. No es necesario imprimir.</div>

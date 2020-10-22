@@ -68,7 +68,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'as' => 'documents'
 				]);
 
-				Route::put('/documents/show',[
+				Route::post('/documents/show',[
 					'uses'=>'PdfController@showDocuments', 
 					'as' => 'documents.show'
 				]);
@@ -118,9 +118,24 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'as' => 'debit'
 			    ]);
 
-			    Route::put('/debit/show', [
-			        'uses' => 'DebitController@show', 
-			        'as' => 'debit.show'
+			    Route::post('/debit/save/card', [
+			        'uses' => 'DebitController@payCard', 
+			        'as' => 'debit.save.card'
+			    ]);
+
+			    Route::post('/debit/save/spei', [
+			        'uses' => 'DebitController@paySpei', 
+			        'as' => 'debit.save.spei'
+			    ]);
+
+			    Route::post('/debit/save/oxxo', [
+			        'uses' => 'DebitController@payOxxo', 
+			        'as' => 'debit.save.oxxo'
+			    ]);
+
+			    Route::get('/debit/note/{id_order?}', [
+			        'uses' => 'DebitController@note', 
+			        'as' => 'debit.note'
 			    ]);
 			});
 
@@ -294,7 +309,7 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 			]);
 
 			//sirve para mostrar los registros en la tabla
-			Route::put('/debit/show', [
+			Route::post('/debit/show', [
 		        'uses' => 'DebitController@showDebit', 
 		        'as' => 'user.show'
 			]);
@@ -408,7 +423,7 @@ Route::group(['prefix'=> 'computo', 'namespace'=>'ComputerCenterPanel'], functio
 		        'as' => 'debit.update'
 			]);
 			
-			Route::put('/debit/show', [
+			Route::post('/debit/show', [
 		        'uses' => 'DebitController@showDebit', 
 		        'as' => 'user.show'
 			]);
@@ -473,7 +488,7 @@ Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
 		        'as' => 'debit.update'
 			]);
 			
-			Route::put('/debit/show', [
+			Route::post('/debit/show', [
 		        'uses' => 'DebitController@showDebit', 
 		        'as' => 'user.show'
 			]);
@@ -528,7 +543,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'problem'
 			]);
 
-			Route::put('/problem/show', [
+			Route::post('/problem/show', [
 		        'uses' => 'ProblemController@show', 
 		        'as' => 'problem.show'
 			]);
@@ -565,7 +580,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'users'
 			]);
 
-			Route::put('/users/show', [
+			Route::post('/users/show', [
 		        'uses' => 'UsersController@show', 
 		        'as' => 'users.show'
 			]);
@@ -596,7 +611,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'alumns'
 			]);
 
-			Route::put('/alumns/show', [
+			Route::post('/alumns/show', [
 		        'uses' => 'AlumnController@show', 
 		        'as' => 'alumns.show'
 			]);	
@@ -631,7 +646,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			]);			
 
 			//carga los datos de esta tabla
-			Route::put('/reset-passwords/show', [
+			Route::post('/reset-passwords/show', [
 		        'uses' => 'ResetPassController@show', 
 		        'as' => 'reset-pass.show'
 			]);
@@ -663,7 +678,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			]);		
 
 			//carga datos de tabla documentos
-			Route::put('/documents/show', [
+			Route::post('/documents/show', [
 		        'uses' => 'DocumentController@show', 
 		        'as' => 'show'
 			]);

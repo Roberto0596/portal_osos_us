@@ -46,16 +46,16 @@ class PdfController extends Controller
             $buttons = "";
             if ($value->payment == 0) {
                 $buttons .= "<div class='btn-group'><button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='".$value->id."'>
-                    <i class='fa fa-times'></i></button>
+                    Cancelar</button>
                     </div>";
             } else {
                 try {
                     $buttons .= "<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."' title='Imprimir'>
-                    <i class='fa fa-file'></i></a>
+                    Imprimir</a>
                     </div>";
                 } catch(\Exception $e) {
                     $buttons .= "<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='".$value->route."' title='Imprimir'>
-                    <i class='fa fa-file'></i></a>
+                    Imprimir</a>
                     </div>";
                 }
             }

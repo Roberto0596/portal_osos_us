@@ -21,6 +21,10 @@ class Debit extends Model
         'updated_at',
     ];
 
+    public function admin() {
+        return $this->belongsTo('\App\Models\AdminUsers\AdminUser', "admin_id", "id");
+    }
+
     public function debitType() {
         return $this->belongsTo('\App\Models\Alumns\DebitType', "debit_type_id", "id");
     }

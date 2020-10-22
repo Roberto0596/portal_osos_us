@@ -11,7 +11,7 @@ function loadDatatable() {
       {
           url: route,
           headers:{'X-CSRF-TOKEN':token},
-          type: "PUT",
+          type: "POST",
       },
       serverSide: true,
       "columns":[

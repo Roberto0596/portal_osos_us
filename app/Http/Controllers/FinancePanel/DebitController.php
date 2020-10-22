@@ -110,9 +110,9 @@ class DebitController extends Controller
         if ($debit) {
             $debit->amount = $request->input("amount");
             $debit->id_alumno = $request->input("id_alumno");
-            $debit->status = $request->get("status") == "on" ? 1 : 0;
             $debit->description = $request->input("description");
             $debit->save();
+            validateDebitsWithOrderId($debit->id_order, $request->get("status") == "on" ? 1 : 0);
             session()->flash("messages","success|Guardado correcto");
             return redirect()->back(); 
         } else {
@@ -137,7 +137,7 @@ class DebitController extends Controller
                 }
             }
 
-            $debit->status = $value;
+            validateDebitsWithOrderId($debit->id_order, $value);
             $debit->save();
             session()->flash("messages", "info|Guardado correcto");
             return redirect()->back();

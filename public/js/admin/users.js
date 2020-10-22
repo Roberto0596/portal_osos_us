@@ -8,7 +8,7 @@ $(".tableUsers").dataTable({
     {
         url: route,
         headers:{'X-CSRF-TOKEN':token},
-        type: "PUT",
+        type: "POST",
     },
     "language": {
 
