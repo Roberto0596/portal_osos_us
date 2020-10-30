@@ -91,7 +91,7 @@ function changeMode(mode, period, concept){
                 } else {
                     $('#status-edit').bootstrapToggle("off");
                 }
-                console.log(response);
+
                 if (response["id_order"] != null && response["method"] == "transfer") {
                     $("#edit-button").attr("route", response["id_order"]);
                     $("#edit-container").show();
@@ -99,7 +99,7 @@ function changeMode(mode, period, concept){
                     $("#edit-container").hide();
                 }
                 $('#amount').val(response['amount']);
-                $('#id_alumn').val(response['alumnId']);                
+                $('#id_alumno').prepend("<option value='"+response["alumnId"]+"' selected>"+response["enrollment"] + " "+ response["alumnName"]+"</option>");
                 $('#debitId').val(response['debitId']);
                 $('#description').val(response['description']);               
             }

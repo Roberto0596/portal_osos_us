@@ -22,4 +22,8 @@ class PeriodModel extends Model
     public function config() {
         return $this->hasOne('\App\Models\ConfigModel', 'id', 'period_id');
     }
+
+    public function failed() {
+        return $this->hasMany('\App\Models\Alumns\FailedRegister', 'id', 'period_id');
+    }
 }

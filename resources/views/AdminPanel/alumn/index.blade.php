@@ -53,9 +53,7 @@
               <th>Apellido(s)</th>
               <th>Email</th>
               <th>Estado</th>
-              <th>Fecha de registro</th>
               <th>Acciones</th>
-              <!-- <th>Acciones</th> -->
             </tr>
 
           </thead>

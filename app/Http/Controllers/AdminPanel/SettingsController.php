@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ConfigModel;
 use App\Models\PeriodModel;
+use DB;
 
 class SettingsController extends Controller
 {
@@ -39,7 +40,11 @@ class SettingsController extends Controller
     					$period->semestre = $data["Semestre"];
     					$period->save();
     				}
-    			}
+    			} else if($key == "open_inscription") {
+                    if ($value != $instance->open_inscription) {
+                        DB::table('users')->where("inscripcion", "<>", 0)->update(["inscripcion" => 0]);
+                    }
+                }
 
     			$instance->$key = $value;
     		}

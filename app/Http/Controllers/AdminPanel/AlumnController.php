@@ -47,69 +47,63 @@ class AlumnController extends Controller
 		return response()->json($array);
     }
 
-    public function show()
+    public function show(Request $request)
 	{
-		$alumns = User::all();
-        $res = [ "data" => []];
+		$filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
+        
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        foreach($alumns as $key => $value)
+        $query = User::select();
+        $filtered = 0;
+
+        if($filter) {
+            $query = $query->where(function($query) use ($filter){
+                $query->orWhere('name', 'like', '%'. $filter .'%')
+                    ->orWhere('lastname', 'like', '%'. $filter . '%')
+                    ->orWhere('email', 'like', '%'. $filter . '%');
+            });
+            $filtered = $query->count();
+        } else {
+            $filtered = User::count();
+        }
+
+        $query->skip($start)->take($length)->get();
+
+        $data = $query->get();
+
+        $res = [];
+
+        foreach($data as $key => $value)
         { 
         	try 
-        	{
-        	 	$img = "<img src='".asset($value->photo)."'>";
-		        switch ($value->inscripcion) {
-		        	case 0:
-		        		$status="Sin llenar formulario";
-		        		break;
-		        	case 1:
-		        		$status="Sin realizar el pago";
-		        		break;
-		        	case 2:
-		        		$status="Esperando confirmación de pago";
-		        		break;
-		        	case 3:
-		        		$status="Proceso terminado";
-		        		break;
-		        	case 4:
-		        		$status="Carga asignada";
-		        		break;
-		        } 
-
-		        $buttons = "<div class='btn-group'>";
-	            $sicoesData = selectSicoes("Alumno","AlumnoId",$value->id_alumno);
-
-	            if ($sicoesData) 
+        	{		        
+	            $validate = false;
+	            if ($value->getSicoesData()) 
 	            {
-	            	$enrollment = $sicoesData[0]["Matricula"];
-	            	$buttons.="<button class='btn btn-warning btnUpdateAlumn' data-toggle='modal' data-target='#modal-edit-alumn' title='editar alumno' alumnId = '".$value->id."' title='Imprimir'>
-	           			<i class='fa fa-pen' style='color:white'></i></button>";
+	            	$validate = true;
 	            } 
-	            else 
-	            {
-	            	$enrollment = "sin asignar";
-	            }
 
-	            $buttons.="
-	            <button class='btn btn-danger btnDeleteAlumn' title='Eliminar alumno' alumnId = '".$value->id."' title='Imprimir'>
-	            <i class='fa fa-times'></i></button>
-	            </div>"; 
-
-	            array_push($res["data"],[
-	                (count($alumns)-($key+1)+1),
-	                $enrollment,
-	                $value->name,
-	                $value->lastname,
-	                $value->email,
-	                $status,
-	                $value->created_at,
-	                $buttons,
+	            array_push($res,[
+	                "#" => (count($data)-($key+1)+1),
+	                "Matricula" => $value->getMatricula() ? $value->getMatricula() : "sin asignar",
+	                "Nombre (s)" => $value->name,
+	                "Apellido (s)" => $value->lastname,
+	                "Email" => $value->email,
+	                "inscripcion" => $value->inscripcion,
+	                "validate" => $validate,
+	                "id" => $value->id
 	            ]);
         	} 
         	catch (\Exception $e) 
         	{
         	}	        	
         }
-        return response()->json($res);  
+        return response()->json([
+            "recordsTotal" => User::count(),
+            "recordsFiltered" => $filtered,
+            "data" => $res
+        ]);  
     }
 
     public function update(Request $request)

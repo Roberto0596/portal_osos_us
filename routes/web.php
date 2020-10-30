@@ -425,12 +425,17 @@ Route::group(['prefix'=> 'computo', 'namespace'=>'ComputerCenterPanel'], functio
 			
 			Route::post('/debit/show', [
 		        'uses' => 'DebitController@showDebit', 
-		        'as' => 'user.show'
+		        'as' => 'debit.show'
 			]);
 
 			Route::post('/debit/see', [
 		        'uses' => 'DebitController@seeDebit', 
-		        'as' => 'user.see'
+		        'as' => 'debit.see'
+			]);
+
+			Route::get('/debit/delete/{id}', [
+		        'uses' => 'DebitController@delete', 
+		        'as' => 'debit.see'
 			]);
 
 		});
@@ -498,6 +503,11 @@ Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
 		        'as' => 'user.see'
 			]);
 
+			Route::get('/debit/delete/{id}', [
+		        'uses' => 'DebitController@delete', 
+		        'as' => 'debit.see'
+			]);
+
 		});
   	});
 });
@@ -508,6 +518,16 @@ Route::group(['namespace' => 'Website'],function()
 	Route::get('/', [
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
+    ]);	
+
+    Route::get('/restore-pass/{token?}', [
+        'uses' => 'WebsiteController@viewRestore', 
+        'as' => 'restore'
+    ]);	
+
+    Route::post('/restore/{instance?}', [
+        'uses' => 'WebsiteController@restorePassword', 
+        'as' => 'restore.password'
     ]);	
 });
 
@@ -698,6 +718,26 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'SettingsController@save', 
 		        'as' => 'save.setting'
 			]);	
+
+			Route::get('/failed/registers', [
+		        'uses' => 'FailedRegisterController@index', 
+		        'as' => 'failed.index'
+			]);
+
+			Route::post('/failed/registers/show', [
+		        'uses' => 'FailedRegisterController@show', 
+		        'as' => 'failed.show'
+			]);
+
+			Route::post('/failed/registers/encGrupo', [
+		        'uses' => 'FailedRegisterController@encGrupo', 
+		        'as' => 'failed.encGrupo'
+			]);
+
+			Route::post('/failed/registers/save', [
+		        'uses' => 'FailedRegisterController@save', 
+		        'as' => 'failed.save'
+			]);
 
 		});
   	});

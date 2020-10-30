@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
+use App\Models\Alumns\PasswordRequest;
 use Input;
 
 class WebsiteController extends Controller
@@ -13,8 +14,21 @@ class WebsiteController extends Controller
 	{
 		return view('Website.register');
 	}
-    public function edit($id)
-    {
+
+    public function viewRestore($token) {
+        $instance = PasswordRequest::where("token", $token)->first();
+        if (!$instance) {
+            return redirect()->route("home");
+        }
+        return view('Alumn.auth.view-restore',["instance" => $instance]);
+    }
+
+    public function restorePassword(Request $request, PasswordRequest $instance) {
+        $instance->alumn->password = bcrypt($request->get('password'));
+        $instance->alumn->save();
+        PasswordRequest::destroy($instance->id);
+        session()->flash("messages","success|Contreña actualizada");
+        return redirect()->route("alumn.login");
     }
 
     public function delete($id)

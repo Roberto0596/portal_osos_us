@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers\Alumn;
+<?php namespace App\Http\Controllers\Alumn;
 
 use Auth;
 use Input;
@@ -8,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Alumns\User;
 use App\Models\AdminUsers\RequestPass;
+use App\Models\Alumns\PasswordRequest;
+use Mail;
+use App\Mail\ResetPassword;
 
 class AuthController extends Controller
 {
@@ -55,7 +56,7 @@ class AuthController extends Controller
     public function sendRequest(Request $request)
     {
         //buscamos el usuario por el email
-        $user = User::where('email', '=', $request->email)->get(); 
+        $user = User::where('email', '=', $request->email)->first();
         if(!$user)
         {
             session()->flash("messages","error|No existe un usuario con este correo");
@@ -63,13 +64,22 @@ class AuthController extends Controller
         }     
         try
         {            
-            //se crea una solicitud Para Restaurar Contraseña
-            $RequestPass = new RequestPass;
-            //se le asocia un usuario
-            $RequestPass->id_user = $user[0]->id;
-            //se guarda en la bd
-            $RequestPass->save();    
-            session()->flash("messages","success|Solicitud Enviada");
+            $RequestPass = new PasswordRequest();
+            $RequestPass->token = uniqid();
+            $RequestPass->alumn_id = $user->id;
+            $RequestPass->save(); 
+
+            $data = [
+                'name' => $user->name,
+                'new_pass' => "http://alumnos.unisierra/restore-pass/".$RequestPass->token,
+            ];
+
+            $subject = 'Restablecer Cuenta';
+            $to = $user->id_alumno != null ? [$user->email, strtolower($user->getSicoesData()["Email"])] : $user->email;
+
+            Mail::to($to)->queue(new ResetPassword($subject,$data));  
+
+            session()->flash("messages","success|Se envio un link a tu correo");
             return redirect()->route("alumn.login");
         }
         catch (\Exception $e)

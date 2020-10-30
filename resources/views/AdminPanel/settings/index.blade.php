@@ -95,9 +95,8 @@
                 <div class="panel">Cambiar estado</div>
 
                   <select name="open_inscription" class="form-control select2" id="open_inscription" style="width: 100%">
-                    <option value="">Seleccione un estado</option>
-                      <option value="0">Inscripciones cerradas</option>
-                      <option value="1">Inscripciones abiertas</option>
+                      <option value="0" {{ $instance->open_inscription != null ? ($instance->open_inscription == 0 ? 'selected' : '') : 'selected'}}>Inscripciones cerradas</option>
+                      <option value="1" {{ $instance->open_inscription != null ? ($instance->open_inscription == 1 ? 'selected' : '') : ''}}>Inscripciones abiertas</option>
                   </select>
 
                 </div>
@@ -213,7 +212,7 @@
 
               <div class="form-group">
 
-                <div class="panel">Cambiar plan de estudio</div>
+                <div class="panel">Cambiar el precio de la colegiatura</div>
 
                   <input type="text" name="price_inscription" id="price_inscription" value="{{ $instance->price_inscription }}" class="form-control">
 
