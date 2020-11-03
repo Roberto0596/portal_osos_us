@@ -114,6 +114,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.document-type') }}" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                            Tipos de Documentos
+                        </p>
+                    </a>
+                </li>
                 
 
                 <li class="nav-item">
