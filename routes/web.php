@@ -699,6 +699,47 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'save.setting'
 			]);	
 
+
+			//================== rutas CRUD debit_type ===================//
+
+			//muestra la tabla de debit type
+			Route::get('/debit-type', [
+		        'uses' => 'DebitTypeController@index', 
+		        'as' => 'debit-type'
+			]);	
+
+			//carga datos de tabla debit type
+			Route::post('/debit-type/show', [
+		        'uses' => 'DebitTypeController@show', 
+		        'as' => 'show'
+			]);
+
+			//elimina un registro
+			Route::get('/debit-type/delete/{id?}', [
+		        'uses' => 'DebitTypeController@delete', 
+		        'as' => 'delete'
+			]);
+			
+			//sirve para guardar un nuevo registro
+			Route::post('/debit-type/create', [
+		        'uses' => 'DebitTypeController@create', 
+		        'as' => 'debittype.create'
+			]);
+
+			//sirve para guardar un nuevo registro
+			Route::post('/debit-type/update', [
+		        'uses' => 'DebitTypeController@update', 
+		        'as' => 'debittype.update'
+			]);
+
+			//carga la info de un registro para que se solicita a traves de ajax
+			Route::post('/debit-type/seeDebitType', [
+		        'uses' => 'DebitTypeController@see', 
+		        'as' => 'debittype.see'
+			]);
+
+			//=============================================================//
+
 		});
   	});
 });
