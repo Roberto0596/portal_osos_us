@@ -2,39 +2,6 @@
 
 @section('content-computer')
 
-<style>
-  .page-item.active .page-link {
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-  }
-  .textAndButton{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  
- 
-  .custom{
-    background-color: #fd7e14;
-    border-color: #fd7e14;
-    color: white;
-  }
-
-  .custom:hover{
-    background-color: #e96c06;
-    border-color: #e96c06;
-    color: white;
-  }
-  .modal-header{
-    background-color: #28a745;
-    color: white;
-  }
- 
- 
-</style>
-
 <div class="content-wrapper">
 
   <section class="content-header">
@@ -43,13 +10,15 @@
 
       <div class="row mb-2">
 
-        <div class="col-sm-6">
+        <div class="col-sm-9">
 
-          <h1>Procesar pagos</h1>
+          <div class="row">
+            <div class="col-md-4"><h1>Procesar <small>pagos</small></h1></div>
+          </div>
 
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-3">
 
           <ol class="breadcrumb float-sm-right">
 
@@ -68,25 +37,129 @@
   <section class="content">
 
     <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Filtros</h4>
+          </div>
+          <div class="col-md-4">
+            <label for="">Estatus</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                  <i class="fas fa-toggle-on"></i></span>
+              </div>
+
+              <select id="mode" class="form-control form-control-lg">
+                @php
+                $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
+                              ["value" => "1","text"=>"Pagados", "selected"=>false]];
+                @endphp
+
+                @if(session()->has('mode'))
+                  @php
+                    $mode = session()->get('mode');
+                    switch($mode["mode"])
+                    {
+                      case 0:
+                        $array[0]["selected"]=true;
+                        break;
+                      case 1:
+                        $array[1]["selected"]=true;
+                        break;
+                    }
+                  @endphp
+                @else
+                  $array[0]["selected"]=true;
+                @endif
+                @foreach($array as $key => $value)
+                  <option value="{{$value['value']}}" @if($value['selected']==true) selected @endif>{{$value['text']}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="">Periodo</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                  <i class="fas fa-th-list"></i></span>
+              </div>
+
+              <select id="period" class="form-control form-control-lg">
+                @foreach(selectTable('period') as $key => $value)
+                  @if(session()->has('mode'))
+                    @php
+                      $mode = session()->get('mode');
+                      $selected = '';
+                      if($mode["period"] == $value->id) {
+                        $selected = 'selected';
+                      }
+                    @endphp
+                   <option value="{{$value->id}}" {{$selected}}>{{$value->clave}}</option>
+                  @else
+                   <option value="{{$value->id}}">{{$value->clave}}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label for="">Concepto</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                  <i class="fas fa-asterisk"></i></span>
+              </div>
+
+              <select id="concept" class="form-control form-control-lg">
+                <option value="all">Todos</option>
+                @foreach(getUnAdminDebitType() as $key => $value)
+                  @if(session()->has('mode'))
+                    @php
+                      $mode = session()->get('mode');
+                      $selected = '';
+                      if($mode["concept"] == $value->id) {
+                        $selected = 'selected';
+                      }
+                    @endphp
+                   <option value="{{$value->id}}" {{$selected}}>{{$value->concept}}</option>
+                  @else
+                   <option value="{{$value->id}}">{{$value->concept}}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
 
       <div class="card-body">
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 
-        <table class="table table-bordered table-hover tableDebits">
+        <table class="table table-bordered table-hover dt-responsive tableDebits">
 
           <thead>
 
             <tr>
               <th style="width: 10px">#</th>
-              <th>Concepto</th>
-              <th>Descripción</th>
-              <th>Monto</th>
-              <th>Encargado</th>
+              <th>Acciones</th>
               <th>Alumno</th>
+              <th>Email</th>
+              <th>Descripción</th>
+              <th>Importe</th>
+              <th>Matricula</th>
               <th>Estado</th>
               <th>Fecha</th>
-              <th>Acciones</th>
+              <th>Carrera</th>
+              <th>Localidad</th>
+             
             </tr>
 
           </thead>
@@ -100,6 +173,7 @@
   </section>
 
 </div>
+ <!-- Modal crear nuevo adeudo -->
 
 <div class="modal fade" id="modalDebit">
 
@@ -113,7 +187,7 @@
 
             <div class="modal-header">
 
-                <h4 class="modal-title">Generar un adeudo</h4>
+                <h4 class="modal-title">GENERAR NUEVO ADEUDO</h4>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -134,9 +208,9 @@
                                 <i class="fas fa-credit-card"></i></span>
                             </div>
 
-                            <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg">
+                            <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg select2" style="width: 88%">
                               <option value="" disabled selected>Seleccione un concepto</option>
-                              @foreach(getDebitType() as $key => $value)
+                              @foreach(getUnAdminDebitType()  as $key => $value)
                               <option value="{{$value->id}}">{{$value->concept}}</option>
                               @endforeach
                             </select>
@@ -151,32 +225,32 @@
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
+                                <i class="fas fa-dollar-sign"></i></span>
                             </div>
 
-                            <input type="number" step="any" min="0" name="amount" id="amount" placeholder="¿Cual es el monto?" class="form-control form-control-lg" required>
+                            <input type="number" step="any" min="0" name="amount" placeholder="¿Cual es el monto?" class="form-control form-control-lg" required>
 
                         </div>
 
                     </div>
 
-                    <div class="col-md-6">           
+                    <div class="col-md-12">           
 
                         <div class="input-group mb-3">
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-credit-card"></i></span>
+                                <i class="fas fa-user"></i></span>
                             </div>
 
-                            <select class="form-control form-control-lg" id="id_alumno" name="id_alumno" style="width:88%" require>
+                            <select class="form-control form-control-lg select2" style="width: 88%" name="id_alumno" require>
                                 <option value="">Seleccione un alumno</option>
                                 @php
-                                    $alumnos = selectSicoes("Alumno");
+                                    $alumnos = selectUsersWithSicoes();
                                 @endphp
 
                                 @foreach($alumnos as $key => $value)
-                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
+                                <option value="{{$value->id_alumno}}">{{$value->email." ".$value->name." ".$value->lastname}}</option>
                                 @endforeach
 
                             </select>
@@ -194,7 +268,7 @@
                                 <i class="fas fa-ad"></i></span>
                             </div>
 
-                            <textarea type="text" name="description" id="description" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
+                            <textarea type="text" name="description" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
 
                         </div>
 
@@ -212,7 +286,7 @@
 
                         <div class=" col-sm-6 btn-group">
 
-                        <button id="cancel" type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Eliminar</button>
+                        <button id="cancel" type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 
                         </div>
 
@@ -236,68 +310,104 @@
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalPay">
 
-    <div class="modal-dialog">
+ <!-- Modal Editar-->
+<div class="modal fade" id="modalEdit">
 
-        <div class="modal-content">
+  <div class="modal-dialog">
 
-        <div class="modal-header">
+    <div class="modal-content">
 
-            <h5 class="modal-title" id="exampleModalLabel">CAMBIAR EL ESTADO DEL PAGO</h5>
+      <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenUpdate">
 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">
+
+          <h4 class="modal-title">EDITAR ADEUDO</h4>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+
+      </div>
+
+      <form method="post" action="{{route('computo.debit.update')}}">
+            
+        {{ csrf_field() }}
+
+        <input type="hidden" id="debitId" name="debitId">           
         
-        </div>
-
         <div class="modal-body">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Descripción</th>
-                        <th>Alumno</th>
-                        <th>Monto</th>
-                    </tr>
-                </thead>
-                <tbody id="body-table">
-                </tbody>
-            </table>
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">
-            <br>
-            <form action="{{route('computo.debit.update')}}" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" id="DebitId" name="DebitId">
-                <div class="modal-footer">
+          <div class="row">
 
-                    <div class="col-sm container-fluid">
+            <div class="col-md-12">           
 
-                        <div class="row">
+                <label for="">Monto</label>
 
-                            <div class=" col-sm-6 btn-group">
+                <div class="input-group mb-3">
 
-                            <button type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-
-                            </div>
-
-                            <div class=" col-sm-6 btn-group">
-
-                            <button type="submit" class="btn btn-success .px-2"><i class="fa fa-check"></i> Guardar</button>
-                            
-                            </div>
-
-                        </div>
-
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-dollar-sign"></i></span>
                     </div>
+
+                    <input type="number" step="any" min="0" name="amount" id="amount" placeholder="Monto" class="form-control" required>
+
                 </div>
-            </form>
+
+            </div>
+
+            <div class="col-md-12">  
+
+                <label for="">Descripción</label>
+
+                <div class="input-group mb-3">
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                        <i class="fas fa-ad"></i></span>
+                    </div>
+
+                    <textarea type="text" name="description" id="description" placeholder="Ingrese una descripción" class="form-control" required></textarea>
+
+                </div>
+
+            </div>
+
+          </div>
+
         </div>
+
+        <div class="modal-footer">
+
+          <div class="row" style="width: 100%;">
+
+              <div class=" col-md-6">
+
+                <button id="closeDetails" type="button" class="btn btn-danger .px-2" 
+              data-dismiss="modal" style="width: 100%"><i class="fa fa-times"></i> Cerrar</button>
+
+              </div>
+
+              <div class=" col-md-6">
+
+                <button class="btn btn-success .px-2" style="width: 100%"><i class="fa fa-check" ></i> Guardar</button>
+
+              </div>
+
+          </div>
+
         </div>
+
+      </form>
+
     </div>
-    </div>
-    <!-- TerminaModal -->
+
+  </div>
+
+</div>
+
+<!-- TerminaModal -->
 
 <script src="{{ asset('js/computercenter/debit.js')}}"></script>
 

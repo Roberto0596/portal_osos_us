@@ -75,6 +75,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{route('admin.failed.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-times"></i>
+                        <p>
+                            I. fallidas
+                        </p>
+                    </a>
+                </li>
+
 
                 <li class="nav-item">
                     <a href="{{ route('admin.document') }}" class="nav-link">

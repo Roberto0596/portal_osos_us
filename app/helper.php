@@ -14,6 +14,11 @@ use App\Models\Alumns\Debit;
 
 //seccion del sistema
 
+function getUnAdminDebitType() {
+  $query = DebitType::where([["id","<>",1],["id","<>",5]])->get();
+  return $query;
+}
+
 function validateDebitsWithOrderId($id_order, $status)
 {
   $debits = Debit::where("id_order", $id_order)->get();
@@ -63,6 +68,10 @@ function getDebitType($id = null)
   {
     return DebitType::find($id);
   }
+}
+
+function selectUsersWithSicoes() {
+  return DB::table("users")->where("id_alumno","<>",null)->get();
 }
 
 function selectTable($tableName, $item=null,$value=null,$limit=null)
@@ -276,28 +285,21 @@ function getLastThing($table_name,$item,$value,$orderby)
 }
 
 //metodo default para hacer consultas a la base de datos de sicoes
-function selectSicoes($table_name,$item = null,$value = null,$limit = 0)
+function selectSicoes($table_name,$item = null,$value = null, $limit = 0)
 {
-	if ($item == null)
-	{
-		if ($limit==0)
-		{
-			$stmt = ConectSqlDatabase()->prepare("SELECT * FROM $table_name");
-		}
-		else
-		{
-			$stmt = ConectSqlDatabase()->prepare("SELECT top(:bol)* FROM $table_name");
-			$stmt->bindParam(":bol",$limit,PDO::PARAM_INT);
-		}		
-	}
-	else
-	{
-		$stmt = ConectSqlDatabase()->prepare("SELECT * FROM $table_name where $item = :$item");
-		$stmt->bindParam(":".$item,$value,PDO::PARAM_STR);
-	}
-	$stmt->execute();
-	return $stmt->fetchAll();
-	$stmt = null;
+    $query = "";
+  	if ($item == null)
+  	{
+        $query = "SELECT * FROM $table_name";	
+  	}
+  	else
+  	{
+        $query = "SELECT * FROM $table_name where $item = '$value'";
+  	}
+    $stmt = ConectSqlDatabase()->prepare($query);
+  	$stmt->execute();
+  	return $stmt->fetchAll();
+    $stmt->close();
 }
 
 //funcion para borrar los registros de la carga en caso de que alguna falle.
@@ -558,15 +560,6 @@ function getCarrera($matricula){
     $carrera = $stmt->fetchAll();
 
     return $carrera[0];
-    $stmt = null;
-}
-
-function getAlumnoId($matricula){
-    $stmt = ConectSqlDatabase()->prepare("SELECT AlumnoId FROM alumno where matricula = '$matricula'");
-    $stmt->execute();
-    $alumno = $stmt->fetchAll();
-
-    return $alumno[0];
     $stmt = null;
 }
 
@@ -981,4 +974,13 @@ function getDebitByArray($array) {
        $collection->push($debit);
     }
     return $collection;
+}
+
+//metodo para traer el encGrupo
+function getEncGrupoBySemestre($semester,$period)
+{
+    $stmt = ConectSqlDatabase()->prepare("SELECT * from EncGrupo where  Semestre = '$semester' and PeriodoId = '$period';");
+    $stmt->execute();
+    return $stmt->fetchAll();
+    $stmt = null;
 }

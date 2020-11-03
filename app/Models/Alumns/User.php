@@ -52,4 +52,12 @@ class User extends Authenticatable
     public function debit() {
         return $this->hasMany('\App\Models\Alumns\Debit', "id", "id_alumno");
     }
+
+    public function failed_register() {
+        return $this->hasMany('\App\Models\Alumns\FailedRegister', "id", "alumn_id");
+    }
+
+    public function requestPassword() {
+        return $this->hasMany('\App\Models\Alumns\PasswordRequest', "id", "alumn_id");
+    }
 }

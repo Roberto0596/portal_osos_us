@@ -61,6 +61,8 @@ class ResetPassController extends Controller
                 'new_pass' => $newPass,
             ];
             $subject = 'Restablecer Cuenta';
+            $to = $user->id_alumno != null ? [$user->email, $user->getSicoesData()["Email"]] : $user->email;
+
             Mail::to($user->email)->queue(new ResetPassword($subject,$data));             
 
             //una vez enviado el email se borra el registro

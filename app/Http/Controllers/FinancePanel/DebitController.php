@@ -42,13 +42,15 @@ class DebitController extends Controller
             $query->where("debit_type_id", $request->get('concept'));
         }
 
+        $filtered = $query->count();
+        
         if ($filter) {
            $query = $query->where(function($query) use ($filter){
                 $query->orWhere('description', 'like', '%'. $filter .'%');
             });
            $filtered = $query->count();
         } 
-        $filtered = $query->count();
+        
         $query->skip($start)->take($length)->get();
         $debits = $query->get();
 
@@ -96,6 +98,7 @@ class DebitController extends Controller
             "status"    => $debit->status,
             "id_order" => $debit->id_order, 
             "method" => $debit->payment_method,
+            "enrollment" => $alumn["Matricula"],
         );
 
         return response()->json($data);

@@ -60,7 +60,7 @@
 
               <div class="inner">
 
-                <h3>Mi correo</h3>
+                <h3>Mi perfil</h3>
 
                 <p>{{Auth::guard("alumn")->user()->email}}</p>
 

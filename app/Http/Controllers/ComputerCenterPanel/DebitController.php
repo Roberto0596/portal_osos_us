@@ -16,58 +16,92 @@ class DebitController extends Controller
     }
     
     public function showDebit(Request $request)
-    {
-        $current_user = Auth::guard("computercenter")->user();
-        $res = [ "data" => []];
-        $debits = Debit::where("admin_id",$current_user->id)->get();
+    {   
+        $res = [];
+
+        if (session()->has('mode')) 
+        {
+            session()->forget('mode');
+        }
+        session([
+            "mode"=>[
+                "mode" => $request->input('mode'), 
+                "period" => $request->input('period'),
+                "concept" => $request->input('concept')
+            ]
+        ]);
+
+        $filter = isset($request->get('search')['value']) && $request->get('search')  ?$request->get('search')['value']:false;
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $filtered = 0;
+        $query = Debit::where("admin_id", Auth::guard('computercenter')->user()->id);
+        $query->where([["status","=",$request->input('mode')],["period_id","=",$request->input('period')]]);
+        $query->where([["debit_type_id","<>", 1],["debit_type_id","<>",5]]);
+
+        if ($request->get('concept') != "all") {
+            $query->where("debit_type_id", $request->get('concept'));
+        }
+
+        $filtered = $query->count();
+        
+        if ($filter) {
+           $query = $query->where(function($query) use ($filter){
+                $query->orWhere('description', 'like', '%'. $filter .'%');
+            });
+           $filtered = $query->count();
+        } 
+        
+        $query->skip($start)->take($length)->get();
+        $debits = $query->get();
 
         foreach($debits as $key => $value)
         {
-            $buttons="<div class='btn-group'>";
-            if($value->status==1)
-            {
-                $buttons.="<button class='btn btn-primary printDetails' orderId='".$value->id_order."' title='Ver datos de pago'>
-                <i class='fa fa-file'></i></button>
-                </div>";
+            if ($value->id_alumno != null) {
+                $alumn = getDataAlumnDebit($value->id_alumno);
+                array_push($res,[
+                    "#" => ($key+1),
+                    "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
+                    "Email" =>strtolower($alumn["Email"]),
+                    "Descripción" => $value->description,
+                    "Importe" => "$".number_format($value->amount,2),
+                    "Matricula" =>$alumn["Matricula"],
+                    "Estado" =>($value->status==1)?"Pagada":"Pendiente",
+                    "Fecha" => substr($value->created_at,0,11),
+                    "Carrera" =>$alumn['nombreCarrera'],
+                    "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
+                    "method" => $value->payment_method,
+                    "debitId" => $value->id,
+                    "id_order" => $value->id_order,
+                    "debit_type_id" => $value->debit_type_id
+                ]);
             }
-            else
-            {
-                $buttons.="
-                <button class='btn btn-warning pay' data-toggle='modal' data-target='#modalPay' DebitId='".$value->id."' title='Cobrar'>
-                <i class='fa fa-credit-card' style='color:white'></i></button>
-                </div>"; 
-            }
-            $alumn = selectSicoes("Alumno","AlumnoId",$value->id_alumno)[0];
-            array_push($res["data"],[
-                (count($debits)-($key+1)+1),
-                getDebitType($value->debit_type_id)->concept,                
-                $value->description,
-                "$".number_format($value->amount,2),
-                $current_user->name,
-                $alumn["Nombre"],
-                ($value->status==1)?"Pagada":"Pendiente",
-                $value->created_at,
-                $buttons
-            ]);
         }
-
-        return response()->json($res);
+        return response()->json([
+            "recordsTotal" => Debit::count(),
+            "recordsFiltered" => $filtered,
+            "data" => $res
+        ]);
     }
 
-	public function seeDebit(Request $request) 
-	{
+	//este metodo lo usamos con ajax para cargar los datos del adeudo para despues pasarlos al modal
+    public function seeDebit(Request $request) 
+    {       
         $debit = Debit::find($request->input("DebitId"));
-        $alumn = selectTable("users", "id_alumno",$debit->id_alumno,"si");
+        $alumn = selectSicoes("Alumno","AlumnoId",$debit->id_alumno)[0];
         $data = array(
-            "concept"   =>getDebitType($debit->debit_type_id)->concept,
-            "alumnName" =>$alumn->name." ".$alumn->lastname,
+            "concept"   => $debit->debitType->concept,
+            "alumnName" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
             'description'=>$debit->description,
             "amount"    =>$debit->amount,
             "debitId"   => $debit->id,
-            "alumnId" => $alumn->id_alumno,
-            "status"    => $debit->status
-                    
+            "alumnId" => $debit->id_alumno,
+            "status"    => $debit->status,
+            "id_order" => $debit->id_order, 
+            "method" => $debit->payment_method,
+            "enrollment" => $alumn["Matricula"],
         );
+
         return response()->json($data);
     }
 
@@ -75,8 +109,9 @@ class DebitController extends Controller
     {
         try 
         {
-            $debit = Debit::find($request->input("DebitId"));
-            $debit->status = 1;
+            $debit = Debit::find($request->input("debitId"));
+            $debit->amount = $request->get('amount');
+            $debit->description = $request->get('description');
             $debit->save();
             session()->flash("messages","success|Se guardo correctamente");
             return redirect()->back();
@@ -114,5 +149,17 @@ class DebitController extends Controller
             return redirect()->back();
         }
     }
+
+    public function delete($id)
+    {
+        try{
+            Debit::destroy($id);
+            session()->flash("messages","success|Se borro el adeudo con exito");
+            return redirect()->back();
+        } catch(\Exception $e) {
+            session()->flash("messages","error|No se pudo eliminar el adeudo");
+            return redirect()->back();
+        }
+    } 
 
 }

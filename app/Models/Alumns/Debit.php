@@ -34,6 +34,6 @@ class Debit extends Model
     }
 
     public function getDebit() {
-        return User::find($this->ig_alumno);
+        return User::find($this->id_alumno);
     }
 }

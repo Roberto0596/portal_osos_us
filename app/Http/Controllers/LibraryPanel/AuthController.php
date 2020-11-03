@@ -24,11 +24,12 @@ class AuthController extends Controller
         $email = $request->input('email');
         $pass = $request->input('password');
 
-        $user = AdminUser::where('email', "=" ,$email)->first();
+                $user = AdminUser::where([['email', "=" ,$email],['area_id',"=","3"]])->first();
+
 
         if (!$user) {
             session()->flash('messages', 'error|No Existe un usuario con ese correo');
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
 
         if (Auth::guard('library')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
