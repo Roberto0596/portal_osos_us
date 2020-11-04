@@ -719,6 +719,92 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'save.setting'
 			]);	
 
+
+			//================== rutas CRUD debit_type ===================//
+
+			//muestra la tabla de debit type
+			Route::get('/debit-type', [
+		        'uses' => 'DebitTypeController@index', 
+		        'as' => 'debit-type'
+			]);	
+
+			//carga datos de tabla debit type
+			Route::post('/debit-type/show', [
+		        'uses' => 'DebitTypeController@show', 
+		        'as' => 'show'
+			]);
+
+			//elimina un registro
+			Route::get('/debit-type/delete/{id?}', [
+		        'uses' => 'DebitTypeController@delete', 
+		        'as' => 'delete'
+			]);
+			
+			//sirve para guardar un nuevo registro
+			Route::post('/debit-type/create', [
+		        'uses' => 'DebitTypeController@create', 
+		        'as' => 'debittype.create'
+			]);
+
+			//sirve para editar un nuevo registro
+			Route::post('/debit-type/update', [
+		        'uses' => 'DebitTypeController@update', 
+		        'as' => 'debittype.update'
+			]);
+
+			//carga la info de un registro para que se solicita a traves de ajax
+			Route::post('/debit-type/seeDebitType', [
+		        'uses' => 'DebitTypeController@see', 
+		        'as' => 'debittype.see'
+			]);
+
+			//=============================================================//
+
+
+			
+
+			//================== rutas CRUD document_type ===================//
+
+			//muestra la tabla de document type
+			Route::get('/document-type', [
+		        'uses' => 'DocumentTypeController@index', 
+		        'as' => 'document-type'
+			]);	
+
+			//carga datos de tabla debit type
+			Route::post('/document-type/show', [
+		        'uses' => 'DocumentTypeController@show', 
+		        'as' => 'documentType.show'
+			]);
+
+			//sirve para guardar un nuevo registro
+			Route::post('/document-type/create', [
+		        'uses' => 'DocumentTypeController@create', 
+		        'as' => 'documentType.create'
+			]);
+
+			//elimina un registro
+			Route::get('/document-type/delete/{id?}', [
+		        'uses' => 'DocumentTypeController@delete', 
+		        'as' => 'documentType.delete'
+			]);
+			
+		
+
+			//sirve para editar un nuevo registro
+			Route::post('/document-type/update', [
+		        'uses' => 'DocumentTypeController@update', 
+		        'as' => 'documentType.update'
+			]);
+
+			//carga la info de un registro para que se solicita a traves de ajax
+			Route::post('/document-type/seeDoc', [
+		        'uses' => 'DocumentTypeController@see', 
+		        'as' => 'documentType.see'
+			]);
+
+			//=============================================================//
+
 			Route::get('/failed/registers', [
 		        'uses' => 'FailedRegisterController@index', 
 		        'as' => 'failed.index'
