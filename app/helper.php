@@ -10,6 +10,7 @@ use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
+use App\Models\Alumns\FailedRegister;
 
 
 //seccion del sistema
@@ -24,6 +25,11 @@ function validateDebitsWithOrderId($id_order, $status)
   $debits = Debit::where("id_order", $id_order)->get();
   foreach ($debits as $key => $value) {
     $value->status = $status;
+    if ($value->has_file_id != null) {
+      $document = Document::find($value->has_file_id);
+      $document->payment = $status;
+      $document->save();
+    }
     $value->save();
   }
 }
@@ -190,6 +196,16 @@ function ConectSqlDatabase()
 	return $link;
 }
 
+//crear un nuevo registro en caso de que la inscripcion falle
+function addFailedRegister($id,$message) {
+  $instance = new FailedRegister();
+  $instance->alumn_id = $id;
+  $instance->period_id = getConfig()->period_id;
+  $instance->message = $message;
+  $instance->status = 0;
+  $instance->save();
+}
+
 
 //funcion para inscribir al alumno
 function makeRegister(User $user)
@@ -198,28 +214,35 @@ function makeRegister(User $user)
   $inscripcionData = checkGroupData($user->getSicoesData());
 
   if ($inscripcionData == false) {
-      array_push($message["errors"], "No se encontro el grupo");
-  } else {
-
-    //entrara en la condicion cuando el alumno sea de nuevo ingreso
-    if ($inscripcionData["Semestre"] == 1)
-    {
-      $enrollement = generateCarnet($user->getSicoesData()["PlanEstudioId"]);           
-      updateByIdAlumn($user->id_alumno,"Matricula",$enrollement);
-    } 
-
-    $inscribir = inscribirAlumno(['Semestre' => $inscripcionData["Semestre"],'EncGrupoId'=> $inscripcionData["EncGrupoId"],'Fecha'=> getDateCustom(),'Baja'=>0, 'AlumnoId'=>$user->id_alumno]);
-
-    if ($inscribir) {
-      $user->inscripcion=3;
-      $user->save();
-      addNotify("Pago de colegiatura",$user->id,"alumn.charge");
-      insertInscriptionDocuments($user->id);
-      array_push($message["success"], "proceso realizado con exito");
-    } else {
-      array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
-    }
+      $inscripcionData = ["Semestre" => 4, "EncGrupoId" => 1120];
+      addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
   }
+
+  //entrara en la condicion cuando el alumno sea de nuevo ingreso
+  if ($inscripcionData["Semestre"] == 1)
+  {
+    $enrollement = generateCarnet($user->getSicoesData()["PlanEstudioId"]);           
+    updateByIdAlumn($user->id_alumno,"Matricula",$enrollement);
+  } 
+
+  $inscribir = inscribirAlumno([
+    'Semestre' => $inscripcionData["Semestre"],
+    'EncGrupoId'=> $inscripcionData["EncGrupoId"],
+    'Fecha'=> getDateCustom(),
+    'Baja' => 0, 
+    'AlumnoId'=>$user->id_alumno
+  ]);
+
+  if ($inscribir) {
+    $user->inscripcion=3;
+    $user->save();
+    addNotify("Pago de colegiatura",$user->id,"alumn.charge");
+    insertInscriptionDocuments($user->id);
+    array_push($message["success"], "proceso realizado con exito");
+  } else {
+    array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
+  }
+
   return $message;
 }
 

@@ -140,7 +140,11 @@
                   </div>
                   @else
                     <div class="btn-group">
+                      @if($value->payment_method == "transfer")
+                      <a href="{{asset($value->id_order)}}" target="_blanck" class="btn btn-success">Ver referencia</a>
+                      @else
                       <a href="{{route('alumn.debit.note', $value->id_order)}}" class="btn btn-success">Ver referencia</a>
+                      @endif
                     </div>
                   @endif
                 </td>

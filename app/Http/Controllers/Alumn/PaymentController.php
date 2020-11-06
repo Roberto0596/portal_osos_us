@@ -84,6 +84,11 @@ class PaymentController extends Controller
             $value->id_order = $order->id;
             $value->payment_method = "card";
             $value->save();
+            if ($value->has_file_id != null) {
+              $document = Document::find($value->has_file_id);
+              $document->payment = 1;
+              $document->save();
+            }
         }
         
         $register = makeRegister($current_user);

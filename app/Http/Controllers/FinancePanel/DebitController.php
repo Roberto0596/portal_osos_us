@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FinancePanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\Debit;
+use App\Models\Alumns\Document;
 use App\Models\Alumns\User;
 use Input;
 use Auth;
@@ -114,8 +115,14 @@ class DebitController extends Controller
             $debit->amount = $request->input("amount");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->description = $request->input("description");
-            $debit->save();
-            validateDebitsWithOrderId($debit->id_order, $request->get("status") == "on" ? 1 : 0);
+            $debit->id_order = $request->get("status") == "on" ? 1 : 0; 
+            $debit->save();           
+            
+            if ($debit->has_file_id != null) {
+                $document = Document::find($debit->has_file_id);
+                $document->payment = $request->get("status") == "on" ? 1 : 0;
+                $document->save();
+            }
             session()->flash("messages","success|Guardado correcto");
             return redirect()->back(); 
         } else {

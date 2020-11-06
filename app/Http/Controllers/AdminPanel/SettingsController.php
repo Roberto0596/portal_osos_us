@@ -43,6 +43,7 @@ class SettingsController extends Controller
     			} else if($key == "open_inscription") {
                     if ($value != $instance->open_inscription) {
                         DB::table('users')->where("inscripcion", "<>", 0)->update(["inscripcion" => 0]);
+                        DB::table('debit')->where([["status", 0],["debit_type_id", 1]])->delete();
                     }
                 }
 

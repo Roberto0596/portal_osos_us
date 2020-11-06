@@ -101,7 +101,7 @@ class PdfController extends Controller
 
                 $debit->save();
 
-                if ($create_debit) {
+                if ($debit) {
                     $document =  new Document();
                     $document->description = 'Documento oficial unisierra';
                     $document->route = ''; 
@@ -113,6 +113,9 @@ class PdfController extends Controller
                     $document->payment = 0;
                     $document->id_debit = $debit->id;
                     $document->save();
+
+                    $debit->has_file_id = $document->id;
+                    $debit->save();
 
                     session()->flash("messages", "success|Se agrego a tu lista de documentos, no olvides pagar tu nuevo adeudo");
                     return redirect()->back();
