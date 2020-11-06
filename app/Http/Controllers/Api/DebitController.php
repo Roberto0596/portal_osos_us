@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
+use App\Models\Alumns\Document;
 use Input;
 
 class DebitController extends Controller
@@ -31,6 +32,11 @@ class DebitController extends Controller
 		        			$alumn = User::where("id_alumno","=",$value->id_alumno)->first();
 		                	$register = makeRegister($alumn);
 		        		}
+		        		if ($value->has_file_id != null) {
+			              	$document = Document::find($value->has_file_id);
+			              	$document->payment = 1;
+			              	$document->save();
+			            }
 		        		$value->status = 1;
 		        		$value->save();
 		        	}
