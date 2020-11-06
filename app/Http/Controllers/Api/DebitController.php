@@ -13,7 +13,7 @@ class DebitController extends Controller
 	public function verifyDebit(Request $request)
 	{
 		try {
-			$data = $request->all();
+			$data = (object) $request->all();
 	        $is_paid = $data["type"];
 
 	        if ($is_paid == "order.paid" || $is_paid = "charge.created") {
