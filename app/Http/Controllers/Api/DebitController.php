@@ -14,7 +14,7 @@ class DebitController extends Controller
 	{
 		try {
 			$data = $request->all();
-	        $is_paid = $data->type;
+	        $is_paid = $data["type"];
 
 	        if ($is_paid == "order.paid" || $is_paid = "charge.created") {
 	        	try {
