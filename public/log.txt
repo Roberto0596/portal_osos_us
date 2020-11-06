@@ -1,0 +1,1 @@
+{"errors":[{"mensaje":"Trying to get property 'type' of non-object","fecha":"2020-11-05T20:01:38"}]}

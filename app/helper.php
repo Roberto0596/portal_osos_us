@@ -1007,3 +1007,10 @@ function getEncGrupoBySemestre($semester,$period)
     return $stmt->fetchAll();
     $stmt = null;
 }
+
+function addLog($message) {
+  $path = public_path()."/log.txt";
+  $data = json_decode(file_get_contents($path),true);
+  array_push($data["errors"], ["mensaje" => $message, "fecha" => getDateCustom()]);
+  file_put_contents($path, json_encode($data));
+}
