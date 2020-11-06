@@ -1,1 +1,1 @@
-{"errors":[{"mensaje":"Trying to get property 'type' of non-object","fecha":"2020-11-05T20:01:38"}]}
+{"errors":[{"mensaje":"Trying to get property 'type' of non-object","fecha":"2020-11-05T20:01:38"},{"mensaje":"C:\\xampp\\htdocs\\portal_osos_us\\app\\Http\\Controllers\\Api\\DebitController.php 17 Undefined index: type","fecha":"2020-11-05T20:25:24"}]}

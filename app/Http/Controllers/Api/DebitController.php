@@ -20,7 +20,7 @@ class DebitController extends Controller
 	        	try {
 					$id_order = $data["data"]["object"]["charges"]["data"][0]["order_id"];
 				} catch(\Exception $e) {
-					$id_order = $data["data"]["object"]["order_id"];
+					$id_order = $data["data"]["object"]["id"];
 				}
 
 	        	$debits = Debit::where("id_order", $id_order)->get();
