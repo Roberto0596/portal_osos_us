@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace'=>'Api'], function()
 {
-	Route::get('/verify/debit',[
+	Route::get('/verify/debit',[ 
         'uses' => 'DebitController@verifyDebit', 
         'as' => 'verify.debit'
     ]);

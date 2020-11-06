@@ -11,6 +11,9 @@ class DebitController extends Controller
 {
 	public function verifyDebit(Request $request)
 	{
-		dd($request);
+		$file = fopen(public_path()."/orden.txt", "w+b");
+        fwrite($file, json_encode($request->all()));
+        fclose($file);
+        return response()->json(["status" => "success"],200);
 	}
 }
