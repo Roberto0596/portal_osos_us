@@ -1,0 +1,1 @@
+{"balances":[{"customer_code":"aerer","number":"1234","date":"2020\/05\/10","amount":2000,"expiration_date":"2020\/05\/10","balance":200}]}
