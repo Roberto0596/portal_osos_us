@@ -13,14 +13,14 @@ class DebitController extends Controller
 	public function verifyDebit(Request $request)
 	{
 		try {
-			$data = (object) $request->all();
+			$data = $request->all();
 	        $is_paid = $data["type"];
 
 	        if ($is_paid == "order.paid" || $is_paid = "charge.created") {
 	        	try {
-					$id_order = $data->data->object->charges->data[0]->order_id;
+					$id_order = $data["data"]["object"]["charges"]["data"][0]["order_id"];
 				} catch(\Exception $e) {
-					$id_order = $data->data->object->order_id;
+					$id_order = $data["data"]["object"]["order_id"];
 				}
 
 	        	$debits = Debit::where("id_order", $id_order)->get();
