@@ -38,7 +38,7 @@ class DebitController extends Controller
 	        }      
 	        return response()->json(["status" => "success"],200);
 		} catch(\Exception $e) {
-			addLog($request->all());
+			addLog($e->getFile()." ".$e->getLine()." ".$e->getMessage());
 			return response()->json(["status" => "error"],500);
 		}
 	}
