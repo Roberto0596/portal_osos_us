@@ -115,7 +115,8 @@ class DebitController extends Controller
             $debit->amount = $request->input("amount");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->description = $request->input("description");
-            $debit->id_order = $request->get("status") == "on" ? 1 : 0; 
+            $debit->id_order = $request->get("status") == "on" ? 1 : 0;
+            $debit->status = $request->get("status") == "on" ? 1 : 0; 
             $debit->save();           
             
             if ($debit->has_file_id != null) {
