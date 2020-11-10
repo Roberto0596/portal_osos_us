@@ -28,7 +28,7 @@ class UserController extends Controller
 
     public function seeNotify($route,$id)
     {
-        $notify = Notify::where("alumno_id", $id)->get();
+        $notify = Notify::where("alumn_id", $id)->get();
         foreach ($notify as $key => $value) {
             $value->status = 1;
             $value->save();
