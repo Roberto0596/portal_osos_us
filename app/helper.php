@@ -191,7 +191,8 @@ function ConectSqlDatabase()
 {
   $password = env('SQL_SERVER_PASSWORD');
   $user = env('SQL_SERVER_USER');
-	$link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
+  $database = env('SQL_SERVER_DATABASE');
+	$link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=".$database.";", $user, $password);
   $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
 }
@@ -349,7 +350,8 @@ function insertCharge($array)
 {
     $password = env('SQL_SERVER_PASSWORD');
     $user = env('SQL_SERVER_USER');
-    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
+    $database = env('SQL_SERVER_DATABASE');
+    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=".$database.";", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $link->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
@@ -387,8 +389,8 @@ function InsertAlumn($array)
 {
     $password = env('SQL_SERVER_PASSWORD');
     $user = env('SQL_SERVER_USER');
-    $rutaServidor = "127.0.0.1";
-    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=Sicoes;", $user, $password);
+    $database = env('SQL_SERVER_DATABASE');
+    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=".$database.";", $user, $password);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $stmt = $link->prepare("INSERT INTO Alumno(
@@ -702,22 +704,6 @@ function getAlumnLastPeriod()
   return $stmt->fetchAll();
   $stmt = null;
 }
-
-// function getAlumnGroup($id_alumno)
-// {
-//   $data = selectSicoes("Alumno","AlumnoId",$id_alumno)[0]; 
-//   $inscripcion = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
-//   $currentPeriod = selectCurrentPeriod();
-//   if ($inscripcion!=false)
-//   {
-//     $group =  obtenerGrupo(($inscripcion["Semestre"]+1),$data["PlanEstudioId"],$currentPeriod->id);
-//   }
-//   else
-//   {
-//     $group =  obtenerGrupo(1,$data["PlanEstudioId"],$currentPeriod->id);
-//   }
-//   return $group;
-// }
 
 //auxiliari methods
 function generatePasssword()

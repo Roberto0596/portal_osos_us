@@ -106,7 +106,7 @@
           {
             $(".count-notify").text(response.length);  
             for (var i = 0; i < response.length; i++) {
-              $("#content-notify").append("<a href='/alumn/notify/"+response[i]["route"]+"/"+response[i]["id"]+"' class='dropdown-item'>"+
+              $("#content-notify").append("<a href='/alumn/notify/"+response[i]["route"]+"/"+response[i]["alumn_id"]+"' class='dropdown-item'>"+
                 "<i class='fas fa-th mr-2'></i>"+response[i]['text']+
                 "<span class='float-right text-muted text-sm'>Reciente</span>"+
               "</a>");
