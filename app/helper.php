@@ -732,6 +732,7 @@ function getMatriculaTemp()
 function generateTempMatricula()
 {
   $temp = getMatriculaTemp();
+  dd($temp);
   if ($temp!=false)
   {
     $tempNumber = substr($temp["Matricula"],9)+1;
@@ -825,7 +826,7 @@ function checkGroupData($alumnData)
   }
   else
   {
-    $group = getGroupByPeriod($periodoData->id,$alumnoData["PlanEstudioId"],1);
+    $group = getGroupByPeriod($config->period_id,$alumnData["PlanEstudioId"],1);
   } 
   return $group ? $group : false; 
 }
