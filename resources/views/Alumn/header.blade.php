@@ -18,17 +18,26 @@
 
         <a class="nav-link" data-toggle="dropdown" href="#" style="color: green !important">
           <i class="far fa-bell" style="font-size: 20px;"></i>
-          <span class="badge badge-warning navbar-badge count-notify" style="color: white;font-size: 12px;"></span>
+          <span class="badge badge-warning navbar-badge count-notify" style="color: white;font-size: 12px;">{{getCurrentNotify()->count()}}</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
-          <span class="dropdown-item dropdown-header"><span class="count-notify"></span> Notificaciones</span>
+          <span class="dropdown-item dropdown-header"><span class="count-notify">{{getCurrentNotify()->count()}}</span> Notificaciones</span>
 
           <div class="dropdown-divider"></div>
 
           <div id="content-notify">
-            
+            @if(getCurrentNotify()->count() == 0)
+            <p style='text-align: center; margin: 5%;'>No hay notificaciones</p>
+            @else
+            @foreach(getCurrentNotify() as $value)
+            <a href='/alumn/notify/{{$value->route}}/{{$value->id}}' class='dropdown-item'>
+                <i class='fas fa-th mr-2'></i>{{$value->text}}
+                <span class='float-right text-muted text-sm'>Reciente</span>
+              </a>
+            @endforeach
+            @endif
           </div>
 
           <!-- <div class="dropdown-divider"></div>
@@ -80,7 +89,7 @@
 
 <script>
 
-    setInterval(function()
+    /*setInterval(function()
     {
       var route = "/alumn/notify/show";
       var token = $('#token').val();
@@ -113,5 +122,5 @@
             }
           }       
         }});
-    },10000);
+    },5000);*/
 </script>

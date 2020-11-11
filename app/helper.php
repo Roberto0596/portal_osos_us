@@ -53,6 +53,12 @@ function addNotify($text,$id,$route)
   $notify->save();
 }
 
+function getCurrentNotify() {
+  $query = [["alumn_id","=",current_user()->id],["status","=","0"]];
+  $notifys = Notify::where($query)->get();
+  return $notifys;
+}
+
 //ver configuracion
 function getConfig()
 {
@@ -732,7 +738,6 @@ function getMatriculaTemp()
 function generateTempMatricula()
 {
   $temp = getMatriculaTemp();
-  dd($temp);
   if ($temp!=false)
   {
     $tempNumber = substr($temp["Matricula"],9)+1;
