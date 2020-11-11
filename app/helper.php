@@ -226,7 +226,7 @@ function makeRegister(User $user)
   {
     $enrollement = generateCarnet($user->getSicoesData()["PlanEstudioId"]);           
     updateByIdAlumn($user->id_alumno,"Matricula",$enrollement);
-    $user->email = "a".$enrollement."@unisierra.edu.mx";
+    $user->email = "a".str_replace("-", "", $enrollement)."@unisierra.edu.mx";
   } 
 
   $inscribir = inscribirAlumno([
