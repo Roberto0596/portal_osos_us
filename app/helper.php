@@ -62,12 +62,8 @@ function getCurrentNotify() {
 //ver configuracion
 function getConfig()
 {
-  if(session()->has('config-model')) {
-    return session()->get('config-model');
-  } else {
-    $config = ConfigModel::first();
-    return $config;
-  }
+  $config = ConfigModel::first();
+  return $config;
 }
 
 function getDebitType($id = null)
