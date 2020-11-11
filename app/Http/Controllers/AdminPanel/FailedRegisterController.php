@@ -21,7 +21,7 @@ class FailedRegisterController extends Controller
 
         $filtered = 0;
 
-        $query = FailedRegister::select();
+        $query = FailedRegister::where("status",0);
 
         $filtered = $query->count();
 
