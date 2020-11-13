@@ -4,6 +4,8 @@
     <title>Sistema portal</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Universidad de la sierra, Unisierra, Universidad sonora, Universidad en la sierra, Moctezuma, Sonora, Moctezuma sonora, Portal de alumnos, portal de alumnos, portal de inscripciones">
+    <meta name="description" content="Bienvenido al sistema de inscripciones de la universidad de la sierra.">
     <link rel="icon" type="image/png" href="{{asset('img/temple/unisierra.png')}}" />
     <!-- estilos -->
     <!-- Font Awesome -->
