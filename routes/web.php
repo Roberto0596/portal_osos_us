@@ -136,7 +136,29 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			    Route::get('/debit/note/{id_order?}', [
 			        'uses' => 'DebitController@note', 
 			        'as' => 'debit.note'
-			    ]);
+				]);
+
+				/*
+				|-------------------------------------------------------------------
+				| Tickets
+				|-------------------------------------------------------------------
+				*/
+
+				Route::get('/tickets',[
+					'uses'=>'TicketController@index', 
+					'as' => 'tickets'
+				]);
+
+				Route::post('/tickets/show',[
+					'uses'=>'TicketController@show', 
+					'as' => 'tickets.show'
+				]);
+				
+
+				
+          
+
+				
 			});
 
 			Route::get('/', [

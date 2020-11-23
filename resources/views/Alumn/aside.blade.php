@@ -81,6 +81,19 @@
 
                     </li>
 
+
+                    <li class="nav-item">
+
+                        <a href="{{ route ('alumn.tickets')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-ticket-alt"></i>
+                            <p>
+                                Tickets
+                            </p>
+                        </a>
+
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{route('alumn.user')}}" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>

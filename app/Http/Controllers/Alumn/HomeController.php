@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Alumn;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Alumns\Document;
-use App\Models\Alumns\Debit;
-use App\Models\AdminUsers\Problem;
 use Auth;
+use App\Models\Alumns\Debit;
+use Illuminate\Http\Request;
+use App\Models\Alumns\Ticket;
+use App\Models\Alumns\Document;
+use App\Models\AdminUsers\Problem;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,12 @@ class HomeController extends Controller
         $query = [["id_alumno","=",$user->id_alumno],["status","=","0"]];
         $debit = Debit::where($query)->get();
         $total = $debit->count("amount");
-        return view('Alumn.home.index')->with(["status"=>$status,'documents'=>$documents,'debits'=>$total]);
+
+
+        //tickets
+        $tickets = Ticket::where("alumn_id","=",$user->id)->get();
+
+        return view('Alumn.home.index')->with(["status"=>$status,'documents'=>$documents,'debits'=>$total,'tickets'=>$tickets]);
     }
 
     public function saveProblem(Request $request)

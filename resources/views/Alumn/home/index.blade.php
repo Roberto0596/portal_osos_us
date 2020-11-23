@@ -8,6 +8,7 @@
   $boxDebits = $debits == 0?"bg-default":"bg-warning";
   $styleBox = $debits == 0?"style='color:white;'":"";
   $boxCorreo = strpos(Auth::guard('alumn')->user()->email, "@unisierra.edu.mx")?"bg-info":"bg-danger";
+  $boxTickets = count($tickets) == 0 ? "bg-default":"bg-success";
 @endphp
 
 <div class="content-wrapper">
@@ -157,6 +158,36 @@
             </div>
             
           </div>
+
+          {{-- Tickets --}}
+
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box {{$boxTickets}}">
+
+              <div class="inner">
+
+                <h3>Tickets</h3>
+
+                <p>¡Revisalos!</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fas fa-ticket-alt"></i>
+
+              </div>
+
+              <a href="{{ route('alumn.tickets')}}" class="small-box-footer">Ver &nbsp;<i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+            
+          </div>
+
+
+
+
 
         </div>
 
