@@ -50,7 +50,7 @@
                   <i class="fas fa-toggle-on"></i></span>
               </div>
 
-              <select id="mode" class="form-control form-control-lg">
+              <select id="mode" class="form-control">
                 @php
                 $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
                               ["value" => "1","text"=>"Pagados", "selected"=>false]];
@@ -86,8 +86,8 @@
                   <i class="fas fa-th-list"></i></span>
               </div>
 
-              <select id="period" class="form-control form-control-lg">
-                @foreach(selectTable('period') as $key => $value)
+              <select id="period" class="form-control">
+                @foreach($periods as $key => $value)
                   @if(session()->has('mode'))
                     @php
                       $mode = session()->get('mode');
@@ -113,7 +113,7 @@
                   <i class="fas fa-asterisk"></i></span>
               </div>
 
-              <select id="concept" class="form-control form-control-lg">
+              <select id="concept" class="form-control">
                 <option value="all">Todos</option>
                 @foreach(getUnAdminDebitType() as $key => $value)
                   @if(session()->has('mode'))
@@ -208,7 +208,7 @@
                                 <i class="fas fa-credit-card"></i></span>
                             </div>
 
-                            <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg select2" style="width: 88%">
+                            <select name="debit_type_id" id="debit_type_id" class="form-control select2" style="width: 88%">
                               <option value="" disabled selected>Seleccione un concepto</option>
                               @foreach(getUnAdminDebitType()  as $key => $value)
                               <option value="{{$value->id}}">{{$value->concept}}</option>
@@ -228,7 +228,7 @@
                                 <i class="fas fa-dollar-sign"></i></span>
                             </div>
 
-                            <input type="number" step="any" min="0" name="amount" placeholder="¿Cual es el monto?" class="form-control form-control-lg" required>
+                            <input type="number" step="any" min="0" name="amount" placeholder="¿Cual es el monto?" class="form-control" required>
 
                         </div>
 
@@ -243,7 +243,7 @@
                                 <i class="fas fa-user"></i></span>
                             </div>
 
-                            <select class="form-control form-control-lg select2" style="width: 88%" name="id_alumno" require>
+                            <select class="form-control select2" style="width: 88%" name="id_alumno" require>
                                 <option value="">Seleccione un alumno</option>
                                 @php
                                     $alumnos = selectUsersWithSicoes();
@@ -268,7 +268,7 @@
                                 <i class="fas fa-ad"></i></span>
                             </div>
 
-                            <textarea type="text" name="description" placeholder="Ingrese una descripción" class="form-control form-control-lg" required></textarea>
+                            <textarea type="text" name="description" placeholder="Ingrese una descripción" class="form-control" required></textarea>
 
                         </div>
 

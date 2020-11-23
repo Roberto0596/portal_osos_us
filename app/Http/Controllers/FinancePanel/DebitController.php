@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\User;
+use App\Models\PeriodModel;
 use Input;
 use Auth;
 
@@ -14,7 +15,8 @@ class DebitController extends Controller
 {
     public function index()
 	{
-		return view('FinancePanel.debit.index');
+        $periods = PeriodModel::select()->orderBy("id")->get();
+		return view('FinancePanel.debit.index')->with(["periods" => $periods]);
     }
 
     public function showDebit(Request $request)
@@ -178,6 +180,7 @@ class DebitController extends Controller
             $debit->description = $request->input("description");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = Auth::guard("finance")->user()->id;
+            $debit->period_id = selectCurrentPeriod()->id;
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();

@@ -54,7 +54,7 @@ class PdfController extends Controller
                     Imprimir</a>
                     </div>";
                 } catch(\Exception $e) {
-                    $buttons .= "<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='".$value->route."' title='Imprimir'>
+                    $buttons .= "<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='/".$value->route."' title='Imprimir'>
                     Imprimir</a>
                     </div>";
                 }

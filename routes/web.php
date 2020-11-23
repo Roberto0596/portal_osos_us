@@ -235,7 +235,7 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'as' => 'charge'
 			    ]);
 
-			    Route::post('/charge/save/{user?}', [
+			    Route::post('/charge/save', [
 			        'uses' => 'ChargeController@save', 
 			        'as' => 'charge.save'
 			    ]);
@@ -518,7 +518,7 @@ Route::group(['namespace' => 'Website'],function()
 	Route::get('/', [
         'uses' => 'WebsiteController@index', 
         'as' => 'home'
-    ]);	
+    ])->middleware('semester');	
 
     Route::get('/restore-pass/{token?}', [
         'uses' => 'WebsiteController@viewRestore', 
@@ -823,6 +823,21 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 			Route::post('/failed/registers/save', [
 		        'uses' => 'FailedRegisterController@save', 
 		        'as' => 'failed.save'
+			]);
+
+			Route::get('/document/request', [
+		        'uses' => 'DocumentRequestController@index', 
+		        'as' => 'document.request'
+			]);
+
+			Route::post('/document/request/upload', [
+		        'uses' => 'DocumentRequestController@upload', 
+		        'as' => 'document.request.upload'
+			]);
+
+			Route::get('/document/request/fix', [
+		        'uses' => 'DocumentRequestController@fix', 
+		        'as' => 'document.request.fix'
 			]);
 
 		});

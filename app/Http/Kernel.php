@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'inscriptionFaseFour' => \App\Http\Middleware\inscriptionFaseFour::class,
         'noob' => \App\Http\Middleware\NoobMiddleware::class,
         'notnoob' => \App\Http\Middleware\NotNoobMiddleware::class,
+        'semester' => \App\Http\Middleware\semesterMiddleware::class,
     ];
 }

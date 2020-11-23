@@ -49,6 +49,10 @@ class User extends Authenticatable
 
     }
 
+    public function getLastInscription() {
+        return (Object) getInscriptionData($this->id_alumno);
+    }
+
     public function debit() {
         return $this->hasMany('\App\Models\Alumns\Debit', "id", "id_alumno");
     }

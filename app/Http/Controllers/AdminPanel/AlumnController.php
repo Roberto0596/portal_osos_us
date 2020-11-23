@@ -36,14 +36,14 @@ class AlumnController extends Controller
 			$aux = selectSicoes("PlanEstudio","PlanEstudioId",$alumnData[0]["PlanEstudioId"]);
 			$planEstudio = $aux[0]["Clave"];
 			$enrollment = $alumnData[0]["Matricula"];
-			$inscripcion =getInscription($alumn->id_alumno);
+			$inscripcion = getInscription($alumn->id_alumno);
 			if ($inscripcion) {
 				$aux = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"]);
 				$group = $aux[0]["Nombre"];
 			}
 		}
 		
-		$array = array('enrollment' => $enrollment, 'group' => $group, 'PlanEstudio' => $planEstudio);
+		$array = array('enrollment' => $enrollment, 'group' => $group, 'PlanEstudio' => $planEstudio, 'semestre' => $inscripcion["Semestre"]);
 		return response()->json($array);
     }
 
@@ -54,7 +54,7 @@ class AlumnController extends Controller
         $start = $request->get('start');
         $length = $request->get('length');
 
-        $query = User::select();
+        $query = User::select()->orderByDesc("id");
         $filtered = 0;
 
         if($filter) {
@@ -111,19 +111,23 @@ class AlumnController extends Controller
     	$alumn = User::find($request->input('id_alumn'));
     	$alumnData = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
     	$actualizar = [];
+        $inscripcion =getInscription($alumn->id_alumno);
 
     	if ($request->has('PlanEstudioId')) {
     		array_push($actualizar, updateSicoes("Alumno", "PlanEstudioId", $request->input('PlanEstudioId'), "AlumnoId", $alumnData["AlumnoId"]));
     	}
 
     	if ($request->has('EncGrupoId')) {
-    		$inscripcion =getInscription($alumn->id_alumno);
     		array_push($actualizar, updateSicoes("Inscripcion", "EncGrupoId", $request->input('EncGrupoId'),"InscripcionId", $inscripcion["InscripcionId"]));
     	}
 
     	if ($request->has('matriculaGenerada') && $request->input('matriculaGenerada') != null) {
     		array_push($actualizar, updateSicoes("Alumno", "Matricula", $request->input('matriculaGenerada'), "AlumnoId", $alumnData["AlumnoId"]));
     	}
+
+        if ($request->has('semestre') && $request->input('semestre') != null) {
+            array_push($actualizar, updateSicoes("Inscripcion", "Semestre", $request->input('semestre'), "InscripcionId", $inscripcion["InscripcionId"]));
+        }
 
     	if (count($actualizar)==0)
     	{

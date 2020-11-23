@@ -80,7 +80,7 @@ $('#ticket').change(function()
 	  else
 	  {
 		$(this).val('');
-		toastr.success("Extensión no permitida: " + ext);
+		toastr.error("Extensión no permitida: " + ext);
 	  }
 	}
 });
