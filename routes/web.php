@@ -137,6 +137,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 			        'uses' => 'DebitController@note', 
 			        'as' => 'debit.note'
 			    ]);
+
+			    Route::post('debit/pay-upload', [
+					'uses' => 'DebitController@pay_upload', 
+					'as' => 'debit.pay.upload'
+				]);
 			});
 
 			Route::get('/', [
