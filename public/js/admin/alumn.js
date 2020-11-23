@@ -116,6 +116,7 @@ $(".tableAlumns tbody").on("click","button.btnUpdateAlumn",function(){
             $('#PlanEstudioActual').val(response['PlanEstudio']);
             $('#EncGrupoActual').val(response['group']);
             $('#matriculaActual').val(response['enrollment']);
+            $('#semestre').val(response['semestre']);
         }
     });
 });

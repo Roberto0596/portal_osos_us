@@ -101,7 +101,7 @@
 
               </div>
 
-              <a href="{{isNoob(Auth::guard('alumn')->user()->id)}}" class="small-box-footer">{{!$status?"Inscribirse ":"Ver carga "}}<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{isNoob(Auth::guard('alumn')->user()->id)}}" class="small-box-footer">{{!$status?"Inscribirse ":"Gracias"}}<i class="fas fa-arrow-circle-right"></i></a>
 
             </div>
             

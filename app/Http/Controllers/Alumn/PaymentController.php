@@ -278,10 +278,10 @@ class PaymentController extends Controller
     public function pay_upload(Request $request)
     {
         $current_user = User::find(Auth::guard("alumn")->user()->id);
-        $current_sicoes = getLastSemester($current_user->id_alumno);
+        $current_sicoes = getLastThing("Inscripcion", "AlumnoId", $current_user->id_alumno, "InscripcionId");
         $file = $request->file('file');
         $originalExtention = explode(".", $_FILES["file"]["name"])[1];
-        $name = str_replace("_"," ",$current_user->name) . $current_sicoes.".".$originalExtention;
+        $name = str_replace("_"," ",$current_user->name) . $current_sicoes["Semestre"].".".$originalExtention;
 
         if(!\Storage::disk('public_uploads')->put($name,  \File::get($file)))
         {

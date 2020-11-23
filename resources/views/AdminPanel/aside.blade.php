@@ -79,7 +79,7 @@
                     <a href="{{route('admin.failed.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-times"></i>
                         <p>
-                            I. fallidas
+                            Inscripciones fallidas
                         </p>
                     </a>
                 </li>
@@ -94,17 +94,23 @@
                     </a>
                 </li>
 
-
-
-
                 <li class="nav-item">
+                    <a href="{{ route('admin.document.request') }}" class="nav-link">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>
+                            Solicitudes de documentos
+                        </p>
+                    </a>
+                </li>
+
+                {{--<li class="nav-item">
                     <a href="{{route('admin.reset-pass')}}" class="nav-link">
                         <i class="nav-icon fas fa-key"></i>
                         <p>
                             Restaurar Contraseñas
                         </p>
                     </a>
-                </li>
+                </li>--}}
 
                 <li class="nav-item">
                     <a href="{{ route('admin.debit-type') }}" class="nav-link">

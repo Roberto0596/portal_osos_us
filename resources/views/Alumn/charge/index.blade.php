@@ -38,7 +38,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">Para dar de baja una materia debes comunicarte con servicios escolares</h3>
+        <h3 class="card-title">El sistema ah seleccionado para ti estas materias</h3>
 
       </div>
       
@@ -48,11 +48,9 @@
 
           <div class="col-md-12">
 
-            <form action="{{route('alumn.charge.save',$user)}}" method="post">
+            <form action="{{route('alumn.charge.save')}}" method="post">
 
               {{ csrf_field() }}
-
-            <input type="hidden" name="currentAsignatures" value="{{json_encode($asignatures,true)}}">
 
             <table class="table">
 
@@ -64,7 +62,7 @@
 
                   <th>Semestre</th>
 
-                  <th>Plan de estudio</th>
+                  <th>Alumno</th>
 
                   <th>Profesor</th>
 
@@ -74,13 +72,7 @@
 
               <tbody>
               
-              @foreach($asignatures as $key => $value)
-
-              @php
-               $planEstudio = selectSicoes("PlanEstudio","PlanEstudioId",$value["PlanEstudioId"])[0]["Nombre"];
-               $teacher = selectSicoes("Profesor","ProfesorId",$value[12])[0]["Nombre"];
-              @endphp
-
+              @foreach($instance as $key => $value)
               <tr>
 
                 <td>
@@ -89,12 +81,11 @@
 
                     <div class="icheck-success d-inline">
 
-<!--                       <input type="checkbox" class="checkasignatura" name="{{$key}}" id="{{$key}}" checked value="{{$value[11]}}"> -->
+                     <input type="checkbox" class="checkasignatura" name="seleccionadas[]" id="{{$key}}" checked value="{{$value->detGrupoId}}">
 
                       <label for="{{$key}}">
-                          {{$value["Nombre"]}}
+                          {{$value->materia}}
                       </label>
-                      <input type="hidden" name="detgrupoid" value="{{$value[11]}}">
 
                     </div>
 
@@ -102,11 +93,11 @@
 
                 </td>
 
-                <td>{{$value["Semestre"]}}</td>
+                <td>{{$value->semestre}}</td>
 
-                <td>{{$planEstudio}}</td>
+                <td>{{$value->nombre}}</td>
 
-                <td>{{$teacher}}</td>
+                <td>{{$value->nombreProfesor}}</td>
 
               </tr>               
 
@@ -123,15 +114,7 @@
 
             <div class="form-group row">
 
-              @if($inscription["Semestre"] ==1)
-
               <button type="submit" class="btn btn-warnign flotante" title="Guardar" style="background: green !important;bottom: 60px !important;"><i class="fa fa-save" style="color: white !important;"></i></button>
-
-              @else
-
-                <a href="{{route('alumn.home')}}" class="btn btn-warnign flotante" title="ir a inicio" style="background: green !important;bottom: 60px !important;"><i class="fas fa-home" style="color: white !important;"></i></a>
-                
-              @endif
 
             </div>
 

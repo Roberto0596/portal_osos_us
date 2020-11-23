@@ -35,4 +35,9 @@ class Document extends Model
     {
         return $this->belongsTo('App\Models\Alumns\DocumentType','document_type_id','id');
     }
+
+    public function period()
+    {
+        return $this->belongsTo('App\Models\PeriodModel','PeriodoId','id');
+    }
 }

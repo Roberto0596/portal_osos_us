@@ -447,7 +447,7 @@
 
                 <div class="panel">SUBIR COMPROBANTE</div>
 
-                  <input type="file" name="file" id="ticket">
+                  <input type="file" name="file" id="ticket" required>
 
                 </div>
 

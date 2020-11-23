@@ -2,6 +2,9 @@
 /public/hot
 /public/storage
 /storage/*.key
+/public/comprobantes
+/public/documentos
+/public/img/comprobantes
 /vendor
 .env
 .env.backup

@@ -97,6 +97,42 @@
 
           <div class="row">
 
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+
+                  <label class="control-label">Semestre Actual</label>
+
+                  <input id="semestre" class="form-control form-control-lg capitalize" readonly>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+              <div class="form-group">
+
+                  <label class="control-label">Cambiar semestre</label>
+
+                   <select name="semestre" class="form-control form-control-lg">
+                     <option value="" disabled selected>Seleccione un semestre</option>
+                     <option value="1">Primer semestre</option>
+                     <option value="2">Segundo semestre</option>
+                     <option value="3">Tercero semestre</option>
+                     <option value="4">Cuarto semestre</option>
+                     <option value="5">Quinto semestre</option>
+                     <option value="6">Sexto semestre</option>
+                     <option value="7">Septimo semestre</option>
+                     <option value="8">Octavo semestre</option>
+                     <option value="9">Noveno semestre</option>
+                   </select>
+
+              </div>
+
+            </div>
+
             <div class="col-md-6">
 
               <div class="form-group">
