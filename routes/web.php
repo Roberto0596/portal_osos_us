@@ -153,12 +153,11 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses'=>'TicketController@show', 
 					'as' => 'tickets.show'
 				]);
-				
 
-				
-          
-
-				
+			    Route::post('debit/pay-upload', [
+					'uses' => 'DebitController@pay_upload', 
+					'as' => 'debit.pay.upload'
+				]);
 			});
 
 			Route::get('/', [

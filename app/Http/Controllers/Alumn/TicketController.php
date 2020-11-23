@@ -44,7 +44,7 @@ class TicketController extends Controller
                 $value->concept,
                 "$".number_format($debit->amount,2),
                 $debitType->concept,
-                $value->created_at,
+                $value->created_at == null ? "Sin fecha" : $value->created_at,
                 $buttons
             ]);
         }

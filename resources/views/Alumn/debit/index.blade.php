@@ -264,7 +264,7 @@
                       Total: <span id="total-transfer"></span><br>
                       Total adeudo: <span id="total-adeudo-transfer"></span><br>
                     </p>
-                    <button class="btn btn-success" style="margin-top: 24px;">Pagar</button>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#modalTicket" style="margin-top: 24px;">Pagar</button>
                   </div>
                 </div>
               </a>
@@ -433,6 +433,72 @@
 
       </div>
     
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal fade" id="modalTicket">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3>Deposito en Banco o Transferencia Bancaria</h3>
+
+      </div>
+        
+        <div class="modal-body">
+
+          <form action="{{route('alumn.debit.pay.upload')}}" method="post" enctype="multipart/form-data">
+              
+            {{ csrf_field() }}
+
+            <div class="row">
+
+              <div class="col-md-12">
+                  <p>Para procesar tu pago, es necesario que realices el deposito o transferencia a la cuenta de la universidad y despues subas el comprobante en esta parte. una vez que lo hayas hecho, personal de finanzas verificaran el pago y te dejaran avanzar en el proceso</p>
+              </div>
+              
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+                
+                <div class="form-group">
+
+                <div class="panel">SUBIR COMPROBANTE</div>
+                  <input type="hidden" name="debitList" class="debitList">
+                  <input type="file" name="file" id="ticket" required>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+                    <button class="btn btn-success" type="submit">subir</button>
+                  
+                </div>
+
+              </div>
+
+            </div>
+              
+          </form>
+
+        </div>
+
     </div>
 
   </div>

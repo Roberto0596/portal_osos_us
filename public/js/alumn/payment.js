@@ -155,7 +155,7 @@ $("#form-oxxo").submit(function(e)
 	e.preventDefault();
 	swal.fire({
 		title: '¿estas seguro de pagar con oxxo pay?',
-		text: "¡solo pudes cancelar una sola vez!",
+		text: "¡solo puedes cancelar una sola vez!",
 		type: 'warning',
 		showCancelButton: true,
 		confirmButtonColor: '#3085d6',
@@ -177,7 +177,7 @@ $("#form-spei").submit(function(e)
   	e.preventDefault();
 	swal.fire({
 		title: '¿estas seguro de pagar con SPEI?',
-		text: "¡solo pudes cancelar una sola vez!",
+		text: "¡solo puedes cancelar una sola vez!",
 		type: 'warning',
 		showCancelButton: true,
 		confirmButtonColor: '#3085d6',

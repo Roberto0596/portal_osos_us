@@ -38,3 +38,8 @@ $(".tableTickets").dataTable({
         }
     }
 });
+
+$(".tableTickets tbody").on("click",'button.btnPrint', function(){
+    let route = $(this).attr("route");
+    window.open(`/${route}`, '_blank');
+});

@@ -266,4 +266,40 @@ class DebitController extends Controller
             return view('Alumn.payment.spei_pay')->with(["order"=>$data, "inscripcionNo" => true]);
         }
     }
+
+    public function pay_upload(Request $request)
+    {
+        $debitId = json_decode($request->get("debitList"),true);
+
+        if (count($debitId) == 0) {
+            session()->flash("messages","info|Asegurece de elegir algunos adeudos");
+            return redirect()->back();
+        }
+
+        //preparamos los datos.
+        $current_user = current_user();
+        $sicoesAlumn = $current_user->getSicoesData();
+
+        $debits = getDebitByArray($debitId);
+
+        $file = $request->file('file');
+
+        $name =  uniqid().".".$file->getClientOriginalExtension();
+        $path =  'img/comprobantes/';
+        try{
+            $file->move($path, $name);
+        } catch(\Exception $e) {
+           session()->flash("messages","error|No fue posible guardar el comprobante, intentelo de nuevo");
+            return redirect()->back(); 
+        }
+
+        foreach ($debits as $key => $value)
+        {
+            $value->id_order = $path.$name;
+            $value->payment_method = "transfer";
+            $value->save();
+        }
+        return redirect()->back();
+    }
+
 }

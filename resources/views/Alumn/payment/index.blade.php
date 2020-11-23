@@ -107,12 +107,12 @@
                         <div class="front-card">
 
                           <img src="{{asset('img/alumn/payment methods/card_white.png')}}" alt="" class="card-image-rob">
-                          <h4 class="titulo-cards">Tarjeta Débido/Crédito</h4>
+                          <h4 class="titulo-cards">Tarjeta Débito/Crédito</h4>
                           
                         </div>
                         <div class="back-card">
                           <p class="parrafo-back"> <b style="font-size: 20px;">Total a Pagar: ${{ number_format(getTotalWithComission($total, "card"),2) }}</b><br><br>
-                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br> ${{ number_format(getTotalWithComission($total, "card", false),2) }} por comisión bancaria.</p>
+                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adeudos + <br> ${{ number_format(getTotalWithComission($total, "card", false),2) }} por comisión bancaria.</p>
                           <button id="payment-card" class="btn btn-success">Paga con tu cuenta</button>
 
                         </div> 
@@ -148,7 +148,7 @@
                           <div class="back-card">
 
                             <p class="parrafo-back"> <b style="font-size: 20px;">Total a Pagar: $ {{ number_format(getTotalWithComission($total, "oxxo"),2) }}</b><br><br>
-                              $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br>${{ number_format(getTotalWithComission($total, "oxxo", false),2) }} por comisión bancaria.</p>
+                              $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adeudos + <br>${{ number_format(getTotalWithComission($total, "oxxo", false),2) }} por comisión bancaria.</p>
                             <button class="btn btn-success">Realiza un pago en oxxo</button>
                         
                           </div>
@@ -185,7 +185,7 @@
                             <b style="font-size: 20px;">Total a Pagar: $ {{ number_format(getTotalWithComission($total, "spei"),2) }}</b>
                             <br>
                             <br>
-                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adedudos + <br>${{ number_format(getTotalWithComission($total, "spei", false),2) }} por comisión bancaria.</p>
+                            $1950.00 de Inscripción + <br> ${{number_format($otherTotal,2) }} de otros adeudos + <br>${{ number_format(getTotalWithComission($total, "spei", false),2) }} por comisión bancaria.</p>
                           <button class="btn btn-success">Realiza una transferencia SPEI</button>
                         </div>
 

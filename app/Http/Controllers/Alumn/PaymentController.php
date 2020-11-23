@@ -277,28 +277,33 @@ class PaymentController extends Controller
 
     public function pay_upload(Request $request)
     {
-        $current_user = User::find(Auth::guard("alumn")->user()->id);
-        $current_sicoes = getLastThing("Inscripcion", "AlumnoId", $current_user->id_alumno, "InscripcionId");
-        $file = $request->file('file');
-        $originalExtention = explode(".", $_FILES["file"]["name"])[1];
-        $name = str_replace("_"," ",$current_user->name) . $current_sicoes["Semestre"].".".$originalExtention;
+        //preparamos los datos.
+        $current_user = current_user();
+        $sicoesAlumn = $current_user->getSicoesData();
 
-        if(!\Storage::disk('public_uploads')->put($name,  \File::get($file)))
-        {
-            session()->flash("messages","error|No fue posible guardar el comprobante, intentelo de nuevo");
-            return redirect()->back();
-        }
         //traer los conceptos que se deben del alumno
         $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
         $debits = Debit::where($query)->get();
-        $route = "img/comprobantes/".$name;
-        
+
+        $file = $request->file('file');
+
+        $name = uniqid().".".$file->getClientOriginalExtension();
+        $path = 'img/comprobantes/';
+
+        try{
+            $file->move($path, $name);
+        } catch(\Exception $e) {
+           session()->flash("messages","error|No fue posible guardar el comprobante, intentelo de nuevo");
+            return redirect()->back(); 
+        }
+
         foreach ($debits as $key => $value)
         {
-            $value->id_order = $route;
+            $value->id_order = $path.$name;
             $value->payment_method = "transfer";
             $value->save();
         }
+
         $current_user->inscripcion = 2;
         $current_user->save();
         return redirect()->route("alumn.payment.note");
