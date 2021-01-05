@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(period::class);
         $this->call(ConfigSeeder::class);
         $this->call(document_type::class);
+        $this->call(promediosAltosSeed::class);
     }
 }

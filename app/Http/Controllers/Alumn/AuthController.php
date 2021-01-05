@@ -17,7 +17,7 @@ class AuthController extends Controller
         if (Auth::guard("alumn")->check())
         {
             return redirect()->route('alumn.home');
-        }  
+        } 
         return view('Alumn.auth.login');
     }
 
