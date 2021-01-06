@@ -59,24 +59,28 @@ class DebitController extends Controller
 
         foreach($debits as $key => $value)
         {
-            if ($value->id_alumno != null) {
-                $alumn = getDataAlumnDebit($value->id_alumno);
-                array_push($res,[
-                    "#" => ($key+1),
-                    "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
-                    "Email" =>strtolower($alumn["Email"]),
-                    "Descripción" => $value->description,
-                    "Importe" => "$".number_format($value->amount,2),
-                    "Matricula" =>$alumn["Matricula"],
-                    "Estado" =>($value->status==1)?"Pagada":"Pendiente",
-                    "Fecha" => substr($value->created_at,0,11),
-                    "Carrera" =>$alumn['nombreCarrera'],
-                    "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
-                    "method" => $value->payment_method,
-                    "debitId" => $value->id,
-                    "id_order" => $value->id_order,
-                    "debit_type_id" => $value->debit_type_id
-                ]);
+            try {
+                if ($value->id_alumno != null) {
+                    $alumn = getDataAlumnDebit($value->id_alumno);
+                    array_push($res,[
+                        "#" => ($key+1),
+                        "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
+                        "Email" =>strtolower($alumn["Email"]),
+                        "Descripción" => $value->description,
+                        "Importe" => "$".number_format($value->amount,2),
+                        "Matricula" =>$alumn["Matricula"],
+                        "Estado" =>($value->status==1)?"Pagada":"Pendiente",
+                        "Fecha" => substr($value->created_at,0,11),
+                        "Carrera" =>$alumn['nombreCarrera'],
+                        "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
+                        "method" => $value->payment_method,
+                        "debitId" => $value->id,
+                        "id_order" => $value->id_order,
+                        "debit_type_id" => $value->debit_type_id
+                    ]);
+                }
+            } catch(\Exception $e) {
+                dd($e->getMessage());
             }
         }
         return response()->json([
