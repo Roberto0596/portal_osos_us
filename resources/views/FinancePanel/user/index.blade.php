@@ -108,7 +108,7 @@
 
                 <div class="tab-pane" id="settings">
 
-                  <form class="form-horizontal" method="post" action="{{route('computo.user.save', $user)}}" enctype="multipart/form-data">
+                  <form class="form-horizontal" method="post" action="{{route('finance.user.save', $user)}}" enctype="multipart/form-data">
 
                     {{ csrf_field() }}
 
