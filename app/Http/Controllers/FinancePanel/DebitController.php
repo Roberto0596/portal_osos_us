@@ -85,7 +85,7 @@ class DebitController extends Controller
         }
         return response()->json([
             "recordsTotal" => Debit::count(),
-            "recordsFiltered" => $filtered,
+            "recordsFiltered" => $res,
             "data" => $res
         ]);
     }
