@@ -901,3 +901,61 @@ function addLog($message) {
   array_push($data["errors"], ["mensaje" => $message, "fecha" => getDateCustom()]);
   file_put_contents($path, json_encode($data));
 }
+
+
+
+	/*
+	|-------------------------------------------------------------------
+	| Metodo para generar un Ticket
+	|-------------------------------------------------------------------
+	*/
+ function createTicket($debit_id)
+{
+
+    $debit = Debit::find($debit_id);
+    $alumn = User::find($debit->id_alumno);
+    $date =  Carbon::now()->toDateTimeString();
+
+    
+    $html = view('Alumn.ticket.template',['alumn'=>$alumn,'debit'=>$debit,'date'=>$date])->render();
+    $namefile = ucwords($debit->description).time().'.pdf';
+    $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+    $fontDirs = $defaultConfig['fontDir'];
+    $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+    $fontData = $defaultFontConfig['fontdata'];
+    $mpdf = new Mpdf([
+        'fontDir' => array_merge($fontDirs, [
+            public_path() . '/fonts',
+        ]),
+        'fontdata' => $fontData + [
+            'arial' => [
+                'R' => 'arial.ttf',
+                'B' => 'arialbd.ttf',
+            ],
+        ],
+        'default_font' => 'arial',
+        "format" => [210,297],
+    ]);
+   
+    $mpdf->SetDisplayMode('fullpage');
+    $mpdf->WriteHTML($html);
+
+    $alumnData = selectSicoes("Alumno","AlumnoId",current_user()->id_alumno);
+    $path = "tickets/".$alumnData[0]["Matricula"];
+
+     if (! is_dir(public_path()."/".$path)) {
+        mkdir(public_path()."/".$path, 0777, true);
+    } 
+      
+    $mpdf->Output($path."/".$namefile,"F");
+
+    $ticket = new Ticket();
+    $ticket->concept = ucwords($debit->description);
+    $ticket->alumn_id = $debit->id_alumno;
+    $ticket->debit_id = $debit->id;
+    $ticket->route = $path."/".$namefile;
+    $ticket->created_at = time();
+    $ticket->save(); 
+
+  
+}

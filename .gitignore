@@ -4,6 +4,7 @@
 /storage/*.key
 /public/comprobantes
 /public/documentos
+/public/tickets
 /public/img/comprobantes
 /vendor
 .env
