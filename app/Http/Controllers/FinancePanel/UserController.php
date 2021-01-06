@@ -45,6 +45,6 @@ class UserController extends Controller
         $user->lastname = $request->input("lastname");
         $user->save();
         session()->flash("messages","success|Datos guardados correctamente");
-        return redirect()->route("computo.user");
+        return redirect()->route("finance.user");
     }
 }
