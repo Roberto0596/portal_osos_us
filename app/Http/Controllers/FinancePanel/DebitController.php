@@ -63,7 +63,8 @@ class DebitController extends Controller
                 $alumn = getDataAlumnDebit($value->id_alumno);
                 array_push($res,[
                     "#" => ($key+1),
-                    "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
+                    // "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".htmlentities($alumn["ApellidoPrimero"])." ". htmlentities($alumn["ApellidoSegundo"]))),
+                    "Alumno" => ucwords(strtolower($alumn["Nombre"])),
                     "Email" =>strtolower($alumn["Email"]),
                     "Descripción" => $value->description,
                     "Importe" => "$".number_format($value->amount,2),
@@ -79,7 +80,6 @@ class DebitController extends Controller
                 ]);
             }
         }
-        dd($res);
         return response()->json([
             "recordsTotal" => Debit::count(),
             "recordsFiltered" => $filtered,
