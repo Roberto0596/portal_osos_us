@@ -149,7 +149,7 @@ function insertInscriptionDebit(User $user)
     'period_id' => getConfig()->period_id
   ];
 
-  $validate = HighAverages::where([["enrollment","=",$user->getSicoesData()["Matricula"]],["periodo_id", "=",getConfig()->period_id]])->first();
+  $validate = HighAverages::where("enrollment",$user->getSicoesData()["Matricula"])->where("status", 0)->first();
 
   if($validate)
   {
@@ -157,6 +157,8 @@ function insertInscriptionDebit(User $user)
     $inscription = makeRegister($user);
     $message["message"] = "Felicidades por tu promedio, sigue así, no pagaras inscripción";
     $message["type"] = 1;
+    $validate->status = 1;
+    $validate->save();
   } else {
     $user->inscripcion = 1;
     $user->save();

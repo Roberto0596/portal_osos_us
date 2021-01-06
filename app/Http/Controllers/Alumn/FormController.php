@@ -57,9 +57,9 @@ class FormController extends Controller
 
     public function saveInscription(Request $request)
     {
-        // $this->validate($request,[
-        //     'g-recaptcha-response' => 'required|recaptcha',
-        // ]);
+        $this->validate($request,[
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
         $current_user = Auth::guard('alumn')->user();
         $data = $request->input();
 
@@ -155,9 +155,9 @@ class FormController extends Controller
     {       
         try
         {
-            //  $this->validate($request,[
-            //     'g-recaptcha-response' => 'required|recaptcha',
-            // ]);
+             $this->validate($request,[
+                'g-recaptcha-response' => 'required|recaptcha',
+            ]);
             $current_user = Auth::guard('alumn')->user();
             $currentId = $current_user->id_alumno;       
             $data = json_decode($request->input('data'));

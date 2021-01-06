@@ -49,7 +49,7 @@ class DesicionTree
 		$period = selectCurrentPeriod();
 		$odd = [1,3,5,7,9];
   		$pair = [2,4,6,8];
-  		// dd($asignaturas);
+
 		foreach ($asignaturas as $key => $value) {
 			$status = true;
 			$node = 0;
@@ -148,7 +148,6 @@ class DesicionTree
 		$historial = collect();
 		$period = selectCurrentPeriod();
 		foreach ($asignaturas as $key => $value) {
-
 			$carga = $this->alumnCharge($value["AsignaturaId"], $alumnData["AlumnoId"]);
 			$detGrupo = $this->DetGrupoId($value["AsignaturaId"]);
 			$push = [
