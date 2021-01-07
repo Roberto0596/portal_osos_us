@@ -13,14 +13,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $user = Auth::guard("alumn")->user();
+        $user = current_user();
         	$status = $user->inscripcion < 3? false:true;
 
         //documentos
         $documents = Document::where("alumn_id","=",$user->id)->get();
 
         //adeudos
-        $query = [["id_alumno","=",$user->id_alumno],["status","=","0"]];
+        $query = [["id_alumno","=",$user->id_alumno],["status","=","0"],["debit_type_id","<>", 1]];
         $debit = Debit::where($query)->get();
         $total = $debit->count("amount");
         return view('Alumn.home.index')->with(["status"=>$status,'documents'=>$documents,'debits'=>$total]);
