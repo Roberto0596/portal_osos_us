@@ -137,6 +137,7 @@ function insertInscriptionDocuments($id)
 function insertInscriptionDebit(User $user)
 {
   $message = ["type" => 0, "message" => "Termino la validación de tu información"];
+  $alumnData = $user->getSicoesData();
   $debit_array = [
     'debit_type_id' => 1,
     'description' => 'Aportacion a la calidad estudiantil',
@@ -146,7 +147,11 @@ function insertInscriptionDebit(User $user)
     'status' => 0,
     'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
     'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-    'period_id' => getConfig()->period_id
+    'period_id' => getConfig()->period_id,
+    'enrollment' => $alumnData["Matricula"],
+    'alumn_name' => $alumnData["Nombre"],
+    'alumn_last_name' => $alumnData["ApellidoPrimero"],
+    'alumn_second_last_name' => (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '')
   ];
 
   $validate = HighAverages::where("enrollment",$user->getSicoesData()["Matricula"])->where("status", 0)->first();
