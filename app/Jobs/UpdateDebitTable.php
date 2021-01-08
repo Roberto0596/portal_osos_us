@@ -42,7 +42,6 @@ class UpdateDebitTable implements ShouldQueue
                 $value->alumn_second_last_name = (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '');
                 $value->save();
             } catch(\Exception $e) {
-                dd($e);
             }
         }
     }
