@@ -43,7 +43,7 @@
           <tbody>
             @foreach($documents as $key => $value)
             <tr>
-              <td>{{$value->alumn->name ." ". $value->alumn->lastname ? $value->alumn->lastname : ''}}</td>
+              <td>{{$value->alumn->name ." ". ($value->alumn->lastname ? $value->alumn->lastname : '')}}</td>
               <td>{{ $value->alumn->email }}</td>
               <td>{{ $value->documentType->name }}</td>
               <td>{{ $value->description }}</td>

@@ -461,6 +461,12 @@
 
               <div class="col-md-12">
                   <p>Para procesar tu pago, es necesario que realices el deposito o transferencia a la cuenta de la universidad y despues subas el comprobante en esta parte. una vez que lo hayas hecho, personal de finanzas verificaran el pago y te dejaran avanzar en el proceso</p>
+                  <ul>
+                    <li><b>Beneficiario:</b> Universidad de la Sierra</li>
+                    <li><b>Banco:</b> Santander </li>
+                    <li><b>Cuenta:</b> 51908243936 </li>
+                    <li><b>CLABE:</b> 014775519082439362 </li>
+                  </ul>
               </div>
               
             </div>

@@ -19,6 +19,10 @@ class Debit extends Model
         'status',
         'created_at',
         'updated_at',
+        'enrollment',
+        'alumn_name',
+        'alumn_last_name',
+        'alumn_second_last_name'
     ];
 
     public function admin() {

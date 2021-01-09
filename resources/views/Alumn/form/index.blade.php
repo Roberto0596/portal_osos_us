@@ -696,7 +696,9 @@
                                                             $school = selectSicoes("Escuela","EscuelaId",$data["EscuelaProcedenciaId"]);
 
                                                         @endphp
+                                                        @if($school)
                                                         <option disabled="" selected="">{{$school[0]['Nombre']}}</option>
+                                                        @endif
                                                     @else
                                                         <option value="" disabled="" selected="">Seleccionar</option>
                                                     @endif          

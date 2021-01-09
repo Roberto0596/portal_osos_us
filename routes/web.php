@@ -324,7 +324,11 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'as' => 'debit.delete'
 			]);
 
-		
+			Route::post('/user/save/{user?}', [
+		        'uses' => 'UserController@save', 
+		        'as' => 'user.save'
+			]);
+			
 			// te lleva a la parte de usuarios
 			Route::get('/user', [
 		        'uses' => 'UserController@index', 

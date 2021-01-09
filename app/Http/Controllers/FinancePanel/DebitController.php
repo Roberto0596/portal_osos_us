@@ -15,7 +15,7 @@ class DebitController extends Controller
 {
     public function index()
 	{
-        $periods = PeriodModel::select()->orderBy("id")->get();
+        $periods = PeriodModel::select()->orderBy("id", "desc")->get();
 		return view('FinancePanel.debit.index')->with(["periods" => $periods]);
     }
 
@@ -50,6 +50,10 @@ class DebitController extends Controller
         if ($filter) {
            $query = $query->where(function($query) use ($filter){
                 $query->orWhere('description', 'like', '%'. $filter .'%');
+                $query->orWhere('enrollment', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_name', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_last_name', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
             });
            $filtered = $query->count();
         } 
@@ -63,7 +67,7 @@ class DebitController extends Controller
                 $alumn = getDataAlumnDebit($value->id_alumno);
                 array_push($res,[
                     "#" => ($key+1),
-                    "Alumno" => ucwords(strtolower($alumn["Nombre"]." ".$alumn["ApellidoPrimero"]." ".$alumn["ApellidoSegundo"])),
+                    "Alumno" => ucwords(strtolower($alumn["Nombre"])),
                     "Email" =>strtolower($alumn["Email"]),
                     "Descripción" => $value->description,
                     "Importe" => "$".number_format($value->amount,2),
