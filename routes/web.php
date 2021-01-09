@@ -781,11 +781,6 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'debittype.see'
 			]);
 
-			//=============================================================//
-
-
-			
-
 			//================== rutas CRUD document_type ===================//
 
 			//muestra la tabla de document type
@@ -862,6 +857,21 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'uses' => 'DocumentRequestController@fix', 
 		        'as' => 'document.request.fix'
 			]);
+
+			//================== Promedios altos ===================//
+
+			//muestra la tabla de high_averages
+			Route::get('/high-averages', [
+		        'uses' => 'HighAveragesController@index', 
+		        'as' => 'high-averages'
+			]);	
+
+			//muestra la tabla de high_averages
+			Route::post('/high-averages/load/{period?}', [
+		        'uses' => 'HighAveragesController@loadData', 
+		        'as' => 'high-averages.load'
+			]);	
+
 
 		});
   	});
