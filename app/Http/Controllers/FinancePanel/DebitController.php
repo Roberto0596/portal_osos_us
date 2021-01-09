@@ -15,7 +15,7 @@ class DebitController extends Controller
 {
     public function index()
 	{
-        $periods = PeriodModel::select()->orderBy("id")->get();
+        $periods = PeriodModel::select()->orderBy("id", "desc")->get();
 		return view('FinancePanel.debit.index')->with(["periods" => $periods]);
     }
 
