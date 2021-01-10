@@ -38,7 +38,6 @@ function validateDebitsWithOrderId($id_order, $status)
     try {
         createTicket($value->id);
     } catch(\Exception $e){
-      dd($e);
     }
   }
 }
@@ -924,7 +923,7 @@ function addLog($message) {
 	|-------------------------------------------------------------------
 	*/
  function createTicket($debit_id)
-{
+  {
 
     $debit = Debit::find($debit_id);
     $alumn = User::where("id_alumno", $debit->id_alumno)->first();
@@ -954,14 +953,19 @@ function addLog($message) {
     $mpdf->SetDisplayMode('fullpage');
     $mpdf->WriteHTML($html);
 
-    $alumnData = selectSicoes("Alumno","AlumnoId",current_user()->id_alumno);
-    $path = "tickets/".$alumnData[0]["Matricula"];
+    $alumnData = $alumn->getSicoesData();
+    $path = "tickets/".$alumnData["Matricula"];
 
-     if (! is_dir(public_path()."/".$path)) {
+
+    if (! is_dir(public_path()."/".$path)) {
         mkdir(public_path()."/".$path, 0777, true);
-    } 
-      
-    $mpdf->Output($path."/".$namefile,"F");
+    }
+
+    try {     
+      $mpdf->Output($path."/".$namefile,"F");
+    } catch(\Exception $e) {
+      $mpdf->Output(public_path()."/". $path."/".$namefile,"F");
+    }
 
     $ticket = new Ticket();
     $ticket->concept = ucwords($debit->description);
@@ -970,6 +974,5 @@ function addLog($message) {
     $ticket->route = $path."/".$namefile;
     $ticket->created_at = time();
     $ticket->save(); 
-
   
 }
