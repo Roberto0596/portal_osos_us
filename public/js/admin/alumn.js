@@ -112,11 +112,13 @@ $(".tableAlumns tbody").on("click","button.btnUpdateAlumn",function(){
         contentType:false,
         processData:false,
         success:function(response)
-        {         
+        {      
+            console.log(response['inscription_status']);   
             $('#PlanEstudioActual').val(response['PlanEstudio']);
             $('#EncGrupoActual').val(response['group']);
             $('#matriculaActual').val(response['enrollment']);
             $('#semestre').val(response['semestre']);
+            $("#inscription-status option[value="+ response['inscription_status'] +"]").attr("selected",true);
         }
     });
 });
@@ -140,4 +142,26 @@ $('#PlanEstudioId').change(function(){
             $('#matriculaGenerada').val(response);
         }
     });
+});
+
+$('#inscription-status').change(function(){
+
+    if ($(this).val() == 1) {
+        swal.fire({
+            title: '¿Quiere que generemos el adeudo correspondiente?',
+            text: "¡si acepta, se creara un adeudo de inscripcion para este alumno!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, por favor'
+        }).then((result)=>{
+          if (result.value)
+          {
+            $('#is_payment').val(1);
+          }
+        });
+    }
+
 });

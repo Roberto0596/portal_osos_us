@@ -88,7 +88,7 @@
 
                             <label class="field a-field a-field_a2">
 
-                                <input class="field__input a-field__input" placeholder="example@example.com" id="email" name="email" required>
+                                <input class="field__input a-field__input" placeholder="example@example.com" id="email" name="email" value="{{old('email')}}" required>
 
                                 <span class="a-field__label-wrap">
 

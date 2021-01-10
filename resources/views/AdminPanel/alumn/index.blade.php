@@ -95,131 +95,173 @@
             $EncGrupos = selectSicoes("EncGrupo","PeriodoId",$period->id);
           @endphp
 
-          <div class="row">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="sicoes-tab" data-toggle="tab" href="#sicoes" role="tab" aria-controls="sicoes" aria-selected="true">SICOES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="inscription-tab" data-toggle="tab" href="#inscription" role="tab" aria-controls="inscription" aria-selected="false">Inscripción</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
 
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Semestre Actual</label>
-
-                  <input id="semestre" class="form-control form-control-lg capitalize" readonly>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Cambiar semestre</label>
-
-                   <select name="semestre" class="form-control form-control-lg">
-                     <option value="" disabled selected>Seleccione un semestre</option>
-                     <option value="1">Primer semestre</option>
-                     <option value="2">Segundo semestre</option>
-                     <option value="3">Tercero semestre</option>
-                     <option value="4">Cuarto semestre</option>
-                     <option value="5">Quinto semestre</option>
-                     <option value="6">Sexto semestre</option>
-                     <option value="7">Septimo semestre</option>
-                     <option value="8">Octavo semestre</option>
-                     <option value="9">Noveno semestre</option>
-                   </select>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Plan de estudio actual</label>
-
-                  <input id="PlanEstudioActual" class="form-control form-control-lg capitalize" readonly>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Planes de estudio</label>
-
-                  <select class="form-control form-control-lg" name="PlanEstudioId" id="PlanEstudioId">
-                    <option value="" disabled selected>Elija un plan de estudio</option>
-                    @foreach($planesEstudio as $key => $value)
-                      <option value="{{$value['PlanEstudioId']}}">{{$value["Nombre"]}}</option>
-                    @endforeach
-                  </select>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Grupo actual</label>
-
-                  <input id="EncGrupoActual" class="form-control form-control-lg capitalize" readonly>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Grupos</label>
-
-                  <select class="form-control form-control-lg" name="EncGrupoId" id="EncGrupoId">
-                    <option value="" disabled selected>Elija un grupo</option>
-                    @foreach($EncGrupos as $key => $value)
-                      <option value="{{$value['EncGrupoId']}}">{{$value["Nombre"]}}</option>
-                    @endforeach
-                  </select>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-
-                  <label class="control-label">Matricula actual</label>
-
-                  <input id="matriculaActual" class="form-control form-control-lg capitalize" readonly>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
+            <div class="tab-pane fade show active" id="sicoes" role="tabpanel" aria-labelledby="sicoes-tab">
 
               <div class="row">
 
+                <div class="col-md-6">
+
                   <div class="form-group">
 
-                      <label class="control-label">Matricula generada</label>
+                      <label class="control-label">Semestre Actual</label>
 
-                      <input id="matriculaGenerada" name="matriculaGenerada" class="form-control form-control-lg capitalize" readonly>
+                      <input id="semestre" class="form-control form-control-lg capitalize" readonly>
 
                   </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Cambiar semestre</label>
+
+                       <select name="semestre" class="form-control form-control-lg">
+                         <option value="" disabled selected>Seleccione un semestre</option>
+                         <option value="1">Primer semestre</option>
+                         <option value="2">Segundo semestre</option>
+                         <option value="3">Tercero semestre</option>
+                         <option value="4">Cuarto semestre</option>
+                         <option value="5">Quinto semestre</option>
+                         <option value="6">Sexto semestre</option>
+                         <option value="7">Septimo semestre</option>
+                         <option value="8">Octavo semestre</option>
+                         <option value="9">Noveno semestre</option>
+                       </select>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Plan de estudio actual</label>
+
+                      <input id="PlanEstudioActual" class="form-control form-control-lg capitalize" readonly>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Planes de estudio</label>
+
+                      <select class="form-control form-control-lg" name="PlanEstudioId" id="PlanEstudioId">
+                        <option value="" disabled selected>Elija un plan de estudio</option>
+                        @foreach($planesEstudio as $key => $value)
+                          <option value="{{$value['PlanEstudioId']}}">{{$value["Nombre"]}}</option>
+                        @endforeach
+                      </select>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Grupo actual</label>
+
+                      <input id="EncGrupoActual" class="form-control form-control-lg capitalize" readonly>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Grupos</label>
+
+                      <select class="form-control form-control-lg" name="EncGrupoId" id="EncGrupoId">
+                        <option value="" disabled selected>Elija un grupo</option>
+                        @foreach($EncGrupos as $key => $value)
+                          <option value="{{$value['EncGrupoId']}}">{{$value["Nombre"]}}</option>
+                        @endforeach
+                      </select>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Matricula actual</label>
+
+                      <input id="matriculaActual" class="form-control form-control-lg capitalize" readonly>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <div class="row">
+
+                      <div class="form-group">
+
+                          <label class="control-label">Matricula generada</label>
+
+                          <input id="matriculaGenerada" name="matriculaGenerada" class="form-control form-control-lg capitalize" readonly>
+
+                      </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="inscription" role="tabpanel" aria-labelledby="inscription-tab">
+              <div class="row">
+
+                <div class="col-md-12">
+
+                  <div class="form-group">
+
+                      <label class="control-label">Cambiar estado del alumno</label>
+
+                       <select name="inscription-status" id="inscription-status" class="form-control form-control-lg">
+                         <option value="" disabled selected>Seleccione un estado</option>
+                         <option value="0">Formulario</option>
+                         <option value="1">Pago</option>
+                         <option value="3">Carga</option>
+                       </select>
+                       <input type="hidden" name="is_payment" id="is_payment" value="0">
+
+                  </div>
+
+                </div>
 
               </div>
 
             </div>
 
           </div>
+
+  
             
         </div>
 

@@ -43,7 +43,12 @@ class AlumnController extends Controller
 			}
 		}
 		
-		$array = array('enrollment' => $enrollment, 'group' => $group, 'PlanEstudio' => $planEstudio, 'semestre' => $inscripcion["Semestre"]);
+		$array = array(
+            'enrollment' => $enrollment, 
+            'group' => $group, 
+            'PlanEstudio' => $planEstudio, 
+            'semestre' => $inscripcion["Semestre"], 
+            "inscription_status" => $alumn->inscripcion);
 		return response()->json($array);
     }
 
@@ -61,6 +66,7 @@ class AlumnController extends Controller
             $query = $query->where(function($query) use ($filter){
                 $query->orWhere('name', 'like', '%'. $filter .'%')
                     ->orWhere('lastname', 'like', '%'. $filter . '%')
+                    ->orWhere('enrollment', 'like', '%'. $filter . '%')
                     ->orWhere('email', 'like', '%'. $filter . '%');
             });
             $filtered = $query->count();
@@ -111,7 +117,18 @@ class AlumnController extends Controller
     	$alumn = User::find($request->input('id_alumn'));
     	$alumnData = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
     	$actualizar = [];
-        $inscripcion =getInscription($alumn->id_alumno);
+        $inscripcion = getInscription($alumn->id_alumno);
+
+        $alumn->inscripcion = $request->get('inscription-status');
+        $alumn->save();
+
+        if ($request->get('is_payment') == 1) {
+            $validDebit = Debit::where([["id_alumno", $alumn->id_alumno], ["period_id", getConfig()->period_id]])->first();
+
+            if (!$validDebit) {
+                insertInscriptionDebit($alumn);
+            }
+        }
 
     	if ($request->has('PlanEstudioId')) {
     		array_push($actualizar, updateSicoes("Alumno", "PlanEstudioId", $request->input('PlanEstudioId'), "AlumnoId", $alumnData["AlumnoId"]));
@@ -131,7 +148,7 @@ class AlumnController extends Controller
 
     	if (count($actualizar)==0)
     	{
-    		session()->flash("messages","info|No iba ningun dato para actualizar");
+    		session()->flash("messages","info|Guardado correcto");
     		return redirect()->back();
     	}
     	else if (in_array("error", $actualizar)) 
