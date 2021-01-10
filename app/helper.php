@@ -11,7 +11,9 @@ use App\Models\Alumns\DocumentType;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\FailedRegister;
-
+use App\Models\Alumns\Ticket;
+use Carbon\Carbon;
+use Mpdf\Mpdf;
 
 //seccion del sistema
 
@@ -33,6 +35,11 @@ function validateDebitsWithOrderId($id_order, $status)
       $document->save();
     }
     $value->save();
+    try {
+        createTicket($value->id);
+    } catch(\Exception $e){
+      dd($e);
+    }
   }
 }
 
@@ -920,7 +927,7 @@ function addLog($message) {
 {
 
     $debit = Debit::find($debit_id);
-    $alumn = User::find($debit->id_alumno);
+    $alumn = User::where("id_alumno", $debit->id_alumno)->first();
     $date =  Carbon::now()->toDateTimeString();
 
     
@@ -958,7 +965,7 @@ function addLog($message) {
 
     $ticket = new Ticket();
     $ticket->concept = ucwords($debit->description);
-    $ticket->alumn_id = $debit->id_alumno;
+    $ticket->alumn_id = $alumn->id;
     $ticket->debit_id = $debit->id;
     $ticket->route = $path."/".$namefile;
     $ticket->created_at = time();

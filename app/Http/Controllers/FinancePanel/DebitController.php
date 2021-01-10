@@ -123,7 +123,15 @@ class DebitController extends Controller
             $debit->description = $request->input("description");
             $debit->id_order = $request->get("status") == "on" ? 1 : 0;
             $debit->status = $request->get("status") == "on" ? 1 : 0; 
-            $debit->save();           
+            $debit->save();   
+
+            if ($debit->status == 1) {
+                try {
+                    createTicket($value->id);
+                } catch(\Exception $e){
+
+                }
+            }        
             
             if ($debit->has_file_id != null) {
                 $document = Document::find($debit->has_file_id);

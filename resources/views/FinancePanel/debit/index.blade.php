@@ -571,6 +571,6 @@
   
 </div> 
 
-  <script src="{{asset('js/financePanel/debit.js')}}"></script>
+<script src="{{asset('js/financePanel/debit.js')}}"></script>
  
 @stop

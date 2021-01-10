@@ -138,8 +138,7 @@ function changeMode(mode, period, concept){
                         '<input class="toggle-bootstrap" name="verification" type="checkbox" data-width="150"  data-toggle="toggle"' +
                         'data-on="Validado" data-off="Sin validar"  data-onstyle="success" data-offstyle="danger">'+
                         '<input type="hidden" value="'+response.debitId+'" name="debit_id">'+
-                        '<script>$(".toggle-bootstrap").bootstrapToggle(); $("#showPdf").click(function(){'+
-                        'var route = $(this).attr("route");window.open("/"+route,"_blank");});</script>'; 
+                        '<script>$(".toggle-bootstrap").bootstrapToggle();</script>'; 
                     } else {
                         var res = "<p>Revisar registro de comprobante o id de CONEKTA</p>";
                         if (response.method == "transfer") {
@@ -262,7 +261,7 @@ $("#concept").change(function(){
 
 $(".toggle-bootstrap").bootstrapToggle();
 
-$(".showPdf").click(function()
+$(document).on("click", "button#showPdf", function()
 {
     var route = $(this).attr("route");
     window.open("/"+route,"_blank");

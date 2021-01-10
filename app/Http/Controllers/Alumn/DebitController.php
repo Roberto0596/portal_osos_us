@@ -91,6 +91,11 @@ class DebitController extends Controller
               $document->payment = 1;
               $document->save();
             }
+            try {
+                createTicket($value->id);
+            } catch(\Exception $e){
+
+            }
         }
 
         session()->flash("message-2","success|Su pago ha sido realizado con exito, muchas gracias");

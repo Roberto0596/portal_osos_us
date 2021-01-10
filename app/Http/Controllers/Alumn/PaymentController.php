@@ -89,6 +89,11 @@ class PaymentController extends Controller
               $document->payment = 1;
               $document->save();
             }
+            try {
+                createTicket($value->id);
+            } catch(\Exception $e){
+
+            }
         }
         
         $register = makeRegister($current_user);
