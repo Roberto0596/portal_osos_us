@@ -19,6 +19,7 @@ class DocumentRequestController extends Controller
     	$document = Document::find($id);
     	if ($document) {
     		$document->status = 1;
+            $document->save();
     		session()->flash("messages","success|Guardado exitoso");
     	} else {
     		session()->flash("messages","error|Ocurrio un error");

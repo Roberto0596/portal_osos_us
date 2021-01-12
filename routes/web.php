@@ -539,7 +539,6 @@ Route::group(['prefix'=> 'library', 'namespace'=>'LibraryPanel'], function()
   	});
 });
 
-
 Route::group(['namespace' => 'Website'],function()
 {
 	Route::get('/', [
@@ -857,7 +856,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'document.request.upload'
 			]);
 
-			Route::get('/document/request/fix', [
+			Route::get('/document/request/fix/{id?}', [
 		        'uses' => 'DocumentRequestController@fix', 
 		        'as' => 'document.request.fix'
 			]);
