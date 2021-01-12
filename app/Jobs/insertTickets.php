@@ -48,7 +48,7 @@ class insertTickets implements ShouldQueue
                 }          
             } catch(\Exception $e) {
                 $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-                $out->writeln("<warning>An error has occurred</warning>");
+                $out->writeln("<warning>An error has occurred: ".$e->getMessage()."</warning>");
             }
         }
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
