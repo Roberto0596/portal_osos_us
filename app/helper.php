@@ -241,7 +241,8 @@ function makeRegister(User $user)
     'EncGrupoId'=> $inscripcionData["EncGrupoId"],
     'Fecha'=> getDateCustom(),
     'Baja' => 0, 
-    'AlumnoId'=>$user->id_alumno
+    'AlumnoId'=>$user->id_alumno,
+    'PeriodoId' => getConfig()->period_id,
   ]);
 
   if ($inscribir) {
@@ -286,7 +287,7 @@ function selectSicoes($table_name,$item = null,$value = null, $limit = 0)
 
 function inscribirAlumno($array)
 {
-  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId)");
+  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId, PeriodoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId,:PeriodoId)");
 
   if($stmt->execute($array))
   {
