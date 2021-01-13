@@ -876,6 +876,22 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'high-averages.load'
 			]);	
 
+			Route::post('/high-averages/search', [
+		        'uses' => 'HighAveragesController@search', 
+		        'as' => 'high-averages.search'
+			]);	
+
+			Route::post('/high-averages/add', [
+		        'uses' => 'HighAveragesController@addAlumn', 
+		        'as' => 'high-averages.add'
+			]);	
+
+			
+			Route::get('/high-averages/delete/{id?}', [
+		        'uses' => 'HighAveragesController@delete', 
+		        'as' => 'high-averages.delete'
+			]);
+
 
 		});
   	});
