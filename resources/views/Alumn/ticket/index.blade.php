@@ -68,10 +68,6 @@
 
 </div>
  
-
-
-
-
-  <script src="{{asset('js/alumn/ticket.js')}}"></script>
+<script src="{{asset('js/alumn/ticket.js')}}"></script>
  
 @stop

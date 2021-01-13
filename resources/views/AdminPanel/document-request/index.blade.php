@@ -182,7 +182,7 @@
       {
         if (result.value)
         {
-          window.location = "/admin/document/request/fix"+requestId
+          window.location = "{{route('admin.document.request.fix')}}/"+requestId
         }
       });
   });

@@ -35,11 +35,17 @@ class insertTickets implements ShouldQueue
         $debits = Debit::where("period_id", getConfig()->period_id)->get();
         foreach ($debits as $key => $value) {
             try {
+
                 $ticket = Ticket::where("debit_id", $value->id)->first();
 
                 if (!$ticket) {
                     createTicket($value->id);
-                }            
+                } else {
+
+                    if ($value->status == 0) {
+                       $ticket->delete();
+                    } 
+                }          
             } catch(\Exception $e) {
                 $out = new \Symfony\Component\Console\Output\ConsoleOutput();
                 $out->writeln("<warning>An error has occurred</warning>");
