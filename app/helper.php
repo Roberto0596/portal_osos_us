@@ -977,3 +977,14 @@ function addLog($message) {
     $ticket->save(); 
   
 }
+
+function getAlumnByEnrollment($enrollment)
+{
+  $value = $enrollment."%";
+  $stmt = ConectSqlDatabase()->prepare(
+    "SELECT AlumnoId,Matricula,Nombre,ApellidoPrimero,ApellidoSegundo
+    FROM Alumno where Matricula LIKE '$value'");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}

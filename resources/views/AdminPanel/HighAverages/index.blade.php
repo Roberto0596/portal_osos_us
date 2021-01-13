@@ -101,11 +101,13 @@
   
       <div class="modal-content">
   
-          <form method="post" action="#">
+          <form id="addAlumn" method="post" action="{{ route('admin.high-averages.add') }}">
               
               {{ csrf_field() }}
 
-              <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenUpdate">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenSearch">
+              <input type="hidden" name="period" value="" id="periodId">
+             
   
               <div class="modal-header">
   
@@ -127,41 +129,42 @@
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                <i class="fas fa-ad"></i></span>
+                                <i class="fas fa-search"></i></span>
                             </div>
 
-                          <input type="text" name="concept" placeholder="Concepto" class="form-control form-control-lg" required>
+                          <input type="text" name="enrollment" placeholder="Buscar Alumno por matricula" 
+                          class="form-control form-control-lg" required id="searchAlumn">
+
+                        </div>
+
+
+                        <div class="input-group mb-3">
+
+                          <table class="table table-bordered table-hover tableAlumns" id="alumnsTable">
+
+                            <thead>
+                  
+                              <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Matricula</th>
+                                <th>Nombre</th>
+                                <th style="width: 20px">Agregar</th>
+                              </tr>
+                  
+                            </thead>
+
+                            <tbody id="tableBody">
+
+                            </tbody>
+                  
+                          </table>
 
                         </div>
                     </div>
   
                   </div>
   
-              </div>
-  
-              <div class="modal-footer justify-content">
-  
-                  <div class="col-sm container-fluid">
-  
-                      <div class="row">
-  
-                          <div class=" col-sm-6 btn-group">
-  
-                          <button id="cancel" type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
-  
-                          </div>
-  
-                          <div class=" col-sm-6 btn-group">
-  
-                          <button type="submit" id="sale" class="btn btn-success .px-2"><i class="fa fa-check"></i> Guardar</button>
-                          
-                          </div>
-  
-                      </div>
-  
-                  </div>
-  
-              </div>
+            </div>
   
          </form>
   

@@ -36,7 +36,8 @@ class HighAveragesController extends Controller
            
            
             $buttons="<div class='btn-group'>
-                    <button class='btn btn-danger btnDelete' high_average_id = '".$value->id."' title='Eliminar'><i class='fa fa-times'></i></button>
+                    <button class='btn btn-danger btnDelete' high_average_id = '"
+                    .$value->id."' title='Eliminar'><i class='fa fa-times'></i></button>
                 </div>";
 
             array_push($res["data"],[
@@ -48,6 +49,57 @@ class HighAveragesController extends Controller
         }
 
         return response()->json($res);  
+    }
+
+
+    public function search(Request $request)
+    {
+       
+        if( $request->enrollment != ""){
+            $alumns =getAlumnByEnrollment($request->enrollment);
+            $view = view('AdminPanel.HighAverages.table_body', compact('alumns'))->render();
+            return response()->json($view);
+        }
+
+        return response()->json(null);
+       
+    }
+
+    public function addAlumn(Request $request)
+    {
+     
+        try 
+        {
+            $highAverage = new HighAverages();
+            $highAverage->enrollment = $request->enrollment;
+            $highAverage->periodo_id = $request->period;
+            $highAverage->status = 0;
+            $highAverage->save();
+
+            session()->flash("messages","success| Alumno Agregado");
+            return redirect()->back();
+        } 
+        catch (\Exception $th) 
+        {
+            session()->flash("messages","error|No pudimos guardar los datos");
+            return redirect()->back();
+        }
+    }
+
+
+    public function delete($highAverageId)
+    {
+        try
+        {
+           $delete = HighAverages::destroy($highAverageId);
+           session()->flash("messages","success|Alumno eliminada con éxito");
+           return redirect()->back();
+        }
+        catch(\Exception $e)
+        {
+            session()->flash("messages","error|Tuvimos problemas eliminando el Alumno");
+           return redirect()->back();
+        }   
     }
 
 
