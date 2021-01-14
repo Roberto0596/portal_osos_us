@@ -365,6 +365,16 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 		        'as' => 'debit.validate'
 			]);
 
+			Route::get('/debit/delete', [
+		        'uses' => 'DebitController@delete', 
+		        'as' => 'debit.delete'
+			]);
+
+			Route::post('/debit/upload', [
+		        'uses' => 'DebitController@upload', 
+		        'as' => 'debit.upload'
+			]);
+
 			//sirve para ver los detalles del pago
 			Route::post('/debit/payment-details', [
 		        'uses' => 'DebitController@showPayementDetails', 

@@ -19,7 +19,8 @@ function changeMode(mode, period, concept){
             {"data": "#"},
             {"data": null, orderable: false, "render": function(data){
 
-                var res = "<div class='btn-group'>";
+                var res = "<div class='btn-group'><button class='btn btn-primary btnUpload' DebitId='"+data.debitId+"'>"+
+                    "<i class='fa fa-upload' title='Subir comprobante' style='color:white'></i></button>";
 
                 if (data.debit_type_id == 1) {
                     res += "<button class='btn btn-warning btnValidate' data-toggle='modal' data-target='#modalInscripcion' DebitId='"+data.debitId+"' title='Validar'>"+
@@ -33,6 +34,9 @@ function changeMode(mode, period, concept){
                     res+="<button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='"+data.method+"' DebitId='"+data.debitId+"'>"+
                     "<i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
                 }
+
+                res += "<button class='btn btn-danger  btnDeleteDebit' DebitId='"+data.debitId+"'>"+
+                    "<i class='fa fa-times' title='Eliminar adeudo' style='color:white'></i></button></div>"; 
                 return res;
             }},
             {"data": "Alumno"},
@@ -173,8 +177,17 @@ function changeMode(mode, period, concept){
             confirmButtonText: 'Si, estoy seguro'
         }).then((result)=>
         {
-            window.location = "/finance/debit/delete/"+id;
+            if(result.value){
+                window.location = "/finance/debit/delete/"+id;
+            }
         });
+    })
+
+    $(".tableDebits tbody").on("click","button.btnUpload",function()
+    {
+        var id = $(this).attr("DebitId");
+        $("#debit_id_upload").val(id);
+        $("#modalUpload").modal("show");
     })
 
     $(".tableDebits tbody").on("click","button.details",function()

@@ -571,6 +571,64 @@
   
 </div> 
 
+<div class="modal fade" id="modalUpload">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3>Subir un comprobante</h3>
+
+      </div>
+        
+        <div class="modal-body">
+
+          <form action="{{route('finance.debit.upload')}}" method="post" enctype="multipart/form-data">
+              
+            {{ csrf_field() }}
+
+            <div class="row">
+
+              <div class="col-md-12">
+                
+                <div class="form-group">
+
+                <div class="panel">SUBIR COMPROBANTE</div>
+                  <input type="hidden" name="debit_id" id="debit_id_upload">
+                  <input type="file" name="file" id="ticket" required>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group" id="pay-now" style="margin-top: 10vh;">
+
+                    <button class="btn btn-success" type="submit">subir</button>
+                  
+                </div>
+
+              </div>
+
+            </div>
+              
+          </form>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
 <script src="{{asset('js/financePanel/debit.js')}}"></script>
  
 @stop

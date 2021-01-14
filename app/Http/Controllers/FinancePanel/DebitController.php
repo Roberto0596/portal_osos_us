@@ -110,7 +110,6 @@ class DebitController extends Controller
 
         return response()->json($data);
     }
-
    
     // sirve para editar un adeudo 
     public function update(Request $request)
@@ -253,6 +252,25 @@ class DebitController extends Controller
             return redirect()->back();
         } catch(\Exception $e) {
             session()->flash("messages","error|No se pudo eliminar el adeudo");
+            return redirect()->back();
+        }
+    } 
+
+    public function upload(Request $request)
+    {
+        try{
+            $debit = Debit::find($request->get('debit_id'));
+            $file = $request->file('file');
+            $path = 'img/comprobantes/';
+            $name = uniqid().".".$file->getClientOriginalExtension();
+            $file->move($path, $name); 
+            $debit->id_order = $path.$name;
+            $debit->payment_method = "transfer"; 
+            $debit->save();
+            session()->flash("messages","success|Se borro el adeudo con exito");
+            return redirect()->back();
+        } catch(\Exception $e) {
+            session()->flash("messages","error|Algo salió mal");
             return redirect()->back();
         }
     }    
