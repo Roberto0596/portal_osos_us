@@ -978,12 +978,42 @@ function addLog($message) {
   
 }
 
+
 function getAlumnByEnrollment($enrollment)
 {
   $value = $enrollment."%";
   $stmt = ConectSqlDatabase()->prepare(
     "SELECT AlumnoId,Matricula,Nombre,ApellidoPrimero,ApellidoSegundo
     FROM Alumno where Matricula LIKE '$value'");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+
+//metodo para saber los periodos que ah cursado o lleva un alumno
+function getAlumnPeriods($alumn_id)
+{
+  $stmt = ConectSqlDatabase()->prepare(
+    "SELECT * FROM Periodo WHERE PeriodoId IN
+    (SELECT  DISTINCT(PeriodoId) FROM Carga where AlumnoId = $alumn_id)");
+  $stmt->execute();
+  return $stmt->fetchAll();
+  $stmt = null;
+}
+
+function getAcademicChargeByPeriodIdAndAlumnId($period_id,$alumn_id)
+{
+  $stmt = ConectSqlDatabase()->prepare(
+    "SELECT c.CargaId,c.Calificacion,c.Baja,c.PeriodoId,
+    det.ProfesorId, det.AsignaturaId,
+    a.Nombre AS Asignatura,a.Semestre,
+    prof.Nombre,prof.ApellidoPrimero,prof.ApellidoSegundo
+    FROM Carga AS c
+    INNER jOIN DetGrupo AS det ON c.DetGrupoId = det.DetGrupoId
+    INNER JOIN Asignatura AS a ON det.AsignaturaId = a.AsignaturaId
+    INNER JOIN Profesor AS prof ON det.ProfesorId = prof.ProfesorId
+    WHERE AlumnoId = $alumn_id AND PeriodoId = $period_id"
+  );
   $stmt->execute();
   return $stmt->fetchAll();
   $stmt = null;

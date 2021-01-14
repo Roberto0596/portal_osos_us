@@ -158,6 +158,24 @@ Route::group(['prefix'=> 'alumn', 'namespace'=>'Alumn'], function()
 					'uses'=>'TicketController@show', 
 					'as' => 'tickets.show'
 				]);
+
+				/*
+				|-------------------------------------------------------------------
+				| Academic Charge
+				|-------------------------------------------------------------------
+				*/
+
+				Route::get('/academic-charge',[
+					'uses'=>'AcademicChargeController@index', 
+					'as' => 'academicCharge'
+				]);
+
+				Route::post('/academic-charge/show/{period?}',[
+					'uses'=>'AcademicChargeController@show', 
+					'as' => 'academicCharge.show'
+				]);
+
+
 				
 				
 			});
@@ -869,7 +887,7 @@ Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
 		        'as' => 'high-averages'
 			]);	
 
-			//muestra la tabla de high_averages
+			
 			Route::post('/high-averages/load/{period?}', [
 		        'uses' => 'HighAveragesController@loadData', 
 		        'as' => 'high-averages.load'

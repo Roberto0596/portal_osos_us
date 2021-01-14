@@ -9,6 +9,7 @@
   $styleBox = $debits == 0?"style='color:white;'":"";
   $boxCorreo = strpos(Auth::guard('alumn')->user()->email, "@unisierra.edu.mx")?"bg-info":"bg-danger";
   $boxTickets = count($tickets) == 0 ? "bg-default":"bg-success";
+ 
 @endphp
 
 <div class="content-wrapper">
@@ -159,31 +160,7 @@
             
           </div>
 
-          {{-- Tickets --}}
-
-          <div class="col-md-3 col-sm-12">
-
-            <div class="small-box {{$boxTickets}}">
-
-              <div class="inner">
-
-                <h3>Tickets</h3>
-
-                <p>¡Revisalos!</p>
-
-              </div>
-
-              <div class="icon">
-
-                <i class="fas fa-ticket-alt"></i>
-
-              </div>
-
-              <a href="{{ route('alumn.tickets')}}" class="small-box-footer">Ver &nbsp;<i class="fas fa-arrow-circle-right"></i></a>
-
-            </div>
-            
-          </div>
+         
 
 
 
@@ -269,7 +246,65 @@
 
                   <div class="col-md-12">
 
-                    <h4>Proximamente</h4> 
+                    <h4>Más</h4> 
+
+                    <div class="row">
+                        {{-- Tickets --}}
+
+                      <div class="col-md-6 col-sm-12">
+
+                        <div class="small-box {{$boxTickets}}">
+
+                          <div class="inner">
+
+                            <h3>Tickets</h3>
+
+                            <p>¡Revisalos!</p>
+
+                          </div>
+
+                          <div class="icon">
+
+                            <i class="fas fa-ticket-alt"></i>
+
+                          </div>
+
+                          <a href="{{ route('alumn.tickets')}}" class="small-box-footer">Ver &nbsp;<i class="fas fa-arrow-circle-right"></i></a>
+
+                        </div>
+                        
+                      </div>
+
+
+
+
+                      {{-- Academic Charge --}}
+
+                      <div class="col-md-6 col-sm-12">
+
+                        <div class="small-box bg-success">
+
+                          <div class="inner">
+
+                            <h3>Carga Académica</h3>
+
+                            <p>¡Revisala!</p>
+
+                          </div>
+
+                          <div class="icon">
+
+                            <i class="fas fa-book"></i>
+
+                          </div>
+
+                          <a href="{{route('alumn.academicCharge')}}" class="small-box-footer">Ver &nbsp;<i class="fas fa-arrow-circle-right"></i></a>
+
+                        </div>
+                        
+                      </div>
+
+                    </div>
 
                   </div>
 

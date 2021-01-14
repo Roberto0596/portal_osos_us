@@ -94,6 +94,20 @@
 
                     </li>
 
+
+                    <li class="nav-item">
+
+                        <a href="{{route('alumn.academicCharge')}}" class="nav-link">
+
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Carga Académica
+                            </p>
+                        </a>
+
+                    </li>
+
+
                     <li class="nav-item">
                         <a href="{{route('alumn.user')}}" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
