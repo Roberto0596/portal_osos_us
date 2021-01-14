@@ -51,15 +51,9 @@ const printTable = function(){
             orientation: 'portrait'
         }
     };
-    
-
-
-
     html2pdf().set(config).from($elementToPrint).save()
     .catch(err => console.log(err));
  };
 
-$("#print").click(function(){
-    printTable();
-});
+$("#print").click(printTable);
 
