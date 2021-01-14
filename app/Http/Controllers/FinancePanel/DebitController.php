@@ -247,7 +247,14 @@ class DebitController extends Controller
     public function delete($id)
     {
         try{
-            Debit::destroy($id);
+            $debit = Debit::find($id);
+
+            //comprobar y borrar documento en caso de que tenga uno
+            if ($debit->has_file_id != null) {
+                Document::destroy($debit->has_file_id);
+            }
+
+            $debit->delete();
             session()->flash("messages","success|Se borro el adeudo con exito");
             return redirect()->back();
         } catch(\Exception $e) {
@@ -259,6 +266,7 @@ class DebitController extends Controller
     public function upload(Request $request)
     {
         try{
+            //subir comprobante y guardar la informacion
             $debit = Debit::find($request->get('debit_id'));
             $file = $request->file('file');
             $path = 'img/comprobantes/';
