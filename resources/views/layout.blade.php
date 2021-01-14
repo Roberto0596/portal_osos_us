@@ -65,7 +65,7 @@
     <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.js') }}"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
-      <!-- InputMask -->
+    <!-- InputMask -->
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
     <script src="{{ asset('plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
@@ -73,6 +73,9 @@
     <script src="{{ asset('push/push.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="{{asset('bower/dropzone/dist/dropzone.js')}}"></script>
+
+     <!-- html2pdf -->
+     <script src="{{asset('plugins/html2pdf/dist/html2pdf.bundle.min.js')}}"></script>
     
     {!! htmlScriptTagJsApi() !!}
 </head>
