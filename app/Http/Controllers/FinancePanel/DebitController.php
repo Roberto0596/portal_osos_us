@@ -275,7 +275,7 @@ class DebitController extends Controller
             $debit->id_order = $path.$name;
             $debit->payment_method = "transfer"; 
             $debit->save();
-            session()->flash("messages","success|Se borro el adeudo con exito");
+            session()->flash("messages","success|Comprobante Cargado con Éxito.");
             return redirect()->back();
         } catch(\Exception $e) {
             session()->flash("messages","error|Algo salió mal");
