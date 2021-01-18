@@ -67,7 +67,7 @@ class DebitController extends Controller
                 $alumn = getDataAlumnDebit($value->id_alumno);
                 array_push($res,[
                     "#" => ($key+1),
-                    "Alumno" => ucwords(strtolower($alumn["Nombre"])),
+                    "Alumno" => ucwords(strtolower(normalizeChars($alumn["Nombre"]))) . " " . ucwords(strtolower(normalizeChars($alumn["ApellidoPrimero"]))) . " " . ($alumn["ApellidoSegundo"] ? ucwords(strtolower(normalizeChars($alumn["ApellidoSegundo"]))) : ''),
                     "Email" =>strtolower($alumn["Email"]),
                     "Descripción" => $value->description,
                     "Importe" => "$".number_format($value->amount,2),
