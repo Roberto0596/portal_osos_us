@@ -134,7 +134,7 @@ function changeMode(mode, period, concept){
                     if (response.status == 0) {
                         var res = "<p>Antes de validar el pago, asegurece de validar este id en CONEKTA o este link con el comprobante</p>";
                         if (response.method == "transfer") {
-                            res += "<p style='text-align: center'><button type='button' class='btn btn-info' id='showPdf' route='"+response.id_order+"' target='_blank'>Ver comproboante</button></p>";
+                            res += "<p style='text-align: center'><button type='button' class='btn btn-info showPdf' route='"+response.id_order+"'>Ver comproboante</button></p>";
                         } else {
                             res += "<p style='text-align: center'>"+response.id_order+"></p>";
                         }
@@ -146,7 +146,7 @@ function changeMode(mode, period, concept){
                     } else {
                         var res = "<p>Revisar registro de comprobante o id de CONEKTA</p>";
                         if (response.method == "transfer") {
-                            res += "<p style='text-align: center'><button type='button' class='btn btn-info' id='showPdf' route='"+response.id_order+"' target='_blank'>Ver comproboante</button></p>";
+                            res += "<p style='text-align: center'><button type='button' class='btn btn-info showPdf' route='"+response.id_order+"'>Ver comproboante</button></p>";
                         } else {
                             res += "<p style='text-align: center'>"+response.id_order+"></p>";
                         }
@@ -274,8 +274,9 @@ $("#concept").change(function(){
 
 $(".toggle-bootstrap").bootstrapToggle();
 
-$(document).on("click", "button#showPdf", function()
+$(document).on("click", "button.showPdf", function()
 {
+    alert("hola");
     var route = $(this).attr("route");
     window.open("/"+route,"_blank");
 });
