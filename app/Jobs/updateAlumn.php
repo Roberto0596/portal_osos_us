@@ -63,9 +63,9 @@ class updateAlumn implements ShouldQueue
                         //validamos el tipo de pago
                         $method = "";
 
-                        if ($method == "OxxoPayment") {
+                        if ($value["payment_method"] == "OxxoPayment") {
                             $method = "oxxo_cash";
-                        } else if ($method == "CreditCardPayment"){
+                        } else if ($value["payment_method"] == "CreditCardPayment"){
                             $method = "card";
                         } else {
                             $method = "spei";
@@ -83,10 +83,10 @@ class updateAlumn implements ShouldQueue
                         $debit->save();
                         $totalInserted = $totalInserted + 1;
                     } else {
-                        array_push($failed, ["message" => "No se encontro el usuario", "email" => $value["email"]]);
+                        array_push($failed, ["message" => "No se encontro el usuario", "email" => $value["email"], "id_order" => $value["id_order"]]);
                     }
                 } else {
-                    array_push($failed, ["message" => "no se realizo el pago", "email" => $value["email"]]);
+                    array_push($failed, ["message" => "no se realizo el pago", "email" => $value["email"], "id_order" => $value["id_order"]]);
                 }
             }
 
