@@ -923,7 +923,7 @@ function addLog($message) {
 	| Metodo para generar un Ticket
 	|-------------------------------------------------------------------
 	*/
- function createTicket($debit_id)
+  function createTicket($debit_id)
   {
 
     $debit = Debit::find($debit_id);
@@ -931,7 +931,12 @@ function addLog($message) {
     $date =  Carbon::now()->toDateTimeString();
 
     
-    $html = view('Alumn.ticket.template',['alumn'=>$alumn,'debit'=>$debit,'date'=>$date])->render();
+    $html = view('Alumn.ticket.template',[
+      'alumn'=>$alumn,
+      'debit'=>$debit,
+      'date'=>$date
+    ])->render();
+    
     $namefile = ucwords($debit->description).time().'.pdf';
     $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
     $fontDirs = $defaultConfig['fontDir'];
