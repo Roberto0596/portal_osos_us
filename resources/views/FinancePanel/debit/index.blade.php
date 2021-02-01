@@ -10,7 +10,7 @@
 
       <div class="row mb-2">
 
-        <div class="col-sm-9">
+        <div class="col-sm-8">
 
           <div class="row">
             <div class="col-md-4"><h1>Procesar <small>pagos</small></h1></div>
@@ -18,11 +18,13 @@
 
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
 
           <ol class="breadcrumb float-sm-right">
 
-            <button data-toggle="modal" data-target="#modalDebit" class="btn btn-warning button-custom"><i class="fa fa-fw fa-plus"></i>Nuevo adeudo</button>
+            <button data-toggle="modal" data-target="#modalDebit" class="btn btn-success" title="Nuevo adeudo"><i class="fa fa-plus"></i></button>
+
+            <button data-toggle="modal" data-target="#modalPrintTickets" class="btn btn-info" style="margin-left: 5px" title="Imprimir recivos"><i class="fa fa-print"></i></button>
 
           </ol>
 
@@ -573,7 +575,7 @@
 
 <div class="modal fade" id="modalUpload">
 
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <div class="modal-content">
 
@@ -611,7 +613,96 @@
 
                 <div class="form-group" id="pay-now" style="margin-top: 10vh;">
 
-                    <button class="btn btn-success" type="submit">subir</button>
+                  <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+                  <button class="btn btn-success" type="submit" style="float: right;">subir</button>
+                  
+                </div>
+
+              </div>
+
+            </div>
+              
+          </form>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal fade" id="modalPrintTickets">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3>Imprimir comprobantes</h3>
+
+      </div>
+        
+        <div class="modal-body">
+
+          <form action="{{route('finance.ticket.report')}}" method="post">
+              
+            {{ csrf_field() }}
+
+            <div class="row">
+
+              <div class="col-md-6">
+
+                <label for="">Fecha inicial</label>
+
+                <div class="input-group mb-3">
+
+                  <input type="date" class="form-control form-control-lg" name="initial_date" required>
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6">
+
+                <label for="">Fecha final</label>
+
+                <div class="input-group mb-3">
+
+                  <input type="date" class="form-control form-control-lg" name="final_date">
+
+                </div>
+
+              </div>
+
+              <div class="col-md-6">           
+
+                <label for="">Concepto</label>
+
+                <div class="input-group mb-3">
+
+                    <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg">
+                      <option value="" disabled selected>Todos</option>
+                      @foreach(getDebitType() as $key => $value)
+                      <option value="{{$value->id}}">{{$value->concept}}</option>
+                      @endforeach
+                    </select>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="form-group" id="pay-now" style="margin-top: 5vh;">
+
+                  <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
+                  <button class="btn btn-success" type="submit" style="float: right;">subir</button>
                   
                 </div>
 

@@ -1,7 +1,7 @@
 function changeMode(mode, period, concept){
-    var token = $("#token").val();
-    var route = "/finance/debit/show";
+
     $('.tableDebits tbody').remove();
+
     $(".tableDebits").dataTable({
         "destroy": true,
         "processing": true,
@@ -10,16 +10,22 @@ function changeMode(mode, period, concept){
         stateSave: true,
         "ajax":
         {
-            url: route,
-            headers:{'X-CSRF-TOKEN':token},
+            url: "/finance/debit/show",
+            headers:{'X-CSRF-TOKEN' : $("#token").val()},
             type: "POST",
             data: {mode:mode,period:period,concept:concept}
         },
         "columns":[
             {"data": "#"},
             {"data": null, orderable: false, "render": function(data){
+                var res = "<div class='btn-group'>";
 
-                var res = "<div class='btn-group'><button class='btn btn-primary btnUpload' DebitId='"+data.debitId+"'>"+
+                if(data.Estado == "Pagada") {
+                    res+="<button class='btn btn-info btnPrintTicket' title='Imprimir ticket' debitId='"+data.debitId+"'>"+
+                    "<i class='fa fa-print'></i></button>";
+                }
+
+                res += "<button class='btn btn-primary btnUpload' title='title='Subir comprobante'' DebitId='"+data.debitId+"'>"+
                     "<i class='fa fa-upload' title='Subir comprobante' style='color:white'></i></button>";
 
                 if (data.debit_type_id == 1) {
@@ -194,14 +200,14 @@ function changeMode(mode, period, concept){
     {  
         var DebitId = $(this).attr("DebitId");
         var is = $(this).attr("is");
-        var route = '/finance/debit/payment-details';
-        var token = $('#tokenModal').val();
+
         var data = new FormData();
         data.append('DebitId', DebitId);
         data.append('is', is);
+
         $.ajax({
-            url:route,
-            headers:{'X-CSRF-TOKEN': token},
+            url:'/finance/debit/payment-details',
+            headers:{'X-CSRF-TOKEN': $('#tokenModal').val()},
             method:'POST',
             data:data,
             cache:false,
@@ -240,15 +246,21 @@ function changeMode(mode, period, concept){
         });
         $('#loader').show();
 
-
-
         $("#modalShowDetails").on('hidden.bs.modal', function () {
             $('#detail-id').hide();
             $('#detail-paymentMethod').hide();
             $('#detail-reference').hide();
             $('#detail-amount').hide();
-        }); 
-       
+        });        
+    });
+
+    $(document).on("click", "button.btnPrintTicket", function() {
+        var debitId = $(this).attr("debitId");
+        $.get('/finance/tickets/get?debitId='+debitId, function(data) {
+            if(data.status == "success") {
+                window.open("/"+data.data.route,"_blank");
+            }
+        });
     });
 }
 
@@ -276,7 +288,6 @@ $(".toggle-bootstrap").bootstrapToggle();
 
 $(document).on("click", "button.showPdf", function()
 {
-    alert("hola");
     var route = $(this).attr("route");
     window.open("/"+route,"_blank");
 });

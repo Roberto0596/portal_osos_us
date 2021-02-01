@@ -422,7 +422,18 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 			Route::get('/delete-groups',[
 				'uses' => 'PendingsController@deleteGroups', 
 				'as' => 'deleteGroups'
-			]);		
+			]);
+
+			//ticket
+			Route::get('/tickets/get',[
+				'uses'=>'DebitController@getTicket', 
+				'as' => 'get.ticket'
+			]);
+
+			Route::post('/tickets/report',[
+				'uses'=>'DebitController@ticketReport', 
+				'as' => 'ticket.report'
+			]);	
 		});
   	});
 });

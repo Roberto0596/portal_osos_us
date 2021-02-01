@@ -12,7 +12,7 @@
             
             <div class="col-sm-6">
               
-              <h1>Mis tickets</h1>
+              <h1>Mis tickets, o comprobantes</h1>
               
             </div>
             

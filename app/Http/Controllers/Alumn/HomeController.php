@@ -9,13 +9,18 @@ use App\Models\Alumns\Ticket;
 use App\Models\Alumns\Document;
 use App\Models\AdminUsers\Problem;
 use App\Http\Controllers\Controller;
+use App\Models\Sicoes\Alumno;
+use DB;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        //descomenta esto.
+        // $alumno = Alumno::where("AlumnoId", 632)->get();
+        // dd($alumno);
         $user = current_user();
-        	$status = $user->inscripcion < 3? false:true;
+        $status = $user->inscripcion < 3? false:true;
 
         //documentos
         $documents = Document::where("alumn_id","=",$user->id)->get();
@@ -29,7 +34,12 @@ class HomeController extends Controller
         //tickets
         $tickets = Ticket::where("alumn_id","=",$user->id)->get();
 
-        return view('Alumn.home.index')->with(["status"=>$status,'documents'=>$documents,'debits'=>$total,'tickets'=>$tickets]);
+        return view('Alumn.home.index')->with([
+            "status" => $status,
+            'documents' => $documents,
+            'debits' => $total,
+            'tickets' => $tickets
+        ]);
     }
 
     public function saveProblem(Request $request)
@@ -48,7 +58,7 @@ class HomeController extends Controller
         }
         catch(\Exception $e)
         {
-            session()->flash("messages","error|Tenemos problemas en enviar su problema");
+            session()->flash("messages","error|Tenemos problemas con enviar su problema");
             return redirect()->back();
         }
     }

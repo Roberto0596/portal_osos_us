@@ -28,6 +28,11 @@ class User extends Authenticatable
         return $this->hasMany('\App\Models\Alumns\Document', "alumn_id", "id");
     }
 
+    public function current_group() {
+        $group = current_group($this->id_alumno);
+        return isset($group["Nombre"]) ? $group["Nombre"] : false;
+    }
+
     public function getSicoesData() {
         $data = selectSicoes("Alumno","AlumnoId",$this->id_alumno);
 

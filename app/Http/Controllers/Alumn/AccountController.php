@@ -91,6 +91,7 @@ class AccountController extends Controller
             }
             catch(\Exception $e)
             {
+                dd($e);
                 session()->flash("messages","error|No pudimos completar el registro, errores internos");
                 return redirect()->route('alumn.users.first_step'); 
             }              
