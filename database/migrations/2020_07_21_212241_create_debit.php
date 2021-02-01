@@ -16,9 +16,7 @@ class CreateDebit extends Migration
             $table->float("amount");
             $table->string("payment_method")->nullable();
             $table->bigInteger("admin_id")->unsigned();
-
             $table->foreign("admin_id")->references("id")->on("admin_users")->onDelete('cascade');
-
             $table->integer("id_alumno");
             $table->string("id_order",100)->nullable();
             $table->integer("status")->default(0);

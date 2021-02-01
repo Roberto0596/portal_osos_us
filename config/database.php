@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'sicoes' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('SQL_SERVER_INSTANCE'),
+            'port' => env('SQL_SERVER_PORT', '1433'),
+            'database' => env('SQL_SERVER_DATABASE'),
+            'username' => env('SQL_SERVER_USER'),
+            'password' => env('SQL_SERVER_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
     ],
 
     /*

@@ -1,13 +1,14 @@
-<?php
-
-namespace App\Http\Controllers\FinancePanel;
+<?php namespace App\Http\Controllers\FinancePanel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\User;
+use App\Models\Alumns\Ticket;
 use App\Models\PeriodModel;
+use Carbon\Carbon;
+use Mpdf\Mpdf;
 use Input;
 use Auth;
 
@@ -126,9 +127,8 @@ class DebitController extends Controller
 
             if ($debit->status == 1) {
                 try {
-                    createTicket($value->id);
+                    createTicket($debit->id);
                 } catch(\Exception $e){
-
                 }
             }        
             
@@ -281,5 +281,56 @@ class DebitController extends Controller
             session()->flash("messages","error|Algo salió mal");
             return redirect()->back();
         }
-    }    
+    } 
+
+    public function getTicket(Request $request) {
+        $response = Ticket::where("debit_id", $request->get('debitId'))->first();
+
+        if ($response) {
+            return response()->json(["status" => "success", "data" => $response]);
+        } else {
+            return response()->json(["status" => "error", "data" => null]);
+        }
+    }  
+
+    public function ticketReport(Request $request) {
+        $from = $request->get('initial_date');
+        $to = Carbon::now()->addDay()->format('Y-m-d');
+        
+        if ($request->get('final_date')) {
+            $to = $request->get('final_date');
+        }
+
+        $query = Ticket::select('ticket.route')
+        ->join("debit as d", "ticket.debit_id", "=", "d.id")
+        ->whereBetween("ticket.created_at", [$from, $to]);
+        
+        if ($request->has('debit_type_id')) {
+            $query->where("d.debit_type_id", $request->get('debit_type_id'));
+        }
+
+        $query = $query->get();
+
+        if ($query->count() == 0) {
+            session()->flash("messages", "warning|No hay recibos en ese rango de fechas");
+            return redirect()->back();
+        }
+
+        $pdf = new Mpdf();
+
+        foreach ($query as $key => $value) {
+            $page = $value->route;
+            $newPage = $pdf->SetSourceFile($page);
+            $finally = $pdf->ImportPage(1);
+            $pdf->UseTemplate($finally);
+
+            if ($key < ($query->count()-1)) {
+                $pdf->addPage();
+            }
+        }
+
+        $pdf->Output("report" . date("d-m-Y") . ".pdf","D");
+    } 
 }
+
+

@@ -1,5 +1,5 @@
-<?php
-namespace App\Http\Controllers\Alumn;
+<?php namespace App\Http\Controllers\Alumn;
+
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
 use App\Http\Controllers\Controller;
@@ -196,9 +196,10 @@ class PdfController extends Controller
 
     public function getGenerarConstancia(Request $request, $id)
     {      
-        $current_user = Auth::guard("alumn")->user();
+        $current_user = current_user();
 
         $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
+
         if ($document==null) {
             return redirect()->back();
         }
@@ -223,23 +224,21 @@ class PdfController extends Controller
         $mpdf->SetDisplayMode('fullpage');
         $mpdf->WriteHTML($html);
         $mpdf->Output($namefile,"I");   
-        // return redirect(Request::url());   
     }
 
     public function getGenerarFicha(Request $request, $tipo, $accion, $pago)
     {
         $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
         $total = Debit::where($query)->get()->sum("amount");        
-        $current_user = Auth::guard("alumn")->user();
-        try
-        {
+        $current_user = current_user();
+
+        try {
             $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
-        }
-        catch(\Exception $e)
-        {
+        } catch(\Exception $e) {
             session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
             return redirect()->back();
         }
+        
         $data['tipo'] = $tipo;                   
 
         $html = view('Alumn.pdf.ficha',['alumno' => $alumno,'deuda_total' => $total])->render();

@@ -910,13 +910,20 @@ function getEncGrupoBySemestre($semester,$period)
 }
 
 function addLog($message) {
-  $path = public_path()."/log.txt";
-  $data = json_decode(file_get_contents($path),true);
-  array_push($data["errors"], ["mensaje" => $message, "fecha" => getDateCustom()]);
-  file_put_contents($path, json_encode($data));
+    $path = public_path()."/log.txt";
+    $data = json_decode(file_get_contents($path),true);
+    array_push($data["errors"], ["mensaje" => $message, "fecha" => getDateCustom()]);
+    file_put_contents($path, json_encode($data));
 }
 
-
+function current_group($id_alumno) {
+    $stmt = ConectSqlDatabase()->prepare("SELECT top(1)*  from Inscripcion
+    inner join EncGrupo on Inscripcion.EncGrupoId = EncGrupo.EncGrupoId
+    where AlumnoId = '$id_alumno' order by InscripcionId desc");
+    $stmt->execute();
+    return $stmt->fetch();
+    $stmt = null;
+}
 
 	/*
 	|-------------------------------------------------------------------
@@ -979,8 +986,7 @@ function addLog($message) {
     $ticket->debit_id = $debit->id;
     $ticket->route = $path."/".$namefile;
     $ticket->created_at = time();
-    $ticket->save(); 
-  
+    $ticket->save();  
 }
 
 

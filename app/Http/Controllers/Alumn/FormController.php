@@ -15,7 +15,7 @@ class FormController extends Controller
     public function indexForm()
     {
         $estados = getItemClaveAndNamesFromTables("Estado");
-        $current_user = User::find(Auth::guard('alumn')->user()->id);
+        $current_user = current_user();
 
         //validar si un alumno no esta dado de baja
         if (validateDown($current_user->id_alumno)) 
@@ -155,7 +155,7 @@ class FormController extends Controller
     {       
         try
         {
-             $this->validate($request,[
+            $this->validate($request,[
                 'g-recaptcha-response' => 'required|recaptcha',
             ]);
             $current_user = Auth::guard('alumn')->user();
