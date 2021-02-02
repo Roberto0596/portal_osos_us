@@ -53,6 +53,32 @@
             
           </div>
 
+          <div class="col-md-3 col-sm-12">
+
+            <div class="small-box bg-success" data-toggle="modal"data-target="#modalDebit">
+
+              <div class="inner">
+
+                <h3>Generar Adeudo</h3>
+
+                <p>Genera un nuevo adeudo a un estudiante</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fas fa-plus"></i>
+
+              </div>
+
+              <div class="small-box-footer">
+                &nbsp;
+              </div>
+
+            </div>
+            
+          </div>
+
         </div>
 
       </div>
@@ -62,5 +88,148 @@
   </section>
 
 </div>
+
+
+
+<div class="modal fade" id="modalDebit">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+        <form method="post" action="{{route('finance.debit.save')}}">
+            
+            {{ csrf_field() }}
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">GENERAR NUEVO ADEUDO</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+        
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-credit-card"></i></span>
+                            </div>
+
+                            <select name="debit_type_id" id="debit_type_id" class="form-control">
+                              <option value="" disabled selected>Seleccione un concepto</option>
+                              @foreach(getDebitType() as $key => $value)
+                              <option value="{{$value->id}}">{{$value->concept}}</option>
+                              @endforeach
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-dollar-sign"></i></span>
+                            </div>
+
+                            <input type="number" step="any" min="0" name="amount" placeholder="¿Cual es el monto?" class="form-control" required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-user"></i></span>
+                            </div>
+
+                            <select class="form-control" id="id_alumno" name="id_alumno" style="width:88%" require>
+                                <option value="">Seleccione un alumno</option>
+                                @php
+                                    $alumnos = selectSicoes("Alumno");
+                                @endphp
+
+                                @foreach($alumnos as $key => $value)
+                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-ad"></i></span>
+                            </div>
+
+                            <textarea type="text" name="description" placeholder="Ingrese una descripción" class="form-control" required></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer justify-content">
+
+                <div class="col-sm container-fluid">
+
+                    <div class="row">
+
+                        <div class=" col-sm-6 btn-group">
+
+                        <button id="cancel" type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+
+                        </div>
+
+                        <div class=" col-sm-6 btn-group">
+
+                        <button type="submit" id="sale" class="btn btn-success .px-2"><i class="fa fa-check"></i> Guardar</button>
+                        
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+       </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  $("#id_alumno").select2({
+    width: 'resolve'
+  });
+</script>
 
 @stop

@@ -86,9 +86,9 @@
 
                         <a href="{{ route ('alumn.tickets')}}" class="nav-link">
 
-                            <i class="nav-icon fas fa-ticket-alt"></i>
+                            <i class="nav-icon fas fa-file-alt"></i>
                             <p>
-                                Tickets
+                                Recibos
                             </p>
                         </a>
 
