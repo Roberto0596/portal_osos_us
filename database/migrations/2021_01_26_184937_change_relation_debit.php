@@ -14,8 +14,8 @@ class ChangeRelationDebit extends Migration
     public function up()
     {
         Schema::table('debit', function (Blueprint $table) {
-            // $table->dropForeign(['admin_id']);
-            // $table->dropForeign(['debit_type_id']);
+            $table->dropForeign(['admin_id']);
+            $table->dropForeign(['debit_type_id']);
             $table->foreign("admin_id")->references("id")->on("admin_users");
 
             $table->foreign("debit_type_id")->references("id")->on("debit_type");
