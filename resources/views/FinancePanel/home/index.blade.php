@@ -53,7 +53,7 @@
             
           </div>
 
-          <div class="col-md-3 col-sm-12">
+          <div class="col-md-4 col-sm-12">
 
             <div class="small-box bg-success" data-toggle="modal"data-target="#modalDebit">
 
