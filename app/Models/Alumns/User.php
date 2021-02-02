@@ -13,16 +13,16 @@ class User extends Authenticatable
 
     protected $table = "users";
 
-    protected $fillable = [
-    	'id',
-        'name',
-        'last_name',
-        'email',
-        'password',
-        'tour',
-        'created_at',
-        'updated_at',
-    ];
+    // protected $fillable = [
+    // 	'id',
+    //     'name',
+    //     'last_name',
+    //     'email',
+    //     'password',
+    //     'tour',
+    //     'created_at',
+    //     'updated_at',
+    // ];
 
     public function document() {
         return $this->hasMany('\App\Models\Alumns\Document', "alumn_id", "id");
@@ -41,6 +41,10 @@ class User extends Authenticatable
         } else {
             return null;
         }
+    }
+
+    public function sAlumn() {
+        return $this->belongsTo("\App\Models\Sicoes\Alumno", "id_alumno", "AlumnoId");
     }
 
     public function getMatricula() {
