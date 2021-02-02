@@ -16,9 +16,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        //descomenta esto.
-        // $alumno = Alumno::where("AlumnoId", 632)->get();
-        // dd($alumno);
         $user = current_user();
         $status = $user->inscripcion < 3? false:true;
 

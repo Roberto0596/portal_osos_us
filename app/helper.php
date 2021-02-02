@@ -271,17 +271,17 @@ function getLastThing($table_name,$item,$value,$orderby)
 function selectSicoes($table_name,$item = null,$value = null, $limit = 0)
 {
     $query = "";
-  	if ($item == null)
-  	{
-        $query = "SELECT * FROM $table_name";	
-  	}
-  	else
-  	{
+    if ($item == null)
+    {
+        $query = "SELECT * FROM $table_name"; 
+    }
+    else
+    {
         $query = "SELECT * FROM $table_name where $item = '$value'";
-  	}
+    }
     $stmt = ConectSqlDatabase()->prepare($query);
-  	$stmt->execute();
-  	return $stmt->fetchAll();
+    $stmt->execute();
+    return $stmt->fetchAll();
     $stmt->close();
 }
 
