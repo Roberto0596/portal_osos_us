@@ -17,33 +17,31 @@
         padding-right: 15px;
     }
 
-
-
     table{
       border: none;
     }
 
-    *{
+    body{
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 13px;
+      font-size: 10px;
     }
 
     .title{
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
     }
 
     .logo{
-      width: 120px;
+      width: 100px;
     }
     .school-info{
-      vertical-align: center;
+      vertical-align: middle;
     }
 
     .table-head{
       padding-top: 20px;
       text-align: center;
-      border-bottom: black 2px solid;
+      border-bottom: #000000 2px solid;
       
     }
 
@@ -59,7 +57,7 @@
     }
 
     .table-cell-border-top{
-      border-top: black 2px solid;
+      border-top: #000000 2px solid;
       padding-top: 10px;
       text-align: center;
     }
@@ -78,21 +76,21 @@
 
 <body>
     
-    <table width="80%" style="margin-top: 40px">
+    <table width="100%" style="margin-top: 40px">
     
       <tr>
         
         <td  class="logo">
-          <img src="{{asset('img/logo.jpg')}}" alt="logo" width="120" height="120">
+          <img src="{{asset('img/logo.jpg')}}" alt="logo" width="100" height="90">
         </td>
 
        
 
-        <td  class="school-info">
+        <td colspan="2" class="school-info">
           <span class="title">Universidad de la Sierra</span> <br>
           Carr. Moctezuma - Cumpas, Km. 2.5 <br>
           Moctezuma, Sonora C.P 84560 <br>
-          RFC: USI0200415U24 <br>
+          RFC: USI020415U24 <br>
           Tel / Fax : (634) 34296 00
         </td>
 
@@ -112,11 +110,11 @@
 
         <td class="align-right">
           Recibo Oficial : <br>
-          Fecha:
+          Fecha :
         </td>
         <td style="padding-left: 5px;">
-          <span class="bold">15775</span>  <br>
-          29/01/2021
+          <span class="bold">{{ $ticketInfo["ticketNum"]}}</span>  <br>
+          {{ $ticketInfo["date"]}}
         </td>
 
       </tr>
@@ -127,17 +125,18 @@
         <td  style="width: 20px;" >
           Matricula: <br>
           Nombre: <br>
-          Direccion: <br>
+          Dirección: <br>
           Carrera: <br>
+          <br>
           Referencia: 
         </td>
 
         <td >
-          17-03-0063 <br>
-          Susana Ines Gonzales Castillo <br>
-          Cumpas,Sonora <br>
-          Lic. En Administracion y Evaluacion de Proyectos <br>
-          ord1221112121311122131
+            {{ $ticketInfo["enrollment"]}} <br>
+            {{ ucwords($ticketInfo["name"])}}<br>
+            {{ ucwords($ticketInfo["location"])}}<br>
+            {{ ucwords($ticketInfo["career"])}}<br>
+            {{ $ticketInfo["order"]}}
         </td>
 
         <td >
@@ -147,15 +146,15 @@
         </td>
 
         <td >
-          G0C956565 <br>
+            {{ $ticketInfo["rfc"]}} <br>
           &nbsp; <br>
-          8 <br>
+          {{ $ticketInfo["semester"]}}<br>
         </td>
 
         <td >
           &nbsp; <br>
           &nbsp; <br>
-          Gpo: 8-1 <br>
+          Gpo: {{ $ticketInfo["group"]}} <br>
         </td>
 
       </tr>
@@ -170,7 +169,7 @@
           Concepto
         </td>
 
-        <td colspan="10" class="table-head">
+        <td colspan="10" class="table-head" style="text-align:right">
           Importe Recibido
         </td>
 
@@ -179,15 +178,15 @@
       <tr>
           
         <td  class="table-cell">
-          2021-1
+            {{ $ticketInfo["period"]}}
         </td>
 
         <td colspan="2" class="table-cell">
-          Aportacion a la calidad educativa
+            {{ $ticketInfo["concept"]}}
         </td>
 
-        <td colspan="10" class="table-cell">
-          $ &nbsp;&nbsp;&nbsp;1950.00
+        <td colspan="10" class="table-cell" style="text-align:right">
+          $ &nbsp;&nbsp;&nbsp;{{ $ticketInfo["amount"]}}
         </td>
 
       </tr>
@@ -202,8 +201,8 @@
           &nbsp;<span class="bold">Total:</span>
         </td>
 
-        <td colspan="10" class="table-cell-border-top">
-          <span class="bold">$ &nbsp;&nbsp;&nbsp;1950.00</span>
+        <td colspan="10" class="table-cell-border-top" style="text-align:right">
+          <span class="bold">$ &nbsp;&nbsp;&nbsp;{{ $ticketInfo["amount"]}}</span>
           
         </td>
 
@@ -215,8 +214,8 @@
         <td colspan="2">
           &nbsp;
         </td>
-        <td colspan="3" style="text-align: start;">
-          (Son : Mil Novecientos Cincuenta Pesos M.N.)
+        <td colspan="3" style="text-align: end;">
+          (Son : {{ ucwords($ticketInfo["strAmount"])}} pesos 00/100 M.N.)
         </td>
 
       </tr>
@@ -224,17 +223,11 @@
       <tr>
           
         <td  style="width: 100px;">
-          Forma de pago: <br>
-          <br>
-          Cadena de Seguridad: <br>
-          
+          Forma de Pago: <br>
         </td>
 
         <td>
-          Oxxo Pay <br>
-          <br>
-          <br>
-          2938593029-40Ac459De<br>
+            {{ $ticketInfo["payment_method"]}} <br>
         </td>
 
         <td >
@@ -252,9 +245,9 @@
       </tr>
 
       <tr>
-        <td colspan="12" style="padding-top: 200px; padding-bottom: 50px;">
-          Cualquier duda con el pago del adeudo y obigaciones contraidas con la 
-          Universidad de la Sierra,comunicarse al Dpto. de recursos Financeros al
+        <td colspan="12" style="padding-top: 350px; padding-bottom: 50px;">
+          Cualquier duda con el pago del adeudo y obligaciones contraidas con la 
+          Universidad de la Sierra, comunicarse al Dpto. de Recursos Financieros al
           6343429600 Ext.6
         </td>
       </tr>

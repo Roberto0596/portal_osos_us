@@ -257,7 +257,7 @@
 
                           <div class="inner">
 
-                            <h3>Tickets</h3>
+                            <h3>Recibos</h3>
 
                             <p>¡Revisalos!</p>
 
@@ -265,7 +265,7 @@
 
                           <div class="icon">
 
-                            <i class="fas fa-ticket-alt"></i>
+                            <i class="fas fa-file-alt"></i>
 
                           </div>
 

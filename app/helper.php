@@ -925,6 +925,20 @@ function current_group($id_alumno) {
     $stmt = null;
 }
 
+
+	/*
+	|-------------------------------------------------------------------
+	| Metodo para obtener el numero de Ticket
+	|-------------------------------------------------------------------
+  */
+  function getTicketNumber()
+  {
+    $config = getConfig();
+    $config->debit_ticket_count = $config->debit_ticket_count + 1;
+    $config->save();
+    return $config->debit_ticket_count;
+  }
+
 	/*
 	|-------------------------------------------------------------------
 	| Metodo para generar un Ticket
@@ -935,15 +949,48 @@ function current_group($id_alumno) {
 
     $debit = Debit::find($debit_id);
     $alumn = User::where("id_alumno", $debit->id_alumno)->first();
-    $date =  Carbon::now()->toDateTimeString();
+    $date =  Carbon::now()->format('d/m/Y');
+    $sicoesAlumn = count(selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)) != 0 ?
+       selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)[0] : "No Disponible";
 
-    
-    $html = view('Alumn.ticket.template',[
-      'alumn'=>$alumn,
-      'debit'=>$debit,
-      'date'=>$date
-    ])->render();
-    
+    $state= count(selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"])) != 0 ?
+        selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"])[0] : "No Disponible";
+
+    $period = count(selectSicoes("Periodo","PeriodoId",$debit->period_id)) != 0 ? 
+        selectSicoes("Periodo","PeriodoId",$debit->period_id)[0] : "No Disponible";
+
+    $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+
+    $location = "No Disponible";
+    if(isset($sicoesAlumn["Localidad"]) && !empty($sicoesAlumn["Localidad"]) ){
+      $location= $sicoesAlumn["Localidad"];
+    }
+
+ 
+    $ticketInfo = [
+      "ticketNum"      => getTicketNumber(),
+      "date"           => $date,
+      "enrollment"     => $sicoesAlumn["Matricula"],
+      "name"           => $alumn->name." ".$alumn->lastname,
+      "rfc"            => substr($sicoesAlumn["Curp"],0,10),
+      "group"          => current_group($alumn->id_alumno)["Nombre"],
+      "semester"       => current_group($alumn->id_alumno)["Semestre"],
+      "career"         => strtolower(getCarrera($sicoesAlumn["Matricula"])["carrera"]),
+      "location"       => $location == "No Disponibe" ? $location : strtolower($location." ".$state["Nombre"]),
+      "order"          => $debit->id_order,
+      "period"         => $period["Clave"],
+      "concept"        => $debit->description,
+      "amount"         => number_format($debit->amount, 2),
+      "strAmount"      => $formatterES->format($debit->amount),
+      "payment_method" => $debit->payment_method,
+      "secureStr"      => "Pendiente"
+    ];
+
+    //dd($ticketInfo);
+
+
+    $html = view('Alumn.ticket.template',['ticketInfo'=>$ticketInfo])->render(); 
+
     $namefile = ucwords($debit->description).time().'.pdf';
     $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
     $fontDirs = $defaultConfig['fontDir'];

@@ -159,7 +159,7 @@
                                 <i class="fas fa-user"></i></span>
                             </div>
 
-                            <select class="form-control" name="id_alumno" style="width:88%" require>
+                            <select class="form-control" id="id_alumno" name="id_alumno" style="width:88%" require>
                                 <option value="">Seleccione un alumno</option>
                                 @php
                                     $alumnos = selectSicoes("Alumno");
@@ -225,5 +225,11 @@
   </div>
 
 </div>
+
+<script>
+  $("#id_alumno").select2({
+    width: 'resolve'
+  });
+</script>
 
 @stop
