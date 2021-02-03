@@ -81,10 +81,8 @@
       <tr>
         
         <td  class="logo">
-          <img src="logo.jpg" alt="logo" width="100" height="90">
-        </td>
-
-       
+          <img src="https://alumnos.unisierra.edu.mx/img/temple/unisierra.png" alt="logo" width="100" height="90">
+        </td>       
 
         <td colspan="2" class="school-info">
           <span class="title">Universidad de la Sierra</span> <br>
