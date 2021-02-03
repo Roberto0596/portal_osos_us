@@ -492,7 +492,7 @@ function getEstadoMunicipio($matricula, $desicion){
     $stmt = null;
 }
 
-function getCarrera($matricula){
+function getCarrera($matricula) {
     $stmt = ConectSqlDatabase()->prepare("SELECT c.nombre as carrera, p.Nombre as planDeEstudio from Alumno as a 
     join PlanEstudio as p on p.PlanEstudioId = a.PlanEstudioId
     join Carrera as c on c.CarreraId = p.CarreraId where a.Matricula = '$matricula'");
@@ -966,16 +966,17 @@ function current_group($id_alumno) {
       $location= $sicoesAlumn["Localidad"];
     }
 
- 
+    $carrer = getCarrera($sicoesAlumn["Matricula"])["carrera"];
+
     $ticketInfo = [
       "ticketNum"      => getTicketNumber(),
       "date"           => $date,
       "enrollment"     => $sicoesAlumn["Matricula"],
-      "name"           => $alumn->name." ".$alumn->lastname,
+      "name"           => strtolower($alumn->name." ".$alumn->lastname),
       "rfc"            => substr($sicoesAlumn["Curp"],0,10),
       "group"          => current_group($alumn->id_alumno)["Nombre"],
       "semester"       => current_group($alumn->id_alumno)["Semestre"],
-      "career"         => strtolower(getCarrera($sicoesAlumn["Matricula"])["carrera"]),
+      "career"         => strtolower($carrer),
       "location"       => $location == "No Disponibe" ? $location : strtolower($location." ".$state["Nombre"]),
       "order"          => $debit->id_order,
       "period"         => $period["Clave"],
