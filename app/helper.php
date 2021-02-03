@@ -976,8 +976,8 @@ function current_group($id_alumno) {
       "rfc"            => substr($sicoesAlumn["Curp"],0,10),
       "group"          => current_group($alumn->id_alumno)["Nombre"],
       "semester"       => current_group($alumn->id_alumno)["Semestre"],
-      "career"         => strtolower($carrer),
-      "location"       => $location == "No Disponibe" ? $location : strtolower($location." ".$state["Nombre"]),
+      "career"         => strtolower(normalizeChars($carrer)),
+      "location"       => $location == "No Disponibe" ? $location : strtolower(normalizeChars($location)." ".normalizeChars($state["Nombre"])),
       "order"          => $debit->id_order,
       "period"         => $period["Clave"],
       "concept"        => $debit->description,
@@ -986,9 +986,6 @@ function current_group($id_alumno) {
       "payment_method" => $debit->payment_method,
       "secureStr"      => "Pendiente"
     ];
-
-    //dd($ticketInfo);
-
 
     $html = view('Alumn.ticket.template',['ticketInfo'=>$ticketInfo])->render(); 
 
