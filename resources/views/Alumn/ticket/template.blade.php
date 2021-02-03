@@ -81,7 +81,7 @@
       <tr>
         
         <td  class="logo">
-          <img src="{{asset('img/logo.jpg')}}" alt="logo" width="100" height="90">
+          <img src="logo.jpg" alt="logo" width="100" height="90">
         </td>
 
        
