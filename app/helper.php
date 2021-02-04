@@ -944,12 +944,12 @@ function current_group($id_alumno) {
 	| Metodo para generar un Ticket
 	|-------------------------------------------------------------------
 	*/
-  function createTicket($debit_id)
+  function createTicket($debit_id, $is_masive = false)
   {
 
     $debit = Debit::find($debit_id);
     $alumn = User::where("id_alumno", $debit->id_alumno)->first();
-    $date =  Carbon::now()->format('d/m/Y');
+    $date  = $is_masive ? $debit->created_at->format('d/m/Y')  : Carbon::now()->format('d/m/Y');
     $sicoesAlumn = count(selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)) != 0 ?
        selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)[0] : "No Disponible";
 
@@ -1033,7 +1033,7 @@ function current_group($id_alumno) {
     $ticket->alumn_id = $alumn->id;
     $ticket->debit_id = $debit->id;
     $ticket->route = $path."/".$namefile;
-    $ticket->created_at = time();
+    $ticket->created_at = $is_masive ? $debit->created_at : time();
     $ticket->save();  
 }
 

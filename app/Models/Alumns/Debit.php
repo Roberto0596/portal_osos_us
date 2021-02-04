@@ -24,6 +24,11 @@ class Debit extends Model
         'alumn_last_name',
         'alumn_second_last_name'
     ];
+    
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function admin() {
         return $this->belongsTo('\App\Models\AdminUsers\AdminUser', "admin_id", "id");
