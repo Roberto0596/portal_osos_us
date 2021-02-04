@@ -951,9 +951,8 @@ function current_group($id_alumno) {
     $alumn = User::where("id_alumno", $debit->id_alumno)->first();
     $date  = $is_masive ? $debit->created_at->format('d/m/Y')  : Carbon::now()->format('d/m/Y');
 
-    $sicoesAlumn = $alumn->getSicoesData();
-
-    if ($sicoesAlumn) {
+    if ($alumn) {
+      $sicoesAlumn = $alumn->getSicoesData();
       $stateData = selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"]);
       $state = count($stateData) != 0 ? $stateData[0] : "No Disponible";
 
@@ -968,12 +967,12 @@ function current_group($id_alumno) {
       }
 
       $carrer = getCarrera($sicoesAlumn["Matricula"])["carrera"];
-
+      $alumnName = strtolower(normalizeChars($sicoesAlumn["Nombre"]." ".$sicoesAlumn["ApellidoPrimero"]." ".($sicoesAlumn["ApellidoSegundo"] ? $sicoesAlumn["ApellidoSegundo"] : '')));
       $ticketInfo = [
         "ticketNum"      => getTicketNumber(),
         "date"           => $date,
         "enrollment"     => $sicoesAlumn["Matricula"],
-        "name"           => strtolower($alumn->name." ".$alumn->lastname),
+        "name"           => $alumnName,
         "rfc"            => substr($sicoesAlumn["Curp"],0,10),
         "group"          => current_group($alumn->id_alumno)["Nombre"],
         "semester"       => current_group($alumn->id_alumno)["Semestre"],
