@@ -53,6 +53,11 @@ return [
             'root'   => public_path() . '/img/comprobantes',
         ],
 
+        'ticket_uploads' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/tickets',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

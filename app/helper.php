@@ -14,6 +14,7 @@ use App\Models\Alumns\FailedRegister;
 use App\Models\Alumns\Ticket;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
+use Illuminate\Support\Facades\Storage;
 
 //seccion del sistema
 
@@ -946,18 +947,17 @@ function current_group($id_alumno) {
 	*/
   function createTicket($debit_id, $is_masive = false)
   {
-
     $debit = Debit::find($debit_id);
     $alumn = User::where("id_alumno", $debit->id_alumno)->first();
     $date  = $is_masive ? $debit->created_at->format('d/m/Y')  : Carbon::now()->format('d/m/Y');
-    $sicoesAlumn = count(selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)) != 0 ?
-       selectSicoes("Alumno","AlumnoId", $alumn->id_alumno)[0] : "No Disponible";
 
-    $state= count(selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"])) != 0 ?
-        selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"])[0] : "No Disponible";
+    $sicoesAlumn = $alumn->getSicoesData();
 
-    $period = count(selectSicoes("Periodo","PeriodoId",$debit->period_id)) != 0 ? 
-        selectSicoes("Periodo","PeriodoId",$debit->period_id)[0] : "No Disponible";
+    $stateData = selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"]);
+    $state = count($stateData) != 0 ? $stateData[0] : "No Disponible";
+
+    $periodData = selectSicoes("Periodo","PeriodoId",$debit->period_id);
+    $period = count($periodData) != 0 ? $periodData[0] : "No Disponible";
 
     $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
 
@@ -1012,28 +1012,24 @@ function current_group($id_alumno) {
     $mpdf->WriteHTML($html);
 
     $alumnData = $alumn->getSicoesData();
-    $path = "tickets/".$alumnData["Matricula"];
+    $path = $alumnData["Matricula"];
 
-
-    if (! is_dir(public_path()."/".$path)) {
-        mkdir(public_path()."/".$path, 0777, true);
-    }
+    Storage::disk('ticket_uploads')->makeDirectory($path);
 
     try {     
-      $mpdf->Output($path."/".$namefile,"F");
+      $mpdf->Output("tickets/".$path."/".$namefile,"F");
     } catch(\Exception $e) {
-      $mpdf->Output(public_path()."/". $path."/".$namefile,"F");
+      $mpdf->Output(public_path()."/". "tickets/".$path."/".$namefile,"F");
     }
 
     $ticket = new Ticket();
     $ticket->concept = ucwords($debit->description);
     $ticket->alumn_id = $alumn->id;
     $ticket->debit_id = $debit->id;
-    $ticket->route = $path."/".$namefile;
+    $ticket->route = "tickets/".$path."/".$namefile;
     $ticket->created_at = $is_masive ? $debit->created_at : time();
     $ticket->save();  
 }
-
 
 function getAlumnByEnrollment($enrollment)
 {

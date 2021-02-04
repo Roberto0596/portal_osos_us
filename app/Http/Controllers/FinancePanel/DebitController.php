@@ -302,8 +302,13 @@ class DebitController extends Controller
         }
 
         $query = Ticket::select('ticket.route')
-        ->join("debit as d", "ticket.debit_id", "=", "d.id")
-        ->whereBetween("ticket.created_at", [$from, $to]);
+        ->join("debit as d", "ticket.debit_id", "=", "d.id");
+
+        if ($from == $to) {
+            $query = $query->where("ticket.created_at", "like", "%".$from."%");
+        } else {
+            $query = $query->whereBetween("ticket.created_at", [$from, $to]);
+        }
         
         if ($request->has('debit_type_id')) {
             $query->where("d.debit_type_id", $request->get('debit_type_id'));

@@ -69,9 +69,7 @@
           Moctezuma, Sonora C.P 84560 <br>
           RFC: USI020415U24 <br>
           Tel / Fax : (634) 34296 00
-      </td>
-      
-     
+      </td>    
 
     </tr>
 
