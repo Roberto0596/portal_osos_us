@@ -215,7 +215,7 @@
       <td colspan="12" style="padding-top: 450px;">
           Cualquier duda con el pago del adeudo y obligaciones contraidas con la 
           Universidad de la Sierra, comunicarse al Dpto. de Recursos Financieros al
-          6343429600 Ext.6
+          6343429600 Ext.1053
       </td>
       
   </tr>

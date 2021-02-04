@@ -434,6 +434,13 @@ Route::group(['prefix'=> 'finance', 'namespace'=>'FinancePanel'], function()
 				'uses'=>'DebitController@ticketReport', 
 				'as' => 'ticket.report'
 			]);	
+
+			Route::post('/change-serie',[
+				'uses'=>'SettingsController@changeSerie', 
+				'as' => 'settings.changeSerie'
+			]);
+
+			
 		});
   	});
 });

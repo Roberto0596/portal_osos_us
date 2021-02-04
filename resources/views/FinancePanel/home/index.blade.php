@@ -79,6 +79,33 @@
             
           </div>
 
+
+          <div class="col-md-4 col-sm-12">
+
+            <div class="small-box bg-primary" data-toggle="modal"data-target="#modalSerieTicket">
+
+              <div class="inner">
+
+                <h3>Cambiar Serie</h3>
+
+                <p>Cambia la serie de los tickets</p>
+
+              </div>
+
+              <div class="icon">
+
+                <i class="fas fa-plus"></i>
+
+              </div>
+
+              <div class="small-box-footer">
+                &nbsp;
+              </div>
+
+            </div>
+            
+          </div>
+
         </div>
 
       </div>
@@ -226,10 +253,111 @@
 
 </div>
 
+
+
+
+
+
+
+<div class="modal fade" id="modalSerieTicket">
+
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+
+        <form method="post" action="{{ route('finance.settings.changeSerie')}}">
+            
+            {{ csrf_field() }}
+
+            <div class="modal-header">
+
+                <h4 class="modal-title">Cambiar Serie de Tickets</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+        
+            <div class="modal-body">
+
+              <div>
+                <p>
+                  Al momento de cambiar la serie, el conteo de los tickets se reiniciará a 00001
+                </p>
+              </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">           
+
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                <i class="fas fa-ad"></i></span>
+                            </div>
+
+                            <input type="text" id="serie" name="serie" placeholder="Ingrese serie" class="form-control" required>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer justify-content">
+
+                <div class="col-sm container-fluid">
+
+                    <div class="row">
+
+                        <div class=" col-sm-6 btn-group">
+
+                        <button id="cancel" type="button" class="btn btn-danger .px-2 " data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+
+                        </div>
+
+                        <div class=" col-sm-6 btn-group">
+
+                        <button type="submit" id="sale" class="btn btn-success .px-2"><i class="fa fa-check"></i> Guardar</button>
+                        
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+       </form>
+
+    </div>
+
+  </div>
+
+</div>
+
 <script>
   $("#id_alumno").select2({
     width: 'resolve'
   });
+
+  $(document).ready(function(){
+
+    <?php
+      $config = getConfig();
+
+                    
+    ?>
+
+    $('#serie').val('{{$config->ticket_serie}}');
+    
+  
+  });
+
 </script>
 
 @stop

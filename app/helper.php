@@ -937,7 +937,7 @@ function current_group($id_alumno) {
     $config = getConfig();
     $config->debit_ticket_count = $config->debit_ticket_count + 1;
     $config->save();
-    return $config->debit_ticket_count;
+    return $config->ticket_serie." ".sprintf("%'04d", $config->debit_ticket_count);
   }
 
 	/*
