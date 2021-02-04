@@ -8,69 +8,48 @@
 
 <style type="text/css">
 
-    table,td,th{
-        border: none;
-        border-collapse: collapse;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-    table{
+  table,td,th{
+      /* border: black 1px solid; */
       border: none;
-    }
-
-    body{
+      border-collapse: collapse;
+  }
+  body{
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 10px;
-    }
+      font-size: 10px;;
+  }
 
-    .title{
-      font-size: 14px;
+  .title{
       font-weight: bold;
-    }
+      font-size: 12px;
+  }
+  .bold{
+      font-weight: bold;
+  }
 
-    .logo{
-      width: 100px;
-    }
-    .school-info{
-      vertical-align: middle;
-    }
 
-    .table-head{
+  .debit-item{
+      padding-top: 20px;
+      padding-bottom: 200px;
+  }
+
+
+  .total{
+      border-top: #000000 2px solid;
+  }
+  
+
+  .pr-35{
+      padding-right: 35px;
+  }
+
+ 
+
+  .t-head{
       padding-top: 20px;
       text-align: center;
       border-bottom: #000000 2px solid;
-      
-    }
-
-    .table-cell{
-      padding-top: 10px;
-      text-align: center;
-      padding-bottom: 150px;
-    }
-
-    .table-cell-right{
-      padding-top: 10px;
-      text-align: right;
-    }
-
-    .table-cell-border-top{
-      border-top: #000000 2px solid;
-      padding-top: 10px;
-      text-align: center;
-    }
-
-    .align-right{
-      text-align: right;
-    }
-
-    .bold{
-      font-weight: bold;
-    }
-
-   
+  }
+ 
 
 </style>
 
@@ -84,173 +63,168 @@
           <img src="https://alumnos.unisierra.edu.mx/img/temple/unisierra.png" alt="logo" width="100" height="90">
         </td>       
 
-        <td colspan="2" class="school-info">
+      <td colspan="11">
           <span class="title">Universidad de la Sierra</span> <br>
           Carr. Moctezuma - Cumpas, Km. 2.5 <br>
           Moctezuma, Sonora C.P 84560 <br>
           RFC: USI020415U24 <br>
           Tel / Fax : (634) 34296 00
-        </td>
+      </td>
+      
+     
 
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
+    </tr>
 
-      </tr>
+    <tr>
+      
+      <td style="width: 80px;">
+        &nbsp;
+      </td>
 
-      <tr>
-          
-        <td> &nbsp;</td>
+      <td style="width: 100px;">
+      &nbsp;
+      </td>
 
-        <td> &nbsp;</td>
+      <td>
+        &nbsp;
+      </td>
 
-        <td>&nbsp;</td>
+      <td>
+        &nbsp;
+      </td>
 
-        <td class="align-right">
+      <td>
+        &nbsp;
+      </td>
+
+      <td>
+        &nbsp;
+      </td>
+
+      <td>
+        &nbsp;
+      </td>
+
+      <td>
+        &nbsp;
+      </td>
+
+      <td>
+        &nbsp;
+      </td>
+
+      <td>
+        &nbsp;
+      </td>
+
+      <td style="width: 90px; text-align: right;">
           Recibo Oficial : <br>
           Fecha :
-        </td>
-        <td style="padding-left: 5px;">
-          <span class="bold">{{ $ticketInfo["ticketNum"]}}</span>  <br>
-          {{ $ticketInfo["date"]}}
-        </td>
+      </td>
 
-      </tr>
+      <td style="width: 80px; text-align: left;">
+        <span class="bold">{{ $ticketInfo["ticketNum"]}}</span><br>
+        {{ $ticketInfo["date"]}}
+      </td>
 
+    </tr>
 
-      <tr>
-          
-        <td  style="width: 20px;" >
+    <tr>
+      
+      <td style="width: 80px;">
           Matricula: <br>
           Nombre: <br>
           Dirección: <br>
           Carrera: <br>
-          <br>
           Referencia: 
-        </td>
+      </td>
 
-        <td >
-            {{ $ticketInfo["enrollment"]}} <br>
-            {{ ucwords($ticketInfo["name"])}}<br>
-            {{ ucwords($ticketInfo["location"])}}<br>
-            {{ ucwords($ticketInfo["career"])}}<br>
-            {{ $ticketInfo["order"]}}
-        </td>
+      <td colspan="7">
+          {{ $ticketInfo["enrollment"]}} <br>
+          {{ ucwords($ticketInfo["name"])}}<br>
+          {{ ucwords($ticketInfo["location"])}}<br>
+          {{ ucwords($ticketInfo["career"])}}<br>
+          {{ $ticketInfo["order"]}}
+      </td>
 
-        <td >
-         RFC: <br>
-         &nbsp; <br>
-         Semestre: <br>
-        </td>
+      <td style="width: 80px;">
+        RFC : <br>
+        <br>
+        Semestre :
+      </td>
 
-        <td >
-            {{ $ticketInfo["rfc"]}} <br>
+      <td  style="width: 80px;">
+          {{ $ticketInfo["rfc"]}}<br>
+          <br>
+          {{ $ticketInfo["semester"]}}
+      </td>
+      <td colspan="2" style="text-align: center;">
           &nbsp; <br>
-          {{ $ticketInfo["semester"]}}<br>
-        </td>
+          <br>
+          Gpo :  {{ $ticketInfo["group"]}} 
+      </td>
 
-        <td >
-          &nbsp; <br>
-          &nbsp; <br>
-          Gpo: {{ $ticketInfo["group"]}} <br>
-        </td>
-
-      </tr>
-
-      <tr>
-          
-        <td  class="table-head">
-          Periodo
-        </td>
-
-        <td colspan="2" class="table-head">
-          Concepto
-        </td>
-
-        <td colspan="10" class="table-head" style="text-align:right">
-          Importe Recibido
-        </td>
-
-      </tr>
-
-      <tr>
-          
-        <td  class="table-cell">
-            {{ $ticketInfo["period"]}}
-        </td>
-
-        <td colspan="2" class="table-cell">
-            {{ $ticketInfo["concept"]}}
-        </td>
-
-        <td colspan="10" class="table-cell" style="text-align:right">
-          $ &nbsp;&nbsp;&nbsp;{{ $ticketInfo["amount"]}}
-        </td>
-
-      </tr>
-
-      <tr >
-          
-        <td  >
-          &nbsp;
-        </td>
-
-        <td colspan="2" class="table-cell-right">
-          &nbsp;<span class="bold">Total:</span>
-        </td>
-
-        <td colspan="10" class="table-cell-border-top" style="text-align:right">
-          <span class="bold">$ &nbsp;&nbsp;&nbsp;{{ $ticketInfo["amount"]}}</span>
-          
-        </td>
-
-      </tr>
+    </tr>
 
 
-      <tr>
-          
-        <td colspan="2">
-          &nbsp;
-        </td>
-        <td colspan="3" style="text-align: end;">
-          (Son : {{ ucwords($ticketInfo["strAmount"])}} pesos 00/100 M.N.)
-        </td>
+    <tr>
+        <td class="t-head" colspan="2">Periodo</td>
+        <td class="t-head" colspan="8">Concepto</td>
+        <td class="t-head" colspan="2">Importe Recibido</td>
+    </tr>
 
-      </tr>
 
-      <tr>
-          
-        <td  style="width: 100px;">
-          Forma de Pago: <br>
-        </td>
+    <tr>
+      <td class="debit-item" style="text-align: center;" colspan="2">
+          {{ $ticketInfo["period"]}}
+      </td>
 
-        <td>
-            {{ $ticketInfo["payment_method"]}} <br>
-        </td>
+      <td class="debit-item" style="text-align: center;" colspan="8">
+          {{ $ticketInfo["concept"]}}
+      </td>
 
-        <td >
-         &nbsp; 
-        </td>
+      <td class="debit-item pr-35" style="text-align: right;" colspan="2">
+          {{ $ticketInfo["amount"]}}
+      </td>
 
-        <td >
-          &nbsp; 
-        </td>
+    </tr>
 
-        <td >
-          &nbsp; <br>
-        </td>
+    <tr>
+      <td style="text-align: center;" colspan="2">&nbsp;</td>
 
-      </tr>
+      <td style="text-align: right" colspan="8">
+          <span class="bold">Total :</span>
+      </td>
 
-      <tr>
-        <td colspan="12" style="padding-top: 350px; padding-bottom: 50px;">
+      <td class="total pr-35" style="text-align: right;"colspan="2">
+          <span class="bold">$ {{ $ticketInfo["amount"]}}</span>
+      </td>
+
+    </tr>
+
+
+    <tr>
+        <td colspan="8">&nbsp;</td>
+        <td colspan="4">( Son : {{ ucwords($ticketInfo["strAmount"])}} Pesos 00/100 M.N.)</td>
+    </tr>
+
+    <tr>
+        <td colspan="1">Forma de Pago :</td>
+        <td colspan="11">{{ $ticketInfo["payment_method"]}}</td>
+    </tr>
+
+    <tr>
+      <td colspan="12" style="padding-top: 450px;">
           Cualquier duda con el pago del adeudo y obligaciones contraidas con la 
           Universidad de la Sierra, comunicarse al Dpto. de Recursos Financieros al
           6343429600 Ext.6
-        </td>
-      </tr>
+      </td>
       
-    </table>
+  </tr>
+    
+  </table>
+
+ 
 
 </body>
 </html>
