@@ -38,7 +38,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">El sistema ah seleccionado para ti estas materias</h3>
+        <h3 class="card-title">El sistema ha seleccionado estas materias para ti</h3>
 
       </div>
       

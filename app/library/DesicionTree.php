@@ -3,50 +3,123 @@
 namespace App\Library;
 
 use App\Models\Alumns\User;
+use App\Models\Sicoes\Alumno;
+use App\Models\Sicoes\Asignatura;
+use App\Models\Sicoes\DetGrupo;
+use App\Models\Sicoes\Seriacions;
+use App\Models\Sicoes\Carga;
 use Illuminate\Database\Eloquent\Collection;
 
 class DesicionTree
 {
 	private $realCharge;
+	private $current_period;
 
 	public function __construct() {
 		$this->realCharge = collect();
+		$this->current_period = selectCurrentPeriod();
 	}
 
 	function saveCharge($charge = null)
 	{
 		if ($charge == null) {
 			$charge = $this->realCharge;
-		}
+		}	
 
-		foreach ($charge as $key => $value) {
-			$this->chargeSaveQuery($value);
+		try {
+			foreach ($charge as $key => $value) {
+				$carga = new Carga();
+				$carga->Baja = $value->baja;
+				$carga->AlumnoId = $value->alumnoId;
+				$carga->DetGrupoId = $value->detGrupoId;
+				$carga->PeriodoId = $value->periodoId;
+				$carga->save();
+			}
+			return true;
+		} catch(\Exception $e) {
+			return false;
 		}
-
 	}
 
-	public function chargeSaveQuery($index) {
+	public function getTreeCharge() {
+		if ($this->realCharge->count() > 0) {
+			return $this->realCharge;
+		} else {
+			return false;
+		}
+	}
 
-	    $stmt = ConectSqlDatabase()->prepare("INSERT INTO Carga(Baja,AlumnoId,DetGrupoId,PeriodoId) values(:Baja,:AlumnoId,:DetGrupoId,:PeriodoId)");
-	    $array = array('Baja' => $index->baja,
-	                    'AlumnoId' => $index->alumnoId,
-	                    'DetGrupoId' => $index->detGrupoId,
-	                    'PeriodoId' => $index->periodoId);
-	    if($stmt->execute($array))
-	    {
-	        return ConectSqlDatabase()->lastInsertId();
-	    }
-	    else
-	    {
-	        return false;
-	    }
-	    $stmt = null;
+	private function mergeCharge(User $user) {
+		$alumnData = $user->sAlumn;
+		$asignaturas = $this->getAsignaturas($alumnData->PlanEstudioId);
+		$mergedCharge = collect();
+
+		foreach ($asignaturas as $key => $value) {
+			$carga = $this->alumnCharge($value->AsignaturaId, $alumnData->AlumnoId);
+			$detGrupo = $this->DetGrupoId($value->AsignaturaId);
+			$push = [
+				"calificacion" => isset($carga->Calificacion) ? $carga->Calificacion : null,
+				"nombre" => $alumnData->Nombre,
+				"alumnoId" => $user->id_alumno,
+				"materia" => $value->Nombre,
+				"asignaturaId" => $value->AsignaturaId,
+				"semestre" => $value->Semestre,
+				"haySeriacion" => $value->HaySeriacion,
+				"detGrupoId" => $detGrupo->DetGrupoId,
+				"periodoId" => $this->current_period->id,
+				"nombreProfesor" => $detGrupo->Nombre ." ". $detGrupo->ApellidoPrimero,
+				"baja" => 0
+			];
+			$mergedCharge->push((Object) $push);
+		}
+		return $mergedCharge;
+	}
+
+	private function getAsignaturaSeriada($id_asignatura = 547, $id_alumno =635) {
+		$seriada = $this->getSeriacion($id_asignatura);
+
+		if ($seriada) {
+			$data = Asignatura::join("DetGrupo as det", "Asignatura.AsignaturaId", "=", "det.AsignaturaId")
+							->join("Carga as c", "det.DetGrupoId", "=", "c.DetGrupoId")
+							->where("Asignatura.AsignaturaId", $seriada->AsignaturaIdSeriada)
+							->where("c.AlumnoId", $id_alumno)
+							->orderBy("c.CargaId", "desc");
+			return $data->first();
+		}
+	}
+
+	private function getSeriacion($id_asignatura) {
+		$data = Seriacions::where("AsignaturaId", $id_asignatura)->orderBy("SeriacionId", "desc")->take(1);
+		return $data->first();
+	}
+
+	private function alumnCharge($asignaturaId,$alumn_id) {
+		$data = DetGrupo::join("Carga as car", "DetGrupo.DetGrupoId", "=", "car.DetGrupoId")
+						->join("Alumno as alu", "car.AlumnoId", "=", "alu.AlumnoId")
+						->where("DetGrupo.AsignaturaId", $asignaturaId)
+						->where("car.AlumnoId", $alumn_id)
+						->orderBy("car.CargaId", "desc")
+						->select("car.AlumnoId", "car.Calificacion", "alu.Nombre")
+						->first();
+		return $data;
+	}
+
+	private function DetGrupoId($id_asignatura) {
+		$data = DetGrupo::join("Profesor", "DetGrupo.ProfesorId", "=", "Profesor.ProfesorId")
+						->where("AsignaturaId", $id_asignatura)
+						->orderBy("DetGrupoId", "desc")
+						->first();
+		return $data;
+	}
+
+	private function getAsignaturas($plan) {
+		$query = Asignatura::where("PlanEstudioId", $plan)->orderBy("Semestre");
+		return $query->get();
 	}
 
 	public function makeTree(User $user) {
 		$asignaturas = $this->mergeCharge($user);
 		$current_semester = $user->getLastInscription()->Semestre;
-		$period = selectCurrentPeriod();
 		$odd = [1,3,5,7,9];
   		$pair = [2,4,6,8];
 
@@ -56,7 +129,7 @@ class DesicionTree
 			do {
 				switch ($node) {
 					case 0:
-						if ($period->semestre == "1") {
+						if ($this->current_period->semestre == "1") {
 							if (in_array(intval($value->semestre), $pair)) {
 								$node = 2;
       						} else {
@@ -92,7 +165,7 @@ class DesicionTree
 						break;
 					case 5: 
 						$seriacion = $this->getAsignaturaSeriada($value->asignaturaId, $user->id_alumno);
-						if(intval($seriacion["Calificacion"]) >= 70) {
+						if(intval($seriacion->Calificacion) >= 70) {
 							$node = 8;
 						} else {
 							$node = 7;
@@ -133,91 +206,4 @@ class DesicionTree
 			} while ($status);
 		}
 	}
-
-	public function getTreeCharge() {
-		if ($this->realCharge->count() > 0) {
-			return $this->realCharge;
-		} else {
-			return false;
-		}
-	}
-
-	private function mergeCharge(User $user) {
-		$alumnData = $user->getSicoesData();
-		$asignaturas = $this->getAsignaturas($alumnData["PlanEstudioId"]);
-		$historial = collect();
-		$period = selectCurrentPeriod();
-		foreach ($asignaturas as $key => $value) {
-			$carga = $this->alumnCharge($value["AsignaturaId"], $alumnData["AlumnoId"]);
-			$detGrupo = $this->DetGrupoId($value["AsignaturaId"]);
-			$push = [
-				"calificacion" => isset($carga["Calificacion"]) ? $carga["Calificacion"] : null,
-				"nombre" => isset($carga["Nombre"]) ? $carga["Nombre"] : null,
-				"alumnoId" => $user->id_alumno,
-				"materia" => $value["Nombre"],
-				"asignaturaId" => $value["AsignaturaId"],
-				"semestre" => $value["Semestre"],
-				"haySeriacion" => $value["HaySeriacion"],
-				"detGrupoId" => $detGrupo["DetGrupoId"],
-				"periodoId" => $period->id,
-				"nombreProfesor" =>$detGrupo["Nombre"] ." ". $detGrupo["ApellidoPrimero"],
-				"baja" => 0
-			];
-			$historial->push((Object) $push);
-		}
-
-		return $historial;
-	}
-
-	private function getAsignaturaSeriada($id_asignatura = 547, $id_alumno =635) {
-		$id_extra = $this->getSeriacion($id_asignatura);
-		if ($id_extra) {
-			$id_extra = $id_extra["AsignaturaIdSeriada"];
-			$query = "SELECT TOP(1) * from Asignatura as asig
-				inner join DetGrupo as det on asig.AsignaturaId = det.AsignaturaId
-				inner join Carga as carga on det.DetGrupoId = carga.DetGrupoId
-				where asig.AsignaturaId = '$id_extra' and AlumnoId = '$id_alumno' order by carga.CargaId desc;";
-			$stmt = ConectSqlDatabase()->prepare($query);
-			$stmt->execute();
-			return $stmt->fetch();
-		}
-	}
-
-	private function getSeriacion($id_asignatura) {
-		$query = "SELECT  TOP(1) * from Seriacions where AsignaturaId = '$id_asignatura' order by SeriacionId desc";
-		$stmt = ConectSqlDatabase()->prepare($query);
-		$stmt->execute();
-		return $stmt->fetch();
-	}
-
-	private function alumnCharge($asignaturaId,$alumn_id) {
-		$query = "SELECT top(1) car.AlumnoId, car.Calificacion, alu.Nombre from DetGrupo as det 
-					inner join Carga as car on det.DetGrupoId = car.DetGrupoId
-					inner join Alumno as alu on alu.AlumnoId = car.AlumnoId
-					where det.AsignaturaId = '$asignaturaId' and car.AlumnoId = '$alumn_id' order by car.CargaId desc;";
-		$stmt = ConectSqlDatabase()->prepare($query);
-		$stmt->execute();
-		return $stmt->fetch();
-		$stmt = null;
-	}
-
-	private function DetGrupoId($id_asignatura) {
-		$query = "SELECT top(1) * from DetGrupo
-				inner join Profesor on DetGrupo.ProfesorId = Profesor.ProfesorId
-				where AsignaturaId = '$id_asignatura' order by DetGrupoId desc;";
-		$stmt = ConectSqlDatabase()->prepare($query);
-		$stmt->execute();
-		return $stmt->fetch();
-		$stmt = null;
-	}
-
-	private function getAsignaturas($plan) {
-		$query = "SELECT * from Asignatura  where PlanEstudioId = '$plan' order by Semestre;";
-		$stmt = ConectSqlDatabase()->prepare($query);
-		$stmt->execute();
-		return $stmt->fetchAll();
-		$stmt = null;
-	}
 }
-
- ?>

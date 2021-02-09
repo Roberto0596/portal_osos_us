@@ -34,6 +34,7 @@ class ChargeController extends Controller
         $alumnRequest = $request->except("_token");
         $tree = session()->get("chargeTreeInstance");
         $charge = $tree->getTreeCharge();
+
         if (!isset($alumnRequest["seleccionadas"]))
         {
             session()->flash("messages","error|Hay un minimo de materias por llevar.");
@@ -46,11 +47,16 @@ class ChargeController extends Controller
             }
         }
 
-        $tree->saveCharge($charge);
+        $save = $tree->saveCharge($charge);
         $user = current_user();
         $user->inscripcion = 4;
         $user->save();
-        session()->flash("messages","success|Tu carga ha sido guardada.");
+
+        if ($save) {
+            session()->flash("messages","success|Tu carga ha sido guardada.");
+        } else {
+            session()->flash("messages","warning|Algo salió mal, contacta con servicios escolares.");
+        }
         return redirect()->route("alumn.home");
     }
 }
