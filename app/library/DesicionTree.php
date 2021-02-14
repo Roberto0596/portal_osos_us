@@ -10,8 +10,8 @@ use App\Models\Sicoes\Seriacions;
 use App\Models\Sicoes\Carga;
 use Illuminate\Database\Eloquent\Collection;
 
-class DesicionTree
-{
+class DesicionTree {
+
 	private $realCharge;
 	private $current_period;
 
@@ -20,8 +20,8 @@ class DesicionTree
 		$this->current_period = selectCurrentPeriod();
 	}
 
-	function saveCharge($charge = null)
-	{
+	function saveCharge($charge = null)	{
+		
 		if ($charge == null) {
 			$charge = $this->realCharge;
 		}	
