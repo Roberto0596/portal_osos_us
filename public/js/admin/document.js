@@ -2,6 +2,7 @@ function loadDatatable() {
   var token = $("#token").val();
   var route = "/admin/documents/show";
   $('.tableDocuments tbody').remove();
+  
   let table = $(".tableDocuments").DataTable({
       "destroy": true,
       "processing":true,

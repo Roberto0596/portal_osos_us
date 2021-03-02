@@ -10,40 +10,6 @@
 
         <div class="row" style="margin: 1%; width: 100%">
 
-<!--             <div class="col-lg-8 col-md-12">
-
-                <div class="row">
-
-                    <div class="col-md-12 osos-title">
-                        <h1>Se un Oso Unisierra</h1>
-                    </div>
-
-                    <div class="col-md-12">
-
-                        <div class="feed">
-
-                            <div class="feed_content">
-
-                                <div class="feed-header">
-                                    <h1>encabezado2</h1>
-                                </div>
-
-                                <div class="feed-body">
-                                    <p>Parrafo</p>
-                                </div>
-
-                            </div>
-                            
-                        </div>
-
-                       
-
-                    </div>
-
-                </div>
-
-            </div> -->
-
             <div class="col-lg-12 col-md-12">
 
                 <div class="login-form">
@@ -52,7 +18,7 @@
 
                         {{ csrf_field() }}
 
-                        <h2 class="text-center">Solicitar Restauración de Contraseña</h2>  
+                        <h3 class="text-center">Ingresa tu correo</h3>  
 
                         <div class="input-group mb-3">
 
@@ -68,13 +34,13 @@
 
                             </label> 
 
-                        </div>
+                        </div>                       
 
-                       
+                        <div class="container">
 
-                        <div class="form-group">
+                            <button id="send" type="submit" class="btn btn-primary btn-block boton">Solicitar</button>
 
-                            <button id="send" type="submit" class="btn btn-primary btn-block boton" style="border-radius: 19px;">Solicitar</button>
+                            <a class="btn boton-danger btn-block" href="{{ route('alumn.login') }}">Regresar</a>
 
                         </div>                       
 

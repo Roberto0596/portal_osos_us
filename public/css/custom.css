@@ -340,20 +340,48 @@ header
     
 }
 
-.boton{
-    width: 50%;
+.boton-danger {
+    width: 60%;
+    margin:auto;
+    border-radius: 19px;
+    color: #fff !important;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
+}
+
+.boton {
+    width: 60%;
     margin: auto;
     background-color: #fd7e14;
-    border-radius: 2px;
+    border-radius: 19px;
     border: #fd7e14;
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
+}
 
+.boton-success {
+    width: 60%;
+    margin: auto;
+    color: #fff !important;
+    background-color: #28a745;
+    border-color: #28a745;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 19px;
+}
+
+.boton:hover {
+    background: #f18300;
+    border-color: #f18300;
+}
+
+.boton:active {
+    background: #f18300;
+    border-color: #f18300;
 }
 
 .imagen-fondo{
     
     background-image: url("../img/temple/fondo.png");
-
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -821,4 +849,11 @@ td{
 a
 {
     color: orange;
+}
+.w-100 {
+    width: 100%;
+}
+
+.m-0 {
+    margin: 0px !important;
 }

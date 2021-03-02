@@ -1117,3 +1117,10 @@ function normalizeChars($s) {
     );
     return strtr($s, $replace);
 }
+
+function closeAllSessions($session) {
+  if (Auth::guard($session)->check()) {
+      Auth::guard($session)->logout();
+      session()->flush();
+  }
+}

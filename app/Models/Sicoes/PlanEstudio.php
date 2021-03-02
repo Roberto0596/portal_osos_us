@@ -16,7 +16,7 @@ class PlanEstudio extends Model {
 
     protected $fillable = [
     	"PlanEstudioId",
-    	"Clave"
+    	"Clave",
     	"Nombre",
     	"Modalidad",
     	"Duracion",

@@ -24,19 +24,31 @@ class AuthController extends Controller
         $email = $request->input('email');
         $pass = $request->input('password');
 
-        $user = AdminUser::where([['email', "=" ,$email],['area_id',"=","1"]])->first();
+        $user = AdminUser::where('email', $email)->first();
 
         if (!$user) {
             session()->flash('messages', 'error|No Existe un usuario con ese correo');
             return redirect()->back()->withInput();
         }
 
-        if (Auth::guard('computercenter')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
-        {
-            return redirect()->route('computo.home');
+        if ($user->area_id == 1 || $user->area_id == 4) {       
+
+            if (Auth::guard('computercenter')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
+            {
+                return redirect()->route('computo.home');
+            }
+
+            session()->flash('messages', 'error|El password es incorrecto');
+            return redirect()->back()->withInput();
+            
+        } else {
+            
+            if ($user->area_id == 2) {
+                return redirect()->route("finance.login")->withInput();
+            } else {
+                return redirect()->route("library.login")->withInput();
+            }
         }
-        session()->flash('messages', 'error|El password es incorrecto');
-        return redirect()->back();
     }
 
     public function logout(Request $request)

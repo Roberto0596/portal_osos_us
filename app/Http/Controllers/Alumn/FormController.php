@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Alumn;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
 use App\Http\Requests\CreateUserRequest;
+use App\Models\Sicoes\Alumno;
+use App\Models\Sicoes\Estado;
+use App\Library\Sicoes;
 use DB;
+use Auth;
 
 class FormController extends Controller
 {
     public function indexForm()
     {
-        $estados = getItemClaveAndNamesFromTables("Estado");
         $current_user = current_user();
 
         //validar si un alumno no esta dado de baja
@@ -22,7 +24,7 @@ class FormController extends Controller
         {
             $checkGroup = checkGroupData($current_user->getSicoesData());
 
-            if ($checkGroup=="error")
+            if ($checkGroup == "error")
             {
                 session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
                 return redirect()->back();
@@ -34,10 +36,12 @@ class FormController extends Controller
                                "PeriodoId" => selectTable('period',null,null,1)[0]->clave,
                                "Semestre" => "sin asignar"];
             } 
-            return view('Alumn.form.index')->with(["estados" => $estados, 
-                                                "data" => $current_user->getSicoesData(), 
-                                                "currentId" => $current_user->id_alumno,
-                                                "group" => $checkGroup]);
+            return view('Alumn.form.index')->with([
+                "estados" => Estado::all(), 
+                "data" => $current_user->sAlumn, 
+                "currentId" => $current_user->id_alumno,
+                "group" => $checkGroup
+            ]);
         }
         else
         {
@@ -60,114 +64,50 @@ class FormController extends Controller
         $this->validate($request,[
             'g-recaptcha-response' => 'required|recaptcha',
         ]);
-        $current_user = Auth::guard('alumn')->user();
-        $data = $request->input();
 
-        //traer el plan de esudio y el ultimo alumno de esa carrera con ese plan de estudios
-        $planEstudio = getLastThing("planEstudio","CarreraId",$data["Carrera"],"PlanEstudioId");
+        $current_user = current_user();
+        $data = $request->except(["_token"]);
 
-        //Edad, el plan de estudio
-        $aux = abs(strtotime(date('Y-m-d')) - strtotime($data["FechaNacimiento"]));
-        $edad = intval(floor($aux / (365*60*60*24)));
-        $planEstudio = $planEstudio["PlanEstudioId"];
+        $correct_format = Sicoes::constructAlumnArray($data);
+        
+        $alumn = new Alumno();
 
-        //Matricula
-        $tempEnrollment = generateTempMatricula();
-
-        //preparando los datos.
-        $array = array('Matricula' => $tempEnrollment,
-                   'Nombre' => strtoupper($data["Nombre"]),
-                   'ApellidoPrimero'=> strtoupper($data["ApellidoPrimero"]),
-                   'ApellidoSegundo' => array_key_exists("ApellidoSegundo",$data)?strtoupper($data["ApellidoSegundo"]):null,
-                   'Regular'=> 1,
-                    'Tipo'=>0,
-                    'Curp'=>array_key_exists("Curp",$data)?strtoupper($data["Curp"]):null,
-                    'Genero'=>$data["Genero"],
-                    'FechaNacimiento'=>$data["FechaNacimiento"],
-                    'Edad' => $edad,
-                    'MunicipioNac' => array_key_exists("MunicipioNac",$data)?strtoupper($data["MunicipioNac"]):null,
-                    'EstadoNac' => array_key_exists("EstadoNac",$data)?strtoupper($data["EstadoNac"]):null,
-                    'EdoCivil' => $data["EdoCivil"],
-                    'Estatura' => 0,
-                    'Peso' => 0,
-                    'TipoSangre' => $data["TipoSangre"],
-                    'Alergias'=>array_key_exists("Alergias",$data)?strtoupper($data["Alergias"]):null,
-                    'Padecimiento'=>array_key_exists("Padecimiento",$data)?strtoupper($data["Padecimiento"]):null,
-                    'ServicioMedico'=>$data["ServicioMedico"],
-                    'NumAfiliacion'=>array_key_exists("NumAfiliacion",$data)?$data["NumAfiliacion"]:null,
-                    'Domicilio'=>array_key_exists("Domicilio",$data)?strtoupper($data["Domicilio"]):null,
-                    'Colonia'=>array_key_exists("Colonia",$data)?strtoupper($data["Colonia"]):null,
-                    'Localidad'=>array_key_exists("Localidad",$data)?strtoupper($data["Localidad"]):null,
-                    'MunicipioDom' =>array_key_exists("MunicipioDom",$data)?$data["MunicipioDom"]:null,
-                    'EstadoDom'=>array_key_exists("EstadoDom",$data)?$data["EstadoDom"]:null,
-                    'CodigoPostal'=>array_key_exists("CodigoPostal",$data)?$data["CodigoPostal"]:null,
-                    'Telefono'=>array_key_exists("Telefono",$data)?$data["Telefono"]:null,
-                    'Email'=>array_key_exists("Email",$data)?$data["Email"]:null,
-                    'EscuelaProcedenciaId'=>array_key_exists("EscuelaProcedenciaId",$data)?$data["EscuelaProcedenciaId"]:null,
-                    'AnioEgreso'=>array_key_exists("AnioEgreso",$data)?$data["AnioEgreso"]:null,
-                    'PromedioBachiller'=>array_key_exists("PromedioBachiller",$data)?$data["PromedioBachiller"]:null,
-                    'ContactoEmergencia' => array_key_exists("ContactoEmergencia",$data)?strtoupper($data["ContactoEmergencia"]):null,
-                    'ContactoDomicilio'=>array_key_exists("ContactoDomicilio",$data)?strtoupper($data["ContactoDomicilio"]):null,
-                    'ContactoTelefono'=>array_key_exists("ContactoTelefono",$data)?strtoupper($data["ContactoTelefono"]):null,
-                    'TutorNombre'=> array_key_exists("TutorNombre",$data)?strtoupper($data["TutorNombre"]):null,
-                    'TutorDomicilio'=>array_key_exists("TutorDomicilio",$data)?strtoupper($data["TutorDomicilio"]):null,
-                    'TutorTelefono'=>array_key_exists("TutorTelefono",$data)?strtoupper($data["TutorTelefono"]):null,
-                    'TutorOcupacion'=>array_key_exists("TutorOcupacion",$data)?strtoupper($data["TutorOcupacion"]):null,
-                    'TutorSueldoMensual'=>array_key_exists("TutorSueldoMensual",$data)?$data["TutorSueldoMensual"]:null,
-                    'MadreNombre'=>array_key_exists("MadreNombre",$data)?strtoupper($data["MadreNombre"]):null,
-                    'MadreDomicilio'=>array_key_exists("MadreDomicilio",$data)?strtoupper($data["MadreDomicilio"]):null,
-                    'MadreTelefono'=>array_key_exists("MadreTelefono",$data)?strtoupper($data["MadreTelefono"]):null,
-                    'TrabajaActualmente'=>$data["TrabajaActualmente"],
-                    'Puesto'=>array_key_exists("Puesto",$data)?strtoupper($data["Puesto"]):null,
-                    'SueldoMensualAlumno'=>array_key_exists("SueldoMensualAlumno",$data)?$data["SueldoMensualAlumno"]:null,
-                    'DeportePractica'=>array_key_exists("DeportePractica",$data)?strtoupper($data["DeportePractica"]):null,
-                    'Deportiva'=>0,
-                    'Cultural'=>0,
-                    'Academica'=>0,
-                    'TransporteUniversidad'=>array_key_exists("TransporteUniversidad",$data)?1:0,
-                    'Transporte'=>array_key_exists("Transporte",$data)?1:0,
-                    'ActaNacimiento'=>0,
-                    'CertificadoBachillerato'=>0,
-                    'Baja'=>0,
-                    'PlanEstudioId'=>$planEstudio,
-                    'CirugiaMayor'=>0,
-                    'CirugiaMenor'=>0,
-                    'Hijo'=>0,
-                    'Egresado'=>0
-                );
-        $insert = InsertAlumn($array);
-        if ($insert!=false)
-        {
-            $current_user->id_alumno = $insert;
-            $current_user->save();
-            $debit = insertInscriptionDebit($current_user);
-            session()->flash("messages","success|Ya casi eres un alumno unisierra");
-            return redirect()->route("alumn.payment");
-        }       
-        else
-        {
-            session()->flash("messages","error|No pudimos guardar los datos");
-            return redirect()->back();
+        foreach ($correct_format as $key => $value) {
+            $alumn->$key = $value;
         }
+
+        $alumn->save();
+        $current_user->id_alumno = $alumn->AlumnoId;
+        $current_user->save();
+        insertInscriptionDebit($current_user);
+
+        session()->flash("messages","success|Finalizó la recolección de tus datos.");
+        return redirect()->route("alumn.payment");
     }
 
     public function save(Request $request)
     {       
         try
         {
-            $this->validate($request,[
-                'g-recaptcha-response' => 'required|recaptcha',
-            ]);
-            $current_user = Auth::guard('alumn')->user();
-            $currentId = $current_user->id_alumno;       
-            $data = json_decode($request->input('data'));
-            if($data != null)
-            {
-                for ($i = 0; $i < count($data); $i++)
-                {
-                    updateByIdAlumn($currentId, $data[$i]->name, $data[$i]->value);
+            // $this->validate($request,[
+            //     'g-recaptcha-response' => 'required|recaptcha',
+            // ]);
+
+            $current_user = current_user();
+            $data = json_decode($request->input('data'), true);
+
+            if($data != null) {
+
+                $alumn = Alumno::find($current_user->id_alumno);
+
+                foreach ($data as $key => $value) {
+                    $col = $value["name"];
+                    $alumn->$col = $value["value"];
                 }
+
+                $alumn->save();
             }
+
             $debit = insertInscriptionDebit($current_user);
 
             if ($debit["type"] == 1) {
@@ -180,7 +120,7 @@ class FormController extends Controller
         }
         catch(\Exception $e)
         {
-            session()->flash("messages","error|Ocurrio un error, no pudimos guardar el registro");
+            session()->flash("messages","error|Ocurrio un error, no pudimos guardar el registro.");
             return redirect()->back();
         }
     }

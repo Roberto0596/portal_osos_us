@@ -122,12 +122,12 @@
 
                         </div>
 
-                        <div class="row" style="margin-top: 25px; margin-bottom: -15px;">
-                            <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
                                 <p class="parrafo-login text-center">¿Aun no tienes cuenta?</p>
                             </div>
-                            <div class="col-md-6">
-                                <a href="{{route('alumn.users.first_step')}}" class="btn btn-success" style="border-radius: 19px; width: 90%; color:white">Activar</a>
+                            <div class="col-md-12">
+                                <center><a href="{{route('alumn.users.first_step')}}" class="btn boton-success">Activar</a></center>
                             </div>
                         </div>
 

@@ -12,44 +12,44 @@ $(".tableAlumns").dataTable({
     },
     serverSide:true,
     "columns":[
-            {"data": "#"},
-            {"data": "Matricula"},
-            {"data": "Nombre (s)"},
-            {"data": "Apellido (s)"},
-            {"data": "Email"},
-            {"data": null, orderable: false, "render": function(data){
-                var res = "";
-                switch (data.inscripcion) {
-                    case 0:
-                        res = "Sin llenar formulario";
-                        break;
-                    case 1:
-                        res = "Sin realizar el pago";
-                        break;
-                    case 2:
-                        res = "Esperando confirmación de pago";
-                        break;
-                    case 3:
-                        res = "Proceso terminado";
-                        break;
-                    case 4:
-                        res = "Carga asignada";
-                        break;
-                } 
-                return res;
-            }},
-            {"data": null, orderable: false, "render": function(data){
+        {"data": "#"},
+        {"data": "Matricula"},
+        {"data": "Nombre (s)"},
+        {"data": "Apellido (s)"},
+        {"data": "Email"},
+        {"data": null, orderable: false, "render": function(data){
+            var res = "";
+            switch (data.inscripcion) {
+                case 0:
+                    res = "Sin llenar formulario";
+                    break;
+                case 1:
+                    res = "Sin realizar el pago";
+                    break;
+                case 2:
+                    res = "Esperando confirmación de pago";
+                    break;
+                case 3:
+                    res = "Proceso terminado";
+                    break;
+                case 4:
+                    res = "Carga asignada";
+                    break;
+            } 
+            return res;
+        }},
+        {"data": null, orderable: false, "render": function(data){
 
-                var res = "<div class='btn-group'>";
-                if (data.validate) {
-                    res += "<button class='btn btn-warning btnUpdateAlumn' data-toggle='modal' data-target='#modal-edit-alumn' title='editar alumno' alumnId = '"+data.id+"' title='Imprimir'>"+
-                        "<i class='fa fa-pen' style='color:white'></i></button>";
-                }
-                res+= "<button class='btn btn-danger btnDeleteAlumn' title='Eliminar alumno' alumnId = '"+data.id+"' title='Imprimir'>"+
-                "<i class='fa fa-times'></i></button></div>";
-                return res;
-            }},
-        ],
+            var res = "<div class='btn-group'>";
+            if (data.validate) {
+                res += "<button class='btn btn-warning btnUpdateAlumn' data-toggle='modal' data-target='#modal-edit-alumn' title='editar alumno' alumnId = '"+data.id+"' title='Imprimir'>"+
+                    "<i class='fa fa-pen' style='color:white'></i></button>";
+            }
+            res+= "<button class='btn btn-danger btnDeleteAlumn' title='Eliminar alumno' alumnId = '"+data.id+"' title='Imprimir'>"+
+            "<i class='fa fa-times'></i></button></div>";
+            return res;
+        }},
+    ],
     "language": {
 
         "sProcessing":     "Procesando...",
