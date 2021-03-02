@@ -245,7 +245,7 @@
                                 <i class="fas fa-user"></i></span>
                             </div>
 
-                            <select class="form-control" name="id_alumno" style="width:88%" require>
+                            <select class="form-control" name="id_alumno" id="id_alumno" style="width:88%" require>
                                 <option value="">Seleccione un alumno</option>
                                 @php
                                     $alumnos = selectSicoes("Alumno");
