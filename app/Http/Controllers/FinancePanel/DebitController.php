@@ -185,6 +185,8 @@ class DebitController extends Controller
 
         try 
         {
+            $user = User::where("id_alumno", $request->input("id_alumno"))->first();
+            $alumnData = $user->getSicoesData();
             $debit = new Debit();
             $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
@@ -192,6 +194,10 @@ class DebitController extends Controller
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = Auth::guard("finance")->user()->id;
             $debit->period_id = selectCurrentPeriod()->id;
+            $debit->enrollment = $alumnData["Matricula"];
+            $debit->alumn_name = $alumnData["Nombre"];
+            $debit->alumn_last_name = $alumnData["ApellidoPrimero"];
+            $debit->alumn_second_last_name = (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '');
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();
