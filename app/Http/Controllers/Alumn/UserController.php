@@ -19,6 +19,18 @@ class UserController extends Controller
 		return view('Alumn.user.index')->with(["user"=>$current_user]);
 	}
 
+    public function create() {
+
+    }
+
+    public function edit() {
+
+    }
+
+    public function delete() {
+        
+    }
+
     public function notify(Request $request)
     {
         $query = [["alumn_id","=",$request->input('AlumnId')],["status","=","0"]];
