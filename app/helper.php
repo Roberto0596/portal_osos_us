@@ -776,37 +776,6 @@ function getGroupByPeriod($periodo,$plan,$semestre)
   }
 }
 
-//otros
-function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
-{
-    $ruta;
-    list($ancho,$alto) = getimagesize($foto["tmp_name"]);
-    if($flag==false)
-    {
-        mkdir("img/".$folder."/".$id,0755);
-    }  
-    if ($foto["type"] == "image/jpeg")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".jpg";
-        $origen = imagecreatefromjpeg($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagejpeg($destino,$ruta);
-    }
-    if ($foto["type"] == "image/png")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".png";
-        $origen = imagecreatefrompng($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagepng($destino,$ruta);
-    }
-    return $ruta;
-}
-
-
 //metodo para traer un join con los datos del alumno
 function getDataAlumnDebit($id_alumn)
 {
@@ -818,6 +787,13 @@ function getDataAlumnDebit($id_alumn)
   return $stmt->fetch();
 }
 
+
+function upload_image($file,$subfolder, $id) {
+  $path = "img/".$subfolder."/".$id."/";
+  $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+  $file->move($path, $fileName);
+  return $path.$fileName;
+}
 
 function createImage($photo, $pathCustom) {
   $rand = rand(100, 100000);

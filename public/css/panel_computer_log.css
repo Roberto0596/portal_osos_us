@@ -1,0 +1,85 @@
+  .classroom-body {
+    width: 100%;
+    height: 65vh;
+  }
+
+  .scroll {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .scroll p:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  /* Tamaño del scroll */
+  .scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+   /* Estilos barra (thumb) de scroll */
+  .scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+
+  .scroll::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+  }
+
+  .scroll::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+
+   /* Estilos track de scroll */
+  .scroll::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+  }
+
+  .scroll::-webkit-scrollbar-track:hover, 
+  .scroll::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+  }
+
+  #myTabContent {
+    width: 100%;
+    padding: 2rem;
+  } 
+
+  .item-equipment {
+    height: 8rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+  .item-equipment button {
+    width: 75%;
+    height: 100%;
+    /*background: transparent;*/
+  }
+
+  .flex-container {
+    display: flex;
+  }
+
+  .option {
+    width: 100%;
+    height: 10rem;
+    margin-bottom: 1rem;
+  }
+
+  .loader-modal {
+    width: 100%;
+    background: white;
+    height: 100%;
+    position: absolute;
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

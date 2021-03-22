@@ -9,7 +9,7 @@ function changeMode(mode, period, concept){
         stateSave: true,
         "ajax":
         {
-            url: "/computo/debit/show",
+            url: "/departaments/debit/show",
             headers:{'X-CSRF-TOKEN':$("#token").val()},
             type: "POST",
             data: {mode:mode,period:period,concept:concept}
@@ -73,7 +73,7 @@ function changeMode(mode, period, concept){
         var data = new FormData();
         data.append('DebitId', $(this).attr("DebitId"));
         $.ajax({
-            url:'/computo/debit/see',
+            url:'/departaments/debit/see',
             headers:{'X-CSRF-TOKEN': $('#tokenUpdate').val()},
             method:'POST',
             data:data,
@@ -103,7 +103,7 @@ function changeMode(mode, period, concept){
             confirmButtonText: 'Si, estoy seguro'
         }).then((result)=>
         {
-            window.location = "/computo/debit/delete/"+id;
+            window.location = "/departaments/debit/delete/"+id;
         });
     })
 }

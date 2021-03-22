@@ -16,6 +16,12 @@ class CreateTempUseTable extends Migration
         Schema::create('temp_use', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->bigInteger('area_id')->unsigned();
+            $table->foreign("area_id")
+            ->references("id")
+            ->on("area")
+            ->onDelete("cascade");
+
             $table->bigInteger('equipment_id')->unsigned();
             $table->foreign("equipment_id")
             ->references("id")

@@ -55,7 +55,6 @@ class DesicionTree
 	private function mergeCharge(User $user) {
 		$alumnData = $user->getSicoesData();
 		$alumnData = $user->sAlumn;
-		dd($alumnData);
 		$asignaturas = $this->getAsignaturas($alumnData["PlanEstudioId"]);
 		$historial = collect();
 		$period = selectCurrentPeriod();

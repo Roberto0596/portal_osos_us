@@ -61,9 +61,9 @@ class FormController extends Controller
 
     public function saveInscription(Request $request)
     {
-        $this->validate($request,[
-            'g-recaptcha-response' => 'required|recaptcha',
-        ]);
+        // $this->validate($request,[
+        //     'g-recaptcha-response' => 'required|recaptcha',
+        // ]);
 
         $current_user = current_user();
         $data = $request->except(["_token"]);
@@ -120,6 +120,7 @@ class FormController extends Controller
         }
         catch(\Exception $e)
         {
+            dd($e);
             session()->flash("messages","error|Ocurrio un error, no pudimos guardar el registro.");
             return redirect()->back();
         }

@@ -18,5 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ConfigSeeder::class);
         $this->call(document_type::class);
         $this->call(promediosAltosSeed::class);
+        $this->call(InsertClassroom::class);
+        $this->call(InsertEquipment::class);
     }
 }

@@ -12,32 +12,19 @@ class UserController extends Controller
 {
     public function index()
 	{
-        $current_id = Auth::guard('finance')->user()->id;
-        $current_user = AdminUser::find($current_id);
+        $current_user = current_user('finance');
 		return view('FinancePanel.user.index')->with(["user"=>$current_user]);
     }
 
     public function save(Request $request, AdminUser $user)
     {
-        if ($request->input('password')!=null)
-        {
+        if ($request->input('password')!=null) {
             $user->password = bcrypt($request->input('password'));
         }
 
-        if(isset($_FILES['newPicture']) && $_FILES["newPicture"]["name"]!="")
-        {
-            if ($user->photo == "img/computercenter/default/default.png")
-            {
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"computercenter",100,120,false);
-                $user->photo = $routePicture;
-            }
-            else
-            {
-                unlink($user->photo);
-
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"computercenter",100,120,true);
-                $user->photo = $routePicture;
-            }
+        if ($request->hasFile("newPicture")) {
+            $file = $request->file("newPicture");
+            $user->photo = upload_image($file, "finance", current_user('finance')->id);
         }
 
         $user->name = $request->input("name");

@@ -58,7 +58,7 @@
 
         <a href="#" class = "dropdown-toggle" data-toggle="dropdown"> 
 
-            <img src="{{ asset(Auth::guard('alumn')->user()->photo) }}" class="user-image">                       
+            <img src="{{ Croppa::url(current_user()->photo, 200,200) }}" class="user-image">                       
             <span class = "hidden-xs" style="color: white !important;">{{ Auth::guard('alumn')->user()->email }}</span>
 
         </a>

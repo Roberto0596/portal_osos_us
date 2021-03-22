@@ -23,7 +23,7 @@ class CreateEquipmentTable extends Migration
             ->onDelete("cascade");
             
             $table->string("code", 20);
-            $table->string("num", 20);
+            $table->integer("num");
             $table->integer("status")->default(0);
             $table->timestamps();
         });

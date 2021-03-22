@@ -55,7 +55,7 @@ class AdminSeeder extends Seeder
         else
         {
             $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("<warning>nothing to created</warning>");
+            $out->writeln("<warning>nothing to create</warning>");
         }
     }
 }

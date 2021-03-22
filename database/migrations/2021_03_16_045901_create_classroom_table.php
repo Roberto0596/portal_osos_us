@@ -15,14 +15,15 @@ class CreateClassroomTable extends Migration
     {
         Schema::create('classroom', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('area_id')->unsigned();
 
+            $table->bigInteger('area_id')->unsigned();
             $table->foreign("area_id")
             ->references("id")
             ->on("area")
             ->onDelete("cascade");
+            $table->string("name", 50);
             $table->string("code", 20);
-            $table->string("num", 20);
+            $table->integer("num");
             $table->integer("status")->default(0);
             $table->timestamps();
         });

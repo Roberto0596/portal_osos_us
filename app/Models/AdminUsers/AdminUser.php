@@ -13,16 +13,21 @@ class AdminUser extends Authenticatable
 
     protected $table = "admin_users";
 
-    protected $fillable = [
-    	'id',
-        'name',
-        'last_name',
-        'email',
-        'password',
-        'tour',
-        'created_at',
-        'updated_at',
-    ];
+    protected $with = ["area"];
+    // protected $fillable = [
+    // 	'id',
+    //     'name',
+    //     'last_name',
+    //     'email',
+    //     'password',
+    //     'tour',
+    //     'created_at',
+    //     'updated_at',
+    // ];
+
+    public function area() {
+        return $this->belongsTo('\App\Models\AdminUsers\Area', "area_id", "id");
+    }
 
     public function debit() {
         return $this->hasMany('\App\Models\Alumns\Debit', "id", "admin_id");

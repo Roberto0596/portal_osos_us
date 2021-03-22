@@ -5,6 +5,22 @@ use App\Models\Sicoes\Alumno;
 
 class Sicoes {
 
+    /**
+     * join Alumn info with carrer, state and plan de estudio and return object
+     *
+     * @param  int $id_alumno|required
+     *
+     * @return Collection $alumn
+     */
+    public static function getDataAlumnDebit($id_alumno) {
+        $alumn = Alumno::leftJoin("PlanEstudio as p", "Alumno.PlanEstudioId", "p.PlanEstudioId")
+                    ->leftJoin("Carrera as c", "p.CarreraId", "c.CarreraId")
+                    ->leftJoin("Estado as e", "Alumno.EstadoDom", "e.EstadoId")
+                    ->where("Alumno.AlumnoId", $id_alumno)
+                    ->select("Alumno.*", "c.Nombre as nombreCarrera", "e.Nombre as nombreEstado")
+                    ->first();
+        return $alumn;
+    }
     public static function validateDown($AlumnoId) {
 
         try

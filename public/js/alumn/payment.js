@@ -188,7 +188,7 @@ $("#form-spei").submit(function(e)
 	{
 		if (result.value)
 		{
-		$form.get(0).submit();
+			$form.get(0).submit();
 		}
 	});
 });

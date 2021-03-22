@@ -187,6 +187,7 @@ class DebitController extends Controller
         {
             $user = User::where("id_alumno", $request->input("id_alumno"))->first();
             $alumnData = $user->getSicoesData();
+            
             $debit = new Debit();
             $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
