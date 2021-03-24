@@ -3,6 +3,7 @@
 /public/storage
 /storage/*.key
 /public/comprobantes
+/public/img/alumn
 /public/documentos
 /public/tickets
 /public/img/comprobantes
