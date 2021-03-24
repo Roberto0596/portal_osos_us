@@ -2,6 +2,8 @@
 
 @section('content-finance')
 
+<link rel="stylesheet" href="{{ asset('css/panel_computer_log.css') }}">
+
 <div class="content-wrapper">
 
   <section class="content-header">
@@ -523,6 +525,10 @@
 
     <div class="modal-content">
 
+      <div class="loader-modal">
+        <div class="loader-spinner">Loading...</div>
+      </div>
+
       <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenValidate"> 
       
       <div class="modal-header">
@@ -536,7 +542,7 @@
 
         <div class="modal-body custom-modal">
 
-          <div id="loader-validate" class="loader"></div> 
+          <!-- <div id="loader-validate" class="loader"></div>  -->
 
             <div id="content-validate">
               

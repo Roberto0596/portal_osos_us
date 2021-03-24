@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
+use App\Library\Inscription;
 use Input;
 
 class DebitController extends Controller
@@ -32,7 +33,7 @@ class DebitController extends Controller
 		        	if ($value->status == 0) {
 		        		if ($value->payment_method != "card") {
 			        		if ($value->debit_type_id == 1) {
-			        			$register = makeRegister($alumn);
+			        			$register = Inscription::makeRegister($alumn);
 			        		}
 			        		if ($value->has_file_id != null) {
 				              	$document = Document::find($value->has_file_id);

@@ -130,7 +130,7 @@ function changeMode(mode, period, concept){
             processData:false,
             success:function(response)
             {    
-                $('#loader-validate').hide();  
+                $('.loader-modal').hide();  
                 if (response.id_order == null) {
 
                     var res = "<div class='row'><div class='col-md-12'>El alumno "+response["alumnName"]+" ni ha subido comprobante o realizado un pago</div></div>"; 
@@ -164,7 +164,7 @@ function changeMode(mode, period, concept){
                 $("#content-validate").append(res);
             }
         });
-        $('#loader-validate').show();
+        $('.loader-modal').show();
         $("#validate-button").show();
         $("#content-validate").empty()
     });
