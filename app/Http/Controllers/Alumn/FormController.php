@@ -19,32 +19,26 @@ class FormController extends Controller
     {
         $current_user = current_user();
 
-        //validar si un alumno no esta dado de baja
-        if (validateDown($current_user->id_alumno)) 
-        {
-            $checkGroup = checkGroupData($current_user->getSicoesData());
+        if (Sicoes::validateDown($current_user->id_alumno)) {
 
-            if ($checkGroup == "error")
-            {
-                session()->flash("messages","error|Probablemente no estas en la tabla de inscripción, comunicate con servicios escolares");
-                return redirect()->back();
-            }
-            
-            if ($checkGroup==false || $checkGroup==null)
-            {
-                $checkGroup = ["Nombre" => "ninguno",
-                               "PeriodoId" => selectTable('period',null,null,1)[0]->clave,
-                               "Semestre" => "sin asignar"];
+            $checkGroup = Sicoes::checkGroupData($current_user->id_alumno);
+          
+            if ($checkGroup == false || $checkGroup == null) {
+
+                $checkGroup = [
+                    "Nombre" => "ninguno",
+                    "PeriodoId" => selectCurrentPeriod()->clave,
+                    "Semestre" => "sin asignar"
+                ];
             } 
+
             return view('Alumn.form.index')->with([
                 "estados" => Estado::all(), 
                 "data" => $current_user->sAlumn, 
                 "currentId" => $current_user->id_alumno,
                 "group" => $checkGroup
             ]);
-        }
-        else
-        {
+        } else {
             session()->flash("messages","info|No podemos inscribirte en esta carrera, Para mas información comunicate al Dpto. de Servicios Escolares");
             return redirect()->back();
         }                       
@@ -52,20 +46,20 @@ class FormController extends Controller
 
     public function indexInscription()
     {
-        $estados = getItemClaveAndNamesFromTables("Estado");
-        $current_user = Auth::guard('alumn')->user();
-
-        return view('Alumn.form.inscription')->with(["estados"=> $estados, 
-                                                "user"=>$current_user]);
+        return view('Alumn.form.inscription')->with([
+            "estados" => Estado::all(), 
+            "user" => current_user()
+        ]);
     }
 
     public function saveInscription(Request $request)
     {
-        // $this->validate($request,[
-        //     'g-recaptcha-response' => 'required|recaptcha',
-        // ]);
+        $this->validate($request,[
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
 
         $current_user = current_user();
+
         $data = $request->except(["_token"]);
 
         $correct_format = Sicoes::constructAlumnArray($data);
@@ -79,6 +73,7 @@ class FormController extends Controller
         $alumn->save();
         $current_user->id_alumno = $alumn->AlumnoId;
         $current_user->save();
+
         insertInscriptionDebit($current_user);
 
         session()->flash("messages","success|Finalizó la recolección de tus datos.");
@@ -89,9 +84,9 @@ class FormController extends Controller
     {       
         try
         {
-            // $this->validate($request,[
-            //     'g-recaptcha-response' => 'required|recaptcha',
-            // ]);
+            $this->validate($request,[
+                'g-recaptcha-response' => 'required|recaptcha',
+            ]);
 
             $current_user = current_user();
             $data = json_decode($request->input('data'), true);
@@ -108,26 +103,34 @@ class FormController extends Controller
                 $alumn->save();
             }
 
-            $debit = insertInscriptionDebit($current_user);
+            $current_user->inscripcion = 1;
+            $current_user->save();
 
-            if ($debit["type"] == 1) {
+            //validate debit 
+            $validate = Debit::where("id_alumno", $current_user->id_alumno)
+                                ->where("period_id", selectCurrentPeriod()->id)
+                                ->where("debit_type_id", 1)
+                                ->first();
+
+            if (!$validate) {
+                $debit = insertInscriptionDebit($current_user);
+            } 
+
+            if (isset($debit)) {
                 session()->flash("messages","success|".$debit["message"]);
-                return redirect()->route("alumn.charge");
+            } else {
+                session()->flash("messages","success|Datos guardados con exito");
             }
 
-            session()->flash("messages","success|".$debit["message"]);
             return redirect()->route("alumn.payment");
-        }
-        catch(\Exception $e)
-        {
-            dd($e);
+            
+        } catch(\Exception $e) {
             session()->flash("messages","error|Ocurrio un error, no pudimos guardar el registro.");
             return redirect()->back();
         }
     }
 
-    public function getMunicipios(Request $request)
-    {
+    public function getMunicipios(Request $request) {
         $EstadoId = $request->input("EstadoId");
         $municipios = selectSicoes("Municipio","EstadoId",$EstadoId);
         return response()->json($municipios);

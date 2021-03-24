@@ -15,8 +15,100 @@ use App\Models\Alumns\Ticket;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
+use App\Library\Inscription;
 
-//seccion del sistema
+/**
+ * agrega un fallo de inscripcion.
+ *
+ * @param  $id|required
+ *
+ * @param  $message|required
+ *
+ * @return void
+ */
+function addFailedRegister($id,$message) {
+    $instance = new FailedRegister();
+    $instance->alumn_id = $id;
+    $instance->period_id = selectCurrentPeriod()->id;
+    $instance->message = $message;
+    $instance->status = 0;
+    $instance->save();
+}
+
+/**
+ * inserta el adeudo correpondiente de inscription.
+ *
+ * @param  App\Models\Alumns\User $user
+ *
+ * @return $array
+ */
+function insertInscriptionDebit(User $user)
+{
+    $message = ["type" => 0, "message" => "Termino la validación de tu información"];
+    $alumnData = $user->sAlumn;
+
+    $debit_array = [
+        'debit_type_id' => 1,
+        'description' => 'Aportacion a la calidad estudiantil',
+        'amount' => getConfig()->price_inscription,
+        'admin_id'=> 2,
+        'id_alumno' => $user->id_alumno,
+        'status' => 0,
+        'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        'period_id' => getConfig()->period_id,
+        'enrollment' => $alumnData->Matricula,
+        'alumn_name' => $alumnData->Nombre,
+        'alumn_last_name' => $alumnData->ApellidoPrimero,
+        'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '')
+    ];
+
+    $validate = HighAverages::where("enrollment", $alumnData->Matricula)->where("status", 0)->first();
+
+    if($validate) {
+        $debit_array["status"] = 1;
+        $inscription = Inscription::makeRegister($user);
+        $message["message"] = "Felicidades por tu promedio, sigue así, no pagarás inscripción";
+        $message["type"] = 1;
+        $validate->status = 1;
+        $validate->save();
+    } else {
+        $user->inscripcion = 1;
+        $user->save();
+    }
+
+    $create_debit = insertIntoPortal("debit",$debit_array);
+
+    return $message;
+}
+
+/**
+ * inserta los documentos de inscripcion.
+ *
+ * @param  int $id
+ *
+ * @return bool
+ */
+function insertInscriptionDocuments($id)
+{
+    $currentPeriod = selectCurrentPeriod();
+    $array =[ [
+          'description' => 'constancia de no adeudo', 
+          'route' => 'alumn.constancia', 
+          'PeriodoId' => $currentPeriod->id, 
+          'alumn_id' => $id,
+          'document_type_id' => 6
+      ], [
+          'description' => 'cédula de reinscripción', 
+          'route' => 'alumn.cedula', 
+          'PeriodoId' => $currentPeriod->id, 
+          'alumn_id' => $id,
+          'document_type_id'=> 7
+    ]];
+    
+    $insertDocument = insertIntoPortal("document",$array);
+    return $insertDocument;
+}
 
 //optiene el tipo de adeudo sin contar el de inscripcion
 function getUnAdminDebitType() {
@@ -69,10 +161,9 @@ function getCurrentNotify() {
 }
 
 //ver configuracion
-function getConfig()
-{
-  $config = ConfigModel::first();
-  return $config;
+function getConfig() {
+    $config = ConfigModel::first();
+    return $config;
 }
 
 function getDebitType($id = null)
@@ -130,56 +221,6 @@ function insertIntoPortal($tableName,$array)
   }
 }
 
-function insertInscriptionDocuments($id)
-{
-  $currentPeriod = selectCurrentPeriod();
-  $array =[
-    ['description' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id' => 6],
-    ['description' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id'=> 7]
-  ];
-  $insertDocument = insertIntoPortal("document",$array);
-  return $insertDocument;
-}
-
-function insertInscriptionDebit(User $user)
-{
-  $message = ["type" => 0, "message" => "Termino la validación de tu información"];
-  $alumnData = $user->getSicoesData();
-  $debit_array = [
-    'debit_type_id' => 1,
-    'description' => 'Aportacion a la calidad estudiantil',
-    'amount' => getConfig()->price_inscription,
-    'admin_id'=> 2,
-    'id_alumno' => $user->id_alumno,
-    'status' => 0,
-    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-    'period_id' => getConfig()->period_id,
-    'enrollment' => $alumnData["Matricula"],
-    'alumn_name' => $alumnData["Nombre"],
-    'alumn_last_name' => $alumnData["ApellidoPrimero"],
-    'alumn_second_last_name' => (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '')
-  ];
-
-  $validate = HighAverages::where("enrollment",$user->getSicoesData()["Matricula"])->where("status", 0)->first();
-
-  if($validate)
-  {
-    $debit_array["status"] = 1;
-    $inscription = makeRegister($user);
-    $message["message"] = "Felicidades por tu promedio, sigue así, no pagaras inscripción";
-    $message["type"] = 1;
-    $validate->status = 1;
-    $validate->save();
-  } else {
-    $user->inscripcion = 1;
-    $user->save();
-  }
-  $create_debit = insertIntoPortal("debit",$debit_array);
-
-  return $message;
-}
-
 function validateDocumentInscription($id_alumno, $document_type_id)
 {
   $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["document_type_id","=",$document_type_id]])->first();
@@ -197,15 +238,7 @@ function current_user($guard = null)
     return \Auth::guard($guard==null?"alumn":$guard)->user();
 }
 
-//crear un nuevo registro en caso de que la inscripcion falle
-function addFailedRegister($id,$message) {
-  $instance = new FailedRegister();
-  $instance->alumn_id = $id;
-  $instance->period_id = getConfig()->period_id;
-  $instance->message = $message;
-  $instance->status = 0;
-  $instance->save();
-}
+
 
 //seccion de sicoes
 function ConectSqlDatabase()
@@ -288,17 +321,20 @@ function selectSicoes($table_name,$item = null,$value = null, $limit = 0)
 
 function inscribirAlumno($array)
 {
-  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId, PeriodoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId,:PeriodoId)");
+    unset($array["PeriodoId"]);
+    // $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId, PeriodoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId,:PeriodoId)");
 
-  if($stmt->execute($array))
-  {
-      return true;
-  }
-  else
-  {
-      return false;
-  }
-  $stmt = null;
+    $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId)");
+
+    if($stmt->execute($array))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    $stmt = null;
 }
 
 function InsertAlumn($array)

@@ -7,6 +7,7 @@ use App\Models\Alumns\Document;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Ticket;
 use App\Models\PeriodModel;
+use App\Library\Inscription;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Input;
@@ -153,7 +154,7 @@ class DebitController extends Controller
 
             if ($value == 1) {
                 $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
-                $register = makeRegister($alumn);
+                $register = Inscription::makeRegister($alumn);
                 if (count($register["errors"]) == 0) {
                     $message = $register["success"][0];
                 } else {

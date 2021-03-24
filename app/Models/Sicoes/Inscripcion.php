@@ -16,7 +16,7 @@ class Inscripcion extends Model {
 
     protected $fillable = [
     	"InscripcionId",
-    	"Semestre"
+    	"Semestre",
     	"EncGrupoId",
     	"Fecha",
     	"Baja",

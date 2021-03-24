@@ -2,8 +2,94 @@
 
 use App\Models\Sicoes\PlanEstudio;
 use App\Models\Sicoes\Alumno;
+use App\Models\Sicoes\Inscripcion;
+use App\Models\Sicoes\EncGrupo;
 
 class Sicoes {
+
+    /**
+     * valida si hay un grupo para el alumno y retorna la instancia del grupo.
+     *
+     * @param  int $id_alumno|required
+     *
+     * @return App\Models\Sicoes\EncGrupo
+     */
+    public static function checkGroupData($id_alumno)
+    {
+        $odd = [1,3,5,7,9];
+        $pair = [2,4,6,8];
+        $group = false;
+        $alumno = Alumno::find($id_alumno);
+        $inscripcionData = self::getLastInscription($id_alumno);
+        $period = selectCurrentPeriod();
+
+        if ($inscripcionData) {
+
+            $toSemester = $inscripcionData->Semestre + 1;
+
+            if ($period->semestre == 1) {
+
+                if (in_array($toSemester, $pair)) {
+                    $group = self::getGroupByPeriod($period->id, $alumno->PlanEstudioId, $toSemester);
+                }
+
+            } else {
+
+                if (in_array($toSemester, $odd)) {
+                    $group = self::getGroupByPeriod($period->id, $alumno->PlanEstudioId, $toSemester);
+                }
+            }
+
+        } else {
+
+            $group = self::getGroupByPeriod($period->id,$alumno->PlanEstudioId,1);
+
+        }
+
+        return $group; 
+    }
+
+    /**
+     * obtiene el grupo.
+     *
+     * @param  int $periodo|required
+     *
+     * @param  int $id_alumno|required
+     *
+     * @param  int $semestre|required
+     *
+     * @return App\Models\Sicoes\EncGrupo
+     */
+    public static function getGroupByPeriod($periodo,$plan,$semestre)
+    {
+        $config = getConfig();
+
+        if ($plan == $config->lata_id && $semestre <= 3) {
+            $plan = $config->laep_id;
+        } 
+
+        $data = EncGrupo::where("PeriodoId", $periodo)
+                            ->where("PlanEstudioId", $plan)
+                            ->where("Semestre", $semestre)
+                            ->first();
+        return $data;
+    }
+
+    /**
+     * obtiene el utlimo registro de la tabla de inscripciones de un alumno especifico
+     *
+     * @param  int $id_alumno|required
+     *
+     * @return App\Models\Sicoes\Inscripcion
+     */
+    public static function getLastInscription($id_alumno)
+    {
+        $inscription = Inscripcion::where("AlumnoId", $id_alumno)
+                                    ->where("Semestre", "!=", "E")
+                                    ->orderBy("InscripcionId", "desc")
+                                    ->first();
+        return $inscription;
+    }
 
     /**
      * join Alumn info with carrer, state and plan de estudio and return object
@@ -21,24 +107,26 @@ class Sicoes {
                     ->first();
         return $alumn;
     }
-    public static function validateDown($AlumnoId) {
 
-        try
-          {
-            $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
-            if ($alumnoData["Baja"]==0)
-            {
-              return true;
+    /**
+     * valida si un alumno está dado de baja desde la tabla de Alumno
+     *
+     * @param  int $id|required
+     *
+     * @return bool
+     */
+    public static function validateDown($id) {
+
+        try {
+            $alumn = Alumno::find($id);
+            if ($alumn->Baja == 0) {
+                return true;
+            } else {
+                return false;
             }
-            else
-            {
-              return false;
-            }
-          }
-          catch(\Exception $e)
-          {
+        } catch(\Exception $e) {
             return false;
-          }
+        }
     }
 	
 	public static function constructAlumnArray($data) {
