@@ -30,6 +30,8 @@ class Debit extends Model
         'updated_at'
     ];
 
+    protected $with = ['admin', 'debitType', 'Alumn'];
+
     public function admin() {
         return $this->belongsTo('\App\Models\AdminUsers\AdminUser', "admin_id", "id");
     }
@@ -38,8 +40,8 @@ class Debit extends Model
         return $this->belongsTo('\App\Models\Alumns\DebitType', "debit_type_id", "id");
     }
 
-    public function alumn() {
-        return $this->belongsTo('\App\Models\Alumns\User', "id_alumno", "id");
+    public function Alumn() {
+        return $this->belongsTo('\App\Models\Sicoes\Alumno', "id_alumno", "AlumnoId");
     }
 
     public function getDebit() {

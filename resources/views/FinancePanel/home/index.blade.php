@@ -177,24 +177,12 @@
 
                     </div>
 
-                    <div class="col-md-6">           
+                    <div class="col-md-12">           
 
                         <div class="input-group mb-3">
 
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                <i class="fas fa-user"></i></span>
-                            </div>
-
-                            <select class="form-control" id="id_alumno" name="id_alumno" style="width:88%" require>
+                            <select class="form-control" id="id_alumno" name="id_alumno" style="width:100%" require>
                                 <option value="">Seleccione un alumno</option>
-                                @php
-                                    $alumnos = selectSicoes("Alumno");
-                                @endphp
-
-                                @foreach($alumnos as $key => $value)
-                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
-                                @endforeach
 
                             </select>
 
@@ -341,9 +329,26 @@
 </div>
 
 <script>
-  $("#id_alumno").select2({
-    width: 'resolve'
-  });
+ $("#id_alumno").select2({
+    ajax: {
+        url: "/finance/debit/search-alumn",
+        dataType: 'json',
+        data: function (params) {
+            return {
+                filter: params.term, // search term
+            };
+        },
+        processResults: function (data,params) {
+            return {
+                results: data.results, // search term
+            };
+        },
+        cache: true
+    },
+    placeholder: 'Buscar propiedad',
+    minimumInputLength: 3,
+    width: 'resolve',
+});
 
   $(document).ready(function(){
 

@@ -8,6 +8,7 @@ use App\Models\Alumns\User;
 use App\Models\Alumns\Ticket;
 use App\Models\PeriodModel;
 use App\Library\Inscription;
+use App\Models\Sicoes\Alumno;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Input;
@@ -25,12 +26,12 @@ class DebitController extends Controller
     {      
         $res = [];
 
-        if (session()->has('mode')) 
-        {
+        if (session()->has('mode')) {
             session()->forget('mode');
         }
+
         session([
-            "mode"=>[
+            "mode" => [
                 "mode" => $request->input('mode'), 
                 "period" => $request->input('period'),
                 "concept" => $request->input('concept')
@@ -61,34 +62,11 @@ class DebitController extends Controller
         } 
         
         $query->skip($start)->take($length)->get();
-        $debits = $query->get();
 
-        foreach($debits as $key => $value)
-        {
-            if ($value->id_alumno != null) {
-                $alumn = getDataAlumnDebit($value->id_alumno);
-                array_push($res,[
-                    "#" => ($key+1),
-                    "Alumno" => ucwords(strtolower(normalizeChars($alumn["Nombre"]))) . " " . ucwords(strtolower(normalizeChars($alumn["ApellidoPrimero"]))) . " " . ($alumn["ApellidoSegundo"] ? ucwords(strtolower(normalizeChars($alumn["ApellidoSegundo"]))) : ''),
-                    "Email" =>strtolower($alumn["Email"]),
-                    "Descripción" => $value->description,
-                    "Importe" => "$".number_format($value->amount,2),
-                    "Matricula" =>$alumn["Matricula"],
-                    "Estado" =>($value->status==1)?"Pagada":"Pendiente",
-                    "Fecha" => substr($value->created_at,0,11),
-                    "Carrera" =>$alumn['nombreCarrera'],
-                    "Localidad" =>$alumn["Localidad"].", ".$alumn['nombreEstado'],
-                    "method" => $value->payment_method,
-                    "debitId" => $value->id,
-                    "id_order" => $value->id_order,
-                    "debit_type_id" => $value->debit_type_id
-                ]);
-            }
-        }
         return response()->json([
             "recordsTotal" => Debit::count(),
             "recordsFiltered" => $filtered,
-            "data" => $res
+            "data" => $query->get()
         ]);
     }
 
@@ -96,10 +74,10 @@ class DebitController extends Controller
 	public function seeDebit(Request $request) 
 	{       
         $debit = Debit::find($request->input("DebitId"));
-        $alumn = selectSicoes("Alumno","AlumnoId",$debit->id_alumno)[0];
+        $alumn = Alumno::find($debit->id_alumno);
         $data = array(
             "concept"   => $debit->debitType->concept,
-            "alumnName" =>$alumn["Nombre"]." ".$alumn["ApellidoPrimero"],
+            "alumnName" =>$alumn->getFullName(),
             'description'=>$debit->description,
             "amount"    =>$debit->amount,
             "debitId"   => $debit->id,
@@ -107,10 +85,32 @@ class DebitController extends Controller
             "status"    => $debit->status,
             "id_order" => $debit->id_order, 
             "method" => $debit->payment_method,
-            "enrollment" => $alumn["Matricula"],
+            "enrollment" => $alumn->Matricula,
         );
 
         return response()->json($data);
+    }
+
+    public function searchAlumn(Request $request) {
+        $filter = $request->get('filter');
+        $res = [ "results" => []];
+
+        $instance = Alumno::where(
+        function ($query) use ($filter) {
+            $query->where('Nombre', 'like', '%' .$filter. '%')
+                ->orWhere('ApellidoPrimero', 'like', '%' .$filter. '%')
+                ->orWhere('ApellidoSegundo', 'like', '%' .$filter. '%')
+                ->orWhere('Matricula', 'like', '%' .$filter. '%');
+        })->get();
+
+        foreach ($instance as $key => $value) {
+            array_push($res["results"], [
+                "id" => $value->AlumnoId, 
+                "text" => $value->Matricula ."|". $value->getFullName(),
+            ]);
+        }
+
+        return response()->json($res);
     }
    
     // sirve para editar un adeudo 
@@ -184,28 +184,25 @@ class DebitController extends Controller
             'id_alumno'=>'required',
         ]);
 
-        try 
-        {
+        try {
             $user = User::where("id_alumno", $request->input("id_alumno"))->first();
-            $alumnData = $user->getSicoesData();
-            
+            $alumnData = Alumno::find($user->id_alumno);
+           
             $debit = new Debit();
             $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
             $debit->description = $request->input("description");
             $debit->id_alumno = $request->input("id_alumno");
-            $debit->admin_id = Auth::guard("finance")->user()->id;
+            $debit->admin_id = current_user("finance")->id;
             $debit->period_id = selectCurrentPeriod()->id;
-            $debit->enrollment = $alumnData["Matricula"];
-            $debit->alumn_name = $alumnData["Nombre"];
-            $debit->alumn_last_name = $alumnData["ApellidoPrimero"];
-            $debit->alumn_second_last_name = (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '');
+            $debit->enrollment = $alumnData->Matricula;
+            $debit->alumn_name = $alumnData->Nombre;
+            $debit->alumn_last_name = $alumnData->ApellidoPrimero;
+            $debit->alumn_second_last_name = (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '');
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();
-        } 
-        catch (\Exception $th) 
-        {
+        } catch (\Exception $th) {
             session()->flash("messages","error|No pudimos guardar los datos");
             return redirect()->back();
         }

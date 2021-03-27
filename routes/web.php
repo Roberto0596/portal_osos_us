@@ -403,6 +403,11 @@ Route::group(['domain' => $alumnDomain], function() {
 			        'as' => 'user.showPayementDetails'
 				]);
 
+				Route::get('/debit/search-alumn', [
+			        'uses' => 'DebitController@searchAlumn', 
+			        'as' => 'debit.search.alumn'
+				]);
+
 				Route::get('/generateGroups', [
 			        'uses' => 'PendingsController@generateGroups', 
 			        'as' => 'generate'

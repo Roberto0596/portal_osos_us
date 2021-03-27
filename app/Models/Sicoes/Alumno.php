@@ -83,12 +83,22 @@ class Alumno extends Model {
         "Egresado",
     ];
 
+    protected $with = ['PlanEstudio', 'Estado'];
+
     public function pAlumn() {
         return $this->belongsTo("\App\Models\Alumns\User", "AlumnoId", "id_alumno");
     }
 
     public function PlanEstudio() {
         return $this->belongsTo("\App\Models\Sicoes\PlanEstudio", "PlanEstudioId", "PlanEstudioId");
+    }
+
+    public function Estado() {
+        return $this->belongsTo("\App\Models\Sicoes\Estado", "EstadoDom", "EstadoId");
+    }
+
+    public function getFullName() {
+        return ucwords(strtolower(normalizeChars(join(' ', [$this->Nombre, $this->ApellidoPrimero, $this->ApellidoSegundo]))));
     }
 }
 

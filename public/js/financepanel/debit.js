@@ -1,3 +1,6 @@
+const op = { style: 'currency', currency: 'USD' };
+const nf = new Intl.NumberFormat('en-US', op);
+
 function changeMode(mode, period, concept){
 
     $('.tableDebits tbody').remove();
@@ -8,52 +11,68 @@ function changeMode(mode, period, concept){
         "responsive": true,
         serverSide: true,
         stateSave: true,
-        "ajax":
-        {
+        "ajax": {
             url: "/finance/debit/show",
             headers:{'X-CSRF-TOKEN' : $("#token").val()},
             type: "POST",
             data: {mode:mode,period:period,concept:concept}
         },
         "columns":[
-            {"data": "#"},
             {"data": null, orderable: false, "render": function(data){
                 var res = "<div class='btn-group'>";
 
-                if(data.Estado == "Pagada") {
-                    res+="<button class='btn btn-info btnPrintTicket' title='Imprimir ticket' debitId='"+data.debitId+"'>"+
+                if(data.status == 1) {
+                    res+="<button class='btn btn-info btnPrintTicket' title='Imprimir ticket' debitId='"+data.id+"'>"+
                     "<i class='fa fa-print'></i></button>";
                 }
 
-                res += "<button class='btn btn-primary btnUpload' title='title='Subir comprobante'' DebitId='"+data.debitId+"'>"+
+                res += "<button class='btn btn-primary btnUpload' title='title='Subir comprobante'' DebitId='"+data.id+"'>"+
                     "<i class='fa fa-upload' title='Subir comprobante' style='color:white'></i></button>";
 
                 if (data.debit_type_id == 1) {
-                    res += "<button class='btn btn-warning btnValidate' data-toggle='modal' data-target='#modalInscripcion' DebitId='"+data.debitId+"' title='Validar'>"+
+                    res += "<button class='btn btn-warning btnValidate' data-toggle='modal' data-target='#modalInscripcion' DebitId='"+data.id+"' title='Validar'>"+
                     "<i class='fa fa-edit' style='color:white'></i></button>";
                 } else {
-                    res += "<button class='btn btn-warning edit' data-toggle='modal' data-target='#modalEdit' DebitId='"+data.debitId+"' title='Editar Adeudo'>"+
+                    res += "<button class='btn btn-warning edit' data-toggle='modal' data-target='#modalEdit' DebitId='"+data.id+"' title='Editar Adeudo'>"+
                     "<i class='fa fa-edit' style='color:white'></i></button>";
                 }
 
-                if(data.id_order != null && data.method != "transfer") {
-                    res+="<button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='"+data.method+"' DebitId='"+data.debitId+"'>"+
+                if(data.id_order != null && data.payment_method != "transfer") {
+                    res+="<button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='"+data.payment_method+"' DebitId='"+data.id+"'>"+
                     "<i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
                 }
 
-                res += "<button class='btn btn-danger  btnDeleteDebit' DebitId='"+data.debitId+"'>"+
+                res += "<button class='btn btn-danger  btnDeleteDebit' DebitId='"+data.id+"'>"+
                     "<i class='fa fa-times' title='Eliminar adeudo' style='color:white'></i></button></div>"; 
                 return res;
             }},
-            {"data": "Alumno"},
-            {"data": "Email"},
-            {"data": "Descripción"},
-            {"data": "Importe"},
-            {"data": "Matricula"},
-            {"data": "Estado"},
-            {"data": "Fecha"},
-            {"data": "Carrera"},
-            {"data": "Localidad"},
+            {"data": null, orderable: false, "render": function(data){
+                return data.alumn.Matricula; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.alumn.Nombre + " " + data.alumn.ApellidoPrimero + " " + data.alumn.ApellidoSegundo; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.alumn.Email; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.description; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return nf.format(data.amount); 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.status == 1 ? "Pagada" : "Pendiente"; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.created_at; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.alumn.plan_estudio.carrera.Nombre; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
+                return data.alumn.Localidad + ", " +data.alumn.estado.Nombre; 
+            }},
         ],
         "language": {
 
@@ -264,8 +283,26 @@ function changeMode(mode, period, concept){
     });
 }
 
+
 $("#id_alumno").select2({
-    width: 'resolve'
+    ajax: {
+        url: "/finance/debit/search-alumn",
+        dataType: 'json',
+        data: function (params) {
+            return {
+                filter: params.term, // search term
+            };
+        },
+        processResults: function (data,params) {
+            return {
+                results: data.results, // search term
+            };
+        },
+        cache: true
+    },
+    placeholder: 'Buscar propiedad',
+    minimumInputLength: 3,
+    width: 'resolve',
 });
 
 $(document).ready(function(){

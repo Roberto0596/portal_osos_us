@@ -152,13 +152,12 @@
           <thead>
 
             <tr>
-              <th style="width: 10px">#</th>
               <th>Acciones</th>
+              <th>Matricula</th>
               <th>Alumno</th>
               <th>Email</th>
               <th>Descripción</th>
               <th>Importe</th>
-              <th>Matricula</th>
               <th>Estado</th>
               <th>Fecha</th>
               <th>Carrera</th>
@@ -238,25 +237,12 @@
 
                     </div>
 
-                    <div class="col-md-6">           
+                    <div class="col-md-12">           
 
                         <div class="input-group mb-3">
 
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                <i class="fas fa-user"></i></span>
-                            </div>
-
-                            <select class="form-control" name="id_alumno" id="id_alumno" style="width:88%" require>
+                            <select class="form-control" name="id_alumno" id="id_alumno" style="width:100%" require>
                                 <option value="">Seleccione un alumno</option>
-                                @php
-                                    $alumnos = selectSicoes("Alumno");
-                                @endphp
-
-                                @foreach($alumnos as $key => $value)
-                                <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
-                                @endforeach
-
                             </select>
 
                         </div>
