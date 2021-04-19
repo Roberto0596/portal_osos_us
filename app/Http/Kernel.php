@@ -65,9 +65,10 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'alumn.user' => \App\Http\Middleware\AuthAlumn::class,
         'finance.user' => \App\Http\Middleware\AuthFinance::class,
-        'computer.user' => \App\Http\Middleware\AuthComputer::class,
-        'library.user' => \App\Http\Middleware\AuthLibrary::class,
+        'departament.user' => \App\Http\Middleware\AuthDepartament::class,
+        // 'library.user' => \App\Http\Middleware\AuthLibrary::class,
         'admin.user' => \App\Http\Middleware\AuthAdmin::class,
+        'logs.user' => \App\Http\Middleware\AuthLogs::class,
         'candidate' => \App\Http\Middleware\candidateMiddleware::class,
         'inscription' => \App\Http\Middleware\inscriptionMiddleware::class,
         'inscriptionOpen' => \App\Http\Middleware\inscriptionOpenMiddleware::class,
@@ -77,5 +78,6 @@ class Kernel extends HttpKernel
         'noob' => \App\Http\Middleware\NoobMiddleware::class,
         'notnoob' => \App\Http\Middleware\NotNoobMiddleware::class,
         'semester' => \App\Http\Middleware\semesterMiddleware::class,
+        'bitacoraAuth' => \App\Http\Middleware\BitacoraMiddleware::class,
     ];
 }

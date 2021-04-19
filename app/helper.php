@@ -15,8 +15,100 @@ use App\Models\Alumns\Ticket;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
+use App\Library\Inscription;
 
-//seccion del sistema
+/**
+ * agrega un fallo de inscripcion.
+ *
+ * @param  $id|required
+ *
+ * @param  $message|required
+ *
+ * @return void
+ */
+function addFailedRegister($id,$message) {
+    $instance = new FailedRegister();
+    $instance->alumn_id = $id;
+    $instance->period_id = selectCurrentPeriod()->id;
+    $instance->message = $message;
+    $instance->status = 0;
+    $instance->save();
+}
+
+/**
+ * inserta el adeudo correpondiente de inscription.
+ *
+ * @param  App\Models\Alumns\User $user
+ *
+ * @return $array
+ */
+function insertInscriptionDebit(User $user)
+{
+    $message = ["type" => 0, "message" => "Termino la validación de tu información"];
+    $alumnData = $user->sAlumn;
+
+    $debit_array = [
+        'debit_type_id' => 1,
+        'description' => 'Aportacion a la calidad estudiantil',
+        'amount' => getConfig()->price_inscription,
+        'admin_id'=> 2,
+        'id_alumno' => $user->id_alumno,
+        'status' => 0,
+        'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        'period_id' => getConfig()->period_id,
+        'enrollment' => $alumnData->Matricula,
+        'alumn_name' => $alumnData->Nombre,
+        'alumn_last_name' => $alumnData->ApellidoPrimero,
+        'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '')
+    ];
+
+    $validate = HighAverages::where("enrollment", $alumnData->Matricula)->where("status", 0)->first();
+
+    if($validate) {
+        $debit_array["status"] = 1;
+        $inscription = Inscription::makeRegister($user);
+        $message["message"] = "Felicidades por tu promedio, sigue así, no pagarás inscripción";
+        $message["type"] = 1;
+        $validate->status = 1;
+        $validate->save();
+    } else {
+        $user->inscripcion = 1;
+        $user->save();
+    }
+
+    $create_debit = insertIntoPortal("debit",$debit_array);
+
+    return $message;
+}
+
+/**
+ * inserta los documentos de inscripcion.
+ *
+ * @param  int $id
+ *
+ * @return bool
+ */
+function insertInscriptionDocuments($id)
+{
+    $currentPeriod = selectCurrentPeriod();
+    $array =[ [
+          'description' => 'constancia de no adeudo', 
+          'route' => 'alumn.constancia', 
+          'PeriodoId' => $currentPeriod->id, 
+          'alumn_id' => $id,
+          'document_type_id' => 6
+      ], [
+          'description' => 'cédula de reinscripción', 
+          'route' => 'alumn.cedula', 
+          'PeriodoId' => $currentPeriod->id, 
+          'alumn_id' => $id,
+          'document_type_id'=> 7
+    ]];
+    
+    $insertDocument = insertIntoPortal("document",$array);
+    return $insertDocument;
+}
 
 //optiene el tipo de adeudo sin contar el de inscripcion
 function getUnAdminDebitType() {
@@ -69,10 +161,9 @@ function getCurrentNotify() {
 }
 
 //ver configuracion
-function getConfig()
-{
-  $config = ConfigModel::first();
-  return $config;
+function getConfig() {
+    $config = ConfigModel::first();
+    return $config;
 }
 
 function getDebitType($id = null)
@@ -130,56 +221,6 @@ function insertIntoPortal($tableName,$array)
   }
 }
 
-function insertInscriptionDocuments($id)
-{
-  $currentPeriod = selectCurrentPeriod();
-  $array =[
-    ['description' => 'constancia de no adeudo', 'route' => 'alumn.constancia', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id' => 6],
-    ['description' => 'cédula de reinscripción', 'route' => 'alumn.cedula', 'PeriodoId' => $currentPeriod->id, 'alumn_id' => $id,'document_type_id'=> 7]
-  ];
-  $insertDocument = insertIntoPortal("document",$array);
-  return $insertDocument;
-}
-
-function insertInscriptionDebit(User $user)
-{
-  $message = ["type" => 0, "message" => "Termino la validación de tu información"];
-  $alumnData = $user->getSicoesData();
-  $debit_array = [
-    'debit_type_id' => 1,
-    'description' => 'Aportacion a la calidad estudiantil',
-    'amount' => getConfig()->price_inscription,
-    'admin_id'=> 2,
-    'id_alumno' => $user->id_alumno,
-    'status' => 0,
-    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-    'period_id' => getConfig()->period_id,
-    'enrollment' => $alumnData["Matricula"],
-    'alumn_name' => $alumnData["Nombre"],
-    'alumn_last_name' => $alumnData["ApellidoPrimero"],
-    'alumn_second_last_name' => (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '')
-  ];
-
-  $validate = HighAverages::where("enrollment",$user->getSicoesData()["Matricula"])->where("status", 0)->first();
-
-  if($validate)
-  {
-    $debit_array["status"] = 1;
-    $inscription = makeRegister($user);
-    $message["message"] = "Felicidades por tu promedio, sigue así, no pagaras inscripción";
-    $message["type"] = 1;
-    $validate->status = 1;
-    $validate->save();
-  } else {
-    $user->inscripcion = 1;
-    $user->save();
-  }
-  $create_debit = insertIntoPortal("debit",$debit_array);
-
-  return $message;
-}
-
 function validateDocumentInscription($id_alumno, $document_type_id)
 {
   $document = Document::where([["alumn_id","=",$id_alumno],["type","=",1],["document_type_id","=",$document_type_id]])->first();
@@ -197,15 +238,7 @@ function current_user($guard = null)
     return \Auth::guard($guard==null?"alumn":$guard)->user();
 }
 
-//crear un nuevo registro en caso de que la inscripcion falle
-function addFailedRegister($id,$message) {
-  $instance = new FailedRegister();
-  $instance->alumn_id = $id;
-  $instance->period_id = getConfig()->period_id;
-  $instance->message = $message;
-  $instance->status = 0;
-  $instance->save();
-}
+
 
 //seccion de sicoes
 function ConectSqlDatabase()
@@ -216,47 +249,6 @@ function ConectSqlDatabase()
 	$link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=".$database.";", $user, $password);
   $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $link;
-}
-
-//funcion para inscribir al alumno
-function makeRegister(User $user)
-{
-  $message = ["success" => [], "errors" => []];
-  $inscripcionData = checkGroupData($user->getSicoesData());
-
-  if ($inscripcionData == false) {
-      $inscripcionData = ["Semestre" => 4, "EncGrupoId" => 1120];
-      addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
-  }
-
-  //entrara en la condicion cuando el alumno sea de nuevo ingreso
-  if ($inscripcionData["Semestre"] == 1)
-  {
-    $enrollement = generateCarnet($user->getSicoesData()["PlanEstudioId"]);           
-    updateByIdAlumn($user->id_alumno,"Matricula",$enrollement);
-    $user->email = "a".str_replace("-", "", $enrollement)."@unisierra.edu.mx";
-  } 
-
-  $inscribir = inscribirAlumno([
-    'Semestre' => $inscripcionData["Semestre"],
-    'EncGrupoId'=> $inscripcionData["EncGrupoId"],
-    'Fecha'=> getDateCustom(),
-    'Baja' => 0, 
-    'AlumnoId'=>$user->id_alumno,
-    'PeriodoId' => getConfig()->period_id,
-  ]);
-
-  if ($inscribir) {
-    $user->inscripcion=3;
-    $user->save();
-    addNotify("Pago de colegiatura",$user->id,"alumn.charge");
-    insertInscriptionDocuments($user->id);
-    array_push($message["success"], "proceso realizado con exito");
-  } else {
-    array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
-  }
-
-  return $message;
 }
 
 function getLastThing($table_name,$item,$value,$orderby)
@@ -284,162 +276,6 @@ function selectSicoes($table_name,$item = null,$value = null, $limit = 0)
     $stmt->execute();
     return $stmt->fetchAll();
     $stmt->close();
-}
-
-function inscribirAlumno($array)
-{
-  $stmt = ConectSqlDatabase()->prepare("INSERT INTO Inscripcion(Semestre,EncGrupoId,Fecha,Baja,AlumnoId, PeriodoId) values(:Semestre,:EncGrupoId,:Fecha,:Baja,:AlumnoId,:PeriodoId)");
-
-  if($stmt->execute($array))
-  {
-      return true;
-  }
-  else
-  {
-      return false;
-  }
-  $stmt = null;
-}
-
-function InsertAlumn($array)
-{
-    $password = env('SQL_SERVER_PASSWORD');
-    $user = env('SQL_SERVER_USER');
-    $database = env('SQL_SERVER_DATABASE');
-    $link = new PDO("sqlsrv:Server=".env('SQL_SERVER_INSTANCE').";Database=".$database.";", $user, $password);
-    $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $stmt = $link->prepare("INSERT INTO Alumno(
-           Matricula,
-           Nombre,
-           ApellidoPrimero,
-           ApellidoSegundo,
-           Regular,
-           Tipo,
-           Curp,
-           Genero,
-           FechaNacimiento,
-           Edad,
-           MunicipioNac,
-           EstadoNac,
-           EdoCivil,
-           Estatura,
-           Peso,
-           TipoSangre,
-           Alergias,
-           Padecimiento,
-           ServicioMedico,
-           NumAfiliacion,
-           Domicilio,
-           Colonia,
-           Localidad,
-           MunicipioDom,
-           EstadoDom,
-           CodigoPostal,
-           Telefono,
-           Email,
-           EscuelaProcedenciaId,
-           AnioEgreso,
-           PromedioBachiller,
-           ContactoEmergencia,
-           ContactoDomicilio,
-           ContactoTelefono,
-           TutorNombre,
-           TutorDomicilio,
-           TutorTelefono,
-           TutorOcupacion,
-           TutorSueldoMensual,
-           MadreNombre,
-           MadreDomicilio,
-           MadreTelefono,
-           TrabajaActualmente,
-           Puesto,
-           SueldoMensualAlumno,
-           DeportePractica,
-           Deportiva,
-           Cultural,
-           Academica,
-           TransporteUniversidad,
-           Transporte,
-           ActaNacimiento,
-           CertificadoBachillerato,
-           Baja,
-           PlanEstudioId,
-           CirugiaMayor,
-           CirugiaMenor,
-           Hijo,
-           Egresado) 
-    VALUES(:Matricula,
-           :Nombre,
-           :ApellidoPrimero,
-           :ApellidoSegundo,
-           :Regular,
-           :Tipo,
-           :Curp,
-           :Genero,
-           :FechaNacimiento,
-           :Edad,
-           :MunicipioNac,
-           :EstadoNac,
-           :EdoCivil,
-           :Estatura,
-           :Peso,
-           :TipoSangre,
-           :Alergias,
-           :Padecimiento,
-           :ServicioMedico,
-           :NumAfiliacion,
-           :Domicilio,
-           :Colonia,
-           :Localidad,
-           :MunicipioDom,
-           :EstadoDom,
-           :CodigoPostal,
-           :Telefono,
-           :Email,
-           :EscuelaProcedenciaId,
-           :AnioEgreso,
-           :PromedioBachiller,
-           :ContactoEmergencia,
-           :ContactoDomicilio,
-           :ContactoTelefono,
-           :TutorNombre,
-           :TutorDomicilio,
-           :TutorTelefono,
-           :TutorOcupacion,
-           :TutorSueldoMensual,
-           :MadreNombre,
-           :MadreDomicilio,
-           :MadreTelefono,
-           :TrabajaActualmente,
-           :Puesto,
-           :SueldoMensualAlumno,
-           :DeportePractica,
-           :Deportiva,
-           :Cultural,
-           :Academica,
-           :TransporteUniversidad,
-           :Transporte,
-           :ActaNacimiento,
-           :CertificadoBachillerato,
-           :Baja,
-           :PlanEstudioId,
-           :CirugiaMayor,
-           :CirugiaMenor,
-           :Hijo,
-           :Egresado)");
-
-    // dd($array);
-
-    if($stmt->execute($array))
-    {
-        return $link->lastInsertId();
-    }
-    else
-    {
-        return false;
-    }
-    $stmt = null;
 }
 
 //aplica para tablas que tiene un campo nombre 
@@ -682,27 +518,6 @@ function calculateProm($array)
 }
 
 
-//validar si no es un alumno en baja 
-function validateDown($id_alumno)
-{
-  try
-  {
-    $alumnoData = selectSicoes("Alumno","AlumnoId",$id_alumno)[0];
-    if ($alumnoData["Baja"]==0)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-  catch(\Exception $e)
-  {
-    return false;
-  }
-}
-
 //actualizar individual
 function updateSicoes($table, $field, $value, $item, $valueItem)
 {
@@ -718,33 +533,7 @@ function updateSicoes($table, $field, $value, $item, $valueItem)
     }
 }
 
-function checkGroupData($alumnData)
-{
-  $odd = [1,3,5,7,9];
-  $pair = [2,4,6,8];
 
-  $inscripcionData = getInscription($alumnData["AlumnoId"]);
-  $config = getConfig();
-  $period = selectCurrentPeriod();
-  $group = false;
-  if ($inscripcionData!=false) {
-    $nextSemester = $inscripcionData["Semestre"]+1;
-    if ($period->semestre == 1) {
-      if (in_array($nextSemester, $pair)) {
-        $group = getGroupByPeriod($config->period_id, $alumnData["PlanEstudioId"], $nextSemester);
-      } 
-    } else {
-      if (in_array($nextSemester, $odd)) {
-        $group = getGroupByPeriod($config->period_id, $alumnData["PlanEstudioId"], $nextSemester);
-      }
-    }
-  }
-  else
-  {
-    $group = getGroupByPeriod($config->period_id,$alumnData["PlanEstudioId"],1);
-  } 
-  return $group ? $group : false; 
-}
 
 //trae el ultimo registro de la tabla de inscripcion, a excepción de los cursos de verano
 function getInscription($id_alumno)
@@ -776,37 +565,6 @@ function getGroupByPeriod($periodo,$plan,$semestre)
   }
 }
 
-//otros
-function ctrCrearImagen($foto,$id,$folder,$nuevoAncho,$nuevoAlto,$flag)
-{
-    $ruta;
-    list($ancho,$alto) = getimagesize($foto["tmp_name"]);
-    if($flag==false)
-    {
-        mkdir("img/".$folder."/".$id,0755);
-    }  
-    if ($foto["type"] == "image/jpeg")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".jpg";
-        $origen = imagecreatefromjpeg($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagejpeg($destino,$ruta);
-    }
-    if ($foto["type"] == "image/png")
-    {
-        $aleatorio = mt_rand(100,999);
-        $ruta = "img/".$folder."/".$id."/".$aleatorio.".png";
-        $origen = imagecreatefrompng($foto["tmp_name"]);
-        $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-        imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-        imagepng($destino,$ruta);
-    }
-    return $ruta;
-}
-
-
 //metodo para traer un join con los datos del alumno
 function getDataAlumnDebit($id_alumn)
 {
@@ -818,6 +576,13 @@ function getDataAlumnDebit($id_alumn)
   return $stmt->fetch();
 }
 
+
+function upload_image($file,$subfolder, $id) {
+  $path = "img/".$subfolder."/".$id."/";
+  $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+  $file->move($path, $fileName);
+  return $path.$fileName;
+}
 
 function createImage($photo, $pathCustom) {
   $rand = rand(100, 100000);

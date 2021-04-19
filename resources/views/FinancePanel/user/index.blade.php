@@ -41,7 +41,7 @@
 
               <div class="text-center">
 
-                <img class="profile-user-img img-fluid img-circle" src="{{asset($user->photo)}}" alt="User profile picture">
+                <img class="profile-user-img img-fluid img-circle" src="{{Croppa::url($user->photo, 400, 400)}}" alt="User profile picture">
 
               </div>
 

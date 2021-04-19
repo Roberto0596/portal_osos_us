@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Payment;
+use App\Library\Inscription;
 use Input;
 use Auth;
 use DB;
@@ -84,11 +85,13 @@ class PaymentController extends Controller
             $value->id_order = $order->id;
             $value->payment_method = "card";
             $value->save();
+
             if ($value->has_file_id != null) {
-              $document = Document::find($value->has_file_id);
-              $document->payment = 1;
-              $document->save();
+                $document = Document::find($value->has_file_id);
+                $document->payment = 1;
+                $document->save();
             }
+
             try {
                 createTicket($value->id);
             } catch(\Exception $e){
@@ -96,7 +99,7 @@ class PaymentController extends Controller
             }
         }
         
-        $register = makeRegister($current_user);
+        $register = Inscription::makeRegister($current_user);
 
         if (count($register["errors"]) == 0) {
             session()->flash("messages","success|El pago se realizo con exito, ve cual sera tu carga, recuerda que tu correo es: ".$current_user->email);

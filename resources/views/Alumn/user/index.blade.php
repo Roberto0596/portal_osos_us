@@ -2,13 +2,6 @@
 
 @section('content-alumn')
 
-<?php
-  $data_user = selectSicoes("alumno","AlumnoId",$user->id_alumno);
-  $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data_user[0]["PlanEstudioId"]);
-  $data_carrer = selectSicoes("Carrera","CarreraId",$data_studio[0]["CarreraId"]);
-  $data_carrer=$data_carrer[0];
-?>
-
 <style>
   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
@@ -48,13 +41,13 @@
 
               <div class="text-center">
 
-                <img class="profile-user-img img-fluid img-circle" src="{{asset($user->photo)}}" alt="User profile picture">
+                <img class="profile-user-img img-fluid img-circle" src="{{Croppa::url($user->photo, 400, 400)}}" alt="User profile picture">
 
               </div>
 
               <h3 class="profile-username text-center">{{$user->name}}</h3>
 
-              <p class="text-muted text-center">{{$data_carrer["Nombre"]}}</p>
+              <p class="text-muted text-center">{{ $user->sAlumn->PlanEstudio->Carrera->Nombre }}</p>
 
 <!--               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">

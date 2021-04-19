@@ -24,5 +24,11 @@ class PlanEstudio extends Model {
     	"CarreraId",
     ];
 
+    protected $with = ['Carrera'];
+
+    public function Carrera() {
+        return $this->belongsTo("\App\Models\Sicoes\Carrera", "CarreraId", "CarreraId");
+    }
+
 }
 

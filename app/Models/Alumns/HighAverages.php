@@ -10,9 +10,10 @@ class HighAverages extends Model
 
     protected $fillable = [
     	'id',
-        'alumn_id',
+        'enrollment',
         'periodo_id',
         'created_at',
         'updated_at',
+        'status'
     ];
 }

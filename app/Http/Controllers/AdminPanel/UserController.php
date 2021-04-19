@@ -11,8 +11,7 @@ class UserController extends Controller
 {
 	public function index()
 	{
-        $current_id = Auth::guard('admin')->user()->id;
-        $current_user = AdminUser::find($current_id);
+        $current_user = current_user('admin');
 		return view('AdminPanel.user.index')->with(["user"=>$current_user]);
     }
 
@@ -23,20 +22,9 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
 
-        if(isset($_FILES['newPicture']) && $_FILES["newPicture"]["name"]!="")
-        {
-            if ($user->photo == "img/alumn/default/default.png")
-            {
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"admin",100,120,false);
-                $user->photo = $routePicture;
-            }
-            else
-            {
-                unlink($user->photo);
-
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"admin",100,120,true);
-                $user->photo = $routePicture;
-            }
+        if ($request->hasFile("newPicture")) {
+            $file = $request->file("newPicture");
+            $user->photo = upload_image($file, "admin", current_user('admin')->id);
         }
 
         $user->name = $request->input("name");

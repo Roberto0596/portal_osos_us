@@ -17,8 +17,10 @@ class ChargeController extends Controller
 	public function index()
 	{
         session()->forget("chargeTreeInstance");
+
         if (!session()->has('chargeTreeInstance')) {
             $tree = new DesicionTree();
+
             $tree->makeTree(current_user());
             $charge = $tree->getTreeCharge();
             session(["chargeTreeInstance" => $tree]);

@@ -14,10 +14,21 @@ class UserController extends Controller
 {
 	public function index()
 	{
-        $current_id = Auth::guard('alumn')->user()->id;
-        $current_user = User::find($current_id);
-		return view('Alumn.user.index')->with(["user"=>$current_user]);
+        $current_user = current_user();
+		return view('Alumn.user.index')->with(["user" => $current_user]);
 	}
+
+    public function create() {
+
+    }
+
+    public function edit() {
+
+    }
+
+    public function delete() {
+        
+    }
 
     public function notify(Request $request)
     {
@@ -43,20 +54,9 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
 
-        if(isset($_FILES['newPicture']) && $_FILES["newPicture"]["name"]!="")
-        {
-            if ($user->photo == "img/alumn/default/default.png")
-            {
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"alumn",100,120,false);
-                $user->photo = $routePicture;
-            }
-            else
-            {
-                unlink($user->photo);
-
-                $routePicture = ctrCrearImagen($_FILES["newPicture"],$user->id,"alumn",100,120,true);
-                $user->photo = $routePicture;
-            }
+        if ($request->hasFile("newPicture")) {
+            $file = $request->file("newPicture");
+            $user->photo = upload_image($file, "alumn", current_user()->id);
         }
 
         $user->name = $request->input("name");

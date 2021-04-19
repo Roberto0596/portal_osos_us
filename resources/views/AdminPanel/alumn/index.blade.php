@@ -47,7 +47,6 @@
           <thead>
 
             <tr>
-              <th style="width: 10px">#</th>
               <th>Matricula</th>
               <th>Nombre(s)</th>
               <th>Apellido(s)</th>

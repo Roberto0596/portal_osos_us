@@ -25,6 +25,6 @@ class DebitSeeder extends Seeder
         }
 
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("<info>conceptos de pago creados created</info>");
+        $out->writeln("<info>conceptos de pago creados</info>");
     }
 }

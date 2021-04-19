@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Notify;
+use App\Models\Sicoes\EncGrupo;
+use App\Models\Sicoes\Inscripcion;
 
 class AlumnController extends Controller
 {
@@ -19,34 +21,28 @@ class AlumnController extends Controller
 	{
 		$alumn = User::find($id);
 		Debit::where("id_alumno","=",$alumn->id_alumno)->delete();
-		User::destroy($id);
+		$alumn->delete();
 		session()->flash("messages","success|Todos los registros fueron borrados");
 		return redirect()->back();
     }
 
     public function seeAlumnData(request $response)
 	{
-		$enrollment='sin asignar';
-		$group='sin asignar';
-		$planEstudio='sin asignar';
+		$enrollment = 'sin asignar';
+		$group = 'sin asignar';
+		$planEstudio = 'sin asignar';
 		$alumn = User::find($response->input('id'));
-		$alumnData = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno);
 
-		if ($alumnData) {
-			$aux = selectSicoes("PlanEstudio","PlanEstudioId",$alumnData[0]["PlanEstudioId"]);
-			$planEstudio = $aux[0]["Clave"];
-			$enrollment = $alumnData[0]["Matricula"];
-			$inscripcion = getInscription($alumn->id_alumno);
-			if ($inscripcion) {
-				$aux = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"]);
-				$group = $aux[0]["Nombre"];
-			}
+        $inscripcion = Inscripcion::where("AlumnoId", $alumn->id_alumno)->orderBy("InscripcionId", "desc")->first();
+
+		if ($inscripcion) {
+            $group = EncGrupo::where("EncGrupoId", $inscripcion->EncGrupoId)->first()->Nombre;
 		}
-		
+
 		$array = array(
-            'enrollment' => $enrollment, 
+            'enrollment' => $alumn->sAlumn->Matricula, 
             'group' => $group, 
-            'PlanEstudio' => $planEstudio, 
+            'PlanEstudio' => $alumn->sAlumn->PlanEstudio->Clave, 
             'semestre' => $inscripcion["Semestre"], 
             "inscription_status" => $alumn->inscripcion);
 		return response()->json($array);
@@ -77,38 +73,11 @@ class AlumnController extends Controller
         $query->skip($start)->take($length)->get();
 
         $data = $query->get();
-
-        $res = [];
-
-        foreach($data as $key => $value)
-        { 
-        	try 
-        	{		        
-	            $validate = false;
-	            if ($value->getSicoesData()) 
-	            {
-	            	$validate = true;
-	            } 
-
-	            array_push($res,[
-	                "#" => (count($data)-($key+1)+1),
-	                "Matricula" => $value->getMatricula() ? $value->getMatricula() : "sin asignar",
-	                "Nombre (s)" => $value->name,
-	                "Apellido (s)" => $value->lastname,
-	                "Email" => $value->email,
-	                "inscripcion" => $value->inscripcion,
-	                "validate" => $validate,
-	                "id" => $value->id
-	            ]);
-        	} 
-        	catch (\Exception $e) 
-        	{
-        	}	        	
-        }
+        
         return response()->json([
             "recordsTotal" => User::count(),
             "recordsFiltered" => $filtered,
-            "data" => $res
+            "data" => $data
         ]);  
     }
 

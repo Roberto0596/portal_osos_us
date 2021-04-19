@@ -43,7 +43,6 @@
           <thead>
 
             <tr>
-              <th style="width: 10px">#</th>
               <th>Nombre(s)</th>
               <th>Apellido(s)</th>
               <th>Email</th>

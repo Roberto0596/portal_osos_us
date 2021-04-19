@@ -19,9 +19,7 @@ class Carrera extends Model {
         "Clave",
         "Nombre",
         "Abreviatura",
-        "DivisionId",
-    	
+        "DivisionId",    	
     ];
-
 }
 

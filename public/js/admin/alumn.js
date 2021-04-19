@@ -12,11 +12,18 @@ $(".tableAlumns").dataTable({
     },
     serverSide:true,
     "columns":[
-        {"data": "#"},
-        {"data": "Matricula"},
-        {"data": "Nombre (s)"},
-        {"data": "Apellido (s)"},
-        {"data": "Email"},
+        {"data": null, orderable: false, "render": function(data){
+            return data.s_alumn ? data.s_alumn.Matricula : "Sin asignar";
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.name;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.lastname;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.email;
+        }},
         {"data": null, orderable: false, "render": function(data){
             var res = "";
             switch (data.inscripcion) {
@@ -41,7 +48,7 @@ $(".tableAlumns").dataTable({
         {"data": null, orderable: false, "render": function(data){
 
             var res = "<div class='btn-group'>";
-            if (data.validate) {
+            if (data.s_alumn) {
                 res += "<button class='btn btn-warning btnUpdateAlumn' data-toggle='modal' data-target='#modal-edit-alumn' title='editar alumno' alumnId = '"+data.id+"' title='Imprimir'>"+
                     "<i class='fa fa-pen' style='color:white'></i></button>";
             }
@@ -99,13 +106,11 @@ $(".tableAlumns tbody").on("click","button.btnDeleteAlumn",function(){
 $(".tableAlumns tbody").on("click","button.btnUpdateAlumn",function(){
     var id = $(this).attr("alumnId");
     $('#id_alumn').val(id);
-    var route = '/admin/alumns/alumnDada';
-    var token = $('#token2').val();
     var data = new FormData();
     data.append('id', id);
     $.ajax({
-        url:route,
-        headers:{'X-CSRF-TOKEN': token},
+        url:'/admin/alumns/alumnDada',
+        headers:{'X-CSRF-TOKEN': $('#token2').val()},
         method:'POST',
         data:data,
         cache:false,
@@ -113,7 +118,6 @@ $(".tableAlumns tbody").on("click","button.btnUpdateAlumn",function(){
         processData:false,
         success:function(response)
         {      
-            console.log(response['inscription_status']);   
             $('#PlanEstudioActual').val(response['PlanEstudio']);
             $('#EncGrupoActual').val(response['group']);
             $('#matriculaActual').val(response['enrollment']);
@@ -125,13 +129,11 @@ $(".tableAlumns tbody").on("click","button.btnUpdateAlumn",function(){
 
 $('#PlanEstudioId').change(function(){
     var planEstudio = $(this).val();
-    var route = '/admin/alumns/generateEnrollment';
-    var token = $('#token2').val();
     var data = new FormData();
     data.append('planEstudio', planEstudio);
     $.ajax({
-        url:route,
-        headers:{'X-CSRF-TOKEN': token},
+        url:'/admin/alumns/generateEnrollment',
+        headers:{'X-CSRF-TOKEN': $('#token2').val()},
         method:'POST',
         data:data,
         cache:false,

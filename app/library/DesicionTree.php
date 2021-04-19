@@ -57,20 +57,23 @@ class DesicionTree {
 		foreach ($asignaturas as $key => $value) {
 			$carga = $this->alumnCharge($value->AsignaturaId, $alumnData->AlumnoId);
 			$detGrupo = $this->DetGrupoId($value->AsignaturaId);
-			$push = [
-				"calificacion" => isset($carga->Calificacion) ? $carga->Calificacion : null,
-				"nombre" => $alumnData->Nombre,
-				"alumnoId" => $user->id_alumno,
-				"materia" => $value->Nombre,
-				"asignaturaId" => $value->AsignaturaId,
-				"semestre" => $value->Semestre,
-				"haySeriacion" => $value->HaySeriacion,
-				"detGrupoId" => $detGrupo->DetGrupoId,
-				"periodoId" => $this->current_period->id,
-				"nombreProfesor" => $detGrupo->Nombre ." ". $detGrupo->ApellidoPrimero,
-				"baja" => 0
-			];
-			$mergedCharge->push((Object) $push);
+
+			if ($detGrupo) {
+				$push = [
+					"calificacion" => isset($carga->Calificacion) ? $carga->Calificacion : null,
+					"nombre" => $alumnData->Nombre,
+					"alumnoId" => $user->id_alumno,
+					"materia" => $value->Nombre,
+					"asignaturaId" => $value->AsignaturaId,
+					"semestre" => $value->Semestre,
+					"haySeriacion" => $value->HaySeriacion,
+					"detGrupoId" => $detGrupo->DetGrupoId,
+					"periodoId" => $this->current_period->id,
+					"nombreProfesor" => $detGrupo->Nombre ." ". $detGrupo->ApellidoPrimero,
+					"baja" => 0
+				];
+				$mergedCharge->push((Object) $push);
+			}
 		}
 		return $mergedCharge;
 	}
