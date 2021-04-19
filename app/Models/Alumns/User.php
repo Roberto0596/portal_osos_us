@@ -13,17 +13,8 @@ class User extends Authenticatable
 
     protected $table = "users";
 
-    // protected $fillable = [
-    // 	'id',
-    //     'name',
-    //     'last_name',
-    //     'email',
-    //     'password',
-    //     'tour',
-    //     'created_at',
-    //     'updated_at',
-    // ];
-
+    protected $with = ["sAlumn"];
+    
     public function document() {
         return $this->hasMany('\App\Models\Alumns\Document', "alumn_id", "id");
     }

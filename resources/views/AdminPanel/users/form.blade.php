@@ -164,7 +164,7 @@
 
           <div class="row">
             <div class="col-md-6">
-              <button class="btn btn-danger" style="width: 100%"><i class="fa fa-times"></i> Cancelar</button>
+              <a href="{{route('admin.users')}}" class="btn btn-danger" style="width: 100%"><i class="fa fa-times"></i> Cancelar</a>
             </div>
             <div class="col-md-6">
               <button class="btn btn-success" style="width: 100%"><i class="fa fa-check"></i> Guardar</button>

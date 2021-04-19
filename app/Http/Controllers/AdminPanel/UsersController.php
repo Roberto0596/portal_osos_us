@@ -60,27 +60,54 @@ class UsersController extends Controller
         } 
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        $users = AdminUser::all();
-        $res = [ "data" => []];
+        $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
+        
+        $start = $request->get('start');
+        $length = $request->get('length');
 
-        foreach($users as $key => $value)
-        {  
-            $img = "<img src='".asset($value->photo)."' style='width:70px'>";
-            $buttons = "<div class='btn-group'><a href='".route("admin.users.edit", $value->id)."'class='btn btn-warning'><i class='fa fa-eye' style='color:white'></i></a><button class='btn btn-danger btnDelete' user_id='".$value->id."'><i class='fa fa-times'></i></button></div>";
-         
-            array_push($res["data"],[
-                (count($users)-($key+1)+1),
-                $value->name,
-                $value->lastname,
-                $value->email,
-                $img,
-                selectTable("area","id",$value->area_id,"1")->name,
-                $value->created_at,
-                $buttons
-            ]);
+        $query = AdminUser::select();
+        $filtered = 0;
+
+        if($filter) {
+            $query = $query->where(function($query) use ($filter){
+                $query->orWhere('name', 'like', '%'. $filter .'%')
+                    ->orWhere('lastname', 'like', '%'. $filter . '%')
+                    ->orWhere('email', 'like', '%'. $filter . '%');
+            });
+            $filtered = $query->count();
+        } else {
+            $filtered = AdminUser::count();
         }
-        return response()->json($res);  
+
+        $query->skip($start)->take($length)->get();
+        
+        return response()->json([
+            "recordsTotal" => AdminUser::count(),
+            "recordsFiltered" => $filtered,
+            "data" => $query->get()
+        ]);  
+
+        // $users = AdminUser::all();
+        // $res = [ "data" => []];
+
+        // foreach($users as $key => $value)
+        // {  
+        //     $img = "<img src='".asset($value->photo)."' style='width:70px'>";
+        //     $buttons = "<div class='btn-group'><a href='".route("admin.users.edit", $value->id)."'class='btn btn-warning'><i class='fa fa-eye' style='color:white'></i></a><button class='btn btn-danger btnDelete' user_id='".$value->id."'><i class='fa fa-times'></i></button></div>";
+         
+        //     array_push($res["data"],[
+        //         (count($users)-($key+1)+1),
+        //         $value->name,
+        //         $value->lastname,
+        //         $value->email,
+        //         $img,
+        //         selectTable("area","id",$value->area_id,"1")->name,
+        //         $value->created_at,
+        //         $buttons
+        //     ]);
+        // }
+        // return response()->json($res);  
     }
 }

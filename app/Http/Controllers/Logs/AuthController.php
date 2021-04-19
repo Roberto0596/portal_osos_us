@@ -31,8 +31,7 @@ class AuthController extends Controller
             return redirect()->back()->withInput();
         }
 
-        if (Auth::guard('log_auth')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0)))
-        {
+        if (Auth::guard('log_auth')->attempt(['email' => $email, 'password' => $pass],$request->get('remember-me', 0))) {
             return redirect()->route('logs.login');
         }
 

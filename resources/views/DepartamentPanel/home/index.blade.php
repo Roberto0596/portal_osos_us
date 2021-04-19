@@ -24,7 +24,29 @@
       
       <div class="card-body">
 
-        Proximamente este sera el panel
+        <div class="row">
+          
+          <div class="col-md-4 col-sm-12">
+
+            <div class="small-box bg-success">
+
+              <div class="inner">
+
+                <h3>Equipos ocupados</h3>
+
+                <p>{{ $equipments }}</p>
+
+              </div>
+
+              <!-- i -->
+
+              <a href="" class="small-box-footer" data-toggle='modal' data-target='#modalPeriod'>Ver <i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+            
+          </div>
+
+        </div>
 
       </div>
 

@@ -24,4 +24,13 @@ Route::group(['namespace'=>'Api'], function()
         'uses' => 'DebitController@verifyDebit', 
         'as' => 'verify.debit'
     ]);
+
+    Route::group(["prefix" => "bitacora", "middleware" => "bitacoraAuth"], function() {
+
+    	Route::get('/watch', [
+    		'uses' => 'LogController@watchState',
+    		'as' => 'watch'
+    	]);
+
+    });
 });

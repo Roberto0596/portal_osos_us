@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DepartamentPanel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Logs\Equipment;
 use Input;
 use Auth;
 
@@ -11,7 +12,10 @@ class HomeController extends Controller
 {
 	public function index()
 	{
-		return view('DepartamentPanel.home.index');
+        $equipments = Equipment::where("status", 1)->count();
+		return view('DepartamentPanel.home.index', [
+            'equipments' => $equipments
+        ]);
 	}
 
 	public function add() 

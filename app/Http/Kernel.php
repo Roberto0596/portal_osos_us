@@ -78,5 +78,6 @@ class Kernel extends HttpKernel
         'noob' => \App\Http\Middleware\NoobMiddleware::class,
         'notnoob' => \App\Http\Middleware\NotNoobMiddleware::class,
         'semester' => \App\Http\Middleware\semesterMiddleware::class,
+        'bitacoraAuth' => \App\Http\Middleware\BitacoraMiddleware::class,
     ];
 }

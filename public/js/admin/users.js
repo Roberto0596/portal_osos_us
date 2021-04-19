@@ -1,15 +1,37 @@
-var token = $("#token").val();
-var route = "/admin/users/show";
-
 $(".tableUsers").dataTable({
     "destroy": true,
     "responsive": true,
-    "ajax":
-    {
-        url: route,
-        headers:{'X-CSRF-TOKEN':token},
+    "serverSide":true,
+    "ajax": {
+        url: "/admin/users/show",
+        headers:{'X-CSRF-TOKEN':$("#token").val()},
         type: "POST",
     },
+    "columns":[
+        {"data": null, orderable: false, "render": function(data){
+            return data.name;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.lastname;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.email;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            var res = '<img src="/'+data.photo+'" style="width:70px">';
+            return res;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.area.name;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            return data.created_at;
+        }},
+        {"data": null, orderable: false, "render": function(data){
+            var res = "<div class='btn-group'><a href='/admin/users/edit/user/"+data.id+"'class='btn btn-warning'><i class='fa fa-eye' style='color:white'></i></a><button class='btn btn-danger btnDelete' user_id='"+data.id+"'><i class='fa fa-times'></i></button>";
+            return res;
+        }},
+    ],
     "language": {
 
         "sProcessing":     "Procesando...",

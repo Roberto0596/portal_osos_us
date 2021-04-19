@@ -300,7 +300,7 @@ $("#id_alumno").select2({
         },
         cache: true
     },
-    placeholder: 'Buscar propiedad',
+    placeholder: 'Buscar alumno',
     minimumInputLength: 3,
     width: 'resolve',
 });

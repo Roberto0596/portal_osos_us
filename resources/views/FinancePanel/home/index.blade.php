@@ -345,7 +345,7 @@
         },
         cache: true
     },
-    placeholder: 'Buscar propiedad',
+    placeholder: 'Buscar alumno',
     minimumInputLength: 3,
     width: 'resolve',
 });
