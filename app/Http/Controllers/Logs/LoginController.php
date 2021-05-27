@@ -79,7 +79,7 @@ class LoginController extends Controller
             return response()->json([
                 "status" => "failed", 
                 "num" => null,
-                "id_equipment" => null, 
+                "id_equipment" => , 
                 "missingRegister" => false,
                 "thereIsRecord" => false
             ]);
