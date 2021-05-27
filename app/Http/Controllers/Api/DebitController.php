@@ -27,26 +27,29 @@ class DebitController extends Controller
 
 	        	$debits = Debit::where("id_order", $id_order)->get();
 	        	
-	        	$alumn = User::where("id_alumno","=",$debits[0]->id_alumno)->first();
+	        	if ($debits->count() > 0) {
 
-		        foreach ($debits as $key => $value) {
-		        	if ($value->status == 0) {
-		        		if ($value->payment_method != "card") {
-			        		if ($value->debit_type_id == 1) {
-			        			$register = Inscription::makeRegister($alumn);
-			        		}
-			        		if ($value->has_file_id != null) {
-				              	$document = Document::find($value->has_file_id);
-				              	$document->payment = 1;
-				              	$document->save();
-				            }
-			        		$value->status = 1;
-			        		$value->save();
+	        		$alumn = User::where("id_alumno","=",$debits[0]->id_alumno)->first();
+
+			        foreach ($debits as $key => $value) {
+			        	if ($value->status == 0) {
+			        		if ($value->payment_method != "card") {
+				        		if ($value->debit_type_id == 1) {
+				        			$register = Inscription::makeRegister($alumn);
+				        		}
+				        		if ($value->has_file_id != null) {
+					              	$document = Document::find($value->has_file_id);
+					              	$document->payment = 1;
+					              	$document->save();
+					            }
+				        		$value->status = 1;
+				        		$value->save();
+				        	}
 			        	}
-		        	}
-		        }
+			        }
 
-		        addNotify("pago realizado con exito",$alumn->id, "alumn.debit");
+			        addNotify("pago realizado con exito", $alumn->id, "alumn.debit");
+	        	}		        	
 	        }      
 	        return response()->json(["status" => "success"], 200);
 		} catch(\Exception $e) {
