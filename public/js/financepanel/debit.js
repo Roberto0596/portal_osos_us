@@ -411,7 +411,7 @@ function getFormatDebit(data, filters) {
     for (var i = 0; i < data.length; i++) {
         var date = data[i].updated_at;
         correctData.push([
-            data[i].alumn.Matricula,
+            data[i].alumn.Matricula ? data[i].alumn.Matricula : "no matricula",
             data[i].description,
             nf.format(data[i].amount),
             data[i].status == 1 ? "Pagado" : "Pendiente",
