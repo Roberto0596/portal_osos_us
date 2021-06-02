@@ -463,7 +463,7 @@ Route::group(['domain' => $alumnDomain], function() {
 		Route::get('/', [
 	        'uses' => 'WebsiteController@index', 
 	        'as' => 'home'
-	    ])->middleware('semester');	
+	    ]);	
 
 	    Route::get('/restore-pass/{token?}', [
 	        'uses' => 'WebsiteController@viewRestore', 
