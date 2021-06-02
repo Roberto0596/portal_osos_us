@@ -24,9 +24,17 @@
 
           <ol class="breadcrumb float-sm-right">
 
-            <button data-toggle="modal" data-target="#modalDebit" class="btn btn-success" title="Nuevo adeudo"><i class="fa fa-plus"></i></button>
+            <button data-toggle="modal" data-target="#modalDebit" class="btn btn-primary" data-placement="top" title="Generar nuevo">
+              <i  class="fa fa-plus"></i>
+            </button>
 
-            <button data-toggle="modal" data-target="#modalPrintTickets" class="btn btn-info" style="margin-left: 5px" title="Imprimir recivos"><i class="fa fa-print"></i></button>
+            <button data-toggle="modal" data-target="#modalPrintTickets" class="btn btn-info" style="margin-left: 5px" data-placement="top"  title="Imprimir recibos">
+              <i class="fa fa-print"></i>
+            </button>
+
+            <button data-toggle="modal" data-target="#modal-generate-excel" class="btn btn-success" style="margin-left: 5px" data-placement="top"  title="Exportar excel">
+              <i class="fa fa-file-excel"></i>
+            </button>
 
           </ol>
 
@@ -176,6 +184,7 @@
   </section>
 
 </div>
+
  <!-- Modal crear nuevo adeudo -->
 
 <div class="modal fade" id="modalDebit">
@@ -299,7 +308,6 @@
   </div>
 
 </div>
-
 
  <!-- Modal Editar-->
 <div class="modal fade" id="modalEdit">
@@ -712,6 +720,114 @@
 
 </div>
 
+<div class="modal fade" id="modal-generate-excel">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h4>Generar excel de adeudos</h4>
+
+      </div>
+        
+      <div class="modal-body">
+           
+        <div class="row">
+
+          <div class="col-md-12">           
+
+            <label for="">Periodo</label>
+
+            <div class="input-group mb-3">
+
+                <select name="period_id" id="period_id" class="form-control form-control-lg">
+                  <option value="" selected>Todos</option>
+                  @foreach($periods as $key => $value)
+                    <option value="{{ $value->id }}">{{ $value->clave }}</option>
+                  @endforeach
+                </select>
+
+                <input type="hidden" value="{{ csrf_token() }}" id="token-excel">
+
+            </div>
+
+          </div>
+
+          <div class="col-md-12">           
+
+            <label for="">Estatus</label>
+
+            <div class="input-group mb-3">
+
+                <select name="is_paid" id="is_paid" class="form-control form-control-lg">
+                  <option value="" selected>Todos</option>
+                  <option value="0">Pendientes</option>
+                  <option value="1">Pagados</option>
+                </select>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <label for="">Fecha inicial</label>
+
+            <div class="input-group mb-3">
+
+              <input type="date" class="form-control form-control-lg" id="initial_date">
+
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <label for="">Fecha final</label>
+
+            <div class="input-group mb-3">
+
+              <input type="date" class="form-control form-control-lg" id="end_date">
+
+            </div>
+
+          </div>
+
+        </div>
+            
+      </div>
+
+      <div class="modal-footer">
+        
+        <div class="row" style="width: 100%;">
+
+          <div class="col-md-6">
+
+              <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+              
+          </div>
+
+          <div class="col-md-6">
+
+            <button class="btn btn-success" id="generate-excel" style="float: right;">Generar</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script lang="javascript" src="{{ asset('excel/sheetjs/dist/xlsx.full.min.js')}}"></script>
+<script lang="javascript" src="{{ asset('excel/FileSaver/dist/FileSaver.min.js')}}"></script>
 <script src="{{asset('js/financePanel/debit.js')}}"></script>
+
  
 @stop

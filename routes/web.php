@@ -449,6 +449,10 @@ Route::group(['domain' => $alumnDomain], function() {
 					'as' => 'settings.changeSerie'
 				]);
 
+				Route::post('/generate-excel',[
+					'uses'=>'DebitController@excelGenerate', 
+					'as' => 'excel.generate'
+				]);	
 				
 			});
 	  	});

@@ -85,6 +85,8 @@ class Alumno extends Model {
 
     protected $with = ['PlanEstudio', 'Estado'];
 
+    protected $appends = ['FullName'];
+
     public function pAlumn() {
         return $this->belongsTo("\App\Models\Alumns\User", "AlumnoId", "id_alumno");
     }
@@ -98,6 +100,10 @@ class Alumno extends Model {
     }
 
     public function getFullName() {
+        return ucwords(strtolower(normalizeChars(join(' ', [$this->Nombre, $this->ApellidoPrimero, $this->ApellidoSegundo]))));
+    }
+
+    public function getFullNameAttribute() {
         return ucwords(strtolower(normalizeChars(join(' ', [$this->Nombre, $this->ApellidoPrimero, $this->ApellidoSegundo]))));
     }
 }

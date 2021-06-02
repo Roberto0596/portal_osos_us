@@ -283,7 +283,6 @@ function changeMode(mode, period, concept){
     });
 }
 
-
 $("#id_alumno").select2({
     ajax: {
         url: "/finance/debit/search-alumn",
@@ -328,6 +327,120 @@ $(document).on("click", "button.showPdf", function()
     var route = $(this).attr("route");
     window.open("/"+route,"_blank");
 });
+
+$(function () {
+    $('[data-toggle="modal"]').tooltip()
+});
+
+$("#generate-excel").click(function() {
+
+    loader(true, "cargando datos (esto puede demorar)");
+
+    data = {
+        "_token": $("#token-excel").val(),
+        "period_id": $("#period_id").val(),
+        "is_paid": $("#is_paid").val(),
+        "initial_date": $("#initial_date").val(),
+        "end_date": $("#end_date").val()
+    };
+
+    $.post("/finance/generate-excel", data, function(response) {
+        loader(true, "Creando excel");
+        setTimeout(function() {
+            createNewXLSX(response, data);
+        }, 500);
+    });
+});
+
+
+function createNewXLSX(data, filters) {
+
+    var title = "Reporte de adeudos";
+
+    var wb = XLSX.utils.book_new();
+
+    wb.Props = {
+        Title: title,
+        Author: "Universidad de la sierra",
+    };
+
+    wb.SheetNames.push("Adeudos");
+
+    var correct = getFormatDebit(data, filters);
+
+    var correctData = XLSX.utils.aoa_to_sheet(correct);
+
+    wb.Sheets["Adeudos"] = correctData;
+
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), title+".xlsx");
+    loader(false, "");
+}
+
+var headers = ["Matricula", "Descripción del Adeudo", "Importe", "Estado del Adeudo", "Fecha del Pago", "Nombre del Alumno", "Email", "Localidad", "Estado", "Carrera"];
+
+function getFormatDebit(data, filters) {
+    var correctData = [];
+    correctData.push(["Universidad de la Sierra"]);
+
+    correctData.push(["Departamento de Recursos Financieros"]);
+
+    correctData.push([]);
+    correctData.push(["Reporte de Adeudos"]);
+    correctData.push(["Filtros"]);
+
+    if (filters.period_id != "") {
+        correctData.push(["Periodo: ", filters.period_id]);
+    }
+
+    if (filters.initial_date != "") {
+        correctData.push(["Fecha de inicio: ", filters.initial_date]);
+    }
+
+    if (filters.end_date != "") {
+        correctData.push(["Fecha final: ", filters.end_date]);
+    }
+
+    if (filters.is_paid != "") {
+        correctData.push(["Estado: ", filters.is_paid == 1 ? "Pagados" : "Pendientes"]);
+    }
+    correctData.push([]);
+    correctData.push(headers);
+
+    for (var i = 0; i < data.length; i++) {
+        var date = data[i].updated_at;
+        correctData.push([
+            data[i].alumn.Matricula,
+            data[i].description,
+            nf.format(data[i].amount),
+            data[i].status == 1 ? "Pagado" : "Pendiente",
+            date.substring(0, 10),
+            data[i].alumn.FullName,
+            data[i].alumn.Email,
+            data[i].alumn.Localidad,
+            data[i].alumn.estado.Nombre,
+            data[i].alumn.plan_estudio.Nombre
+        ]);
+    }
+    return correctData;
+}
+
+function s2ab(s) { 
+    var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+    var view = new Uint8Array(buf);  //create uint8array as viewer
+    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+    return buf;    
+}
+
+function loader(flag, text) {
+    if (flag) {
+        $(".body-loader-load").fadeIn(500);
+    } else {
+        $(".body-loader-load").fadeOut(500);
+    }
+    $(".loader-body-text").text(text);
+}
 
 
 

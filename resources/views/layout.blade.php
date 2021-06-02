@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}"> 
     <link rel="stylesheet" href="{{ asset('css/modals.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/loadLoader.css') }}">
+
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('bower/dropzone/dist/dropzone.css')}}" />
@@ -81,6 +83,8 @@
 </head>
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     <!-- Preloader -->
+
+    @include('chunks.load-loader')
 
     <div id="preloader">
 

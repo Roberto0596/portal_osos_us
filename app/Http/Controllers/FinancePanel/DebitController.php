@@ -117,7 +117,8 @@ class DebitController extends Controller
     public function update(Request $request)
     {
         $array = $request->input();
-        $debit = Debit::find($request->input("debitId"));        
+        $debit = Debit::find($request->input("debitId"));   
+
         if ($debit) {
             $debit->amount = $request->input("amount");
             $debit->id_alumno = $request->input("id_alumno");
@@ -138,6 +139,7 @@ class DebitController extends Controller
                 $document->payment = $request->get("status") == "on" ? 1 : 0;
                 $document->save();
             }
+
             session()->flash("messages","success|Guardado correcto");
             return redirect()->back(); 
         } else {
@@ -213,10 +215,13 @@ class DebitController extends Controller
     public function showPayementDetails(Request $request)
     {       
         $debit = Debit::find($request->input("DebitId"));
+
         require_once("conekta/Conekta.php");
         \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
         \Conekta\Conekta::setApiVersion("2.0.0");
+
         $order = \Conekta\Order::find($debit->id_order);
+        
         if ($request->input('is')=="card")
         {
             $data = array(
@@ -341,6 +346,39 @@ class DebitController extends Controller
 
         $pdf->Output("report" . date("d-m-Y") . ".pdf","D");
     } 
+
+    public function excelGenerate(Request $request) {
+        $period_id = $request->get('period_id');
+        $is_paid = $request->get('is_paid');
+        $initial_date = $request->get('initial_date');
+        $end_date = $request->get('end_date');
+
+        $data = Debit::select();
+
+        if ($period_id) {
+            $data->where("period_id", $period_id);
+        }
+
+        if ($initial_date && $end_date) {
+
+            if ($init == $final) {
+                $data->where("created_at", 'like', '%'.$initial_date.'%');
+            } else {
+                $data->whereBetween("created_at", [$initial_date, $end_date]);
+            }
+
+        } else if ($initial_date) {
+            $data->where("created_at", '>=', '%' . $initial_date . '%');
+        } else if ($end_date) {
+            $data->where("created_at", '<=', '%' . $end_date . '%');
+        }
+
+        if ($is_paid != null) { 
+            $data->where("status", intval($is_paid));
+        }
+
+        return response()->json($data->get());
+    }
 }
 
 
