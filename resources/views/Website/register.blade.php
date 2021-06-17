@@ -2,11 +2,30 @@
 
 @section('main-content')
 
+
+<style>
+	.btns-row{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		margin-top: 2rem;
+		align-items: center;
+	}
+
+	@media (min-height: 768px) { 
+
+		.btns-row{
+			margin-top: 10rem;
+		}
+		
+	}
+</style>
+
 <div class="back2">
 
 	<div class="row" style="margin: 1%">
 
-		<div class="col-md-8">
+		<div class="col-md-6">
 
 			<div class="row">
 
@@ -14,7 +33,7 @@
 					<h1 class="feel-title">Se un Oso Unisierra</h1>
 				</div>
 
-				<div class="col-md-12">
+				<div class="col-md-8">
 
 					<div class="feed">
 
@@ -41,7 +60,7 @@
 							</div>
 
 							<div class="feed-body">
-								<p>El módulo de Re-Inscripciones ya está abierto. Si nunca has entrado al portal da Clic en el botón de la esquina “Acceder”  y sigue las instrucciones para activar tu cuenta con el usuario y contraseña que tu TUTOR te entregó.</p>
+								<p>El módulo de reinscripciones es para alumnos. Si nunca has entrado al portal solicita tu calve de activación en fb/unisierra y una vez que a tengas da click en el boton de "Acceso Alumnos"</p>
 							</div>
 
 						</div>
@@ -76,11 +95,11 @@
 
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-6">
 
 			<div class="card card-custom">
 
-				<form method="post" action="{{route('alumn.users.registerAlumn')}}" style="width: 80%; margin-right: auto; margin-left: auto">
+				<form method="post" action="{{route('alumn.users.registerAlumn')}}" style="width: 90%; margin-right: auto; margin-left: auto">
 
 					{{ csrf_field() }}
 
@@ -88,13 +107,13 @@
 
 						<div class="row">
 
-							<h3>Registrarme en el Portal</h3>
+							<h3>Registro Nuevo Ingreso</h3>
 
 						</div>
 
-						<div class="row">
+						<div class="row" style="padding-top: 1rem">
 
-							<div class="col-md-12">
+							<div class="col-md-6">
 								
 								<div class="input-group mb-3">
 
@@ -114,7 +133,7 @@
 
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-6">
 								
 								<div class="input-group mb-3">
 
@@ -154,7 +173,7 @@
 
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-6">
 								
 								<div class="input-group mb-3">
 
@@ -174,7 +193,7 @@
 
 							</div>
 
-							<div class="col-md-12">
+							<div class="col-md-6">
 								
 								<div class="input-group mb-3">
 
@@ -202,7 +221,9 @@
 
 						<div class="col-md-12 col-custom">
 
-							<button type="button" class="btn btn-warning button-custom sent">Registrarse como aspirante</button>
+							<button type="button" class="btn btn-warning button-custom sent"
+							style="margin: 1.5rem;"
+							>Guardar</button>
 							
 						</div>
 
@@ -211,6 +232,22 @@
 				</form>
 
 
+			</div>
+
+
+			<div class="btns-row">
+				<a href="{{route('alumn.home')}}" 
+						class="btn btn-success btn-lg btn-block " 
+						style="color: white; border-radius: 20px; margin:0rem 2rem">
+				 Acceso <br>
+				 Alumnos
+				</a>
+				<a href="{{route('alumn.home')}}" 
+						class="btn btn-warning btn-lg btn-block button-custom my-2 my-sm-0" 
+						style="color: white; border-radius: 20px;  margin:0rem 2rem">
+				Acesso Nuevo <br>
+				Ingreso
+				</a>
 			</div>
 
 		</div>

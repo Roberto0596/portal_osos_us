@@ -111,18 +111,22 @@ class AccountController extends Controller
             $user->email = $request->input("email");
             $user->password = bcrypt($request->input("password"));
             $user->save(); 
+            session()->flash("messages", 'success|Su registro se realizó con éxito|De click en el botón Acceso Nuevo Ingreso (Color Naranja ) para iniciar sesión');
+            return redirect()->back(); 
         } catch(\Exception $e) {
            session()->flash("messages","error|Opps, ocurrió un problema que no esperabamos.");
            return redirect()->back(); 
         }
 
-        $credentials = $request->only('email', 'password');
+        //$credentials = $request->only('email', 'password');
 
-        if (Auth::guard('alumn')->attempt($credentials)) {
+        /*if (Auth::guard('alumn')->attempt($credentials)) {
             session()->flash("messages", "success|Bienvenido ".ucwords($user->name).".");
             return redirect()->route('alumn.home');
         } else {
             return redirect()->route("alumn.login");
-        }
+        }*/
+
+        
     }
 }

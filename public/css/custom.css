@@ -293,8 +293,8 @@ header
     background: rgba(255, 255, 255, 0.50);
     border-radius: 20px;
     margin-top: 0vh;
-    margin-left: 4vh;
-    width: 90%;
+    margin-left: 3rem;
+    width: 100%;
 }
 
 .feed2  
@@ -396,7 +396,7 @@ header
 
 .osos-title
 {
-        margin-top: 8vh;
+    margin-top: 2vh;
     color: white;
     margin-left: 4%;
 }
