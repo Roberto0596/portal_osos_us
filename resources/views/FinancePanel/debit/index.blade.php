@@ -356,27 +356,45 @@
             </div>
 
             <div class="col-md-12">  
-              
-              <label for="">Alumno</label>      
 
-              <div class="input-group mb-3">
+              <div class="row">
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                    <i class="fas fa-user"></i></span>
+                <div class="col-md-12">
+
+                  <input type="hidden" name="id_alumno" id="hidden_id_alumno">
+
+                  <p>Alumno: <span id="alumnName"></span></p>
+
                 </div>
 
-                <select class="form-control" id="id_alumno" name="id_alumno" style="width:90%" require>
-                    @php
-                        $alumnos = selectSicoes("Alumno");
-                    @endphp
+              </div>
 
-                    @foreach($alumnos as $key => $value)
-                    <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
-                    @endforeach
+              <button type="button" class="btn btn-success" id="showSelectAlumno" style="margin: 1rem 0rem 1rem 0rem">Cambiar alumno</button>
 
-                </select>
+              <div class="selectAlumno" style="display: none">
 
+                <label for="">Alumno</label>      
+
+                <div class="input-group mb-3">
+
+                  <div class="input-group-prepend">
+                      <span class="input-group-text">
+                      <i class="fas fa-user"></i></span>
+                  </div>               
+
+                  <select class="form-control" id="select_alumno_id" style="width:90%">
+                    <option value="">Seleccione un alumno</option>
+                      @php
+                          $alumnos = selectSicoes("Alumno");
+                      @endphp
+
+                      @foreach($alumnos as $key => $value)
+                      <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
+                      @endforeach
+
+                  </select>
+
+                </div>
               </div>
 
             </div>

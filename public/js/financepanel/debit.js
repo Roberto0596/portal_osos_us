@@ -127,8 +127,12 @@ function changeMode(mode, period, concept){
                 } else {
                     $("#edit-container").hide();
                 }
+
+                $("#alumnName").text(response["alumnName"]);
+                $("#hidden_id_alumno").val(response["alumnId"]);
+
                 $('#amount').val(response['amount']);
-                $('#id_alumno').prepend("<option value='"+response["alumnId"]+"' selected>"+response["enrollment"] + " "+ response["alumnName"]+"</option>");
+                // $('#id_alumno').prepend("<option value='"+response["alumnId"]+"' selected>"+response["enrollment"] + " "+ +"</option>");
                 $('#debitId').val(response['debitId']);
                 $('#description').val(response['description']);               
             }
@@ -442,6 +446,16 @@ function loader(flag, text) {
     $(".loader-body-text").text(text);
 }
 
+$("#showSelectAlumno").click(function() {
+    $(".selectAlumno").show();
+});
+
+
+$("#select_alumno_id").change(function() {
+    var valor = $(this).val();
+    console.log(valor, "hola");
+    $("#hidden_id_alumno").val(valor);
+});
 
 
 
