@@ -109,6 +109,7 @@
                     {
                         $ftype = $fm[0];
                         $fmessage = $fm[1];
+                        
                     }
                 ?>
                 var timeout = setTimeout(() => 
@@ -117,7 +118,7 @@
                 }, 15000);
                 swal.fire({
                     title: "{{ $fmessage }}",
-                    text: "",
+                    text: "{{isset($fm[2]) ?  $fm[2] : ''}}",
                     type: '{{$ftype}}',
                     buttons: "Aceptar"
                 }).then((value) => {
