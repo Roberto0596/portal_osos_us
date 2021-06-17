@@ -238,14 +238,14 @@
 			<div class="btns-row">
 				<a href="{{route('alumn.home')}}" 
 						class="btn btn-success btn-lg btn-block " 
-						style="color: white; border-radius: 20px; margin:0rem 2rem">
-				 Acceso <br>
+						style="color: white; border-radius: 20px; margin:0rem 2rem; font-weight: 900;font-size: 20px;">
+				 Acceso
 				 Alumnos
 				</a>
 				<a href="{{route('alumn.home')}}" 
 						class="btn btn-warning btn-lg btn-block button-custom my-2 my-sm-0" 
-						style="color: white; border-radius: 20px;  margin:0rem 2rem">
-				Acesso Nuevo <br>
+						style="color: white; border-radius: 20px;  margin:0rem 2rem; font-weight: 900;font-size: 20px;">
+				Acesso Nuevo
 				Ingreso
 				</a>
 			</div>
