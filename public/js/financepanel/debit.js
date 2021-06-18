@@ -37,7 +37,7 @@ function changeMode(mode, period, concept){
                     "<i class='fa fa-edit' style='color:white'></i></button>";
                 }
 
-                if(data.id_order != null && data.payment_method != "transfer") {
+                if(data.id_order != null && data.payment_method != "transfer" && data.id_order != 0) {
                     res+="<button class='btn btn-danger custom details' data-toggle='modal' data-target='#modalShowDetails' is='"+data.payment_method+"' DebitId='"+data.id+"'>"+
                     "<i class='fa fa-eye' title='Ver detalles del pago' style='color:white'></i></button>";
                 }
