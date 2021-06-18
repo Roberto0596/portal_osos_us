@@ -19,6 +19,9 @@ function changeMode(mode, period, concept){
         },
         "columns":[
             {"data": null, orderable: false, "render": function(data){
+                return data.alumn.Matricula; 
+            }},
+            {"data": null, orderable: false, "render": function(data){
                 var res = "<div class='btn-group'>";
 
                 if(data.status == 1) {
@@ -45,9 +48,6 @@ function changeMode(mode, period, concept){
                 res += "<button class='btn btn-danger  btnDeleteDebit' DebitId='"+data.id+"'>"+
                     "<i class='fa fa-times' title='Eliminar adeudo' style='color:white'></i></button></div>"; 
                 return res;
-            }},
-            {"data": null, orderable: false, "render": function(data){
-                return data.alumn.Matricula; 
             }},
             {"data": null, orderable: false, "render": function(data){
                 return data.alumn.Nombre + " " + data.alumn.ApellidoPrimero + " " + data.alumn.ApellidoSegundo; 

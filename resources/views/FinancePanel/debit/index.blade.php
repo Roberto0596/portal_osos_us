@@ -160,8 +160,8 @@
           <thead>
 
             <tr>
-              <th>Acciones</th>
               <th>Matricula</th>
+              <th>Acciones</th>
               <th>Alumno</th>
               <th>Email</th>
               <th>Descripción</th>
