@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Sicoes\Inscripcion;
 
 class User extends Authenticatable
 {
@@ -51,6 +52,14 @@ class User extends Authenticatable
 
     public function getLastInscription() {
         return (Object) getInscriptionData($this->id_alumno);
+    }
+
+    public function currentInscription() {
+        $inscription = Inscripcion::where("AlumnoId", $this->id_alumno)
+                        ->where("Baja", 0)
+                        ->orderBy("InscripcionId", "desc")
+                        ->first();
+        return $inscription;
     }
 
     public function debit() {

@@ -123,7 +123,6 @@ class DebitController extends Controller
             $debit->amount = $request->input("amount");
             $debit->id_alumno = $request->input("id_alumno");
             $debit->description = $request->input("description");
-            // $debit->id_order = $request->get("status") == "on" ? 1 : 0;
             $debit->status = $request->get("status") == "on" ? 1 : 0; 
             $debit->save();   
 
@@ -156,17 +155,21 @@ class DebitController extends Controller
 
             if ($value == 1) {
                 $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
+
                 $register = Inscription::makeRegister($alumn);
+
                 if (count($register["errors"]) == 0) {
                     $message = $register["success"][0];
+                    validateDebitsWithOrderId($debit->id_order, $value);
                 } else {
                     $message = $register["errors"][0];
                 }
+            } else {
+                validateDebitsWithOrderId($debit->id_order, $value);
             }
 
-            validateDebitsWithOrderId($debit->id_order, $value);
             $debit->save();
-            session()->flash("messages", "info|Guardado correcto");
+            session()->flash("messages", "info|".$message);
             return redirect()->back();
 
         } else {

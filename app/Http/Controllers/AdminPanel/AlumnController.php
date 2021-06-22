@@ -9,6 +9,7 @@ use App\Models\Alumns\Debit;
 use App\Models\Alumns\Notify;
 use App\Models\Sicoes\EncGrupo;
 use App\Models\Sicoes\Inscripcion;
+use App\Models\Sicoes\PlanEstudio;
 
 class AlumnController extends Controller
 {
@@ -83,53 +84,51 @@ class AlumnController extends Controller
 
     public function update(Request $request)
     {
-    	$alumn = User::find($request->input('id_alumn'));
-    	$alumnData = selectSicoes("Alumno","AlumnoId",$alumn->id_alumno)[0];
-    	$actualizar = [];
-        $inscripcion = getInscription($alumn->id_alumno);
+        try {
+        	$alumn = User::find($request->input('id_alumn'));
+            $inscripcion = $alumn->currentInscription();
 
-        $alumn->inscripcion = $request->get('inscription-status');
-        $alumn->save();
-
-        if ($request->get('is_payment') == 1) {
-            $validDebit = Debit::where([["id_alumno", $alumn->id_alumno], ["period_id", getConfig()->period_id]])->first();
-
-            if (!$validDebit) {
-                insertInscriptionDebit($alumn);
+            if ($request->has('inscription-status') && $request->get('inscription-status')) {
+                $alumn->inscripcion = $request->get('inscription-status');
+                $alumn->save();
             }
+
+            if ($request->get('is_payment') == 1) {
+                $validDebit = Debit::where([["id_alumno", $alumn->id_alumno], ["period_id", getConfig()->period_id]])->first();
+
+                if (!$validDebit) {
+                    insertInscriptionDebit($alumn);
+                }
+            }
+
+        	if ($request->has('PlanEstudioId') && $request->get('PlanEstudioId')) {
+                $planEstudio = PlanEstudio::find($request->get('PlanEstudioId'));
+                $alumn->sAlumn->PlanEstudioId = $planEstudio->PlanEstudioId;
+                $alumn->sAlumn->save();
+        	}
+
+        	if ($request->has('EncGrupoId') && $request->get('EncGrupoId')) {
+                $inscripcion->EncGrupoId = $request->get('EncGrupoId');
+                $inscripcion->save();
+         	}
+
+        	if ($request->has('matriculaGenerada') && $request->get('matriculaGenerada') != null) {
+                $alumn->sAlumn->Matricula = $request->get('matriculaGenerada');
+                $alumn->sAlumn->save();
+        	}
+
+            if ($request->has('semestre') && $request->get('semestre') != null) {
+                $inscripcion->Semestre = $request->get('semestre');
+                $inscripcion->save();
+            }
+
+        	session()->flash("messages","success|Todos los datos se guardaron completamente");
+        	return redirect()->back();
+
+        } catch(\Exception $e) {
+            session()->flash("messages","error|Ocurrió un problema");
+            return redirect()->back();
         }
-
-    	if ($request->has('PlanEstudioId')) {
-    		array_push($actualizar, updateSicoes("Alumno", "PlanEstudioId", $request->input('PlanEstudioId'), "AlumnoId", $alumnData["AlumnoId"]));
-    	}
-
-    	if ($request->has('EncGrupoId')) {
-    		array_push($actualizar, updateSicoes("Inscripcion", "EncGrupoId", $request->input('EncGrupoId'),"InscripcionId", $inscripcion["InscripcionId"]));
-    	}
-
-    	if ($request->has('matriculaGenerada') && $request->input('matriculaGenerada') != null) {
-    		array_push($actualizar, updateSicoes("Alumno", "Matricula", $request->input('matriculaGenerada'), "AlumnoId", $alumnData["AlumnoId"]));
-    	}
-
-        if ($request->has('semestre') && $request->input('semestre') != null) {
-            array_push($actualizar, updateSicoes("Inscripcion", "Semestre", $request->input('semestre'), "InscripcionId", $inscripcion["InscripcionId"]));
-        }
-
-    	if (count($actualizar)==0)
-    	{
-    		session()->flash("messages","info|Guardado correcto");
-    		return redirect()->back();
-    	}
-    	else if (in_array("error", $actualizar)) 
-    	{
-    		session()->flash("messages","warning|Algunos datos no se guardaron");
-    		return redirect()->back();
-    	}
-    	else
-    	{
-    		session()->flash("messages","success|Todos los datos se guardaron completamente");
-    		return redirect()->back();
-    	}
     }
 
     public function generateEnrollment(Request $request)

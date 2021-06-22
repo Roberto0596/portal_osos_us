@@ -30,7 +30,7 @@ class Inscription {
         }
 
         //entrara en la condicion cuando el alumno sea de nuevo ingreso
-        if ($inscripcionData->Semestre == 1) {
+        if ($inscripcionData["Semestre"] == 1) {
             $enrollement = self::generateCarnet($alumno->PlanEstudioId); 
             $alumno->Matricula = $enrollement;
             $alumno->save();          
@@ -47,9 +47,9 @@ class Inscription {
         ]);
 
         if ($inscribir) {
-            $user->inscripcion=3;
+            $user->inscripcion = 3;
             $user->save();
-            addNotify("Pago de colegiatura",$user->id,"alumn.charge");
+            addNotify("Pago de colegiatura", $user->id,"alumn.charge");
             insertInscriptionDocuments($user->id);
             array_push($message["success"], "proceso realizado con exito");
         } else {
@@ -75,7 +75,7 @@ class Inscription {
             $instance->Baja = $array["Baja"];
             $instance->AlumnoId = $array["AlumnoId"];
             $instance->Fecha = $array["Fecha"];
-            $instance->PeriodoId = $array["PeriodoId"];
+            // $instance->PeriodoId = $array["PeriodoId"];
             $instance->save();
             return true;
         } catch(\Exception $e) {
