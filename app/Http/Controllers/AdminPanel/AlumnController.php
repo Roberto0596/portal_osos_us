@@ -46,6 +46,7 @@ class AlumnController extends Controller
             'PlanEstudio' => $alumn->sAlumn->PlanEstudio->Clave, 
             'semestre' => $inscripcion["Semestre"], 
             "inscription_status" => $alumn->inscripcion);
+        
 		return response()->json($array);
     }
 

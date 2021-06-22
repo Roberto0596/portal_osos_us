@@ -54,9 +54,9 @@ class FormController extends Controller
 
     public function saveInscription(Request $request)
     {
-        // $this->validate($request,[
-        //     'g-recaptcha-response' => 'required|recaptcha',
-        // ]);
+        $this->validate($request,[
+            'g-recaptcha-response' => 'required|recaptcha',
+        ]);
 
         $current_user = current_user();
 
@@ -84,9 +84,9 @@ class FormController extends Controller
     {       
         try
         {
-            // $this->validate($request,[
-            //     'g-recaptcha-response' => 'required|recaptcha',
-            // ]);
+            $this->validate($request,[
+                'g-recaptcha-response' => 'required|recaptcha',
+            ]);
 
             $current_user = current_user();
             $data = json_decode($request->input('data'), true);
