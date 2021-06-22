@@ -90,9 +90,9 @@
 
               <div class="inner">
 
-                <h3>{{$status?"Inscrito":"Inscribirse"}}</h3>
+                <h3>{{ $status }}</h3>
 
-                <p>{{$status?"Proceso terminado":"Aun no te inscribes"}}</p>
+                <p>{{ $status != "Inscrito" ? "En proceso" : "Proceso terminado" }}</p>
 
               </div>
 
@@ -102,7 +102,7 @@
 
               </div>
 
-              <a href="{{isNoob(Auth::guard('alumn')->user()->id)}}" class="small-box-footer">{{!$status?"Inscribirse ":"Gracias"}}<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{isNoob(Auth::guard('alumn')->user()->id)}}" class="small-box-footer">{{ $status != "Inscrito" ? "Inscribirse ":"Gracias" }}<i class="fas fa-arrow-circle-right"></i></a>
 
             </div>
             

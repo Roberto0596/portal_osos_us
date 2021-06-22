@@ -12,7 +12,7 @@
 
         <div class="col-sm-6">
 
-          <h1>Esta sera tu carga academica</h1>
+          <h1>Selecciona tu carga academica</h1>
 
         </div>
 
@@ -38,7 +38,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">El sistema ha seleccionado estas materias para ti</h3>
+        <h3 class="card-title">El sistema ha seleccionado el siguient el listado para ti</h3>
 
       </div>
       
@@ -81,7 +81,7 @@
 
                     <div class="icheck-success d-inline">
 
-                     <input type="checkbox" class="checkasignatura" name="seleccionadas[]" id="{{$key}}" checked value="{{$value->detGrupoId}}">
+                     <input type="checkbox" class="checkasignatura" name="seleccionadas[]" id="{{$key}}" value="{{$value->detGrupoId}}">
 
                       <label for="{{$key}}">
                           {{$value->materia}}

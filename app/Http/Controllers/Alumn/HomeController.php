@@ -17,7 +17,27 @@ class HomeController extends Controller
     public function index()
     {
         $user = current_user();
-        $status = $user->inscripcion < 3? false:true;
+
+        switch ($user->inscripcion) {
+            case 0:
+                $status = 'Inscribirse';
+                break;
+            case 1:
+                $status = 'Realizar pago';
+                break;
+            case 2:
+                $status = 'Validación';
+                break;
+            case 3:
+                $status = 'Carga Académica';
+                break;
+            case 4:
+                $status = 'Inscrito';
+                break;
+            default:
+                $status = "Inscribirse";
+                break;
+        }
 
         //documentos
         $documents = Document::where("alumn_id","=",$user->id)->get();
