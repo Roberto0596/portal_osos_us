@@ -8,6 +8,7 @@ use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\PeriodModel;
+use App\Models\Sicoes\Alumno;
 
 class PdfController extends Controller
 {
@@ -232,17 +233,16 @@ class PdfController extends Controller
         $total = Debit::where($query)->get()->sum("amount");        
         $current_user = current_user();
 
-        try {
-            $alumno = selectSicoes("Alumnos","AlumnoId",$current_user->id_alumno)[0];
-        } catch(\Exception $e) {
-            session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
-            return redirect()->back();
-        }
+        $alumno = Alumno::find($current_user->id_alumno);
         
         $data['tipo'] = $tipo;                   
 
-        $html = view('Alumn.pdf.ficha',['alumno' => $alumno,'deuda_total' => $total])->render();
-        $namefile = 'CONSTANCIA'.time().'.pdf';
+        $html = view('Alumn.pdf.ficha',[
+            'alumno' => $alumno,
+            'deuda_total' => $total
+        ])->render();
+
+        $namefile = 'Ficha'.time().'.pdf';
  
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
