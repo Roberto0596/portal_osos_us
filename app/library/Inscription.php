@@ -75,7 +75,7 @@ class Inscription {
             $instance->Baja = $array["Baja"];
             $instance->AlumnoId = $array["AlumnoId"];
             $instance->Fecha = $array["Fecha"];
-            // $instance->PeriodoId = $array["PeriodoId"];
+            $instance->PeriodoId = $array["PeriodoId"];
             $instance->save();
             return true;
         } catch(\Exception $e) {
