@@ -84,9 +84,9 @@ class FormController extends Controller
     {       
         try
         {
-            $this->validate($request,[
-                'g-recaptcha-response' => 'required|recaptcha',
-            ]);
+            // $this->validate($request,[
+            //     'g-recaptcha-response' => 'required|recaptcha',
+            // ]);
 
             $current_user = current_user();
             $data = json_decode($request->input('data'), true);

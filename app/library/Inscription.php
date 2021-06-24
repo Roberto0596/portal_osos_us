@@ -79,6 +79,7 @@ class Inscription {
             $instance->save();
             return true;
         } catch(\Exception $e) {
+            dd($e);
             return false;
         }
     }
