@@ -16,7 +16,8 @@ class ConfigModel extends Model
         'created_at',
         'updated_at',
         'laep_id',
-        'lata_id'
+        'lata_id',
+        'in_maintenance'
     ];
 
     public function period() {

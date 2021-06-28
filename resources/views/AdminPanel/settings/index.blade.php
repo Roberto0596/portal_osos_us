@@ -224,6 +224,42 @@
 
         </div>
 
+        <div class="col-md-3">
+
+          <div class="card card-outline card-warning collapsed-card">
+
+            <div class="card-header">
+
+              <h3 class="card-title">En Mantenimiento {{ $instance->in_maintenance != null ? ($instance->in_maintenance == 0 ? ': No Activo ' : ': Activo') : ': No Activo'}}</h3>
+
+              <div class="card-tools">
+
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                </button>
+
+              </div>
+
+            </div>
+
+            <div class="card-body" style="display: none;">
+
+              <div class="form-group">
+
+                <div class="panel">Cambiar</div>
+
+                  <select name="in_maintenance" class="form-control select2" id="open_inscription" style="width: 100%">
+                      <option value="0" {{ $instance->in_maintenance != null ? ($instance->in_maintenance == 0 ? 'selected' : '') : 'selected'}}>No Activo</option>
+                      <option value="1" {{ $instance->in_maintenance != null ? ($instance->in_maintenance == 1 ? 'selected' : '') : ''}}>Activo</option>
+                  </select>
+
+                </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
         <div class="col-sm-12">
             <div class="btn-group">
               <button class="btn btn-success" type="submit"><i class="fas fa-check"></i> Guardar</button>

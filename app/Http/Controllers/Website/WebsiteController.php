@@ -15,6 +15,11 @@ class WebsiteController extends Controller
 		return view('Website.register');
 	}
 
+    public function inMaintenance()
+	{
+		return view('Website.maintenance');
+	}
+
     public function viewRestore($token) {
         $instance = PasswordRequest::where("token", $token)->first();
         if (!$instance) {

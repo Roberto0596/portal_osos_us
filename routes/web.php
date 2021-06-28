@@ -10,10 +10,14 @@ Route::group(['domain' => $alumnDomain], function() {
 	{
 	  	Route::name('alumn.')->group(function()
 	  	{
-	  		Route::get('/sign-in',[
-		        'uses' => 'AuthController@login', 
-		        'as' => 'login'
-		    ]);
+			Route::group(["middleware"=>["maintenance"]],function(){
+
+				Route::get('/sign-in',[
+					'uses' => 'AuthController@login', 
+					'as' => 'login'
+				]);
+			});
+	  		
 
 		    Route::post('/sign-in',[
 		        'uses' => 'AuthController@postLogin', 
@@ -460,10 +464,14 @@ Route::group(['domain' => $alumnDomain], function() {
 
 	Route::group(['namespace' => 'Website'], function()
 	{
-		Route::get('/', [
-	        'uses' => 'WebsiteController@index', 
-	        'as' => 'home'
-	    ]);	
+		Route::group(["middleware"=>["maintenance"]],function(){
+
+			Route::get('/', [
+				'uses' => 'WebsiteController@index', 
+				'as' => 'home'
+			]);	
+
+		});
 
 	    Route::get('/restore-pass/{token?}', [
 	        'uses' => 'WebsiteController@viewRestore', 
@@ -474,6 +482,13 @@ Route::group(['domain' => $alumnDomain], function() {
 	        'uses' => 'WebsiteController@restorePassword', 
 	        'as' => 'restore.password'
 	    ]);	
+
+		Route::get('/maintenance',[
+			'uses' => 'WebsiteController@inMaintenance', 
+			'as' => 'maintenance'
+		]);
+	
+	
 	});
 
 	Route::group(['prefix'=> 'admin', 'namespace'=>'AdminPanel'], function()
