@@ -57,7 +57,7 @@ function insertInscriptionDebit(User $user)
         'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         'period_id' => getConfig()->period_id,
-        'enrollment' => $alumnData->Matricula,
+        'enrollment' => $alumnData['Matricula'],
         'alumn_name' => $alumnData->Nombre,
         'alumn_last_name' => $alumnData->ApellidoPrimero,
         'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '')
