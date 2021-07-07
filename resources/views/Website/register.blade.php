@@ -83,6 +83,22 @@
 						
 					</div>
 
+					<div class="feed">
+
+						<div class="feed_content">
+
+							<div class="feed-header">
+								<h1>#Usuarios iPhone</h1>
+							</div>
+
+							<div class="feed-body">
+								<p>Al momento de gestionar tus pagos asegurate de usar un navegador seguro como Chrome, Firexfox, Brave u Opera en tu móvil, de lo contrario el portal devolverá un error al intentar pagar.</p>
+							</div>
+
+						</div>
+						
+					</div>
+
 				</div>
 
 				<div class="col-md-12">
