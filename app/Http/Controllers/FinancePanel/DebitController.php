@@ -57,6 +57,7 @@ class DebitController extends Controller
                 $query->orWhere('alumn_name', 'like', '%'. $filter .'%');
                 $query->orWhere('alumn_last_name', 'like', '%'. $filter .'%');
                 $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
+                $query->orWhere('created_at', 'like', '%'. $filter .'%');
             });
            $filtered = $query->count();
         } 

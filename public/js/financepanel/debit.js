@@ -18,7 +18,7 @@ function changeMode(mode, period, concept){
             data: {mode:mode,period:period,concept:concept}
         },
         "columns":[
-            {"data": null, orderable: false, "render": function(data){
+            {"data": null, orderable: true, "render": function(data){
                 return data.alumn.Matricula; 
             }},
             {"data": null, orderable: false, "render": function(data){
@@ -64,7 +64,7 @@ function changeMode(mode, period, concept){
             {"data": null, orderable: false, "render": function(data){
                 return data.status == 1 ? "Pagada" : "Pendiente"; 
             }},
-            {"data": null, orderable: false, "render": function(data){
+            {"data": null, orderable: true, "render": function(data){
                 return data.created_at; 
             }},
             {"data": null, orderable: false, "render": function(data){
