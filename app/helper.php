@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
 use App\Library\Inscription;
+use App\Models\Sicoes\Alumno;
 
 /**
  * agrega un fallo de inscripcion.
@@ -45,7 +46,7 @@ function addFailedRegister($id,$message) {
 function insertInscriptionDebit(User $user)
 {
     $message = ["type" => 0, "message" => "Termino la validación de tu información"];
-    $alumnData = $user->sAlumn;
+    $alumnData = Alumno::find($user->id_alumno);
 
     $debit_array = [
         'debit_type_id' => 1,
@@ -57,7 +58,7 @@ function insertInscriptionDebit(User $user)
         'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         'period_id' => getConfig()->period_id,
-        'enrollment' => $alumnData['Matricula'],
+        'enrollment' => $alumnData->Matricula,
         'alumn_name' => $alumnData->Nombre,
         'alumn_last_name' => $alumnData->ApellidoPrimero,
         'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '')
