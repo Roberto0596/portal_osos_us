@@ -4,6 +4,7 @@ use App\Models\Sicoes\PlanEstudio;
 use App\Models\Sicoes\Alumno;
 use App\Models\Sicoes\Inscripcion;
 use App\Models\Sicoes\EncGrupo;
+use App\Models\Sicoes\Carrera;
 
 class Sicoes {
 
@@ -127,6 +128,16 @@ class Sicoes {
         } catch(\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * trae todos los planes con carreras
+    *
+     * @return array
+     */
+    public static function carrerasActivas() {
+        $planes = Carrera::whereNotIn("CarreraId", [8,4,7,9])->get();
+        return $planes;
     }
 	
 	public static function constructAlumnArray($data) {

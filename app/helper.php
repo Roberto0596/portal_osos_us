@@ -17,6 +17,7 @@ use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
 use App\Library\Inscription;
 use App\Models\Sicoes\Alumno;
+use App\Library\Sicoes;
 
 /**
  * agrega un fallo de inscripcion.
@@ -437,6 +438,10 @@ function getActiveCarrer()
   $stmt->execute();
   return $stmt->fetchAll();
   $stmt = null;
+}
+
+function carrerasActivas() {
+  return Sicoes::carrerasActivas();
 }
 
 function getLastPeriod()

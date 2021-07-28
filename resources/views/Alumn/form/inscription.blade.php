@@ -504,14 +504,13 @@
                                                 <select id="Carrera" name="Carrera" isnullable="no" class="form-control select2" required>
 
                                                     @php                                                        
-                                                        $school = getActiveCarrer();
-
+                                                        $school = carrerasActivas();
                                                     @endphp
 
                                                     <option value="" disabled="" selected="">Seleccionar</option>
 
                                                     @foreach($school as $key => $value)
-                                                        <option value="{{$value['CarreraId']}}">{{$value["Nombre"]}}</option>
+                                                        <option value="{{ $value->CarreraId }}">{{ $value->Nombre }}</option>
                                                     @endforeach                             
                                                     
                                                 </select>
