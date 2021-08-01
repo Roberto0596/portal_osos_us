@@ -30,7 +30,7 @@ class Inscription {
         }
 
         //entrara en la condicion cuando el alumno sea de nuevo ingreso
-        if ($inscripcionData["Semestre"] == 1) {
+        if ($inscripcionData->Semestre == 1) {
             $enrollement = self::generateCarnet($alumno->PlanEstudioId); 
             $alumno->Matricula = $enrollement;
             $alumno->save();          
