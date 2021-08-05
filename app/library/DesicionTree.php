@@ -168,10 +168,15 @@ class DesicionTree {
 						break;
 					case 5: 
 						$seriacion = $this->getAsignaturaSeriada($value->asignaturaId, $user->id_alumno);
-						if(intval($seriacion->Calificacion) >= 70) {
-							$node = 8;
+
+						if (isset($seriacion->Calificacion)) {
+							if(intval($seriacion->Calificacion) >= 70) {
+								$node = 8;
+							} else {
+								$node = 7;
+							}
 						} else {
-							$node = 7;
+							$status = false;
 						}
 						break;
 					case 6:

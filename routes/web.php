@@ -288,6 +288,11 @@ Route::group(['domain' => $alumnDomain], function() {
 				        'uses' => 'ChargeController@save', 
 				        'as' => 'charge.save'
 				    ]);
+
+				    Route::post('/charge/finally', [
+				        'uses' => 'ChargeController@finally', 
+				        'as' => 'charge.finally'
+				    ]);
 				});
 
 				Route::post('/save/document/inscription', [

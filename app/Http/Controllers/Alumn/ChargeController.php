@@ -27,6 +27,8 @@ class ChargeController extends Controller
         } else {
             $charge = session()->get('chargeTreeInstance')->getTreeCharge();
         }
+
+        $charge = null;
         return view('Alumn.charge.index')->with(["instance" => $charge]);
 	}
 
@@ -59,6 +61,15 @@ class ChargeController extends Controller
         } else {
             session()->flash("messages","warning|Algo salió mal, contacta con servicios escolares.");
         }
+        return redirect()->route("alumn.home");
+    }
+
+    public function finally(Request $request) {
+        $user = current_user();
+        $user->inscripcion = 4;
+        $user->save();
+
+        session()->flash("messages","success|El proceso fue finalizado, Revisa tu carga con el personal de servicios escolares.");
         return redirect()->route("alumn.home");
     }
 }

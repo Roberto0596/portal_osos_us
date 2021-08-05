@@ -20,7 +20,7 @@
 
           <ol class="breadcrumb float-sm-right">
 
-            <button class="btn btn-success buttom-custom" id="print">Imprimir</button>
+            <button class="btn btn-success buttom-custom print">Imprimir</button>
 
           </ol>
 
@@ -34,11 +34,13 @@
 
   <section class="content">
 
+    @if($instance)
+
     <div class="card card-success" style="height: 80vh;">
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">El sistema ha seleccionado el siguient el listado para ti</h3>
+        <h3 class="card-title">El sistema ha seleccionado el siguiente el listado para ti</h3>
 
       </div>
       
@@ -50,62 +52,62 @@
 
             <form action="{{route('alumn.charge.save')}}" method="post">
 
-              {{ csrf_field() }}
+              {{ csrf_field() }}              
 
-            <table class="table">
+              <table class="table">
 
-              <thead>
+                <thead>
 
+                  <tr>
+
+                    <th>Materia</th>
+
+                    <th>Semestre</th>
+
+                    <th>Alumno</th>
+
+                    <th>Profesor</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+                
+                @foreach($instance as $key => $value)
                 <tr>
 
-                  <th>Materia</th>
+                  <td>
 
-                  <th>Semestre</th>
+                    <div class="form-group clearfix">
 
-                  <th>Alumno</th>
+                      <div class="icheck-success d-inline">
 
-                  <th>Profesor</th>
+                       <input type="checkbox" class="checkasignatura" name="seleccionadas[]" id="{{$key}}" value="{{$value->detGrupoId}}">
 
-                </tr>
+                        <label for="{{$key}}">
+                            {{$value->materia}}
+                        </label>
 
-              </thead>
-
-              <tbody>
-              
-              @foreach($instance as $key => $value)
-              <tr>
-
-                <td>
-
-                  <div class="form-group clearfix">
-
-                    <div class="icheck-success d-inline">
-
-                     <input type="checkbox" class="checkasignatura" name="seleccionadas[]" id="{{$key}}" value="{{$value->detGrupoId}}">
-
-                      <label for="{{$key}}">
-                          {{$value->materia}}
-                      </label>
+                      </div>
 
                     </div>
 
-                  </div>
+                  </td>
 
-                </td>
+                  <td>{{$value->semestre}}</td>
 
-                <td>{{$value->semestre}}</td>
+                  <td>{{$value->nombre}}</td>
 
-                <td>{{$value->nombre}}</td>
+                  <td>{{$value->nombreProfesor}}</td>
 
-                <td>{{$value->nombreProfesor}}</td>
+                </tr>             
 
-              </tr>               
+                @endforeach
 
-              @endforeach
+                </tbody>
 
-              </tbody>
-
-            </table>
+              </table>
 
             @php
               $id_alumno = Auth::guard("alumn")->user()->id_alumno;
@@ -132,12 +134,53 @@
 
     </div>
 
+      @else
+
+      <form action="{{route('alumn.charge.finally')}}" method="post">
+        
+        {{ csrf_field() }} 
+
+        <div class="card">
+
+          <div class="card-header">
+            <h5>Opps!, parece que ha ocurrido un problema al momento de generar tu carga academica.</h5>
+          </div>
+        
+          <div class="card-body">
+
+            <div style="text-align: justify;">
+              <p>Esto puede deberse a las siguientes situaciones</p>
+              <ul>
+                <li>Hay una inconsistencia en cuanto al plan de estudio y las materias que se llevan en el.</li>
+                <li>Hay una inconsistencia en cuanto al registro de tus calificaciones.</li>
+              </ul>
+              <p>En caso de que seas de nuevo ingreso, puede deberse a movimientos en los planes de estudio, esto provoca que no se genere bien la carga academica.</p>
+              <p>Imprime esta pagina y enviasela a personal de servicios escolares para que seleccionen tu carga academica de manera manual, una disculpa por los inconvenientes. de igual manera, preciona el boton de guardar para finalizar tu proceso.</p>
+              <div style="text-align: center">
+                <h4><b>Matricula: </b>{{ current_user()->sAlumn->Matricula }}</h4>
+                <h4><b>Alumno: </b>{{ current_user()->FullName }}</h4>
+              </div>
+
+              <center>
+                <button class="btn btn-success buttom-custom print" type="button">Imprime este aviso</button><br>
+                <button class="btn btn-success" style="margin-top: 1rem">Terminar proceso</button>
+              </center>
+
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+        
+      @endif
+
   </section>
 
 </div>
 
 <script>
-  $("#print").click(function(){
+  $(".print").click(function(){
     window.print();
   });
 </script>

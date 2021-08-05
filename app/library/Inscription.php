@@ -24,22 +24,23 @@ class Inscription {
         $alumno = Alumno::find($user->id_alumno);
         $inscripcionData = Sicoes::checkGroupData($user->id_alumno);
 
-        if ($inscripcionData == false) {
+        if ($inscripcionData == false || $inscripcionData == null) {
             $inscripcionData = ["Semestre" => 4, "EncGrupoId" => 1120];
             addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
         }
 
-        //entrara en la condicion cuando el alumno sea de nuevo ingreso
-        if ($inscripcionData->Semestre == 1) {
-            $enrollement = self::generateCarnet($alumno->PlanEstudioId); 
-            $alumno->Matricula = $enrollement;
-            $alumno->save();          
-            $user->email = "a".str_replace("-", "", $enrollement)."@unisierra.edu.mx";
-        } 
+        if (isset($inscripcionData->Semestre) && $inscripcionData->Semestre == 1) {
+            self::assignEnrollment($alumno, $user);
+        } else if (isset($inscripcionData["Semestre"]) && $inscripcionData["Semestre"] == 1) {
+            self::assignEnrollment($alumno, $user);
+        }
+
+        $semestre = isset($inscripcionData->Semestre) ? $inscripcionData->Semestre : $inscripcionData["Semestre"];
+        $encgrupo = isset($inscripcionData->EncGrupoId) ? $inscripcionData->EncGrupoId : $inscripcionData["EncGrupoId"];
 
         $inscribir = self::insertRegister([
-            'Semestre' => $inscripcionData["Semestre"],
-            'EncGrupoId'=> $inscripcionData["EncGrupoId"],
+            'Semestre' => $semestre,
+            'EncGrupoId'=> $encgrupo,
             'Fecha'=> getDateCustom(),
             'Baja' => 0, 
             'AlumnoId'=>$user->id_alumno,
@@ -56,6 +57,14 @@ class Inscription {
             array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
         }
         return $message;
+    }
+
+    private static function assignEnrollment(Alumno $alumno, User $user) {
+        $enrollement = self::generateCarnet($alumno->PlanEstudioId); 
+        $alumno->Matricula = $enrollement;
+        $alumno->save();          
+        $user->email = "a".str_replace("-", "", $enrollement)."@unisierra.edu.mx";
+        $user->save();
     }
 
     /**
@@ -79,7 +88,6 @@ class Inscription {
             $instance->save();
             return true;
         } catch(\Exception $e) {
-            dd($e);
             return false;
         }
     }

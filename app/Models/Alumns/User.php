@@ -15,6 +15,8 @@ class User extends Authenticatable
     protected $table = "users";
 
     protected $with = ["sAlumn"];
+
+    protected $appends = ["FullName"];
     
     public function document() {
         return $this->hasMany('\App\Models\Alumns\Document', "alumn_id", "id");
@@ -72,5 +74,9 @@ class User extends Authenticatable
 
     public function requestPassword() {
         return $this->hasMany('\App\Models\Alumns\PasswordRequest', "id", "alumn_id");
+    }
+
+    public function getFullNameAttribute() {
+        return join([$this->name, $this->last_name], " ");
     }
 }
