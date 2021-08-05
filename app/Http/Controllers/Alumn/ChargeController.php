@@ -28,7 +28,6 @@ class ChargeController extends Controller
             $charge = session()->get('chargeTreeInstance')->getTreeCharge();
         }
 
-        $charge = null;
         return view('Alumn.charge.index')->with(["instance" => $charge]);
 	}
 
