@@ -365,7 +365,7 @@ class DebitController extends Controller
 
         if ($initial_date && $end_date) {
 
-            if ($init == $final) {
+            if ($initial_date == $end_date) {
                 $data->where("created_at", 'like', '%'.$initial_date.'%');
             } else {
                 $data->whereBetween("created_at", [$initial_date, $end_date]);
