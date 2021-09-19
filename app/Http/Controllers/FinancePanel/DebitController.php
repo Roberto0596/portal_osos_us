@@ -358,6 +358,7 @@ class DebitController extends Controller
                 ->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%')
                 ->orWhere('location', 'like', '%'. $filter .'%')
                 ->orWhere('state', 'like', '%'. $filter .'%')
+                ->orWhere('career', 'like', '%'. $filter .'%')
                 ->orWhere('created_at', 'like', '%'. $filter .'%');
             });
         } 
