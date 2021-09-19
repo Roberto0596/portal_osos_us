@@ -369,13 +369,13 @@ Route::group(['domain' => $alumnDomain], function() {
 				//sirve para mostrar los registros en la tabla
 				Route::post('/debit/datatable', [
 			        'uses' => 'DebitController@datatable', 
-			        'as' => 'user.show'
+			        'as' => 'debit.show'
 				]);
 				
 				//sirve para mostrar un registros en especifico
 				Route::post('/debit/see', [
 			        'uses' => 'DebitController@seeDebit', 
-			        'as' => 'user.see'
+			        'as' => 'debit.see'
 				]);
 
 

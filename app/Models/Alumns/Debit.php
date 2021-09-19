@@ -22,12 +22,16 @@ class Debit extends Model
         'enrollment',
         'alumn_name',
         'alumn_last_name',
-        'alumn_second_last_name'
+        'alumn_second_last_name',
+        'career',
+        'location',
+        'payment_date'
     ];
     
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'payment_date'
     ];
 
     protected $with = ['admin', 'debitType', 'Alumn'];

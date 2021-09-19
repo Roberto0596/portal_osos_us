@@ -34,15 +34,28 @@ class UpdateDebitTable implements ShouldQueue
         $debits = Debit::all();
         foreach ($debits as $key => $value) {
             try {
-                $user = User::where("id_alumno", $value->id_alumno)->first();
-                if (!$value->enrollment || !$value->alumn_name || !$value->alumn_last_name || !$value->alumn_second_last_name) {
-                    $value->enrollment = $user->sAlumn->Matricula;
-                    $value->alumn_name = $user->sAlumn->Nombre;
-                    $value->alumn_last_name = $user->sAlumn->ApellidoPrimero;
-                    $value->alumn_second_last_name = (isset($user->sAlumn->ApellidoSegundo) ? $user->sAlumn->ApellidoSegundo : '');
+                $user = $value->Alumn;
+                if(isset($user) && $user) {
+
+                    if (!$value->enrollment || !$value->alumn_name || !$value->alumn_last_name || !$value->alumn_second_last_name) {        
+                        $value->enrollment = $user->Matricula;
+                        $value->alumn_name = $user->Nombre;
+                        $value->alumn_last_name = $user->ApellidoPrimero;
+                        $value->alumn_second_last_name = (isset($user->ApellidoSegundo) ? $user->ApellidoSegundo : '');
+                        echo "Saving alumn general data";
+                    }  
+
+                    if (!$value->career || !$value->location) {
+                        $value->location = $user->Localidad;
+                        $value->state = $user->Estado->Nombre;
+                        $value->career = $user->PlanEstudio->Carrera->Nombre;
+                        echo "Saving alumn academic data";
+                    }
+
                     $value->save();
-                }                
+                }             
             } catch(\Exception $e) {
+                echo "problem with: " . $value->id;
             }
         }
     }

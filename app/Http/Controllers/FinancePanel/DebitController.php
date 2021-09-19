@@ -8,6 +8,7 @@ use App\Models\Alumns\User;
 use App\Models\Alumns\Ticket;
 use App\Models\PeriodModel;
 use App\Library\Inscription;
+use App\Library\Ticket as TicketLibrary;
 use App\Models\Sicoes\Alumno;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
@@ -25,22 +26,7 @@ class DebitController extends Controller
     //este metodo lo usamos con ajax para cargar los datos del adeudo para despues pasarlos al modal
 	public function seeDebit(Request $request) 
 	{       
-        $debit = Debit::find($request->input("DebitId"));
-        $alumn = Alumno::find($debit->id_alumno);
-        $data = array(
-            "concept"   => $debit->debitType->concept,
-            "alumnName" =>$alumn->getFullName(),
-            'description'=>$debit->description,
-            "amount"    =>$debit->amount,
-            "debitId"   => $debit->id,
-            "alumnId" => $debit->id_alumno,
-            "status"    => $debit->status,
-            "id_order" => $debit->id_order, 
-            "method" => $debit->payment_method,
-            "enrollment" => $alumn->Matricula,
-        );
-
-        return response()->json($data);
+        return response()->json(Debit::find($request->get("debit_id")));
     }
 
     public function searchAlumn(Request $request) {
@@ -68,7 +54,6 @@ class DebitController extends Controller
     // sirve para editar un adeudo 
     public function update(Request $request)
     {
-        $array = $request->input();
         $debit = Debit::find($request->input("debitId"));   
 
         if ($debit) {
@@ -79,10 +64,7 @@ class DebitController extends Controller
             $debit->save();   
 
             if ($debit->status == 1) {
-                try {
-                    createTicket($debit->id);
-                } catch(\Exception $e){
-                }
+                TicketLibrary::build($debit);
             }        
             
             if ($debit->has_file_id != null) {
@@ -100,7 +82,9 @@ class DebitController extends Controller
     }
 
     public function validateDebit(Request $request) {
+
         $value = $request->get("verification") == "on" ? 1 : 0;
+
         $debit = Debit::find($request->input('debit_id'));
 
         if ($debit) {
@@ -141,10 +125,8 @@ class DebitController extends Controller
             'id_alumno'=>'required',
         ]);
 
-        try {
-            $user = User::where("id_alumno", $request->input("id_alumno"))->first();
-            $alumnData = Alumno::find($user->id_alumno);
-           
+        try { 
+            $alumn = Alumno::find($request->input("id_alumno"));           
             $debit = new Debit();
             $debit->debit_type_id = $request->input("debit_type_id");
             $debit->amount = $request->input("amount");
@@ -152,10 +134,13 @@ class DebitController extends Controller
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = current_user("finance")->id;
             $debit->period_id = selectCurrentPeriod()->id;
-            $debit->enrollment = $alumnData->Matricula;
-            $debit->alumn_name = $alumnData->Nombre;
-            $debit->alumn_last_name = $alumnData->ApellidoPrimero;
-            $debit->alumn_second_last_name = (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : '');
+            $debit->enrollment = $alumn->Matricula;
+            $debit->alumn_name = $alumn->Nombre;
+            $debit->alumn_last_name = $alumn->ApellidoPrimero;
+            $debit->alumn_second_last_name = (isset($alumn->ApellidoSegundo) ? $alumn->ApellidoSegundo : '');
+            $debit->career = $alumn->PlanEstudio->Carrera->Nombre;
+            $debit->location = $alumn->Localidad;
+            $debit->state = $alumn->Estado->Nombre;
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();
@@ -249,7 +234,14 @@ class DebitController extends Controller
     } 
 
     public function getTicket(Request $request) {
+
         $response = Ticket::where("debit_id", $request->get('debitId'))->first();
+
+        if (!$response) {
+           $debit = Debit::find($request->get('debitId'));
+           $ticket = TicketLibrary::build($debit);
+           $response = Ticket::where("debit_id", $debit->id)->first();
+        }
 
         if ($response) {
             return response()->json(["status" => "success", "data" => $response]);
@@ -337,19 +329,11 @@ class DebitController extends Controller
 
     public function datatable(Request $request)
     {      
-        session([
-            "mode" => [
-                "status" => $request->input('status'), 
-                "period" => $request->input('period'),
-                "concept" => $request->input('concept'),
-                "payment_method" => $request->input('payment_method')
-            ]
-        ]);
-
         $filter = isset($request->get('search')['value']) && $request->get('search')?$request->get('search')['value']:false;
         $start = $request->get('start');
         $length = $request->get('length');
-        $filtered = 0;
+        $columns = $request->get('columns');
+        $order = $request->get('order');
 
         $query = Debit::select("debit.*", 
             DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"),
@@ -367,12 +351,14 @@ class DebitController extends Controller
         
         if ($filter) {
            $query = $query->where(function($query) use ($filter){
-                $query->orWhere('description', 'like', '%'. $filter .'%');
-                $query->orWhere('enrollment', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_name', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_last_name', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
-                $query->orWhere('created_at', 'like', '%'. $filter .'%');
+                $query->orWhere('description', 'like', '%'. $filter .'%')
+                ->orWhere('enrollment', 'like', '%'. $filter .'%')
+                ->orWhere('alumn_name', 'like', '%'. $filter .'%')
+                ->orWhere('alumn_last_name', 'like', '%'. $filter .'%')
+                ->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%')
+                ->orWhere('location', 'like', '%'. $filter .'%')
+                ->orWhere('state', 'like', '%'. $filter .'%')
+                ->orWhere('created_at', 'like', '%'. $filter .'%');
             });
         } 
 

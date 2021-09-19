@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Library\Inscription;
 use App\Models\Sicoes\Alumno;
 use App\Library\Sicoes;
+use App\Library\Ticket as TicketLibrary;
 
 /**
  * agrega un fallo de inscripcion.
@@ -125,20 +126,17 @@ function getUnAdminDebitType() {
 
 function validateDebitsWithOrderId($id_order, $status)
 {
-  $debits = Debit::where("id_order", $id_order)->get();
-  foreach ($debits as $key => $value) {
-    $value->status = $status;
-    if ($value->has_file_id != null) {
-      $document = Document::find($value->has_file_id);
-      $document->payment = $status;
-      $document->save();
+    $debits = Debit::where("id_order", $id_order)->get();
+    foreach ($debits as $key => $value) {
+        $value->status = $status;
+        if ($value->has_file_id != null) {
+            $document = Document::find($value->has_file_id);
+            $document->payment = $status;
+            $document->save();
+        }
+        $value->save();
+        TicketLibrary::build($value);
     }
-    $value->save();
-    try {
-        createTicket($value->id);
-    } catch(\Exception $e){
-    }
-  }
 }
 
 function getTotalDebitWithOtherConcept() {
@@ -701,111 +699,6 @@ function current_group($id_alumno) {
     $stmt = null;
 }
 
-
-	/*
-	|-------------------------------------------------------------------
-	| Metodo para obtener el numero de Ticket
-	|-------------------------------------------------------------------
-  */
-  function getTicketNumber()
-  {
-    $config = getConfig();
-    $config->debit_ticket_count = $config->debit_ticket_count + 1;
-    $config->save();
-    return $config->ticket_serie." ".sprintf("%'04d", $config->debit_ticket_count);
-  }
-
-	/*
-	|-------------------------------------------------------------------
-	| Metodo para generar un Ticket
-	|-------------------------------------------------------------------
-	*/
-  function createTicket($debit_id, $is_masive = false)
-  {
-    $debit = Debit::find($debit_id);
-    $alumn = User::where("id_alumno", $debit->id_alumno)->first();
-    $date  = $is_masive ? $debit->created_at->format('d/m/Y')  : Carbon::now()->format('d/m/Y');
-
-    if ($alumn) {
-      $sicoesAlumn = $alumn->getSicoesData();
-      $stateData = selectSicoes("Estado","EstadoId", $sicoesAlumn["EstadoDom"]);
-      $state = count($stateData) != 0 ? $stateData[0] : "No Disponible";
-
-      $periodData = selectSicoes("Periodo","PeriodoId",$debit->period_id);
-      $period = count($periodData) != 0 ? $periodData[0] : "No Disponible";
-
-      $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
-
-      $location = "No Disponible";
-      if(isset($sicoesAlumn["Localidad"]) && !empty($sicoesAlumn["Localidad"]) ){
-        $location= $sicoesAlumn["Localidad"];
-      }
-
-      $carrer = getCarrera($sicoesAlumn["Matricula"])["carrera"];
-      $alumnName = strtolower(normalizeChars($sicoesAlumn["Nombre"]." ".$sicoesAlumn["ApellidoPrimero"]." ".($sicoesAlumn["ApellidoSegundo"] ? $sicoesAlumn["ApellidoSegundo"] : '')));
-      $ticketInfo = [
-        "ticketNum"      => getTicketNumber(),
-        "date"           => $date,
-        "enrollment"     => $sicoesAlumn["Matricula"],
-        "name"           => $alumnName,
-        "rfc"            => substr($sicoesAlumn["Curp"],0,10),
-        "group"          => current_group($alumn->id_alumno)["Nombre"],
-        "semester"       => current_group($alumn->id_alumno)["Semestre"],
-        "career"         => strtolower(normalizeChars($carrer)),
-        "location"       => $location == "No Disponibe" ? $location : strtolower(normalizeChars($location)." ".normalizeChars($state["Nombre"])),
-        "order"          => $debit->id_order,
-        "period"         => $period["Clave"],
-        "concept"        => $debit->description,
-        "amount"         => number_format($debit->amount, 2),
-        "strAmount"      => $formatterES->format($debit->amount),
-        "payment_method" => $debit->payment_method,
-        "secureStr"      => "Pendiente"
-      ];
-
-      $html = view('Alumn.ticket.template',['ticketInfo'=>$ticketInfo])->render(); 
-
-      $namefile = ucwords($debit->description).time().'.pdf';
-      $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-      $fontDirs = $defaultConfig['fontDir'];
-      $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-      $fontData = $defaultFontConfig['fontdata'];
-      $mpdf = new Mpdf([
-          'fontDir' => array_merge($fontDirs, [
-              public_path() . '/fonts',
-          ]),
-          'fontdata' => $fontData + [
-              'arial' => [
-                  'R' => 'arial.ttf',
-                  'B' => 'arialbd.ttf',
-              ],
-          ],
-          'default_font' => 'arial',
-          "format" => [210,297],
-      ]);
-     
-      $mpdf->SetDisplayMode('fullpage');
-      $mpdf->WriteHTML($html);
-
-      $alumnData = $alumn->getSicoesData();
-      $path = $alumnData["Matricula"];
-
-      Storage::disk('ticket_uploads')->makeDirectory($path);
-
-      try {     
-        $mpdf->Output("tickets/".$path."/".$namefile,"F");
-      } catch(\Exception $e) {
-        $mpdf->Output(public_path()."/". "tickets/".$path."/".$namefile,"F");
-      }
-
-      $ticket = new Ticket();
-      $ticket->concept = ucwords($debit->description);
-      $ticket->alumn_id = $alumn->id;
-      $ticket->debit_id = $debit->id;
-      $ticket->route = "tickets/".$path."/".$namefile;
-      $ticket->created_at = $is_masive ? $debit->created_at : time();
-      $ticket->save();
-    }    
-}
 
 function getAlumnByEnrollment($enrollment)
 {

@@ -73,25 +73,8 @@
                                         ["value" => "1","text"=>"Pagados", "selected"=>false]];
                           @endphp
 
-                          @if(session()->has('mode'))
-                            @php
-                              $mode = session()->get('mode');
-                              switch($mode["status"])
-                              {
-                                case 0:
-                                  $array[0]["selected"]=true;
-                                  break;
-                                case 1:
-                                  $array[1]["selected"]=true;
-                                  break;
-                              }
-                            @endphp
-                          @else
-                            $array[0]["selected"]=true;
-                          @endif
-
                           @foreach($array as $key => $value)
-                              <option value="{{$value['value']}}" @if($value['selected']==true) selected @endif>{{$value['text']}}</option>
+                              <option value="{{$value['value']}}">{{$value['text']}}</option>
                           @endforeach
                         </select>
 
@@ -109,18 +92,7 @@
 
                       <select id="period" class="form-control">
                         @foreach(periodsById() as $key => $value)
-                          @if(session()->has('mode'))
-                            @php
-                              $mode = session()->get('mode');
-                              $selected = '';
-                              if($mode["period"] == $value->id) {
-                                $selected = 'selected';
-                              }
-                            @endphp
-                           <option value="{{$value->id}}" {{$selected}}>{{$value->clave}}</option>
-                          @else
                            <option value="{{$value->id}}">{{$value->clave}}</option>
-                          @endif
                         @endforeach
                       </select>
                     </div>
@@ -137,18 +109,7 @@
                       <select id="concept" class="form-control">
                         <option value="all">Todos</option>
                         @foreach(selectTable('debit_type') as $key => $value)
-                          @if(session()->has('mode'))
-                            @php
-                              $mode = session()->get('mode');
-                              $selected = '';
-                              if($mode["concept"] == $value->id) {
-                                $selected = 'selected';
-                              }
-                            @endphp
-                           <option value="{{$value->id}}" {{$selected}}>{{$value->concept}}</option>
-                          @else
                            <option value="{{$value->id}}">{{$value->concept}}</option>
-                          @endif
                         @endforeach
                       </select>
                     </div>
@@ -163,18 +124,11 @@
                       </div>
 
                       <select id="payment_method" class="form-control">
-                        @php
-                          $mode = session()->get('mode');
-
-                          if(!array_key_exists("payment_method", $mode)) {
-                              $mode = ["payment_method" => null];
-                          }
-                        @endphp
                         <option value="all">Todos</option>
-                        <option value="transfer" @if($mode['payment_method'] == 'transfer') selected @endif>Transferencia</option>
-                        <option value="oxxo_cash" @if($mode['payment_method'] == 'oxxo_cash') selected @endif>OXXO</option>
-                        <option value="spei" @if($mode['payment_method'] == 'spei') selected @endif>SPEI</option>
-                        <option value="card" @if($mode['payment_method'] == 'card') selected @endif>Pago con tarjeta</option>
+                        <option value="transfer">Transferencia</option>
+                        <option value="oxxo_cash">OXXO</option>
+                        <option value="spei">SPEI</option>
+                        <option value="card">Pago con tarjeta</option>
                       </select>
                     </div>
                   </div>
@@ -203,10 +157,12 @@
                           <th>Descripción</th>
                           <th>Metodo pago</th>
                           <th>Importe</th>
-                          <th>Estado</th>
+                          <th>Status</th>
+                          <th>F. pago</th>
                           <th>Fecha</th>
                           <th>Carrera</th>
                           <th>Localidad</th>
+                          <th>Estado</th>
                        
                       </tr>
 
