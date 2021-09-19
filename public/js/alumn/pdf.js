@@ -50,33 +50,33 @@ function loadTable() {
       }
   });
 
-  $(".tableDocuments tbody").on("click","button.reload",function(){
-    location.reload();
-  });
+    $(".tableDocuments tbody").on("click","button.reload",function(){
+        location.reload();
+    });
 
-  $(".tableDocuments tbody").on("click","button.btnCancelDocument",function(){
-    var id =  $(this).attr("id_document");
-      swal.fire({
-        title: '¿Estas seguro/a de que quieres cancelar este documento?',
-        text: "¡Si lo haces se borrara el registro!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, estoy seguro'
-      }).then((result)=>
-      {
-        if (result.value)
-        {
-            window.location = "/alumn/pdf/delete/document/"+id;
-        }
-      });
-  });
+    $(".tableDocuments tbody").on("click","button.btnCancelDocument",function() {
+        var id =  $(this).attr("id_document");
+        swal.fire({
+            title: '¿Estas seguro/a de que quieres cancelar este documento?',
+            text: "¡Si lo haces se borrara el registro!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, estoy seguro'
+          }).then((result)=>
+          {
+              if (result.value)
+              {
+                  window.location = "/alumn/pdf/delete/document/"+id;
+              }
+          });
+    });
 }
   
 $(document).ready(function() {
-  loadTable();
+    loadTable();
 })
 
 $(".open-modal").click(function(){
@@ -88,7 +88,7 @@ $(".tap-change").click(function(){
     var val = $(this).attr("data-value");
 
     if (val == 0) {
-      loadTable();
+        loadTable();
     }
     
     var route = 'tab/see';
@@ -115,20 +115,20 @@ $(".form-document").submit(function(e)
     var $form = $(this);
     e.preventDefault();
     swal.fire({
-      title: '¿Estas seguro/a de que quieres solicitar este documento?',
-      text: "¡Si aceptas se generara un adeudo!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Si, estoy seguro'
+        title: '¿Estas seguro/a de que quieres solicitar este documento?',
+        text: "¡Si aceptas se generara un adeudo!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, estoy seguro'
     }).then((result)=>
     {
-      if (result.value)
-      {
-      $form.get(0).submit();
-      }
+        if (result.value)
+        {
+            $form.get(0).submit();
+        }
     });
 });
 

@@ -6,180 +6,191 @@
 
 <div class="content-wrapper">
 
-  <section class="content-header">
+    <section class="content-header">
 
-    <div class="container-fluid">
+        <div class="container-fluid">
 
-      <div class="row mb-2">
+            <div class="row mb-2">
 
-        <div class="col-sm-8">
+                <div class="col-sm-8">
 
-          <div class="row">
-            <div class="col-md-4"><h1>Procesar <small>pagos</small></h1></div>
-          </div>
+                    <h1>Procesar <small>pagos</small></h1>
+
+                </div>
+
+                <div class="col-sm-4">
+
+                    <ol class="breadcrumb float-sm-right">
+
+                      <button data-toggle="modal" data-target="#modalDebit" class="btn btn-primary" data-placement="top" title="Generar nuevo">
+                        <i  class="fa fa-plus"></i>
+                      </button>
+
+                      <button data-toggle="modal" data-target="#modalPrintTickets" class="btn btn-info" style="margin-left: 5px" data-placement="top"  title="Imprimir recibos">
+                        <i class="fa fa-print"></i>
+                      </button>
+
+                      <button data-toggle="modal" data-target="#modal-generate-excel" class="btn btn-success" style="margin-left: 5px" data-placement="top"  title="Exportar excel">
+                        <i class="fa fa-file-excel"></i>
+                      </button>
+
+                    </ol>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="col-sm-4">
-
-          <ol class="breadcrumb float-sm-right">
-
-            <button data-toggle="modal" data-target="#modalDebit" class="btn btn-primary" data-placement="top" title="Generar nuevo">
-              <i  class="fa fa-plus"></i>
-            </button>
-
-            <button data-toggle="modal" data-target="#modalPrintTickets" class="btn btn-info" style="margin-left: 5px" data-placement="top"  title="Imprimir recibos">
-              <i class="fa fa-print"></i>
-            </button>
-
-            <button data-toggle="modal" data-target="#modal-generate-excel" class="btn btn-success" style="margin-left: 5px" data-placement="top"  title="Exportar excel">
-              <i class="fa fa-file-excel"></i>
-            </button>
-
-          </ol>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
+    </section>
 
   <section class="content">
 
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-12">
-            <h4>Filtros</h4>
-          </div>
-          <div class="col-md-4">
-            <label for="">Estatus</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                  <span class="input-group-text">
-                  <i class="fas fa-toggle-on"></i></span>
+      <div class="card">
+
+          <div class="card-body">
+
+              <div class="row">
+
+                  <div class="col-md-12">
+                    <h4>Filtros</h4>
+                  </div>
+
+                  <div class="col-md-4">
+
+                      <label for="">Estatus</label>
+
+                      <div class="input-group mb-3">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                            <i class="fas fa-toggle-on"></i></span>
+                        </div>
+
+                        <select id="mode" class="form-control">
+                          @php
+                          $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
+                                        ["value" => "1","text"=>"Pagados", "selected"=>false]];
+                          @endphp
+
+                          @if(session()->has('mode'))
+                            @php
+                              $mode = session()->get('mode');
+                              switch($mode["status"])
+                              {
+                                case 0:
+                                  $array[0]["selected"]=true;
+                                  break;
+                                case 1:
+                                  $array[1]["selected"]=true;
+                                  break;
+                              }
+                            @endphp
+                          @else
+                            $array[0]["selected"]=true;
+                          @endif
+
+                          @foreach($array as $key => $value)
+                              <option value="{{$value['value']}}" @if($value['selected']==true) selected @endif>{{$value['text']}}</option>
+                          @endforeach
+                        </select>
+
+                      </div>
+
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="">Periodo</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">
+                          <i class="fas fa-th-list"></i></span>
+                      </div>
+
+                      <select id="period" class="form-control">
+                        @foreach(periodsById() as $key => $value)
+                          @if(session()->has('mode'))
+                            @php
+                              $mode = session()->get('mode');
+                              $selected = '';
+                              if($mode["period"] == $value->id) {
+                                $selected = 'selected';
+                              }
+                            @endphp
+                           <option value="{{$value->id}}" {{$selected}}>{{$value->clave}}</option>
+                          @else
+                           <option value="{{$value->id}}">{{$value->clave}}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="">Concepto</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">
+                          <i class="fas fa-asterisk"></i></span>
+                      </div>
+
+                      <select id="concept" class="form-control">
+                        <option value="all">Todos</option>
+                        @foreach(selectTable('debit_type') as $key => $value)
+                          @if(session()->has('mode'))
+                            @php
+                              $mode = session()->get('mode');
+                              $selected = '';
+                              if($mode["concept"] == $value->id) {
+                                $selected = 'selected';
+                              }
+                            @endphp
+                           <option value="{{$value->id}}" {{$selected}}>{{$value->concept}}</option>
+                          @else
+                           <option value="{{$value->id}}">{{$value->concept}}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+
               </div>
 
-              <select id="mode" class="form-control">
-                @php
-                $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
-                              ["value" => "1","text"=>"Pagados", "selected"=>false]];
-                @endphp
-
-                @if(session()->has('mode'))
-                  @php
-                    $mode = session()->get('mode');
-                    switch($mode["mode"])
-                    {
-                      case 0:
-                        $array[0]["selected"]=true;
-                        break;
-                      case 1:
-                        $array[1]["selected"]=true;
-                        break;
-                    }
-                  @endphp
-                @else
-                  $array[0]["selected"]=true;
-                @endif
-                @foreach($array as $key => $value)
-                  <option value="{{$value['value']}}" @if($value['selected']==true) selected @endif>{{$value['text']}}</option>
-                @endforeach
-              </select>
-            </div>
           </div>
-          <div class="col-md-4">
-            <label for="">Periodo</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                  <span class="input-group-text">
-                  <i class="fas fa-th-list"></i></span>
-              </div>
-
-              <select id="period" class="form-control">
-                @foreach($periods as $key => $value)
-                  @if(session()->has('mode'))
-                    @php
-                      $mode = session()->get('mode');
-                      $selected = '';
-                      if($mode["period"] == $value->id) {
-                        $selected = 'selected';
-                      }
-                    @endphp
-                   <option value="{{$value->id}}" {{$selected}}>{{$value->clave}}</option>
-                  @else
-                   <option value="{{$value->id}}">{{$value->clave}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <label for="">Concepto</label>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                  <span class="input-group-text">
-                  <i class="fas fa-asterisk"></i></span>
-              </div>
-
-              <select id="concept" class="form-control">
-                <option value="all">Todos</option>
-                @foreach(selectTable('debit_type') as $key => $value)
-                  @if(session()->has('mode'))
-                    @php
-                      $mode = session()->get('mode');
-                      $selected = '';
-                      if($mode["concept"] == $value->id) {
-                        $selected = 'selected';
-                      }
-                    @endphp
-                   <option value="{{$value->id}}" {{$selected}}>{{$value->concept}}</option>
-                  @else
-                   <option value="{{$value->id}}">{{$value->concept}}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-
-      <div class="card-body">
-
-        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
-
-        <table class="table table-bordered table-hover dt-responsive tableDebits">
-
-          <thead>
-
-            <tr>
-              <th>Matricula</th>
-              <th>Acciones</th>
-              <th>Alumno</th>
-              <th>Email</th>
-              <th>Descripción</th>
-              <th>Importe</th>
-              <th>Estado</th>
-              <th>Fecha</th>
-              <th>Carrera</th>
-              <th>Localidad</th>
-             
-            </tr>
-
-          </thead>
-
-        </table>
 
       </div>
 
-    </div>
+      <div class="card">
+
+          <div class="card-body">
+
+              <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+
+              <table class="table table-bordered table-hover dt-responsive tableDebits">
+
+                  <thead>
+
+                      <tr>
+
+                          <th>Matricula</th>
+                          <th>Acciones</th>
+                          <th>Alumno</th>
+                          <th>Descripción</th>
+                          <th>Importe</th>
+                          <th>Estado</th>
+                          <th>Fecha</th>
+                          <th>Carrera</th>
+                          <th>Localidad</th>
+                       
+                      </tr>
+
+                  </thead>
+
+              </table>
+
+          </div>
+
+      </div>
 
   </section>
 
@@ -762,7 +773,7 @@
 
                 <select name="period_id" id="period_id" class="form-control form-control-lg">
                   <option value="" selected>Todos</option>
-                  @foreach($periods as $key => $value)
+                  @foreach(periodsById() as $key => $value)
                     <option value="{{ $value->id }}">{{ $value->clave }}</option>
                   @endforeach
                 </select>

@@ -33,14 +33,14 @@
 					<h1 class="feel-title">Se un Oso Unisierra</h1>
 				</div>
 
-				<div class="col-md-8">
+				<div class="col-md-11">
 
 					<div class="feed">
 
 						<div class="feed_content">
 
 							<div class="feed-header">
-								<h1>#Inscripciones.</h1>
+								<h3>#Inscripciones.</h3>
 							</div>
 
 							<div class="feed-body">
@@ -235,11 +235,9 @@
 						
 					<div class="row footer-custom">
 
-						<div class="col-md-12 col-custom">
+						<div class="col-md-12">
 
-							<button type="button" class="btn btn-warning button-custom sent"
-							style="margin: 1.5rem;"
-							>Guardar</button>
+							<button type="button" class="btn btn-primary btn-block boton sent">Guardar</button>
 							
 						</div>
 

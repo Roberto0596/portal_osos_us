@@ -112,6 +112,10 @@ function insertInscriptionDocuments($id)
     return $insertDocument;
 }
 
+function periodsById() {
+    return PeriodModel::select()->orderBy("id", "desc")->get();
+}
+
 //optiene el tipo de adeudo sin contar el de inscripcion
 function getUnAdminDebitType() {
   $query = DebitType::where([["id","<>",1],["id","<>",5]])->get();

@@ -367,8 +367,8 @@ Route::group(['domain' => $alumnDomain], function() {
 				]);
 
 				//sirve para mostrar los registros en la tabla
-				Route::post('/debit/show', [
-			        'uses' => 'DebitController@showDebit', 
+				Route::post('/debit/datatable', [
+			        'uses' => 'DebitController@datatable', 
 			        'as' => 'user.show'
 				]);
 				

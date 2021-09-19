@@ -35,12 +35,11 @@ class UpdateDebitTable implements ShouldQueue
         foreach ($debits as $key => $value) {
             try {
                 $user = User::where("id_alumno", $value->id_alumno)->first();
-                if (!$user->enrollment && !$user->alumn_name && !$user->alumn_last_name && !$user->alumn_second_last_name) {
-                    $alumnData = $user->getSicoesData();
-                    $value->enrollment = $alumnData["Matricula"];
-                    $value->alumn_name = $alumnData["Nombre"];
-                    $value->alumn_last_name = $alumnData["ApellidoPrimero"];
-                    $value->alumn_second_last_name = (isset($alumnData["ApellidoSegundo"]) ? $alumnData["ApellidoSegundo"] : '');
+                if (!$value->enrollment || !$value->alumn_name || !$value->alumn_last_name || !$value->alumn_second_last_name) {
+                    $value->enrollment = $user->sAlumn->Matricula;
+                    $value->alumn_name = $user->sAlumn->Nombre;
+                    $value->alumn_last_name = $user->sAlumn->ApellidoPrimero;
+                    $value->alumn_second_last_name = (isset($user->sAlumn->ApellidoSegundo) ? $user->sAlumn->ApellidoSegundo : '');
                     $value->save();
                 }                
             } catch(\Exception $e) {

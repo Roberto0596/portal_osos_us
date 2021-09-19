@@ -13,62 +13,13 @@ use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Input;
 use Auth;
+use DB;
 
 class DebitController extends Controller
 {
     public function index()
 	{
-        $periods = PeriodModel::select()->orderBy("id", "desc")->get();
-		return view('FinancePanel.debit.index')->with(["periods" => $periods]);
-    }
-
-    public function showDebit(Request $request)
-    {      
-        $res = [];
-
-        if (session()->has('mode')) {
-            session()->forget('mode');
-        }
-
-        session([
-            "mode" => [
-                "mode" => $request->input('mode'), 
-                "period" => $request->input('period'),
-                "concept" => $request->input('concept')
-            ]
-        ]);
-
-        $filter = isset($request->get('search')['value']) && $request->get('search')  ?$request->get('search')['value']:false;
-        $start = $request->get('start');
-        $length = $request->get('length');
-        $filtered = 0;
-        $query = Debit::where([["status","=",$request->input('mode')],["period_id","=",$request->input('period')]]);
-
-        if ($request->get('concept') != "all") {
-            $query->where("debit_type_id", $request->get('concept'));
-        }
-
-        $filtered = $query->count();
-        
-        if ($filter) {
-           $query = $query->where(function($query) use ($filter){
-                $query->orWhere('description', 'like', '%'. $filter .'%');
-                $query->orWhere('enrollment', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_name', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_last_name', 'like', '%'. $filter .'%');
-                $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
-                $query->orWhere('created_at', 'like', '%'. $filter .'%');
-            });
-           $filtered = $query->count();
-        } 
-        
-        $query->skip($start)->take($length)->get();
-
-        return response()->json([
-            "recordsTotal" => Debit::count(),
-            "recordsFiltered" => $filtered,
-            "data" => $query->get()
-        ]);
+		return view('FinancePanel.debit.index');
     }
 
     //este metodo lo usamos con ajax para cargar los datos del adeudo para despues pasarlos al modal
@@ -382,6 +333,59 @@ class DebitController extends Controller
         }
 
         return response()->json($data->get());
+    }
+
+    public function datatable(Request $request)
+    {      
+        session([
+            "mode" => [
+                "status" => $request->input('status'), 
+                "period" => $request->input('period'),
+                "concept" => $request->input('concept')
+            ]
+        ]);
+
+        $filter = isset($request->get('search')['value']) && $request->get('search')?$request->get('search')['value']:false;
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $filtered = 0;
+
+        $query = Debit::select("debit.*", 
+            DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"))
+            ->where("status", $request->get('status'))
+            ->where("period_id", $request->get('period'));
+
+        if ($request->get('concept') != "all") {
+            $query->where("debit_type_id", $request->get('concept'));
+        }
+        
+        if ($filter) {
+           $query = $query->where(function($query) use ($filter){
+                $query->orWhere('description', 'like', '%'. $filter .'%');
+                $query->orWhere('enrollment', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_name', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_last_name', 'like', '%'. $filter .'%');
+                $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
+                $query->orWhere('created_at', 'like', '%'. $filter .'%');
+            });
+
+           /*$query = $query->with(["Alumn" => function ($subQuery) use ($filter) {
+                $subQuery->where(function($subQuery) use ($filter){
+                    $subQuery->orWhere('Nombre', 'like', '%'. $filter .'%');
+                    $subQuery->orWhere('Matricula', 'like', '%'. $filter .'%');
+                });
+           }]);*/
+        } 
+
+        $filtered = $query->count();
+        
+        $query->skip($start)->take($length)->get();
+
+        return response()->json([
+            "recordsTotal" => Debit::count(),
+            "recordsFiltered" => $filtered,
+            "data" => $query->get()
+        ]);
     }
 }
 

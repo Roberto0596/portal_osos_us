@@ -502,13 +502,6 @@
 
               </div>
 
-              <!-- <div class="dz-message needsclick">
-                  <strong>Arrastra archivos a cualquier lugar para subirlos.</strong><br /><br />
-                  <span class="note needsclick">
-                  <span class="glyphicon glyphicon-open" aria-hidden="true" style="font-size:60px;"></span>
-                  </span>
-              </div> -->
-
               <div class="row">
 
               <div class="col-md-12">
