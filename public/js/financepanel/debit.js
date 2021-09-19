@@ -14,7 +14,7 @@ const filters = {
         });
 
         $("#period").change(function(){
-            filter.period = $("#period").val();
+            filters.period = $("#period").val();
             Datatable.dataTable.draw();
         });
 
