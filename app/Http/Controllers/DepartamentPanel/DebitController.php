@@ -151,7 +151,10 @@ class DebitController extends Controller
             $debit->enrollment = $alumn->Matricula;
             $debit->alumn_name = $alumn->Nombre;
             $debit->alumn_last_name = $alumn->ApellidoPrimero;
-            $debit->alumn_second_last_name = (isset($alumn->ApellidoSegundo) ? $alumn->ApellidoSegundo:'');
+            $debit->alumn_second_last_name = (isset($alumn->ApellidoSegundo) ? $alumn->ApellidoSegundo : '');
+            $debit->career = $alumn->PlanEstudio->Carrera->Nombre;
+            $debit->location = $alumn->Localidad;
+            $debit->state = $alumn->Estado->Nombre;
 
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
