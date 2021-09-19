@@ -341,7 +341,8 @@ class DebitController extends Controller
             "mode" => [
                 "status" => $request->input('status'), 
                 "period" => $request->input('period'),
-                "concept" => $request->input('concept')
+                "concept" => $request->input('concept'),
+                "payment_method" => $request->input('payment_method')
             ]
         ]);
 
@@ -358,6 +359,10 @@ class DebitController extends Controller
         if ($request->get('concept') != "all") {
             $query->where("debit_type_id", $request->get('concept'));
         }
+
+        if ($request->get('payment_method') != "all" && $request->get('payment_method')) {
+            $query->where("payment_method", $request->get('payment_method'));
+        }
         
         if ($filter) {
            $query = $query->where(function($query) use ($filter){
@@ -368,18 +373,15 @@ class DebitController extends Controller
                 $query->orWhere('alumn_second_last_name', 'like', '%'. $filter .'%');
                 $query->orWhere('created_at', 'like', '%'. $filter .'%');
             });
-
-           /*$query = $query->with(["Alumn" => function ($subQuery) use ($filter) {
-                $subQuery->where(function($subQuery) use ($filter){
-                    $subQuery->orWhere('Nombre', 'like', '%'. $filter .'%');
-                    $subQuery->orWhere('Matricula', 'like', '%'. $filter .'%');
-                });
-           }]);*/
         } 
 
         $filtered = $query->count();
         
         $query->skip($start)->take($length)->get();
+
+        if(isset($order) && isset($order[0]) && $order[0]['column'] > -1) {
+           $query->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'] );  
+        }
 
         return response()->json([
             "recordsTotal" => Debit::count(),

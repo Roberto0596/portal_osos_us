@@ -154,6 +154,31 @@
                     </div>
                   </div>
 
+                  <div class="col-md-4">
+                    <label for="">Método de pago</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">
+                          <i class="fas fa-credit-card"></i></span>
+                      </div>
+
+                      <select id="payment_method" class="form-control">
+                        @php
+                          $mode = session()->get('mode');
+
+                          if(!array_key_exists("payment_method", $mode)) {
+                              $mode = ["payment_method" => null];
+                          }
+                        @endphp
+                        <option value="all">Todos</option>
+                        <option value="transfer" @if($mode['payment_method'] == 'transfer') selected @endif>Transferencia</option>
+                        <option value="oxxo_cash" @if($mode['payment_method'] == 'oxxo_cash') selected @endif>OXXO</option>
+                        <option value="spei" @if($mode['payment_method'] == 'spei') selected @endif>SPEI</option>
+                        <option value="card" @if($mode['payment_method'] == 'card') selected @endif>Pago con tarjeta</option>
+                      </select>
+                    </div>
+                  </div>
+
               </div>
 
           </div>

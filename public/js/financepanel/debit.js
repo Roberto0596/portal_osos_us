@@ -5,6 +5,7 @@ const filters = {
     status: null,
     period: null,
     concept: null,
+    payment_method: null,
     init: function() {
 
         $("#mode").change(function(){
@@ -22,6 +23,12 @@ const filters = {
             Datatable.dataTable.draw();
         });
 
+        $("#payment_method").change(function(){
+            filters.payment_method = $("#payment_method").val();
+            Datatable.dataTable.draw();
+        });
+
+        filters.payment_method = $("#payment_method").val();
         filters.concept = $("#concept").val();
         filters.period = $("#period").val();
         filters.status = $("#mode").val();
@@ -50,6 +57,9 @@ var Datatable = {
                     },
                     "concept": function() {
                         return filters.concept;
+                    },
+                    "payment_method": function() {
+                        return filters.payment_method;
                     }
                 }
             },
