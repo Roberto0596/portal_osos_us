@@ -91,7 +91,7 @@ class Ticket {
 
 	    $period = PeriodModel::find($debit->period_id);
 
-	    //$formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+	    $formatterES = new NumberFormatter("es", NumberFormatter::SPELLOUT);
 
 	    $carrer = $alumn->PlanEstudio->Carrera;
 
@@ -109,7 +109,7 @@ class Ticket {
 	        "period"         => $period->Clave,
 	        "concept"        => $debit->description,
 	        "amount"         => number_format($debit->amount, 2),
-	        "strAmount"      =>  "hola mundo",//$formatterES->format($debit->amount),
+	        "strAmount"      =>  $formatterES->format($debit->amount),
 	        "payment_method" => $debit->payment_method,
 	        "secureStr"      => "Pendiente"
 	    ];
