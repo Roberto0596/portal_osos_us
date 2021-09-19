@@ -201,6 +201,7 @@
                           <th>Acciones</th>
                           <th>Alumno</th>
                           <th>Descripción</th>
+                          <th>Metodo pago</th>
                           <th>Importe</th>
                           <th>Estado</th>
                           <th>Fecha</th>

@@ -99,6 +99,7 @@ var Datatable = {
                     return data.alumn ? data.alumn.FullName : "Sin asignar"; 
                 }},
                 {"data": "description", "orderable": true},
+                {"data": "convertMethod", "orderable": true},
                 {"data": "amount", "orderable": false, "render": function(data){
                     return nf.format(data); 
                 }},

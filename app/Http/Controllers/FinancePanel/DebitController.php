@@ -352,7 +352,8 @@ class DebitController extends Controller
         $filtered = 0;
 
         $query = Debit::select("debit.*", 
-            DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"))
+            DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"),
+            DB::raw("(CASE WHEN debit.payment_method = 'transfer' THEN 'Transferencia bancaria' WHEN debit.payment_method = 'oxxo_cash' THEN 'OXXO Paid' WHEN debit.payment_method = 'spei' THEN 'SPEI' WHEN debit.payment_method = 'card' THEN 'Pago con tarjeta'  END) AS convertMethod"))
             ->where("status", $request->get('status'))
             ->where("period_id", $request->get('period'));
 
