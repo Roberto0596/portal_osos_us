@@ -18,43 +18,59 @@ class DebitController extends Controller
 			$data = $request->all();
 	        $is_paid = $data["type"];
 
-	        if ($is_paid == "order.paid" || $is_paid = "charge.created") {
-	        	try {
-					$id_order = $data["data"]["object"]["charges"]["data"][0]["order_id"];
-				} catch(\Exception $e) {
-					$id_order = $data["data"]["object"]["id"];
+	        if ($is_paid == "order.paid") {
+	        	
+	        	$id_order = $this->extractIdOrder($data);
+
+				$debits = Debit::where("id_order", $id_order)->get();
+
+				if($debits->count() > 0) {
+						        	
+					$alumn = User::where("id_alumno","=",$debits[0]->id_alumno)->first();
+
+					foreach ($debits as $key => $value) {
+
+						if ($value->status == 0) {
+
+							if ($value->payment_method != "card") {
+
+								if ($value->debit_type_id == 1) {
+									$register = Inscription::makeRegister($alumn);
+									$value->setForeignValues();
+								}
+
+								if ($value->has_file_id != null) {
+									$document = Document::find($value->has_file_id);
+									$document->payment = 1;
+									$document->save();
+								}
+
+								$value->status = 1;
+								$value->save();
+							}
+
+						}
+					}
+					addNotify("pago realizado con exito",$alumn->id, "alumn.debit");
 				}
 
-	        	$debits = Debit::where("id_order", $id_order)->get();
-	        	
-	        	if ($debits->count() > 0) {
+				return response()->json(["status" => "success"], 200);	        	
+	        }
 
-	        		$alumn = User::where("id_alumno","=",$debits[0]->id_alumno)->first();
-
-			        foreach ($debits as $key => $value) {
-			        	if ($value->status == 0) {
-			        		if ($value->payment_method != "card") {
-				        		if ($value->debit_type_id == 1) {
-				        			$register = Inscription::makeRegister($alumn);
-				        		}
-				        		if ($value->has_file_id != null) {
-					              	$document = Document::find($value->has_file_id);
-					              	$document->payment = 1;
-					              	$document->save();
-					            }
-				        		$value->status = 1;
-				        		$value->save();
-				        	}
-			        	}
-			        }
-
-			        addNotify("pago realizado con exito", $alumn->id, "alumn.debit");
-	        	}		        	
-	        }      
-	        return response()->json(["status" => "success"], 200);
 		} catch(\Exception $e) {
 			addLog($e->getFile()." ".$e->getLine()." ".$e->getMessage());
 			return response()->json(["status" => "error"],500);
 		}
+	}
+
+	public function extractIdOrder($data) {
+		$id_order = null;
+		try {
+			$id_order = $data["data"]["object"]["charges"]["data"][0]["order_id"];
+		} catch(\Exception $e) {
+			$id_order = $data["data"]["object"]["order_id"];
+		}
+
+		return $id_order;
 	}
 }

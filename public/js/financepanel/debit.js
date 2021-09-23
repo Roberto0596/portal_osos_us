@@ -109,9 +109,7 @@ $(document).ready(function() {
                             "<i class='fa fa-times' title='Eliminar adeudo' style='color:white'></i></button></div>"; 
                         return res;
                     }},
-                    {"data": null, "orderable": false, "render": function(data) {
-                        return data.alumn ? data.alumn.FullName : "Sin asignar"; 
-                    }},
+                    {"data": "alumnName"},
                     {"data": "description", "orderable": true},
                     {"data": "convertMethod", "orderable": true},
                     {"data": "amount", "orderable": true, "render": function(data){

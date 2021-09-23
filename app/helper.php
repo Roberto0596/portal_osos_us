@@ -127,8 +127,7 @@ function getUnAdminDebitType() {
 }
 
 
-function validateDebitsWithOrderId($id_order, $status)
-{
+function validateDebitsWithOrderId($id_order, $status) {
     $debits = Debit::where("id_order", $id_order)->get();
     foreach ($debits as $key => $value) {
         $value->status = $status;
@@ -137,8 +136,14 @@ function validateDebitsWithOrderId($id_order, $status)
             $document->payment = $status;
             $document->save();
         }
+
+        if ($status == 1) {
+            $value->Matricula = $value->Alumno->Matricula;
+            $value->payment_date = now();
+            TicketLibrary::build($value);
+        }
+        
         $value->save();
-        TicketLibrary::build($value);
     }
 }
 

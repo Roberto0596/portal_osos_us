@@ -122,7 +122,7 @@ class DesicionTree {
 
 	public function makeTree(User $user) {
 		$asignaturas = $this->mergeCharge($user);
-		$current_semester = $user->getLastInscription()->Semestre;
+		$current_semester = $user->getLastInscription() ? $user->getLastInscription()->Semestre : "1";
 		$odd = [1,3,5,7,9];
   		$pair = [2,4,6,8];
 

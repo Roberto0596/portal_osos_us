@@ -40,7 +40,7 @@
 
       <div class="card-header nav-custom-green">
 
-        <h3 class="card-title">El sistema ha seleccionado el siguiente el listado para ti</h3>
+        <h3 class="card-title">El sistema ha seleccionado el siguiente listado para ti</h3>
 
       </div>
       

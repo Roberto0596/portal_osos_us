@@ -7,6 +7,7 @@ use App\Models\Sicoes\EncGrupo;
 use App\Models\Sicoes\Carrera;
 use App\Models\Alumns\User;
 use App\Library\Sicoes;
+use App\Models\Alumns\FailedRegister;
 
 class Inscription {
 
@@ -17,16 +18,15 @@ class Inscription {
      *
      * @return $array
      */
-    public static function makeRegister(User $user)
+    public static function makeRegister(Alumno $alumno)
     {
-        $message = ["success" => [], "errors" => []];
+        $inscripcionData = Sicoes::checkGroupData($alumno->AlumnoId);
 
-        $alumno = Alumno::find($user->id_alumno);
-        $inscripcionData = Sicoes::checkGroupData($user->id_alumno);
+        $user = User::where("id_alumno", $alumno->AlumnoId)->first();
 
         if ($inscripcionData == false || $inscripcionData == null) {
             $inscripcionData = ["Semestre" => 4, "EncGrupoId" => 1120];
-            addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
+            self::addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
         }
 
         if (isset($inscripcionData->Semestre) && $inscripcionData->Semestre == 1) {
@@ -52,11 +52,36 @@ class Inscription {
             $user->save();
             addNotify("Pago de colegiatura", $user->id,"alumn.charge");
             insertInscriptionDocuments($user->id);
-            array_push($message["success"], "proceso realizado con exito");
+            $result = (Object) [
+                "status" => "success", 
+                "message" => "Inscripcion Correcta"
+            ];
         } else {
-            array_push($message["errors"], "No fue posible inscribir al alumno ".$user->name);
+            $result = (Object) [
+                "status" => "error", 
+                "message" => "No fue posible inscribir al alumno " . $alumno->FullName
+            ];
         }
-        return $message;
+
+        return $result;
+    }
+
+     /**
+     * agrega un fallo de inscripcion.
+     *
+     * @param  $id|required
+     *
+     * @param  $message|required
+     *
+     * @return void
+     */
+    public static function addFailedRegister($id, $message) {
+        $instance = new FailedRegister();
+        $instance->alumn_id = $id;
+        $instance->period_id = selectCurrentPeriod()->id;
+        $instance->message = $message;
+        $instance->status = 0;
+        $instance->save();
     }
 
     private static function assignEnrollment(Alumno $alumno, User $user) {
@@ -84,7 +109,7 @@ class Inscription {
             $instance->Baja = $array["Baja"];
             $instance->AlumnoId = $array["AlumnoId"];
             $instance->Fecha = $array["Fecha"];
-            $instance->PeriodoId = $array["PeriodoId"];
+            //$instance->PeriodoId = $array["PeriodoId"];
             $instance->save();
             return true;
         } catch(\Exception $e) {

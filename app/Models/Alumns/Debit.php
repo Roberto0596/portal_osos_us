@@ -3,6 +3,7 @@
 namespace App\Models\Alumns;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Library\Ticket;
 
 class Debit extends Model
 {
@@ -50,5 +51,38 @@ class Debit extends Model
 
     public function getDebit() {
         return User::find($this->id_alumno);
+    }
+
+    public function setForeignValues() {
+        $this->enrollment = $this->Alumn->Matricula;
+        $this->alumn_name = $this->Alumn->Nombre;
+        $this->alumn_last_name = $this->Alumn->ApellidoPrimero;
+        $this->alumn_second_last_name = (isset($this->Alumn->ApellidoSegundo) ? $this->Alumn->ApellidoSegundo : '');
+        $this->career = $this->Alumn->PlanEstudio->Carrera->Nombre;
+        $this->location = $this->Alumn->Localidad;
+        $this->state = $this->Alumn->Estado->Nombre;
+        $this->save();
+    }
+
+    public static function validateWithOrder($id_order, $status) {
+        $debits = self::where("id_order", $id_order)->get();
+
+        foreach ($debits as $value) {
+            $value->status = $status;
+
+            if ($value->has_file_id != null) {
+                $document = Document::find($value->has_file_id);
+                $document->payment = $status;
+                $document->save();
+            }
+
+            if ($status == 1) {
+                $value->enrollment = $value->Alumn->Matricula;
+                $value->payment_date = now();
+                Ticket::build($value);
+            }
+            
+            $value->save();
+        }
     }
 }

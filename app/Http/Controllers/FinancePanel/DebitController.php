@@ -83,29 +83,30 @@ class DebitController extends Controller
 
     public function validateDebit(Request $request) {
 
-        $value = $request->get("verification") == "on" ? 1 : 0;
+        $status = $request->get("verification") == "on" ? 1 : 0;
 
         $debit = Debit::find($request->input('debit_id'));
 
         if ($debit) {
 
-            if ($value == 1) {
-                $alumn = User::where("id_alumno","=",$debit->id_alumno)->first();
+            if ($status == 1) {
+
+                $alumn = $debit->Alumn;
 
                 $register = Inscription::makeRegister($alumn);
 
-                if (count($register["errors"]) == 0) {
-                    $message = $register["success"][0];
-                    validateDebitsWithOrderId($debit->id_order, $value);
-                } else {
-                    $message = $register["errors"][0];
+                if ($register->status == "success") {
+                    Debit::validateWithOrder($debit->id_order, $status);
+                    $debit->setForeignValues();
                 }
+
+                session()->flash("messages", $register->status . "|" . $register->message);
+
             } else {
-                validateDebitsWithOrderId($debit->id_order, $value);
+                Debit::validateWithOrder($debit->id_order, $status);
+                session()->flash("messages", "success|Se guardaron los cambios");
             }
 
-            $debit->save();
-            session()->flash("messages", "info|".$message);
             return redirect()->back();
 
         } else {
@@ -336,6 +337,7 @@ class DebitController extends Controller
         $order = $request->get('order');
 
         $query = Debit::select("debit.*", 
+            DB::raw("CONCAT_WS(' ', debit.alumn_name, debit.alumn_last_name, debit.alumn_second_last_name) AS alumnName"),
             DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"),
             DB::raw("(CASE WHEN debit.payment_method = 'transfer' THEN 'Transferencia bancaria' WHEN debit.payment_method = 'oxxo_cash' THEN 'OXXO Paid' WHEN debit.payment_method = 'spei' THEN 'SPEI' WHEN debit.payment_method = 'card' THEN 'Pago con tarjeta'  END) AS convertMethod"))
             ->where("status", $request->get('status'))

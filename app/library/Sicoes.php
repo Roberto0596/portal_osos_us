@@ -8,6 +8,9 @@ use App\Models\Sicoes\Carrera;
 
 class Sicoes {
 
+    public static $odd = [1, 3, 5, 7, 9];
+    public static $pair = [2, 4, 6, 8];
+
     /**
      * valida si hay un grupo para el alumno y retorna la instancia del grupo.
      *
@@ -16,9 +19,7 @@ class Sicoes {
      * @return App\Models\Sicoes\EncGrupo
      */
     public static function checkGroupData($id_alumno)
-    {
-        $odd = [1,3,5,7,9];
-        $pair = [2,4,6,8];
+    {       
         $group = false;
         $alumno = Alumno::find($id_alumno);
         $inscripcionData = self::getLastInscription($id_alumno);
@@ -30,13 +31,13 @@ class Sicoes {
 
             if ($period->semestre == 1) {
 
-                if (in_array($toSemester, $pair)) {
+                if (in_array($toSemester, self::$pair)) {
                     $group = self::getGroupByPeriod($period->id, $alumno->PlanEstudioId, $toSemester);
                 }
 
             } else {
 
-                if (in_array($toSemester, $odd)) {
+                if (in_array($toSemester, self::$odd)) {
                     $group = self::getGroupByPeriod($period->id, $alumno->PlanEstudioId, $toSemester);
                 }
             }
@@ -69,9 +70,9 @@ class Sicoes {
             $plan = $config->laep_id;
         } 
 
-        $data = EncGrupo::where("PeriodoId", $periodo)
-                            ->where("PlanEstudioId", $plan)
-                            ->where("Semestre", $semestre)
+        $data = EncGrupo::where("PeriodoId", strval($periodo))
+                            ->where("PlanEstudioId", strval($plan))
+                            ->where("Semestre", strval($semestre))
                             ->first();
         return $data;
     }

@@ -8,6 +8,7 @@ use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Sicoes\Alumno;
 use App\Models\PeriodModel;
+use NumberFormatter;
 
 class Ticket {
 	
@@ -37,7 +38,7 @@ class Ticket {
 
 		    if ($alumn) {
 
-			     $namefile = ucwords($debit->description).time().'.pdf';
+			     $namefile = uniqid().'.pdf';
 			     $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
 			     $fontDirs = $defaultConfig['fontDir'];
 			     $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
