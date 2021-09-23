@@ -50,6 +50,9 @@ class DebitController extends Controller
 							}
 
 						}
+
+						$value->payment_date = now();
+						$value->save();
 					}
 					addNotify("pago realizado con exito",$alumn->id, "alumn.debit");
 				}
