@@ -82,18 +82,28 @@ class PdfController extends Controller
 
     public function getOfficialDocument(DocumentType $documentType) {
         try {
+            $current_user = current_user();
+            $alumnData = Alumno::find($current_user->id_alumno);
             if ($documentType->type == 1) {
                 $debit = new Debit();
+                $alumnData = 
                 $create_debit = [
                     'debit_type_id' => 5,
                     'description' => 'Documento oficial unisierra',
                     'amount' => $documentType->cost,
                     'admin_id'=> 2,
-                    'id_alumno' => current_user()->id_alumno,
+                    'id_alumno' => $alumnData->AlumnoId,
                     'status' => 0,
                     'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
                     'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'period_id' => getConfig()->period_id
+                    'period_id' => getConfig()->period_id,
+                    'enrollment' => $alumnData->Matricula,
+                    'alumn_name' => $alumnData->Nombre,
+                    'alumn_last_name' => $alumnData->ApellidoPrimero,
+                    'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : ''),
+                    'career' => $alumnData->PlanEstudio->Carrera->Nombre,
+                    'location' => $alumnData->Localidad,
+                    'state' => $alumnData->Estado->Nombre,
                 ];
 
                 foreach ($create_debit as $key => $value) {
