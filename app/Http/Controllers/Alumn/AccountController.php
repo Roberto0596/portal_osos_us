@@ -23,7 +23,7 @@ class AccountController extends Controller
     public function save(Request $request, $step)
     {
         $enrollment = $request->input('matricula');
-        $data = Alumno::where("Matricula", $enrollment)->get();
+        $data = Alumno::where("Matricula", $enrollment)->first();
 
         if ($data) {
             if ($step == 1) {

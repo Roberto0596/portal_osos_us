@@ -73,7 +73,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('admin.users')}}" class="nav-link">
+                            <a href="{{route('departament.logs.report.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Reporte</p>
                             </a>

@@ -149,3 +149,27 @@ var datatableSpanish = {
     }
 };
 
+var localeDateRange = {
+    applyLabel: 'Aplicar',
+    cancelLabel: 'Cancelar',
+    fromLabel: 'De',
+    toLabel: 'a',
+    customRangeLabel: 'Personalizar',
+    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Jue', 'Vi','Sa'],
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    firstDay: 1
+};
+
+var configDate = {
+    autoUpdateInput: false,
+    locale: localeDateRange,
+    ranges: {
+        'Hoy': [moment(), moment()],
+        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Ultimos 7 días': [moment().subtract(6, 'days'), moment()],
+        'Ultimos 30 días': [moment().subtract(29, 'days'), moment()],
+        'Este mes': [moment().startOf('month'), moment().endOf('month')],
+        'Ultimo mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+};
+

@@ -4,6 +4,12 @@
 
 <link rel="stylesheet" href="{{ asset('css/computer_log.css') }}">
 
+<link rel="stylesheet" href="{{ asset('css/loader_log.css') }}">
+
+<div class="loader-classroom">
+    <div class="lds-circle"><div></div></div>
+</div>
+
 <div class="content-custom">
 
     <div class="back2">
@@ -121,6 +127,8 @@
 
 </div>
 
+<script src="{{ asset('js/loaderClassroom.js') }}"></script>
+
 <script>
 
     var onFocus = true;
@@ -146,9 +154,9 @@
         var $form = $("#form-login");
         var enrollment = $("#enrollment").val();
         e.preventDefault();
-
+        loaderRun();
         $.get("{{ route('logs.quick.get') }}?enrollment="+enrollment, function(data) {
-
+            loaderRun(false);
             if (data.thereIsRecord) {
 
                 swal.fire({
@@ -196,6 +204,7 @@
     });
 
     $("#decline").click(function() {
+        loaderRun();
         var $form = $("#form-login");
         $form.get(0).submit();
     });
@@ -213,6 +222,9 @@
             cache:false,
             contentType:false,
             processData:false,
+            beforeSend:function() {
+                loaderRun();
+            },
             success:function(response) {      
                 swal.fire({
                     title: response.message,
@@ -225,6 +237,7 @@
                     $("#close-modal").click();
                     quick_equipment = null;
                 }); 
+                loaderRun(false);
             }
         });
     });
@@ -232,6 +245,7 @@
     function closeReservacion(id_temp) {
         var data = new FormData();
         data.append("id_temp", id_temp);
+
         $.ajax({
             url:"{{ route('logs.close.booking') }}",
             headers:{'X-CSRF-TOKEN': "{{ csrf_token() }}"},
@@ -240,11 +254,15 @@
             cache:false,
             contentType:false,
             processData:false,
+            beforeSend:function() {
+                loaderRun();
+            },
             success:function(response) {      
                 $("#enrollment").focus();
                 $("#enrollment").val("");
                 quick_equipment = null;
                 onFocus = true;
+                loaderRun(false);
             }
         });
     }

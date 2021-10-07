@@ -80,74 +80,8 @@
 
 </div>
 
-<div class="modal fade" id="modal" data-backdrop='static' data-keyboard=false>
-
-  <div class="modal-dialog modal-sm">
-
-    <div class="modal-content">
-
-      <div class="modal-header text-center">
-
-        <h3 class="center">Confirma reserva</h3>
-
-      </div>
-      <form action="{{ route('logs.classroom.save') }}" method="post">
-
-        {{ csrf_field() }}
-
-        <div class="modal-body">
-
-          <div class="row">
-
-            <div class="col-md-12">
-              <label for="">Equipo</label>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fa fa-th"></i>
-                  </div>
-                </div>
-                <input type="text" class="form-control" id="num_equipment" name="num_equipment" readonly>
-                <input type="hidden" name="id_equipment" id="id_equipment">
-              </div>
-            </div>
-
-            <div class="col-md-12">
-              <label for="">Hora</label>
-              <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fa fa-th"></i>
-                  </div>
-                </div>
-                <input type="text" class="form-control" id="time" name="time" readonly>
-              </div>
-            </div>
-
-          </div>
-              
-        </div>
-
-        <div class="modal-footer">
-            <div class="row">
-                <div class="col-md-6">
-                    <button class="btn btn-default w-100" type="button" data-dismiss="modal">Cancelar</button>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-success float-right w-100" type="submit" id="accept">Aceptar</button>
-                </div>
-            </div>
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-</div>
-
 <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+
 <script>
 
   $(".takeit").click(function() {

@@ -1,6 +1,6 @@
   .classroom-body {
     width: 100%;
-    height: 65vh;
+    height: 30rem;
   }
 
   .scroll {
@@ -82,4 +82,36 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .tab-content>.active {
+    display: block !important;
+  }
+
+  .flotating-container {
+    position: fixed;
+    right: 5px;
+    bottom: 40px;
+  }
+
+  .flotating-container > button {
+    border-radius: 20px;
+  }
+
+  .pt1 {
+    padding-top: 1rem;
+  }
+
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: white;
+    background-color: green;
+    border-color: green;
+  }
+
+  .nav-tabs .nav-link:hover{
+    background-color: #fd7e14;
+    color: white;
+  }
+  .nav-tabs .nav-item.show .nav-link:hover {
+    background-color: #fd7e14;
   }

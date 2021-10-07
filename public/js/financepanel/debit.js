@@ -349,15 +349,23 @@ $("#generate-excel").click(function() {
         "_token": $("#token-excel").val(),
         "period_id": $("#period_id").val(),
         "is_paid": $("#is_paid").val(),
-        "initial_date": $("#initial_date").val(),
-        "end_date": $("#end_date").val()
+        "dates": $("#excel-date-range").val()
     };
 
-    $.post("/finance/generate-excel", data, function(response) {
+    $.post("/finance/generate-excel", data)
+    .then((response) => {
         loader(true, "Creando excel");
         setTimeout(function() {
             createNewXLSX(response, data);
         }, 500);
+    })
+    .catch(() => {
+        loader(false, "No se pudo generar el excel");
+        swal.fire({
+            "title": "Fallo el generar excel",
+            "text": "No pudo completarse la carga de los datos",
+            "type": "error"
+        });
     });
 });
 
@@ -403,17 +411,14 @@ function getFormatDebit(data, filters) {
         correctData.push(["Periodo: ", filters.period_id]);
     }
 
-    if (filters.initial_date != "") {
-        correctData.push(["Fecha de inicio: ", filters.initial_date]);
-    }
-
-    if (filters.end_date != "") {
-        correctData.push(["Fecha final: ", filters.end_date]);
+    if (filters.dates != "") {
+        correctData.push(["Rango de fechas: ", filters.initial_date]);
     }
 
     if (filters.is_paid != "") {
         correctData.push(["Estado: ", filters.is_paid == 1 ? "Pagados" : "Pendientes"]);
     }
+    
     correctData.push([]);
     correctData.push(headers);
 

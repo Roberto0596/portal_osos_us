@@ -282,7 +282,7 @@
                 toastr.error('{{$error}}');
             @endforeach
         @endif
-    })
+    });
 </script>
 
 <script src="{{asset('js/website/home.js')}}"></script>

@@ -16,8 +16,7 @@ Route::group(['domain' => $alumnDomain], function() {
 					'uses' => 'AuthController@login', 
 					'as' => 'login'
 				]);
-			});
-	  		
+			});	  		
 
 		    Route::post('/sign-in',[
 		        'uses' => 'AuthController@postLogin', 
@@ -934,6 +933,18 @@ Route::group(['domain' => $alumnDomain], function() {
 
 						});
 
+						Route::group(["prefix" => "reports"], function() {
+							Route::get('/', [
+						        'uses' => 'ReportController@index', 
+						        'as' => 'report.index'
+							]);
+
+							Route::post('/datatable', [
+						        'uses' => 'ReportController@datatable', 
+						        'as' => 'report.datatable'
+							]);
+						});
+
 						Route::group(["prefix" => "equipments"], function() {
 
 							Route::get('/', [
@@ -978,11 +989,9 @@ Route::group(['domain' => $alumnDomain], function() {
 
 });
 
-
 $logDomain  =  env('LOG_DOMAIN');
 
 Route::group(['domain' => $logDomain, 'namespace' => 'Logs'], function() {
-// Route::group(['prefix' => 'logs', 'namespace' => 'Logs'], function() {
 
 	Route::name('logs.')->group(function() {
 
@@ -1019,6 +1028,11 @@ Route::group(['domain' => $logDomain, 'namespace' => 'Logs'], function() {
 					Route::post("/save", [
 						"uses" => "ClassRoomController@save",
 						"as" => "save"
+					]);
+
+					Route::get("/get-equipment/{id?}", [
+						"uses" => "ClassRoomController@getEquipment",
+						"as" => "get.equipment"
 					]);
 
 				});

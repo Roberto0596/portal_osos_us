@@ -76,8 +76,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="{{asset('bower/dropzone/dist/dropzone.js')}}"></script>
 
-     <!-- html2pdf -->
-     <script src="{{asset('plugins/html2pdf/dist/html2pdf.bundle.min.js')}}"></script>
+    <!-- html2pdf -->
+    <script src="{{asset('plugins/html2pdf/dist/html2pdf.bundle.min.js')}}"></script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="{{asset('js/broadcast/pusher.js')}}"></script>
     
     {!! htmlScriptTagJsApi() !!}
 </head>

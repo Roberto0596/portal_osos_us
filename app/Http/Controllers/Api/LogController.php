@@ -11,30 +11,44 @@ class LogController extends Controller
 {
 	public function watchState(Request $request) {
 
-		$validator = Validator::make($request->all(), [
-            'id' => 'required',
-        ]);
+		$response = [];
 
 		try {
 			$equipment = Equipment::find($request->get('id'));
-			$response = [];
 
 			if ($equipment) {
 
 				if ($equipment->status == 1) {
-					$response = ["message" => "Equipo desbloqueado", "status" => "1"];
+					$response = [
+						"message" => "Equipo desbloqueado", 
+						"status" => "1",
+						"user" => ($equipment->tempUse) ? $equipment->tempUse->alumn->FullName : null
+					];
+
 				} else {
-					$response = ["message" => "Equipo bloqueado", "status" => "0"];
+					$response = [
+						"message" => "Equipo bloqueado", 
+						"status" => "0",
+						"user" => "null"
+					];
 				}
 
 			} else {
-				$response = ["message" => "Equipo no encontrado", "status" => "0"];
+				$response = [
+					"message" => "Equipo no encontrado", 
+					"status" => "0",
+					"user" => "null"
+				];
 			}
 
-			return response()->json($response, 200);
-
 		} catch(\Exception $e) {
-			return response()->json(["message" => "error", "status" => "0"], 500);
+			$response = [
+				"message" => "error",
+				"status" => "0",
+				"user" => "null"
+			];
 		}
+
+		return response()->json($response, 200);
 	}
 }

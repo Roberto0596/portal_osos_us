@@ -2,100 +2,100 @@
 
 @section('content-departament')
 
-<style>
-  .tab-content>.active {
-    display: block !important;
-}
-</style>
-
+<link rel="stylesheet" href="{{ asset('css/computer_logv2.css') }}">
 <link rel="stylesheet" href="{{ asset('css/panel_computer_log.css') }}">
+
+<link rel="stylesheet" href="{{ asset('css/loader_log.css') }}">
 
 <div class="content-wrapper">
 
-  <section class="content" style="margin-top: 1rem;">
+  <section class="content">
 
-    <div class="card">
+    <div class="row pt1">
 
-      <div class="card-header">
+      <div class="col-md-2">
 
-        <div class="row">
+        <div class="float-left">
 
-          <div class="col-md-4">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-            <div class="flex-container">
+            @foreach($classrooms as $key => $item)
+              <li class="nav-item">                                
+                <a class="nav-link @if($key == 0) active @endif changetab" id="{{$item->code}}" data-toggle="tab" href="#{{str_replace(' ', '_', $item->name)}}" role="tab" aria-controls="{{$item->num}}-tab" num="{{$item->num}}">{{ $item->name }}</a>
+              </li>
+            @endforeach
 
-              <button class="btn btn-success float-right" data-toggle="modal" data-target="#modal-create"><i class="fa fa-plus"></i></button>
-
-            </div>
-
-          </div>
-
-          <div class="col-md-8">
-
-            <div class="float-right">
-
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                @foreach($classrooms as $key => $item)
-                  <li class="nav-item">                                
-                    <a class="nav-link @if($key == 0) active @endif changetab" id="{{$item->code}}" data-toggle="tab" href="#{{str_replace(' ', '_', $item->name)}}" role="tab" aria-controls="{{$item->num}}-tab" num="{{$item->num}}">{{ $item->name }}</a>
-                  </li>
-                @endforeach
-              </ul>
-
-            </div>
-
-          </div>
+          </ul>
 
         </div>
 
       </div>
 
-      <div class="card-body">
-
-        <div class="classroom-body">
-
-          <div class="scroll">
-
-            <div class="tab-content" id="myTabContent">
-
-              @foreach($classrooms as $key => $item)
-
-              <div class="tab-pane fade show @if($key == 0)  active @endif" id="{{str_replace(' ', '_', $item->name)}}" role="tabpanel" aria-labelledby="{{$item->num}}-tab">
-
-                <div class="row">
-
-                    @foreach($item->getEquipments() as $value)
-
-                      <div class="col-md-2">
-
-                          <div class="item-equipment">
-                              <button class="btn btn-primary takeit"
-                              equipmentId="{{$value->id}}"
-                              num="{{$value->num}}"
-                              code="{{$value->code}}"
-                              >{{$value->code}}</button>
-                          </div>
-
-                      </div>
-
-                    @endforeach
-
-                </div>
-
-              </div>
-
-              @endforeach
-            </div>
-
-          </div>
-
-        </div>
-
-      </div> 
+      <div class="col-md-10">
+        <h2>Computadoras por sala</h2>
+      </div>
 
     </div>
 
+    <div class="classroom-body">
+
+      <div class="scroll">
+
+        <div class="tab-content" id="myTabContent">
+
+          @foreach($classrooms as $key => $item)
+
+          <div class="tab-pane fade show @if($key == 0)  active @endif" id="{{str_replace(' ', '_', $item->name)}}" role="tabpanel" aria-labelledby="{{$item->num}}-tab">
+
+            <div class="row">
+
+                  @foreach($item->getEquipments() as $value)
+
+                    <div class="col-md-2 col-xs-3">
+
+                        <div class="card">
+
+                          <div class="card-body">
+
+                            <div class="card-body-img">
+                              <img src="{{ $value->image() }}" 
+                                equipmentId="{{$value->id}}"
+                                num="{{$value->num}}"
+                                code="{{$value->code}}"
+                                class="btnSelect">
+                              </div>
+
+                              <p class="text-center">
+                                Equipo: {{ $value->num }}
+                              </p>
+
+                          </div>
+
+                        </div>
+
+                    </div>
+
+                  @endforeach
+
+              </div>
+
+          </div>
+
+          @endforeach
+        </div>
+
+      </div>
+
+    </div>
+
+
   </section>
+
+<div class="flotating-container">
+
+  <button class="btn btn-success float-right" data-toggle="modal" data-target="#modal-create"><i class="fa fa-plus"></i></button>
+
+</div>
 
 </div>
 
@@ -283,7 +283,7 @@
 
 <div class="modal fade" id="modal-info-alumn" data-backdrop='static' data-keyboard=false>
 
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
 
@@ -325,6 +325,8 @@
 
 </div>
 
+<script src="{{ asset('js/loaderClassroom.js') }}"></script>
+
 <script>
 
   $("#form-change-status").submit(function(e) {
@@ -339,10 +341,8 @@
       cancelButtonColor: '#d33',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si, estoy seguro'
-    }).then((result)=>
-    {
-      if (result.value)
-      {
+    }).then((result)=> {
+      if (result.value) {
         $form.get(0).submit();
       }
     });
@@ -366,34 +366,40 @@
     if (id) {
       $(".changetab").removeClass("active");
       $(".tab-pane").removeClass("active");
-      //$(".tab-pane").removeClass("show");
       $("#"+id).addClass("active",true);
       $(panel).addClass("active",true);
-      //$(panel).addClass("show",true);
     }
   });
 
-  $(".takeit").click(function() {
-    $(".loader-modal").show();
+  $(".btnSelect").click(async function() {
     var id = $(this).attr("equipmentId");
 
-    $.get("{{ route('departament.logs.equipment.getEquipment') }}?id="+id,function(data) {
+    loaderRun();
+    var data = await getEquipmentInfo(id);
+    loaderRun(false);
 
-      $("#title-modal").html(data.code);
+    $("#title-modal").html(data.code);
 
-      if (data.alumn) {
+    if (data.alumn) {
         $("#alumn-info").removeAttr("disabled");
-      } else {
+    } else {
         $("#alumn-info").attr("disabled", "disabled");
-      }
+    }
 
-      $("#id_equipment").val(data.id);
-      $("#change-id").val(data.id);
-      $(".loader-modal").hide();
-    });
+    $("#id_equipment").val(data.id);
+    $("#change-id").val(data.id);
+    $(".loader-modal").hide();
 
     $("#modal-quipment-info").modal("show");
   });
+
+  async function getEquipmentInfo(id) {
+    return new Promise(resolve => {
+      $.get("{{ route('departament.logs.equipment.getEquipment') }}?id="+id,function(data) {
+        resolve(data);
+      });
+    });
+  };
 
   $("#delete-equipment").click(function() {
     var id = $("#id_equipment").val();

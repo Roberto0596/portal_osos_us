@@ -100,8 +100,11 @@
                   </div>
 
                   <div class="col-md-4">
+
                     <label for="">Concepto</label>
+
                     <div class="input-group mb-3">
+
                       <div class="input-group-prepend">
                           <span class="input-group-text">
                           <i class="fas fa-asterisk"></i></span>
@@ -113,7 +116,9 @@
                            <option value="{{$value->id}}">{{$value->concept}}</option>
                         @endforeach
                       </select>
+
                     </div>
+
                   </div>
 
                   <div class="col-md-4">
@@ -178,6 +183,10 @@
   </section>
 
 </div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
  <!-- Modal crear nuevo adeudo -->
 
@@ -646,85 +655,82 @@
 
 <div class="modal fade" id="modalPrintTickets">
 
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
 
     <div class="modal-content">
 
       <div class="modal-header">
 
-        <h3>Imprimir comprobantes</h3>
+        <h4>Imprimir comprobantes</h4>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
       </div>
-        
+
+      <form action="{{route('finance.ticket.report')}}" method="post">
+
+        {{ csrf_field() }}
+
         <div class="modal-body">
 
-          <form action="{{route('finance.ticket.report')}}" method="post">
-              
-            {{ csrf_field() }}
+          <div class="row">
 
-            <div class="row">
+            <div class="col-md-12">
 
-              <div class="col-md-6">
+              <label for="">Rango de fechas</label>
 
-                <label for="">Fecha inicial</label>
+              <div class="input-group mb-3">
 
-                <div class="input-group mb-3">
+                <div class="input-group-prepend">
 
-                  <input type="date" class="form-control form-control-lg" name="initial_date" required>
+                  <span class="input-group-text"><i class="fas fa-calendar"></i></span>
 
                 </div>
 
-              </div>
-
-              <div class="col-md-6">
-
-                <label for="">Fecha final</label>
-
-                <div class="input-group mb-3">
-
-                  <input type="date" class="form-control form-control-lg" name="final_date">
-
-                </div>
-
-              </div>
-
-              <div class="col-md-6">           
-
-                <label for="">Concepto</label>
-
-                <div class="input-group mb-3">
-
-                    <select name="debit_type_id" id="debit_type_id" class="form-control form-control-lg">
-                      <option value="" disabled selected>Todos</option>
-                      @foreach(getDebitType() as $key => $value)
-                      <option value="{{$value->id}}">{{$value->concept}}</option>
-                      @endforeach
-                    </select>
-
-                </div>
+                <input type="text" class="form-control" id="datepicker-report" name="dates" placeholder="Rango de fechas">
 
               </div>
 
             </div>
 
-            <div class="row">
+            <div class="col-md-12">           
 
-              <div class="col-md-12">
+              <label for="">Concepto</label>
 
-                <div class="form-group" id="pay-now" style="margin-top: 5vh;">
+              <div class="input-group mb-3">
 
-                  <button class="btn btn-danger" type="button" data-dismiss="modal">Cerrar</button>
-                  <button class="btn btn-success" type="submit" style="float: right;">subir</button>
-                  
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                    <i class="fas fa-asterisk"></i></span>
                 </div>
+
+                <select name="debit_type_id" id="debit_type_id" class="form-control">
+
+                  <option value="" disabled selected>Todos</option>
+
+                  @foreach(getDebitType() as $key => $value)
+                  <option value="{{$value->id}}">{{$value->concept}}</option>
+                  @endforeach
+
+                </select>
 
               </div>
 
             </div>
-              
-          </form>
+
+          </div>         
 
         </div>
+
+        <div class="modal-footer">
+                            
+          <button class="btn btn-success" type="submit">Imprimir</button>
+
+        </div>
+
+      </form>
 
     </div>
 
@@ -754,7 +760,7 @@
 
             <div class="input-group mb-3">
 
-                <select name="period_id" id="period_id" class="form-control form-control-lg">
+                <select name="period_id" id="period_id" class="form-control">
                   <option value="" selected>Todos</option>
                   @foreach(periodsById() as $key => $value)
                     <option value="{{ $value->id }}">{{ $value->clave }}</option>
@@ -773,7 +779,7 @@
 
             <div class="input-group mb-3">
 
-                <select name="is_paid" id="is_paid" class="form-control form-control-lg">
+                <select name="is_paid" id="is_paid" class="form-control">
                   <option value="" selected>Todos</option>
                   <option value="0">Pendientes</option>
                   <option value="1">Pagados</option>
@@ -783,25 +789,19 @@
 
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-12">
 
-            <label for="">Fecha inicial</label>
-
-            <div class="input-group mb-3">
-
-              <input type="date" class="form-control form-control-lg" id="initial_date">
-
-            </div>
-
-          </div>
-
-          <div class="col-md-6">
-
-            <label for="">Fecha final</label>
+            <label for="">Rango de fechas</label>
 
             <div class="input-group mb-3">
 
-              <input type="date" class="form-control form-control-lg" id="end_date">
+              <div class="input-group-prepend">
+
+                  <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+
+              </div>
+
+              <input type="text" class="form-control datepicker-report" id="excel-date-range" placeholder="Rango fechas">
 
             </div>
 
@@ -844,30 +844,12 @@
 
 
 <script>
-  $('#config-demo').daterangepicker({
-    locale: {
-          format: 'MM/DD/YYYY HH:mm',
-          separator: ' - ',
-          applyLabel: 'Apply',
-          cancelLabel: 'Cancel',
-          fromLabel: 'From',
-          toLabel: 'To',
-          customRangeLabel: 'Custom',
-          daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-          monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          firstDay: 1
-    },
-    ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-  }, 
-  function(start, end, label) { 
-    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
+  $('#datepicker-report').daterangepicker(configDate, function(start, end, label) {
+    $("#datepicker-report").val(start.format('YYYY-MM-DD') + '|' + end.format('YYYY-MM-DD'));
+  });
+
+  $('#excel-date-range').daterangepicker(configDate, function(start, end, label) {
+    $("#excel-date-range").val(start.format('YYYY-MM-DD') + '|' + end.format('YYYY-MM-DD'));
   });
 </script>
 @stop

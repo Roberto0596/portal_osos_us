@@ -16,7 +16,7 @@ class ClassRoomController extends Controller {
 		$auth = current_user("log_auth");
 		$classrooms = ClassRoom::where("area_id", $auth->area_id)->get();
 		session(["enrollment" => $request->get('enrollment')]);
-		return view("Logs.classrooms")->with(["classrooms" => $classrooms]);
+		return view("Logs.classroomsv2")->with(["classrooms" => $classrooms]);
 	}
 
 	public function save(Request $request) {
@@ -24,24 +24,25 @@ class ClassRoomController extends Controller {
             $alumnSicoes = Alumno::where("Matricula", session()->get('enrollment'))->first();
             $alumnPortal = User::where("id_alumno", $alumnSicoes->AlumnoId)->first();
 
-            $auth = current_user("log_auth");
+            $instance = Equipment::find($request->get("id_equipment"));
 
-            $instance = new TempUse();
-            $instance->equipment_id = $request->get("id_equipment");
-            $instance->alumn_id = $alumnPortal->id;
-            $instance->enrollment = $alumnSicoes->Matricula;
-            $instance->entry_time = $request->get('time');
-            $instance->area_id = $auth->area_id;
-            $instance->save();
-
-            $equipment = Equipment::find($instance->equipment_id);
-            $equipment->status = 1;
-            $equipment->save();
+            $args = $request->except(["_token", "id_equipment"]);
+            $args["id"] = $alumnPortal->id;
+            $args["enrollment"] = $alumnSicoes->Matricula;
+            $args["area_id"] = current_user("log_auth")->area_id;
+            $instance->reserve($args);
+            
             session()->flash("messages", "success|Reservado correcto, pasa a tu computadora");
             return redirect()->route("logs.login");
         } catch(\Exception $e) {
+            dd($e);
         	session()->flash("messages", "error|Ooops, tuvimos un problema");
             return redirect()->route("logs.login");
         }
 	}
+
+    public function getEquipment($id) {
+        $equipment = Equipment::find($id);
+        return response()->json($equipment);
+    }
 }

@@ -10,18 +10,20 @@
     "require": {
         "php": "^7.2.5",
         "ajaxray/php-watermark": "^0.1.1",
+        "beyondcode/laravel-websockets": "^1.12",
         "biscolab/laravel-recaptcha": "^4.1",
         "bkwld/croppa": "^4.11",
         "doctrine/dbal": "2.5.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.5|^7.0.1",
         "igorescobar/jquery-mask-plugin": "^1.14",
         "iio/libmergepdf": "^4.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "pusher/pusher-php-server": "~3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

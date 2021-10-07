@@ -116,28 +116,6 @@ class LoginController extends Controller
     public function closeBooking(Request $request) {
         $id_temp = $request->get('id_temp');
         $tempUse = TempUse::find($id_temp);
-        $equipment = Equipment::find($tempUse->equipment_id);
-        $equipment->status = 0;
-        $equipment->save();
-
-        //insert report
-        $this->insertReportRegister([
-            "equipment_id" => $equipment->id,
-            "alumn_id" => $tempUse->alumn_id,
-            "entry_time" => $tempUse->entry_time
-        ]);
-        
-        $tempUse->delete();
-    }
-
-    public function insertReportRegister($array) {
-        $report = new ReportEquipment();
-        $report->equipment_id = $array["equipment_id"];
-        $report->alumn_id = $array["alumn_id"];
-        $report->entry_time = $array["entry_time"];
-
-        date_default_timezone_set('America/Hermosillo');
-        $report->departure_time = date('H:i:s');
-        $report->save();
+        $tempUse->closeUse();
     }
 }

@@ -9,8 +9,6 @@ class ClassRoom extends Model
 {
     protected $table = "classroom";
 
-    //protected $with = ["equipments"];
-
     public function area() {
         return $this->belongsTo('\App\Models\AdminUsers\Area', "area_id", "id");
     }
@@ -22,5 +20,15 @@ class ClassRoom extends Model
     public function getEquipments() {
         $instances = Equipment::where("classroom_id", $this->id)->orderBy("num")->get();
     	return $instances;
+    }
+
+    public function equipmentStatus() {
+        $query = ClassRoom::leftJoin("equipment as e", "e.classroom_id", "=", "classroom.id")
+                ->where("classroom.area_id", $this->area_id);
+        return (Object) [
+            "used" => $query->where("e.status", 1)->count(),
+            "free" => $query->where("e.status", 0)->count(),
+            "total" => $query->count()
+        ];
     }
 }

@@ -252,20 +252,19 @@ class DebitController extends Controller
     }  
 
     public function ticketReport(Request $request) {
-        $from = $request->get('initial_date');
-        $to = Carbon::now()->addDay()->format('Y-m-d');
         
-        if ($request->get('final_date')) {
-            $to = $request->get('final_date');
-        }
+        $query = Ticket::select('ticket.route')->join("debit as d", "ticket.debit_id", "=", "d.id");
 
-        $query = Ticket::select('ticket.route')
-        ->join("debit as d", "ticket.debit_id", "=", "d.id");
+        if ($request->has('dates') && $request->get('dates') != "" && $request->get('dates')) {
+            $explode = explode("|", $request->get('dates'));
+            $from = $explode[0];
+            $to = $explode[1];
 
-        if ($from == $to) {
-            $query = $query->where("ticket.created_at", "like", "%".$from."%");
-        } else {
-            $query = $query->whereBetween("ticket.created_at", [$from, $to]);
+            if ($from == $to) {
+                $query = $query->where("ticket.created_at", "like", "%".$from."%");
+            } else {
+                $query = $query->whereBetween("ticket.created_at", [$from, $to]);
+            }
         }
         
         if ($request->has('debit_type_id')) {
@@ -292,33 +291,29 @@ class DebitController extends Controller
             }
         }
 
-        $pdf->Output("report" . date("d-m-Y") . ".pdf","D");
+        $pdf->Output("report" . Carbon::now()->format('Y-m-d') . ".pdf","D");
     } 
 
     public function excelGenerate(Request $request) {
         $period_id = $request->get('period_id');
         $is_paid = $request->get('is_paid');
-        $initial_date = $request->get('initial_date');
-        $end_date = $request->get('end_date');
 
         $data = Debit::select();
 
         if ($period_id) {
             $data->where("period_id", $period_id);
         }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        if ($request->has('dates') && $request->get('dates') != "" && $request->get('dates')) {
+            $explode = explode("|", $request->get('dates'));
+            $from = $explode[0];
+            $to = $explode[1];
 
-        if ($initial_date && $end_date) {
-
-            if ($initial_date == $end_date) {
-                $data->where("created_at", 'like', '%'.$initial_date.'%');
+            if ($from == $to) {
+                $data = $data->where("created_at", "like", "%".$from."%");
             } else {
-                $data->whereBetween("created_at", [$initial_date, $end_date]);
+                $data = $data->whereBetween("created_at", [$from, $to]);
             }
-
-        } else if ($initial_date) {
-            $data->where("created_at", '>=', '%' . $initial_date . '%');
-        } else if ($end_date) {
-            $data->where("created_at", '<=', '%' . $end_date . '%');
         }
 
         if ($is_paid != null) { 

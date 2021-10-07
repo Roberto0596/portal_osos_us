@@ -9,6 +9,7 @@ use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\PeriodModel;
 use App\Models\Sicoes\Alumno;
+use App\Broadcast\DebitEvent;
 
 class PdfController extends Controller
 {
@@ -86,7 +87,6 @@ class PdfController extends Controller
             $alumnData = Alumno::find($current_user->id_alumno);
             if ($documentType->type == 1) {
                 $debit = new Debit();
-                $alumnData = 
                 $create_debit = [
                     'debit_type_id' => 5,
                     'description' => 'Documento oficial unisierra',
@@ -111,6 +111,8 @@ class PdfController extends Controller
                 }
 
                 $debit->save();
+
+                event(new DebitEvent('hello world'));
 
                 if ($debit) {
                     $document =  new Document();
@@ -139,6 +141,7 @@ class PdfController extends Controller
                 return redirect()->back();
             }
         } catch(\Exception $e) {
+            dd($e);
             session()->flash("messages", "error|No fue posible generar el adeudo");
             return redirect()->back();
         }
