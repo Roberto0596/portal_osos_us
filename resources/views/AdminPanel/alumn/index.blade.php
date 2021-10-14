@@ -89,9 +89,9 @@
           <input type="hidden" name="id_alumn" id="id_alumn">
 
           @php
-            $planesEstudio = selectSicoes("PlanEstudio");
+            $planesEstudio = getPlanesEstudio();
             $period = selectCurrentPeriod();
-            $EncGrupos = selectSicoes("EncGrupo","PeriodoId",$period->id);
+            $EncGrupos = getGrupos("PeriodoId", $period->id);
           @endphp
 
           <ul class="nav nav-tabs" id="myTab" role="tablist">

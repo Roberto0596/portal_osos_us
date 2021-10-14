@@ -49,26 +49,22 @@
                   <label for="period" data-alias="periodo" class="control-label">Periodo</label>
     
                   <select id="period" name="period"  isnullable="no" class="form-control select2">
-                      @php
-                        $periods = selectSicoes("Periodo");
-                      @endphp
-                      @for ($i = count($periods) - 1; $i >= 0; $i--)
-                      <option value="{{$periods[$i]['PeriodoId']}}">{{$periods[$i]['Clave']}}</option>
-                      @endfor
+
+                      @foreach(getPeriodos() as $item)
+                      <option value="{{ $item->PeriodoId }}">{{ $item->Clave }}</option>
+                      @endforeach
                      
                   </select>
     
               </div>
+              
             </div>
 
             <div style="padding-top: 2rem; margin-left:1rem;">
                 <button data-toggle="modal" data-target="#modalHighAverages" class="btn btn-success" id="create">Agregar Alumno</button>
             </div>
-        </div>
 
-      
-
-       
+        </div>      
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
         

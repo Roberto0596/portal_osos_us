@@ -1,10 +1,5 @@
 @extends('Alumn.main')
 
-@php
-  use Illuminate\Support\Facades\Auth;
-  $alumn = Auth::guard('alumn')->user();
-@endphp
-
 @section('content-alumn')
 
 <div class="content-wrapper">
@@ -59,13 +54,10 @@
                   <label for="period" data-alias="periodo" class="control-label">Periodo</label>
 
                   <select id="period" name="period"  isnullable="no" class="form-control select2">
-                    @php
-                      $periods = getAlumnPeriods($alumn->id_alumno);
-                    @endphp
-                    @for ($i = count($periods) - 1; $i >= 0; $i--)
-                    <option value="{{$periods[$i]['PeriodoId']}}">
-                      {{$periods[$i]['Clave']}}</option>
-                    @endfor
+
+                    @foreach($periods as $item)
+                    <option value="{{$item->Clave}}">{{ $item->Clave }}</option>
+                    @endForeach
                     
                   </select>
 

@@ -189,9 +189,16 @@
 
                                                 <select id="EstadoDom" name="EstadoDom"  isnullable="no" class="form-control select2">
                                                     <option  disabled="" selected="">Seleccionar</option>
+                                                    @php 
+                                                        $estados = getEstados(); 
+                                                    @endphp   
+
+                                                    <option  disabled="">Seleccionar</option>
+
                                                     @foreach ($estados as $edo)
-                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
+                                                        <option value="{{ $edo->EstadoId }}"> {{ $edo->Nombre }} </option>
                                                     @endforeach
+
                                                 </select>
 
                                             </div>
@@ -249,7 +256,7 @@
                                                 <select id="EstadoNac" isnullable="si" name="EstadoNac" class="form-control select2" >
                                                     <option  disabled="" selected="">Seleccionar</option>
                                                     @foreach ($estados as $edo)
-                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
+                                                    <option value="{{ $edo->EstadoId }}"> {{ $edo->Nombre}} </option>
                                                     @endforeach
                                                 </select>
 
@@ -527,14 +534,10 @@
 
                                                 <select id="EscuelaProcedenciaId" name="EscuelaProcedenciaId" class="form-control select2" isnullable="si">
 
-                                                    @php                                                       
-                                                        $school = selectSicoes("Escuela");
-                                                    @endphp
-
                                                     <option value="" disabled="" selected="">Seleccionar</option>
 
-                                                    @foreach($school as $key => $value)
-                                                    <option value="{{$value['EscuelaId']}}">{{$value["Nombre"]}}</option>
+                                                    @foreach( getEscuela() as $key => $value)
+                                                    <option value="{{ $value->EscuelaId }}">{{ $value->Nombre }}</option>
                                                     @endforeach
 
                                                 </select>

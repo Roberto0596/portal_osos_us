@@ -8,6 +8,7 @@ use App\Models\Alumns\User;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
 use App\Library\Inscription;
+use App\Enum\DebitStatus;
 use Input;
 
 class DebitController extends Controller
@@ -16,6 +17,7 @@ class DebitController extends Controller
 	{
 		try {
 			$data = $request->all();
+
 	        $is_paid = $data["type"];
 
 	        if ($is_paid == "order.paid") {
@@ -30,29 +32,19 @@ class DebitController extends Controller
 
 					foreach ($debits as $key => $value) {
 
-						if ($value->status == 0) {
+						if ($value->status == Debit::getStatus(DebitStatus::pending())) {
 
 							if ($value->payment_method != "card") {
 
 								if ($value->debit_type_id == 1) {
-									$register = Inscription::makeRegister($alumn);
+									$register = Inscription::makeRegister($alumn->sAlumn);
 									$value->setForeignValues();
 								}
 
-								if ($value->has_file_id != null) {
-									$document = Document::find($value->has_file_id);
-									$document->payment = 1;
-									$document->save();
-								}
-
-								$value->status = 1;
-								$value->save();
+								$value->validate(Debit::getStatus(DebitStatus::paid()));
 							}
 
 						}
-
-						$value->payment_date = now();
-						$value->save();
 					}
 					addNotify("pago realizado con exito",$alumn->id, "alumn.debit");
 				}

@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/card.css') }}"> 
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Inconsolata'>
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="{{ asset('css/loader_log.css') }}">
 
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 
@@ -51,7 +52,7 @@
 
             <h4>
               <i class="fas fa-globe"></i> Unisierra
-              <small class="float-right">Fecha: {{date("Y-m-d")}}</small>
+              <small class="float-right">Fecha: {{ date("Y-m-d") }}</small>
             </h4>
 
           </div>
@@ -245,15 +246,13 @@
 
               <p style="font-size: 30px">Total: <span>${{number_format($total,2)}}</span></p>
 
-          </div>
-
-         
+          </div>         
 
           <div class="col-md-3">
 
             <div class="float-right">
 
-              <button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">No debo eso <i class="fa fa-hand-stop-o"></i></button>
+              {{--<button type="button" class="btn btn-danger" id="extra" style="border-radius: 20px">No debo eso <i class="fa fa-hand-stop-o"></i></button>--}}
 
               <button type="button" class="btn btn-warning" style="border-radius: 20px; display: none;color: white" id="back" ><i class="fa fas  fa-arrow-circle-left" style="color: white !important"></i> Regresar</button>
 
@@ -479,6 +478,7 @@
 
 </div>
 
+<script src="{{ asset('js/loaderClassroom.js') }}"></script>
 <script src="{{asset('js/alumn/payment.js')}}"></script>
 
 @stop

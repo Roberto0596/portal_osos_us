@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ConfigModel;
 use App\Models\PeriodModel;
+use App\Models\Sicoes\Periodo;
 use DB;
 
 class SettingsController extends Controller
@@ -31,15 +32,16 @@ class SettingsController extends Controller
     				$period = PeriodModel::find($value);
 
     				if (!$period) {
-    					$data = selectSicoes("Periodo","PeriodoId",$value)[0];
+    					$data = Periodo::where("PeriodoId", $value)->first();
     					$period = new PeriodModel();
     					$period->id = $value;
-    					$period->clave = $data["Clave"];
-    					$period->año = $data["Anio"];
-    					$period->ciclo = $data["Ciclo"];
-    					$period->semestre = $data["Semestre"];
+    					$period->clave = $data->Clave;
+    					$period->año = $data->Anio;
+    					$period->ciclo = $data->Ciclo;
+    					$period->semestre = $data->Semestre;
     					$period->save();
     				}
+
     			} else if($key == "open_inscription") {
                     if ($value != $instance->open_inscription) {
                         DB::table('users')->where("inscripcion", "<>", 0)->update(["inscripcion" => 0]);

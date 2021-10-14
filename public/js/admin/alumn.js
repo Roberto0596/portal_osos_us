@@ -37,10 +37,10 @@ $(".tableAlumns").dataTable({
                     res = "Esperando confirmación de pago";
                     break;
                 case 3:
-                    res = "Proceso terminado";
+                    res = "Seleccion de carga";
                     break;
                 case 4:
-                    res = "Carga asignada";
+                    res = "Proceso terminado";
                     break;
             } 
             return res;

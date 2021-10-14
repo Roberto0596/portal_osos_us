@@ -14,8 +14,8 @@ class CreateRegisterBitacoraTable extends Migration
     public function up()
     {
         Schema::table('report_equipment', function (Blueprint $table) {
-            $table->bigInteger("area_id")->unsigned();
-            $table->foreign("area_id");
+            //$table->bigInteger("area_id")->unsigned();
+            //$table->foreign("area_id");
         });
     }
 

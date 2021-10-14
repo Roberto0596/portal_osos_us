@@ -34,20 +34,19 @@ class AlumnController extends Controller
 		$planEstudio = 'sin asignar';
 		$alumn = User::find($response->input('id'));
 
-        $inscripcion = Inscripcion::where("AlumnoId", $alumn->id_alumno)->orderBy("InscripcionId", "desc")->first();
+        $inscripcion = $alumn->currentInscription();
 
 		if ($inscripcion) {
             $group = EncGrupo::where("EncGrupoId", $inscripcion->EncGrupoId)->first()->Nombre;
 		}
 
-		$array = array(
+		return response()->json([
             'enrollment' => $alumn->sAlumn->Matricula, 
             'group' => $group, 
             'PlanEstudio' => $alumn->sAlumn->PlanEstudio->Clave, 
             'semestre' => $inscripcion["Semestre"], 
-            "inscription_status" => $alumn->inscripcion);
-        
-		return response()->json($array);
+            "inscription_status" => $alumn->inscripcion
+        ]);
     }
 
     public function show(Request $request)
@@ -89,7 +88,9 @@ class AlumnController extends Controller
         	$alumn = User::find($request->input('id_alumn'));
             $inscripcion = $alumn->currentInscription();
 
-            if ($request->has('inscription-status') && $request->get('inscription-status')) {
+            if ($request->has('inscription-status') && $request->get('inscription-status') != null) {
+                $alumn->back_inscripcion = $alumn->inscripcion;
+                $alumn->is_in_back_inscription = 1;
                 $alumn->inscripcion = $request->get('inscription-status');
                 $alumn->save();
             }

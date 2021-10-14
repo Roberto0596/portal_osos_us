@@ -3,11 +3,11 @@
 namespace App\Models\Alumns;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enum\DebitStatus;
 use App\Library\Ticket;
 
 class Debit extends Model
 {
-
     protected $table = "debit";
 
     protected $fillable = [
@@ -34,6 +34,16 @@ class Debit extends Model
         'updated_at',
         'payment_date'
     ];
+
+    private static $status = [
+        "PENDING" => 0,
+        "VALIDATE" => 1,
+        "PAID" => 3,
+    ];
+
+    public static function getStatus($key) {
+        return self::$status[$key];
+    }
 
     protected $with = ['admin', 'debitType', 'Alumn'];
 
@@ -65,24 +75,37 @@ class Debit extends Model
     }
 
     public static function validateWithOrder($id_order, $status) {
+
         $debits = self::where("id_order", $id_order)->get();
 
         foreach ($debits as $value) {
-            $value->status = $status;
-
-            if ($value->has_file_id != null) {
-                $document = Document::find($value->has_file_id);
-                $document->payment = $status;
-                $document->save();
-            }
-
-            if ($status == 1) {
-                $value->enrollment = $value->Alumn->Matricula;
-                $value->payment_date = now();
-                Ticket::build($value);
-            }
-            
-            $value->save();
+            $value->validate($status);
         }
+    }
+
+    public function validate($status, $payment_method = null, $order_id = null) {
+        $this->status = $status;
+
+        if ($order_id) {
+            $this->id_order = $order_id;
+        }
+
+        if ($payment_method) {
+            $this->payment_method = $payment_method;
+        }
+
+        if ($this->has_file_id != null && $this->status == Debit::getStatus(DebitStatus::paid())) {
+            $document = Document::find($this->has_file_id);
+            $document->payment = 1;
+            $document->save();
+        }
+
+        if ($status == Debit::getStatus(DebitStatus::paid())) {
+            $this->enrollment = $this->Alumn->Matricula;
+            $this->payment_date = now();
+            Ticket::build($this);
+        }
+
+        $this->save();
     }
 }

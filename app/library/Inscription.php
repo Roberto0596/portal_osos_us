@@ -29,12 +29,6 @@ class Inscription {
             self::addFailedRegister($user->id, "no se encontro el grupo para este alumno.");
         }
 
-        if (isset($inscripcionData->Semestre) && $inscripcionData->Semestre == 1) {
-            self::assignEnrollment($alumno, $user);
-        } else if (isset($inscripcionData["Semestre"]) && $inscripcionData["Semestre"] == 1) {
-            self::assignEnrollment($alumno, $user);
-        }
-
         $semestre = isset($inscripcionData->Semestre) ? $inscripcionData->Semestre : $inscripcionData["Semestre"];
         $encgrupo = isset($inscripcionData->EncGrupoId) ? $inscripcionData->EncGrupoId : $inscripcionData["EncGrupoId"];
 
@@ -48,8 +42,7 @@ class Inscription {
         ]);
 
         if ($inscribir) {
-            $user->inscripcion = 3;
-            $user->save();
+            $user->nextStep(3);
             addNotify("Pago de colegiatura", $user->id,"alumn.charge");
             insertInscriptionDocuments($user->id);
             $result = (Object) [
@@ -84,10 +77,10 @@ class Inscription {
         $instance->save();
     }
 
-    private static function assignEnrollment(Alumno $alumno, User $user) {
-        $enrollement = self::generateCarnet($alumno->PlanEstudioId); 
-        $alumno->Matricula = $enrollement;
-        $alumno->save();          
+    public static function assignEnrollment(User $user) {
+        $enrollement = self::generateCarnet($user->sAlumn->PlanEstudioId); 
+        $user->sAlumn->Matricula = $enrollement;
+        $user->sAlumn->save();          
         $user->email = "a".str_replace("-", "", $enrollement)."@unisierra.edu.mx";
         $user->save();
     }
@@ -109,7 +102,7 @@ class Inscription {
             $instance->Baja = $array["Baja"];
             $instance->AlumnoId = $array["AlumnoId"];
             $instance->Fecha = $array["Fecha"];
-            //$instance->PeriodoId = $array["PeriodoId"];
+            $instance->PeriodoId = $array["PeriodoId"];
             $instance->save();
             return true;
         } catch(\Exception $e) {

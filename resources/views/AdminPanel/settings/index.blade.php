@@ -54,13 +54,13 @@
                   <div class="panel">Cambiar periodo</div>
 
                     <select name="period_id" class="form-control select2" id="period_id" style="width: 100%">
-                      @php
-                        $periods = selectSicoes("Periodo");
-                      @endphp
+
                       <option value="">Periodos disponibles</option>
-                      @foreach($periods as $value)
-                        <option value="{{$value['PeriodoId']}}">{{$value['Clave']}}</option>
+
+                      @foreach(getPeriodos() as $value)
+                        <option value="{{ $value->PeriodoId }}">{{ $value->Clave }}</option>
                       @endforeach
+
                     </select>
 
                   </div>
@@ -107,7 +107,7 @@
 
         </div>
 
-        <div class="col-md-3">
+        {{--<div class="col-md-3">
 
           <div class="card card-outline card-warning collapsed-card">
 
@@ -189,7 +189,7 @@
 
           </div>
 
-        </div>
+        </div>--}}
 
         <div class="col-md-3">
 

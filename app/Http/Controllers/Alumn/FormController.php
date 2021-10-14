@@ -9,6 +9,7 @@ use App\Models\Alumns\Debit;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Sicoes\Alumno;
 use App\Models\Sicoes\Estado;
+use App\Models\Sicoes\Municipio;
 use App\Library\Sicoes;
 use DB;
 use Auth;
@@ -33,7 +34,6 @@ class FormController extends Controller
             } 
 
             return view('Alumn.form.index')->with([
-                "estados" => Estado::all(), 
                 "data" => $current_user->sAlumn, 
                 "currentId" => $current_user->id_alumno,
                 "group" => $checkGroup
@@ -47,16 +47,15 @@ class FormController extends Controller
     public function indexInscription()
     {
         return view('Alumn.form.inscription')->with([
-            "estados" => Estado::all(), 
             "user" => current_user()
         ]);
     }
 
     public function saveInscription(Request $request)
     {
-        $this->validate($request,[
+        /*$this->validate($request,[
             'g-recaptcha-response' => 'required|recaptcha',
-        ]);
+        ]);*/
 
         $current_user = current_user();
 
@@ -84,9 +83,9 @@ class FormController extends Controller
     {       
         try
         {
-            $this->validate($request,[
+            /*$this->validate($request,[
                 'g-recaptcha-response' => 'required|recaptcha',
-            ]);
+            ]);*/
 
             $current_user = current_user();
             $data = json_decode($request->input('data'), true);
@@ -103,9 +102,6 @@ class FormController extends Controller
                 $alumn->save();
             }
 
-            $current_user->inscripcion = 1;
-            $current_user->save();
-
             //validate debit 
             $validate = Debit::where("id_alumno", $current_user->id_alumno)
                                 ->where("period_id", selectCurrentPeriod()->id)
@@ -114,7 +110,9 @@ class FormController extends Controller
 
             if (!$validate) {
                 $debit = insertInscriptionDebit($current_user);
-            } 
+            } else {
+                $current_user->nextStep();
+            }
 
             if (isset($debit)) {
                 session()->flash("messages","success|".$debit["message"]);
@@ -131,8 +129,7 @@ class FormController extends Controller
     }
 
     public function getMunicipios(Request $request) {
-        $EstadoId = $request->input("EstadoId");
-        $municipios = selectSicoes("Municipio","EstadoId",$EstadoId);
+        $municipios = Municipio::where("EstadoId",$request->input("EstadoId"))->get();
         return response()->json($municipios);
     }
 }

@@ -11,7 +11,10 @@ class DocumentRequestController extends Controller
 {
 	public function index()
 	{
-		$documents = Document::where("id_debit", "<>", null)->where("status", 0)->orderByDesc("id")->get();
+		$documents = Document::where("id_debit", "<>", null)
+                                ->where("status", 0)
+                                ->orderByDesc("id")
+                                ->get();
 		return view('AdminPanel.document-request.index', ["documents" => $documents]);
     }
 
@@ -29,11 +32,11 @@ class DocumentRequestController extends Controller
 
     public function upload(Request $request) {
     	$document = Document::find($request->get('idDocument'));
-    	$alumnData = $document->alumn->getSicoesData();
+    	$alumnData = $document->alumn->sAlumn;
     	$file = $request->file('document');
     	
     	try {
-    		$path = "documentos/".$alumnData["Matricula"]."/";
+    		$path = "documentos/".$alumnData->Matricula."/";
     		$documentName = uniqid().".".$file->getClientOriginalExtension();
 			$file->move($path, $documentName); 
 			$document->route = $path.$documentName; 

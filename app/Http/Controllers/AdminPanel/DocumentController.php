@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Alumns\Document;
 use Illuminate\Support\Facades\DB;
 use App\Models\Alumns\User;
+use App\Models\Sicoes\Alumno;
 
 class DocumentController extends Controller
 {
@@ -17,24 +18,21 @@ class DocumentController extends Controller
 
     public function show(Request $request)
     {     
-        $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
-        
+        $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;        
         $start = $request->get('start');
         $length = $request->get('length');
 
         $query = user::select();
-        $filtered = 0;
 
         if($filter) {
             $query = $query->where(function($query) use ($filter){
                 $query->orWhere('name', 'like', '%'. $filter .'%')
                     ->orWhere('lastname', 'like', '%'. $filter . '%')
                     ->orWhere('email', 'like', '%'. $filter . '%');
-            });
-            $filtered = $query->count();
-        } else {
-            $filtered = User::count();
+            });            
         }
+
+        $filtered = $query->count();
 
         $query->skip($start)->take($length)->get();
 
@@ -46,20 +44,23 @@ class DocumentController extends Controller
         {
             try {
                 $countSuccess = Document::where([['alumn_id',$value["id"]],["status", 2]])->get()->count();
-                $querySicoes = selectSicoes("Alumno","AlumnoId",$value["id_alumno"]);           
+                $alumnData = Alumno::find($value["id_alumno"]);           
 
-                $files = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$value["id"])->where("document.type",1)->get();
+                $files = Document::select('document.*','document_type.name')
+                                    ->join('document_type','document.document_type_id','document_type.id')
+                                    ->where('alumn_id',$value["id"])
+                                    ->where("document.type",1)
+                                    ->get();
 
                 array_push( $res,[
                     "#"         => ($key+1),
-                    "Matricula" => $querySicoes[0]["Matricula"],
-                    "Alumno"    => $value["name"]." ".$value["lastname"],
+                    "Matricula" => $alumnData->Matricula,
+                    "Alumno"    => $alumnData->FullName,
                     "files"     => json_encode($files),
                     "countFiles"=> count($files),
                     "count"     => $countSuccess
                 ]);  
-            } catch(\Exception $e) {
-            }            
+            } catch(\Exception $e) {}            
         }
         
         return response()->json([

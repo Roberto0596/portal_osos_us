@@ -213,5 +213,7 @@ class DesicionTree {
 				}
 			} while ($status);
 		}
+
+		return $this;
 	}
 }

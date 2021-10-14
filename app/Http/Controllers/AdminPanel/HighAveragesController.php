@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminPanel;
 use Illuminate\Http\Request;
 use App\Models\Alumns\HighAverages;
 use App\Http\Controllers\Controller;
+use App\Models\Sicoes\Alumno;
 
 class HighAveragesController extends Controller
 {
@@ -24,16 +25,13 @@ class HighAveragesController extends Controller
         foreach($highAverages as $key => $value)
         {
 
-            $alumnInArray = selectSicoes('Alumno','Matricula', $value->enrollment);
+            $alumnInArray = Alumno::where("Matricula", $value->enrollment)->first();
 
-            if(count($alumnInArray) === 0){
+            if(!$alumnInArray){
                 $fullname = "SIN REGISTRO ";
             }else{
-                $alumn = $alumnInArray[0];
-                $fullname= $alumn['Nombre']." ".$alumn['ApellidoPrimero']." ".$alumn['ApellidoSegundo'];
-            }
-           
-           
+                $fullname= $alumnInArray->FullName;
+            }           
            
             $buttons="<div class='btn-group'>
                     <button class='btn btn-danger btnDelete' high_average_id = '"
@@ -53,16 +51,14 @@ class HighAveragesController extends Controller
 
 
     public function search(Request $request)
-    {
-       
-        if( $request->enrollment != ""){
-            $alumns =getAlumnByEnrollment($request->enrollment);
+    {       
+        if( $request->enrollment != "") {
+            $alumns = Alumno::where("Matricula", "like", $request->enrollment."%")->get();
             $view = view('AdminPanel.HighAverages.table_body', compact('alumns'))->render();
             return response()->json($view);
         }
 
-        return response()->json(null);
-       
+        return response()->json(null);       
     }
 
     public function addAlumn(Request $request)
@@ -100,8 +96,5 @@ class HighAveragesController extends Controller
             session()->flash("messages","error|Tuvimos problemas eliminando el Alumno");
            return redirect()->back();
         }   
-    }
-
-
-   
+    }   
 }

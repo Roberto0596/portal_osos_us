@@ -23,9 +23,7 @@ class TicketController extends Controller
 
         $alumn = Auth::guard('alumn')->user();
         $tickets = Ticket::where("alumn_id","=", $alumn->id)->get();
-      
-
-        
+                
         $response = [ "data" => []];       
 
 

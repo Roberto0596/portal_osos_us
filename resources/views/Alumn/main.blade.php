@@ -2,6 +2,10 @@
 
 @section('content')
 	
+	<div class="loader-classroom">
+	  <div class="lds-circle"><div></div></div>
+	</div>
+	
 	<div class="wrapper">
 		@include('Alumn.header')
 		@include('Alumn.aside')

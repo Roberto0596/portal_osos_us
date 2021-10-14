@@ -96,14 +96,15 @@ class Ticket {
 
 	    $carrer = $alumn->PlanEstudio->Carrera;
 
+	    $current_group = Sicoes::currentGroup($alumn->AlumnoId);
 	    $ticketInfo = [
 	        "ticketNum"      => self::getTicketNumber(),
 	        "date"           => $date,
 	        "enrollment"     => $alumn->Matricula,
 	        "name"           => $alumn->FullName,
 	        "rfc"            => substr($alumn->Curp, 0, 10),
-	        "group"          => current_group($alumn->AlumnoId)["Nombre"],
-	        "semester"       => current_group($alumn->AlumnoId)["Semestre"],
+	        "group"          => $current_group->Nombre,
+	        "semester"       => $current_group->Semestre,
 	        "career"         => strtolower(normalizeChars($carrer->Nombre)),
 	        "location"       => $alumn->Localidad . ", " . $state->Nombre,
 	        "order"          => $debit->id_order,

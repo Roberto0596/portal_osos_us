@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\PeriodModel;
 use App\Models\Alumns\User;
+use App\Models\Sicoes\Carrera;
+use App\Models\Sicoes\Alumno;
 
 class ReportController extends Controller
 {
@@ -13,14 +15,10 @@ class ReportController extends Controller
 	{
 		$alumns = User::select()->orderBy('email', 'asc')->get();
 		$res = [];
-		foreach ($alumns as $key => $value) 
-		{
-			$alumnData = selectSicoes("Alumno","AlumnoId",$value->id_alumno);
-			if ($alumnData!=false)
-			{
-				$alumnData = $alumnData[0];
-				$plan = selectSicoes("PlanEstudio","PlanEstudioId",$alumnData["PlanEstudioId"])[0];
-				$clave = selectSicoes("Carrera","CarreraId",$plan["CarreraId"])[0];
+		foreach ($alumns as $key => $value) {
+			$alumnData = Alumno::find($value->id_alumno);
+			if ($alumnData) {
+				$carrera = Carrera::find($alumnData->PlanEstudio->CarreraId);
 				switch ($value->inscripcion) {
 					case 0:
 						$status = "Sin llenar formulario";
@@ -32,27 +30,20 @@ class ReportController extends Controller
 						$status = "Esperando confirmación";
 						break;
 					case 3:
-						$status = "Proceso terminado";
+						$status = "Seleccion de carga";
 						break;
 					case 4: 
-						$status = "Carga Asignada";
+						$status = "Proceso terminado";
 						break;
 				}
-				if ($alumnData["ApellidoSegundo"]!=null)
-				{
-					$nombre = $alumnData["Nombre"]." ".$alumnData["ApellidoPrimero"]." ".$alumnData["ApellidoSegundo"];
-				}
-				else
-				{
-					$nombre = $alumnData["Nombre"]." ".$alumnData["ApellidoPrimero"];
-				}
-				$telefono = $alumnData["Telefono"]!=null?$alumnData["Telefono"]:"Sin telefono";
-				array_push($res, ["Clave" => $clave["Nombre"],
-								  "Matricula"=>$alumnData["Matricula"],
-								  "Alumno"=>$nombre,
-								  "Telefono"=>$telefono,
-								  "Email" => $value->email,
-								  "Status"=>$status]);
+				array_push($res, [
+					"Clave" => $carrera->Nombre,
+					"Matricula" => $alumnData->Matricula,
+					"Alumno" => $alumnData->FullName,
+					"Telefono" => $alumnData->Telefono,
+					"Email" => $value->email,
+					"Status" => $status
+				]);
 			}			
 		}
 		return view('AdminPanel.report.index')->with(["alumn"=>$res]);

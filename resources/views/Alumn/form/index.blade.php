@@ -178,20 +178,18 @@
                                                 <label for="EstadoDom" data-alias="estado" class="control-label">Estado</label>
 
                                                 <select id="EstadoDom" name="EstadoDom"  isnullable="no" class="form-control select2">
+
                                                     <option  disabled="" selected="">Seleccionar</option>
-                                                    @if($data["EstadoDom"] != null)
-                                                        @php
-                                                            $edoSelected = selectSicoes("Estado","EstadoId",$data["EstadoDom"])[0]; 
-                                                            var_dump($edoSelected);
-                                                        @endphp                                                    
-                                                    <option value="{{$edoSelected['EstadoId']}}" selected> {{$edoSelected['Nombre']}} </option>
-                                                    @else
-                                                    <option  disabled="" selected="">Seleccionar</option>
-                                                    @endif
+                                                    @php 
+                                                        $estados = getEstados(); 
+                                                    @endphp   
+
+                                                    <option  disabled="">Seleccionar</option>
 
                                                     @foreach ($estados as $edo)
-                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
+                                                        <option value="{{ $edo->EstadoId }}" @if($data['EstadoDom'] == $edo->EstadoId) selected @endif> {{ $edo->Nombre }} </option>
                                                     @endforeach
+
                                                 </select>
 
                                             </div>
@@ -205,14 +203,16 @@
                                                 <label for="MunicipioDom" data-alias="municipio" class="control-label">Municipio</label>
 
                                                 <select id="MunicipioDom" name="MunicipioDom" isnullable="no" class="form-control select2">
-                                                    @if($data["MunicipioDom"] != null)
-                                                    @php
-                                                        $mpioSelected = selectSicoes("Municipio","MunicipioId",$data["MunicipioDom"])[0]; 
-                                                    @endphp                                                    
-                                                    <option value="{{$mpioSelected['MunicipioId']}}"> {{$mpioSelected['Nombre']}} </option>
-                                                    @else
                                                     <option  disabled="" selected="">Seleccionar</option>
-                                                    @endif
+                                                    @php 
+                                                        $municipios = getMunicipios();
+                                                    @endphp   
+
+                                                    <option  disabled="">Seleccionar</option>
+
+                                                    @foreach ($municipios as $edo)
+                                                        <option value="{{ $edo->MunicipioId }}" @if($data['MunicipioDom'] == $edo->MunicipioId) selected @endif> {{ $edo->Nombre }} </option>
+                                                    @endforeach
                                                 </select>
 
                                             </div>
@@ -255,17 +255,15 @@
 
                                                 <select id="EstadoNac" isnullable="si" name="EstadoNac" class="form-control select2" >
                                                     <option  disabled="" selected="">Seleccionar</option>
-                                                    @if($data["EstadoNac"] != null)
-                                                    @php
-                                                        $edoSelected = selectSicoes("Estado","EstadoId",$data["EstadoNac"])[0]; 
-                                                    @endphp                                                    
-                                                    <option value="{{$edoSelected['EstadoId']}}" selected> {{$edoSelected['Nombre']}} </option>
-                                                    @else
-                                                    <option  disabled="" selected="">Seleccionar</option>
-                                                    @endif
+                                                    
+                                                    @php 
+                                                        $estados = getEstados();   
+                                                    @endphp   
+
+                                                    <option  disabled="">Seleccionar</option>
 
                                                     @foreach ($estados as $edo)
-                                                    <option value="{{$edo['Clave']}}"> {{$edo['Nombre']}} </option>
+                                                        <option value="{{ $edo->EstadoId }}" @if($data['EstadoNac'] == $edo->EstadoId) selected @endif> {{ $edo->Nombre }} </option>
                                                     @endforeach
                                                 </select>
 
@@ -280,14 +278,11 @@
                                                 <label for="municipionac" data-alias="municipionac" class="control-label">Municipio de Nacimiento</label>
                                                 
                                                 <select id="MunicipioNac" name="MunicipioNac" isnullable="si" class="form-control select2">
-                                                    @if($data["MunicipioNac"] != null)
-                                                    @php
-                                                        $mpioSelected = selectSicoes("Municipio","MunicipioId",$data["MunicipioNac"])[0]; 
-                                                    @endphp                                                    
-                                                    <option value="{{$mpioSelected['MunicipioId']}}"> {{$mpioSelected['Nombre']}} </option>
-                                                    @else
-                                                    <option  disabled="" selected="">Seleccionar</option>
-                                                    @endif
+                                                    <option  disabled="">Seleccionar</option>
+
+                                                    @foreach ($municipios as $edo)
+                                                        <option value="{{ $edo->MunicipioId }}" @if($data['MunicipioNac'] == $edo->MunicipioId) selected @endif> {{ $edo->Nombre }} </option>
+                                                    @endforeach
                                                 </select>
 
                                             </div>
@@ -607,11 +602,10 @@
                                                     @if ($data != null)
 
                                                     @php
-                                                        $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
-                                                        $data_carrer = selectSicoes("Carrera","CarreraId",$data_studio[0]["CarreraId"]);
+                                                        $carrer_data = getPlanesEstudio($data["PlanEstudioId"]);
                                                     @endphp
 
-                                                    <option value="{{ $data_studio[0]['CarreraId']}}" disabled="" selected="">{{$data_carrer[0]['Nombre']}}</option>
+                                                    <option value="{{ $carrer_data->CarreraId }}" disabled="" selected="">{{$carrer_data->Carrera->Nombre }}</option>
 
                                                     @endif                            
                                                     
@@ -633,10 +627,7 @@
 
                                                 <select class="form-control " disabled>
                                                     @if ($data != null)
-                                                    @php
-                                                        $data_studio = selectSicoes("PlanEstudio","PlanEstudioId",$data["PlanEstudioId"]);
-                                                    @endphp
-                                                    <option value="{{ $data['PlanEstudioId']}}" disabled="" selected="">{{$data_studio[0]['Nombre']}}</option>
+                                                    <option value="{{ $carrer_data->PlanEstudioId }}" disabled="" selected="">{{ $carrer_data->Nombre }}</option>
                                                     @endif
                                                     
                                                 </select>
@@ -691,13 +682,13 @@
                                                 <select id="EscuelaProcedenciaId" name="EscuelaProcedenciaId" class="form-control " disabled>
 
                                                     @if ($data != null)
-                                                        @php
-                                                            
-                                                            $school = selectSicoes("Escuela","EscuelaId",$data["EscuelaProcedenciaId"]);
-
+                                                    
+                                                        @php                                                            
+                                                            $escuela = getEscuela($data["EscuelaProcedenciaId"]);
                                                         @endphp
-                                                        @if($school)
-                                                        <option disabled="" selected="">{{$school[0]['Nombre']}}</option>
+
+                                                        @if($escuela)
+                                                            <option disabled="" selected="">{{ $escuela->Nombre }}</option>
                                                         @endif
                                                     @else
                                                         <option value="" disabled="" selected="">Seleccionar</option>

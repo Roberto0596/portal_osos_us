@@ -1,19 +1,19 @@
-@foreach ($data as $item)
+@foreach ($carga as $item)
 <tr>
     <td>
         {{ $loop->iteration }}
     </td>
     <td>
-        {{ $item["asignature"]}}
+        {{ $item->Asignatura}}
     </td>
     <td style="padding-left: 3rem">
-        {{ $item["semester"]}}
+        {{ $item->Semestre}}
     </td>
     <td>
-        {{ $item["teacher"]}}
+        {{ $item->profesor}}
     </td>
     <td>
-        {{ $item["score"]}}
+        {{ $item->Calificacion}}
     </td>
   </tr>
     

@@ -16,13 +16,9 @@ class ChargeController extends Controller
 {
 	public function index()
 	{
-        session()->forget("chargeTreeInstance");
-
         if (!session()->has('chargeTreeInstance')) {
             $tree = new DesicionTree();
-
-            $tree->makeTree(current_user());
-            $charge = $tree->getTreeCharge();
+            $charge = $tree->makeTree(current_user())->getTreeCharge();
             session(["chargeTreeInstance" => $tree]);
         } else {
             $charge = session()->get('chargeTreeInstance')->getTreeCharge();
@@ -38,8 +34,7 @@ class ChargeController extends Controller
         $tree = session()->get("chargeTreeInstance");
         $charge = $tree->getTreeCharge();
 
-        if (!isset($alumnRequest["seleccionadas"]))
-        {
+        if (!isset($alumnRequest["seleccionadas"])) {
             session()->flash("messages","error|Hay un minimo de materias por llevar.");
             return redirect()->back();
         }
@@ -51,9 +46,7 @@ class ChargeController extends Controller
         }
 
         $save = $tree->saveCharge($charge);
-        $user = current_user();
-        $user->inscripcion = 4;
-        $user->save();
+        current_user()->closeProccess();
 
         if ($save) {
             session()->flash("messages","success|Tu carga ha sido guardada.");
@@ -64,10 +57,7 @@ class ChargeController extends Controller
     }
 
     public function finally(Request $request) {
-        $user = current_user();
-        $user->inscripcion = 4;
-        $user->save();
-
+        current_user()->closeProccess();
         session()->flash("messages","success|El proceso fue finalizado, Revisa tu carga con el personal de servicios escolares.");
         return redirect()->route("alumn.home");
     }

@@ -166,6 +166,7 @@ $("#form-oxxo").submit(function(e)
 	{
 		if (result.value)
 		{
+			loaderRun();
 			$form.get(0).submit();
 		}
 	});

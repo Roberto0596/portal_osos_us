@@ -5,6 +5,7 @@
 	<div class="loader-classroom">
 	  <div class="lds-circle"><div></div></div>
 	</div>
+	
 	<div class="wrapper">
 
 		@include('DepartamentPanel.header')

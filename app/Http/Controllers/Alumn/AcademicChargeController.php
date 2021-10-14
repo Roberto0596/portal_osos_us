@@ -5,36 +5,46 @@ namespace App\Http\Controllers\Alumn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Sicoes\Carga;
+use App\Library\Sicoes;
+use DB;
 
 class AcademicChargeController extends Controller
 {
     public function index()
     {
-        return view('Alumn.academic_charge.index');
+        $alumn = current_user();
+        $periods = Sicoes::getAlumnPeriods($alumn->id_alumno);
+
+        return view('Alumn.academic_charge.index')->with([
+            "alumn" => $alumn,
+            "periods" => $periods
+        ]);
     }
 
     public function show($period_id)
-    {
-        
-        $alumn = Auth::guard('alumn')->user();
-        $charge = getAcademicChargeByPeriodIdAndAlumnId($period_id,$alumn->id_alumno);
-        $data = []; 
-        foreach($charge as $key => $value)
-        {
-            $teacherName = $value['Nombre']." ".$value['ApellidoPrimero']." ".
-                                                                $value['ApellidoSegundo'];
-            $row = [
-                "asignature" => $value['Asignatura'],
-                'semester'   => $value['Semestre'],
-                'teacher'    => $teacherName,
-                'score'      =>  $value['Calificacion'] !== null ? $value['Calificacion'] : 
-                                                                                'Sin Calificación'
-            ];
-           array_push($data ,$row);
-    
-        }
+    {        
+        $alumn = current_user();
 
-        $view = view('Alumn.academic_charge.table_body', compact('data'))->render();
+        $carga = Carga::select([
+            "Carga.CargaId",
+            "Carga.Calificacion",
+            "Carga.Baja",
+            "Carga.PeriodoId",
+            "dg.ProfesorId",
+            "dg.AsignaturaId",
+            "a.Nombre as Asignatura",
+            "a.Semestre",
+            DB::raw("CONCAT_WS(' ', p.Nombre, p.ApellidoPrimero, p.ApellidoSegundo) as profesor")
+        ])->leftJoin("DetGrupo as dg", "Carga.DetGrupoId", "dg.DetGrupoId")
+        ->leftJoin("Asignatura as a", "a.AsignaturaId", "dg.AsignaturaId")
+        ->leftJoin("Profesor as p", "p.ProfesorId", "dg.ProfesorId")
+        ->leftJoin("Periodo as pe", "pe.PeriodoId", "Carga.PeriodoId")
+        ->where("Carga.AlumnoId", $alumn->id_alumno)
+        ->where("pe.Clave", $period_id)
+        ->get();
+
+        $view = view('Alumn.academic_charge.table_body', compact('carga'))->render();
         return response()->json($view);
         
         

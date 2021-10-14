@@ -304,8 +304,7 @@ class PdfController extends Controller
     {
         $file = $request->file('file-document');
         $rDocument = $request->input('document-type');
-        $alumnData = selectSicoes("Alumno","AlumnoId",current_user()->id_alumno);
-        $path = "documentos/".$alumnData[0]["Matricula"];
+        $path = "documentos/" . current_user()->sAlumn->Matricula;
         $document_type = DocumentType::find($rDocument);
 
         if ($file->getClientOriginalExtension() != "pdf") {
@@ -313,23 +312,16 @@ class PdfController extends Controller
             return redirect()->back();
         }
         
-        try {
-            mkdir($path, 0755); 
-        } catch(\ErrorException $e) {
-        }
-
         $documentName = current_user()->name."_".$document_type->name.".".$file->getClientOriginalExtension();
 
-        if (!file_exists($path."/".$documentName)) {
-            $file->move($path, $documentName);
+        if (file_exists("/".$path."/".$documentName)) {
+            unlink("/".$path."/".$documentName);
+        }
+
+        $file->move($path, $documentName);
+        $document = Document::where("route", $path."/".$documentName)->first();
+        if(!$document) {
             $document = new Document();
-        } else {
-            unlink($path."/".$documentName);
-            $file->move($path, $documentName);
-            $document = Document::where("route","=",$path."/".$documentName)->first();
-            if(!$document) {
-                $document = new Document();
-            }
         }
 
         $document->description = "Documento de inscripción";

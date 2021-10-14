@@ -70,8 +70,11 @@
 
                         <select id="mode" class="form-control">
                           @php
-                          $array = [["value" => "0","text"=>"Pendientes", "selected"=>false],
-                                        ["value" => "1","text"=>"Pagados", "selected"=>false]];
+                          $array = [
+                            ["value" => "0", "text" => "Pendientes", "selected" => false],
+                            ["value" => "1", "text" => "Validado", "selected" => false],
+                            ["value" => "3", "text" => "Pagado", "selected" => false]
+                          ];
                           @endphp
 
                           @foreach($array as $key => $value)
@@ -387,14 +390,6 @@
 
                   <select class="form-control" id="select_alumno_id" style="width:90%">
                     <option value="">Seleccione un alumno</option>
-                      @php
-                          $alumnos = selectSicoes("Alumno");
-                      @endphp
-
-                      @foreach($alumnos as $key => $value)
-                      <option value="{{$value['AlumnoId']}}">{{$value["Matricula"]." ".$value["Nombre"]}}</option>
-                      @endforeach
-
                   </select>
 
                 </div>
@@ -432,7 +427,11 @@
 
               <div class="input-group mb-3">
 
-                <input class="toggle-bootstrap" name="status" id="status-edit" type="checkbox" data-width="150"  data-toggle="toggle" data-on="Validado" data-off="Sin validar"  data-onstyle="success" data-offstyle="danger" style="width: 100%;">
+                <select name="status" class="form-control" id="editar_status_adeudo">
+                  <option value="0">Pendiente</option>
+                  <option value="1">Validado</option>
+                  <option value="3">Pagado</option>
+                </select>
 
               </div>
 
@@ -541,7 +540,9 @@
     <div class="modal-content">
 
       <div class="loader-modal">
+
         <div class="loader-spinner">Loading...</div>
+
       </div>
 
       <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenValidate"> 
@@ -553,15 +554,61 @@
       </div>
 
       <form action="{{ route('finance.debit.validate') }}" method="post">
+
         {{ csrf_field() }}
+
+        <input type="hidden" value="" name="debit_id" id="validate_debit_id">
 
         <div class="modal-body custom-modal">
 
-          <!-- <div id="loader-validate" class="loader"></div>  -->
+          <div class="row" id="step1">
 
-            <div id="content-validate">
-              
+            <div class="col-md-12" style="display: none">
+              <p>El alumno <span id="alumn_name_step_1"></span> no ha subido comprobante o realizado un pago</p>
             </div>
+
+          </div>
+
+          <div class="row" id="step2" style="display: none">
+
+            <div class="col-md-12" id="step-validation" style="display: none">
+
+              <p>Antes de validar el pago, asegurece de validar el id en CONEKTA o el link con el comprobante</p>
+
+              <div class="receipt">
+                
+              </div>
+
+              <p>Una vez verificado, puede validar el adeudo, o bien, marcar como pagado el adedudo en la lista a continuacion.</p>
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <select name="verificacion_adedudo" class="form-control" id="verificacion_adedudo">
+                        <option value="0">Pendiente</option>
+                        <option value="1">Validado</option>
+                        <option value="3">Pagado</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+
+            </div>
+
+            <div class="col-md-12" id="step-finally" style="display: none">
+
+              <div class="receipt">
+                
+              </div>
+
+              <p>Este adedudo ya ha sido validado, esto quiere decir, que el proceso de validación de la inscrición ya fue realizado y todos los pagos fueron saldados</p>
+
+            </div>
+
+          </div>
 
         </div>
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sicoes\PlanEstudio;
 
 class ConfigModel extends Model
 {
@@ -25,22 +26,12 @@ class ConfigModel extends Model
     }
 
     public function getAdministracionData() {
-        $data = selectSicoes("PlanEstudio","PlanEstudioId", $this->laep_id);
-
-        if ($data) {
-            return $data[0];
-        } else {
-            return null;
-        }
+        $data = PlanEstudio::find($this->laep_id);
+        return $data;
     }
 
     public function getTuristmoData() {
-        $data = selectSicoes("PlanEstudio","PlanEstudioId", $this->lata_id);
-
-        if ($data) {
-            return $data[0];
-        } else {
-            return null;
-        }
+        $data = PlanEstudio::find($this->lata_id);
+        return $data;
     }
 }

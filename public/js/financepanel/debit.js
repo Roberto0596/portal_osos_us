@@ -2,7 +2,9 @@ const op = { style: 'currency', currency: 'USD' };
 const nf = new Intl.NumberFormat('en-US', op);
 
 $(document).ready(function() {
-    
+
+    //$(".toggle-bootstrap").bootstrapToggle();
+
     const filters = {
         status: null,
         period: null,
@@ -146,8 +148,6 @@ $(document).on("click","button.edit",function()
         data: {debit_id: debit_id},
         method: 'POST'
     }).then((response) => {
-        $('#status-edit').bootstrapToggle((response.status == 1 ? "on" : "off"));
-
         if (response.id_order != null && response.payment_method == "transfer") {
             $("#edit-button").attr("route", response.id_order);
             $("#edit-container").show();
@@ -155,6 +155,7 @@ $(document).on("click","button.edit",function()
             $("#edit-container").hide();
         }
 
+        $("#editar_status_adeudo option[value='"+response.status+"']").attr("selected", true);
         $("#alumnName").text(response.FullName);
         $("#hidden_id_alumno").val(response.id_alumno);
         $('#amount').val(response.amount);
@@ -175,41 +176,33 @@ $(document).on("click","button.btnValidate", function() {
         $('.loader-modal').hide();  
 
         if (response.id_order == null) {
-            var res = "<div class='row'><div class='col-md-12'>El alumno " + response.alumn.FullName + " no ha subido comprobante o realizado un pago</div></div>"; 
-            $("#validate-button").hide();
+
+            $("#alumn_name_step_1").text(response.alumn.FullName);
+            $("#step1").show();
+
         } else {
 
-            if (response.status == 0) {
-                var res = "<p>Antes de validar el pago, asegurece de validar este id en CONEKTA o este link con el comprobante</p>";
-                if (response.payment_method == "transfer") {
-                    res += "<p style='text-align: center'><button type='button' class='btn btn-info showPdf' route='"+response.id_order+"'>Ver comproboante</button></p>";
-                } else {
-                    res += "<p style='text-align: center'>"+response.id_order+"></p>";
-                }
-                res += "<p>Una vez verificado, puede validar el adeudo activando el toggle de abajo y luego en guardar</p>" +
-                '<input class="toggle-bootstrap" name="verification" type="checkbox" data-width="150"  data-toggle="toggle"' +
-                'data-on="Validado" data-off="Sin validar"  data-onstyle="success" data-offstyle="danger">'+
-                '<input type="hidden" value="'+response.id+'" name="debit_id">'+
-                '<script>$(".toggle-bootstrap").bootstrapToggle();</script>'; 
-            } else {
-                var res = "<p>Revisar registro de comprobante o id de CONEKTA</p>";
-                if (response.payment_method == "transfer") {
-                    res += "<p style='text-align: center'><button type='button' class='btn btn-info showPdf' route='"+response.id_order+"'>Ver comproboante</button></p>";
-                } else {
-                    res += "<p style='text-align: center'>"+response.id_order+"></p>";
-                }
-                res += "<div class='row'><div class='col-md-12'>" + 
-                  "<p>Este alumno ya fue validado con este adeudo</p>";
-                $("#validate-button").hide();
-            }            
-        }
-        $("#content-validate").append(res);
+            $("#validate_debit_id").val(response.id);
 
+            if (response.payment_method == "transfer") {
+                $(".receipt").append("<p style='text-align: center'><button type='button' class='btn btn-info showPdf' route='"+response.id_order+"'>Ver comproboante</button></p>");
+            } else {
+                $(".receipt").append("<p style='text-align: center'>"+response.id_order+"></p>");
+            }
+
+            $("#step2").show();
+
+            if (response.status == 0 || response.status == 1) {
+                $("#verificacion_adedudo option[value='"+response.status+"']").attr("selected", true);
+                $("#step-validation").show();
+            } else if(response.status == 3) {
+                $("#validate-button").hide();
+                $("#step-finally").show();
+            }           
+        }
     });
 
     $('.loader-modal').show();
-    $("#validate-button").show();
-    $("#content-validate").empty()
 });
 
 $(document).on("click","button.btnDeleteDebit", function() {
@@ -329,7 +322,26 @@ $("#id_alumno").select2({
     width: 'resolve',
 });
 
-$(".toggle-bootstrap").bootstrapToggle();
+$("#select_alumno_id").select2({
+    ajax: {
+        url: "/finance/debit/search-alumn",
+        dataType: 'json',
+        data: function (params) {
+            return {
+                filter: params.term, // search term
+            };
+        },
+        processResults: function (data,params) {
+            return {
+                results: data.results, // search term
+            };
+        },
+        cache: true
+    },
+    placeholder: 'Buscar alumno',
+    minimumInputLength: 3,
+    width: 'resolve',
+});
 
 $(document).on("click", "button.showPdf", function()
 {

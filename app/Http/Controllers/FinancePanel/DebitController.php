@@ -8,8 +8,10 @@ use App\Models\Alumns\User;
 use App\Models\Alumns\Ticket;
 use App\Models\PeriodModel;
 use App\Library\Inscription;
+use App\Library\Sicoes;
 use App\Library\Ticket as TicketLibrary;
 use App\Models\Sicoes\Alumno;
+use App\Enum\DebitStatus;
 use Carbon\Carbon;
 use Mpdf\Mpdf;
 use Input;
@@ -56,64 +58,55 @@ class DebitController extends Controller
     {
         $debit = Debit::find($request->input("debitId"));   
 
-        if ($debit) {
-            $debit->amount = $request->input("amount");
-            $debit->id_alumno = $request->input("id_alumno");
-            $debit->description = $request->input("description");
-            $debit->status = $request->get("status") == "on" ? 1 : 0; 
-            $debit->save();   
-
-            if ($debit->status == 1) {
-                TicketLibrary::build($debit);
-            }        
-            
-            if ($debit->has_file_id != null) {
-                $document = Document::find($debit->has_file_id);
-                $document->payment = $request->get("status") == "on" ? 1 : 0;
-                $document->save();
-            }
-
-            session()->flash("messages","success|Guardado correcto");
-            return redirect()->back(); 
-        } else {
-            session()->flash("messages","error|No se encontró el adeudo seleccionado");
+        if (!$debit) {
+            session()->flash("messages", "error|No fue posible encontrar el adeudo");
             return redirect()->back();
-        }      
+        }
+
+        $debit->amount = $request->input("amount");
+        $debit->id_alumno = $request->input("id_alumno");
+        $debit->description = $request->input("description");
+        $debit->save();   
+
+        if ($request->get("status") == 1) {
+            $debit->validate(Debit::getStatus(DebitStatus::validate()));
+        } else if($request->get("status") == 3) {
+            $debit->validate(Debit::getStatus(DebitStatus::paid()));
+        } else if($request->get("status") == 0) {
+            $debit->validate(Debit::getStatus(DebitStatus::pending()));
+        }  
+
+        session()->flash("messages","success|Guardado correcto");
+        return redirect()->back();       
     }
 
     public function validateDebit(Request $request) {
 
-        $status = $request->get("verification") == "on" ? 1 : 0;
-
         $debit = Debit::find($request->input('debit_id'));
+        $verification = $request->get('verificacion_adedudo');
 
-        if ($debit) {
-
-            if ($status == 1) {
-
-                $alumn = $debit->Alumn;
-
-                $register = Inscription::makeRegister($alumn);
-
-                if ($register->status == "success") {
-                    Debit::validateWithOrder($debit->id_order, $status);
-                    $debit->setForeignValues();
-                }
-
-                session()->flash("messages", $register->status . "|" . $register->message);
-
-            } else {
-                Debit::validateWithOrder($debit->id_order, $status);
-                session()->flash("messages", "success|Se guardaron los cambios");
-            }
-
-            return redirect()->back();
-
-        } else {
+        if (!$debit) {
             session()->flash("messages", "error|No fue posible encontrar el adeudo");
             return redirect()->back();
         }
+
+        $status = 0;
+
+        if ($verification == 1 || $verification == 3) {
+            if (!Sicoes::validateLastInscripcionByPeriod($debit->id_alumno)) {
+                $alumn = $debit->Alumn;
+                $register = Inscription::makeRegister($alumn);
+            } else {
+                $user = User::where("id_alumno", $alumn->AlumnoId)->first();
+                $user->nextStep();
+            }
+            $status = $verification == 1 ?  Debit::getStatus(DebitStatus::validate()) : Debit::getStatus(DebitStatus::paid());
+            Debit::validateWithOrder($debit->id_order, $status); 
+        }               
         
+        $debit->setForeignValues();
+        session()->flash("messages","success|Adeudo actualizado correctamente");
+        return redirect()->back();        
     }
 
     //creamos un nuevo adeudos y se guarda el taba de debits
@@ -333,7 +326,7 @@ class DebitController extends Controller
 
         $query = Debit::select("debit.*", 
             DB::raw("CONCAT_WS(' ', debit.alumn_name, debit.alumn_last_name, debit.alumn_second_last_name) AS alumnName"),
-            DB::raw("(CASE WHEN debit.status = 1 THEN 'Pagado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"),
+            DB::raw("(CASE WHEN debit.status = 3 THEN 'Pagado'  WHEN debit.status = 1 THEN 'Validado' WHEN debit.status = 0 THEN 'Pendiente' END) AS convertStatus"),
             DB::raw("(CASE WHEN debit.payment_method = 'transfer' THEN 'Transferencia bancaria' WHEN debit.payment_method = 'oxxo_cash' THEN 'OXXO Paid' WHEN debit.payment_method = 'spei' THEN 'SPEI' WHEN debit.payment_method = 'card' THEN 'Pago con tarjeta'  END) AS convertMethod"))
             ->where("status", $request->get('status'))
             ->where("period_id", $request->get('period'));

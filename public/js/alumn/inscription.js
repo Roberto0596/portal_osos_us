@@ -247,34 +247,23 @@ $("#EstadoNac").change(function()
   getEstados("MunicipioNac",EstadoId);
 });
 
-function getEstados(elementName, EstadoId)
-{
-  var route = 'form/getMunicipio';
-  var token = $('#token').val();
-  var data = new FormData();
-  data.append("EstadoId",EstadoId);
-  $.ajax({
-      url:route,
-      headers:{'X-CSRF-TOKEN': token},
-      method:'POST',
-      data:data,
-      cache:false,
-      contentType:false,
-      processData:false,
-      success:function(response)
-      {
-          $('#'+elementName).empty().append('whatever');
-          for (var i = 0; i < response.length; i++)
-          {
-            let $option = $('<option />', {
-                text: response[i]["Nombre"],
-                value: response[i]["MunicipioId"],
-                selected: ""
-            });
-            $('#'+elementName).prepend($option);
-          }
-      }
-  });
+function getEstados(elementName, EstadoId) {
+    $.ajax({
+        url:'form/getMunicipio',
+        headers:{'X-CSRF-TOKEN': $('#token').val()},
+        method:'POST',
+        data: {EstadoId: EstadoId},
+    }).then((response) => {
+        $('#'+elementName).empty().append('whatever');
+        for (var i = 0; i < response.length; i++) {
+          let $option = $('<option />', {
+              text: response[i]["Nombre"],
+              value: response[i]["MunicipioId"],
+              selected: ""
+          });
+          $('#'+elementName).prepend($option);
+        }
+    });
 }
 
 $('.date').inputmask({"mask": "9999-99-99", "placeholder": 'yyyy-mm-dd'});

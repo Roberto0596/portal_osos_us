@@ -5,6 +5,8 @@ namespace App\Http\Controllers\AdminPanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Alumns\FailedRegister;
+use App\Library\Sicoes;
+use App\Models\Sicoes\Inscripcion;
 
 class FailedRegisterController extends Controller
 {
@@ -51,21 +53,18 @@ class FailedRegisterController extends Controller
     }
 
     public function encGrupo(Request $request) {
-        $data = getEncGrupoBySemestre($request->get('semestre'), intval(getConfig()->period_id));
-        return response()->json($data);
+        return response()->json(Sicoes::getGroupsBySemestre(getConfig()->period_id, $request->get('semestre')));
     }
 
     public function save(Request $request) {
         try {
             $failed = FailedRegister::find($request->get('failedId'));
-            $inscription = getInscriptionData($failed->alumn->id_alumno);
-            $data1 = updateSicoes("Inscripcion", "Semestre", $request->get('semestre'), "InscripcionId", $inscription["InscripcionId"]);
-            $data2 = updateSicoes("Inscripcion", "EncGrupoId", $request->get('encGrupo'), "InscripcionId", $inscription["InscripcionId"]);
-            if ($data1 == "error" && $data2 == "error") {
-                session()->flash("messages","error|Algo salio mal");
-                return redirect()->back();
-            }
-
+            $inscription = Inscripcion::where("AlumnoId", $failed->alumn->id_alumno)
+                                        ->orderBy("InscripcionId", "desc")
+                                        ->first();
+            $inscription->Semestre = $request->get("semestre");
+            $inscription->EncGrupoId = $request->get('encGrupo');
+            $inscription->save();
             $failed->status = 1;
             $failed->save();
             session()->flash("messages","success|El problema fue solucionado");

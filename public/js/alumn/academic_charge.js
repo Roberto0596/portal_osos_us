@@ -1,7 +1,8 @@
 let token = $("#token").val();
-const loadAcademicChargeTable = function(peroidId){
 
-    let route = `/alumn/academic-charge/show/${peroidId}`;
+const loadAcademicChargeTable = function(claveId){
+
+    let route = `/alumn/academic-charge/show/${claveId}`;
 
     $.ajax({
         url: route,
@@ -12,14 +13,12 @@ const loadAcademicChargeTable = function(peroidId){
         success: function (response) {
         $("#tableBody").html(response);
         }
-    });
-
-   
+    });   
 }
 
 
-const peroidId = $('#period').val();
-loadAcademicChargeTable(peroidId);
+const claveId = $('#period').val();
+loadAcademicChargeTable(claveId);
 
 $('#period').on('change', function() {
     const period = this.value;

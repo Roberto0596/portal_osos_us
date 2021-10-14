@@ -110,8 +110,7 @@
               </table>
 
             @php
-              $id_alumno = Auth::guard("alumn")->user()->id_alumno;
-              $inscription = getLastThing("Inscripcion","AlumnoId",$id_alumno,"InscripcionId");
+              $inscription = current_user()->getLastInscription();
             @endphp            
 
             <div class="form-group row">
