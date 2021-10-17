@@ -35,4 +35,20 @@ class UserController extends Controller
         session()->flash("messages","success|Datos guardados correctamente");
         return redirect()->route("departament.user");
     }
+
+    public function notify(Request $request)
+    {
+        return response()->json(Notify::where("target", "admin")
+                                ->where("status", "0")->get());
+    }
+
+    public function seeNotify($route)
+    {
+        $notify = Notify::where("target", "admin")->get();
+        foreach ($notify as $key => $value) {
+            $value->status = 1;
+            $value->save();
+        }
+        return redirect()->route($route);
+    }
 }

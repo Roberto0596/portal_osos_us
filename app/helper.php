@@ -290,17 +290,6 @@ function getEscuela($id = null) {
 }
 
 /**
- * crea una nueva notificacion
- */
-function addNotify($text,$id,$route) {
-    $notify = new Notify();
-    $notify->text = $text;
-    $notify->alumn_id = $id;
-    $notify->route = $route;
-    $notify->save();
-}
-
-/**
  * obtiene las notificacioness.
  *
  * @return Collection instances

@@ -100,7 +100,9 @@ class DebitController extends Controller
                 $user = User::where("id_alumno", $alumn->AlumnoId)->first();
                 $user->nextStep();
             }
-            $status = $verification == 1 ?  Debit::getStatus(DebitStatus::validate()) : Debit::getStatus(DebitStatus::paid());
+            $status = $verification == 1 ?  Debit::getStatus(
+                DebitStatus::validate()) : Debit::getStatus(DebitStatus::paid()
+            );
             Debit::validateWithOrder($debit->id_order, $status); 
         }               
         

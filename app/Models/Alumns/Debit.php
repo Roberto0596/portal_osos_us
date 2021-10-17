@@ -5,6 +5,8 @@ namespace App\Models\Alumns;
 use Illuminate\Database\Eloquent\Model;
 use App\Enum\DebitStatus;
 use App\Library\Ticket;
+use App\Broadcast\NotifyEvent;
+use App\Broadcast\NotifyFinance;
 
 class Debit extends Model
 {
@@ -98,6 +100,7 @@ class Debit extends Model
             $document = Document::find($this->has_file_id);
             $document->payment = 1;
             $document->save();
+            $document->addNotify();
         }
 
         if ($status == Debit::getStatus(DebitStatus::paid())) {
@@ -106,6 +109,45 @@ class Debit extends Model
             Ticket::build($this);
         }
 
+        if ($status == 1 || $status == 3) {
+            $alumn = User::where("id_alumno", $this->id_alumno)->first();
+            $this->addNotify($alumn->id, "users", "alumn.debit");
+        }
+
+        $this->save();
+    }
+
+    public function addNotify($id, $target, $route) {
+        $message = "";
+
+        if ($this->status == 0) {
+            $notify = new Notify();
+            $notify->addNotify("Hay un nuevo adeudo", null, "finance", "finance.debit");
+            event(new NotifyFinance("finance", $message));
+        } else {
+           if($this->status == 1) {
+                $message = "El adeudo fue validado";
+            } else if($this->status == 3) {
+                $message = "Adeudo pagado y validado por finanzas";
+            } 
+            $notify = new Notify();
+            $notify->addNotify($message, $id, $target, $route);
+            event(new NotifyEvent($id, $target, $message));
+        } 
+    }
+
+    public function generateDocument(User $user, DocumentType $documentType) {
+        $document =  new Document();
+        $document->description = 'Documento oficial unisierra';
+        $document->route = ''; 
+        $document->PeriodoId = getConfig()->period_id; 
+        $document->alumn_id = $user->id;
+        $document->document_type_id = $documentType->id;
+        $document->payment = 0;
+        $document->id_debit = $this->id;
+        $document->save();
+        $document->addNotify();
+        $this->has_file_id = $document->id;
         $this->save();
     }
 }

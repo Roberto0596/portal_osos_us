@@ -11,4 +11,6 @@
 		
 	</div>
 
+	@include('AdminPanel.pusher')
+
 @stop

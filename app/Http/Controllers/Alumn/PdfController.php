@@ -3,13 +3,12 @@
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
 use App\Http\Controllers\Controller;
-use Auth;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\PeriodModel;
 use App\Models\Sicoes\Alumno;
-use App\Broadcast\DebitEvent;
+use Auth;
 
 class PdfController extends Controller
 {
@@ -83,59 +82,23 @@ class PdfController extends Controller
 
     public function getOfficialDocument(DocumentType $documentType) {
         try {
-            $current_user = current_user();
-            $alumnData = Alumno::find($current_user->id_alumno);
+            $user = current_user();
             if ($documentType->type == 1) {
                 $debit = new Debit();
-                $create_debit = [
-                    'debit_type_id' => 5,
-                    'description' => 'Documento oficial unisierra',
-                    'amount' => $documentType->cost,
-                    'admin_id'=> 2,
-                    'id_alumno' => $alumnData->AlumnoId,
-                    'status' => 0,
-                    'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-                    'period_id' => getConfig()->period_id,
-                    'enrollment' => $alumnData->Matricula,
-                    'alumn_name' => $alumnData->Nombre,
-                    'alumn_last_name' => $alumnData->ApellidoPrimero,
-                    'alumn_second_last_name' => (isset($alumnData->ApellidoSegundo) ? $alumnData->ApellidoSegundo : ''),
-                    'career' => $alumnData->PlanEstudio->Carrera->Nombre,
-                    'location' => $alumnData->Localidad,
-                    'state' => $alumnData->Estado->Nombre,
-                ];
-
-                foreach ($create_debit as $key => $value) {
-                    $debit->$key = $value;
-                }
-
+                $debit->debit_type_id = 5;
+                $debit->description = 'Documento oficial unisierra';
+                $debit->amount = $documentType->cost;
+                $debit->admin_id = 2;
+                $debit->id_alumno = $user->sAlumn->AlumnoId;
+                $debit->status = 0;
+                $debit->period_id = getConfig()->period_id;
                 $debit->save();
+                $debit->setForeignValues();
+                $debit->generateDocument($user, $documentType);
+                $debit->addNotify($user->id, "users", "alumn.debit");  
 
-                event(new DebitEvent('hello world'));
-
-                if ($debit) {
-                    $document =  new Document();
-                    $document->description = 'Documento oficial unisierra';
-                    $document->route = ''; 
-                    $document->PeriodoId = getConfig()->period_id; 
-                    $document->alumn_id = current_user()->id;
-                    $document->document_type_id = $documentType->id;
-                    $document->created_at = \Carbon\Carbon::now()->toDateTimeString();
-                    $document->updated_at = \Carbon\Carbon::now()->toDateTimeString();
-                    $document->payment = 0;
-                    $document->id_debit = $debit->id;
-                    $document->save();
-
-                    $debit->has_file_id = $document->id;
-                    $debit->save();
-
-                    session()->flash("messages", "success|Se agrego a tu lista de documentos, no olvides pagar tu nuevo adeudo");
-                    return redirect()->back();
-                } else {
-                    session()->flash("messages", "error|No se pudo agregar el adeudo");
-                    return redirect()->back();
-                }
+                session()->flash("messages", "success|Se agrego a tu lista de documentos, no olvides pagar tu nuevo adeudo");
+                return redirect()->back();
             } else {
                 session()->flash("messages", "error|Este documento no se puede agregar");
                 return redirect()->back();

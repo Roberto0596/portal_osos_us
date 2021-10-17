@@ -18,23 +18,11 @@ class UserController extends Controller
 		return view('Alumn.user.index')->with(["user" => $current_user]);
 	}
 
-    public function create() {
-
-    }
-
-    public function edit() {
-
-    }
-
-    public function delete() {
-        
-    }
-
     public function notify(Request $request)
     {
-        $query = [["alumn_id","=",$request->input('AlumnId')],["status","=","0"]];
-        $notifys = Notify::where($query)->get();
-        return response()->json($notifys);
+        return response()->json(Notify::where("id_target", current_user()->id)
+                                ->where("target", "users")
+                                ->where("status", "0")->get());
     }
 
     public function seeNotify($route,$id)

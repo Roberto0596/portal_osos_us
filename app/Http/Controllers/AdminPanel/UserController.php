@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminPanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUsers\AdminUser;
+use App\Models\Alumns\Notify;
 use Auth;
 
 class UserController extends Controller
@@ -33,5 +34,21 @@ class UserController extends Controller
         $user->save();
         session()->flash("messages","success|Datos guardados correctamente");
         return redirect()->route("admin.user");
+    }
+
+    public function notify(Request $request)
+    {
+        return response()->json(Notify::where("target", "admin")
+                                ->where("status", "0")->get());
+    }
+
+    public function seeNotify($route)
+    {
+        $notify = Notify::where("target", "admin")->get();
+        foreach ($notify as $key => $value) {
+            $value->status = 1;
+            $value->save();
+        }
+        return redirect()->route($route);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models\Alumns;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Broadcast\NotifyAdmin;
 
 class Document extends Model
 {
@@ -39,5 +40,18 @@ class Document extends Model
     public function period()
     {
         return $this->belongsTo('App\Models\PeriodModel','PeriodoId','id');
+    }
+
+    public function addNotify() {
+        $message = "";
+        if ($this->status == 0) {
+            $message = "Nueva solicitud de documento";
+        } else if($this->status == 1) {
+            $message = "Hay un nuevo documento que fue pagado";
+        }
+
+        $notify = new Notify();
+        $notify->addNotify($message, null, "admin", "admin.document.request");
+        event(new NotifyAdmin("admin", $message));
     }
 }

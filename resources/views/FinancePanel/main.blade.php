@@ -10,4 +10,6 @@
 		@include('FinancePanel.footer')
 	</div>
 
+	@include('FinancePanel.pusher')
+
 @stop

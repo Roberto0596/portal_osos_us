@@ -37,7 +37,7 @@ class DebitController extends Controller
         //preparamos los datos.
         $tokenId = $request->input("conektaTokenId");
         $current_user = current_user();
-        $sicoesAlumn = $current_user->getSicoesData();
+        $sicoesAlumn = $current_user->sAlumn;
 
         //traer los conceptos que se deben del alumno
         $debits = getDebitByArray($debitId);
@@ -50,9 +50,9 @@ class DebitController extends Controller
                 "customer_info" => [
                     "name" => $current_user->name,
                     "email" => $current_user->email,
-                    "phone" => $sicoesAlumn["Telefono"]!=null?$sicoesAlumn["Telefono"]:"1234234321"
+                    "phone" => $sicoesAlumn->Telefono !=null?$sicoesAlumn->Telefono:"1234234321"
                 ],
-                "metadata" => ["Matricula" => $sicoesAlumn["Matricula"]],
+                "metadata" => ["Matricula" => $sicoesAlumn->Matricula],
                 "charges" => [
                     [
                         "payment_method" => 
@@ -117,7 +117,7 @@ class DebitController extends Controller
 
         //preparamos los datos.
         $current_user = current_user();
-        $sicoesAlumn = $current_user->getSicoesData();
+        $sicoesAlumn = $current_user->sAlumn;
 
         $debits = getDebitByArray($debitId);
         
@@ -133,9 +133,9 @@ class DebitController extends Controller
                 "customer_info" => [
                   "name" => $current_user->name,
                   "email" => $current_user->email,
-                  "phone" => $sicoesAlumn["Telefono"]!=null?$sicoesAlumn["Telefono"]:"1234234321"
+                  "phone" => $sicoesAlumn->Telefono!=null?$sicoesAlumn->Telefono:"1234234321"
                 ],
-                "metadata" => ["Matricula" => $sicoesAlumn["Matricula"]],
+                "metadata" => ["Matricula" => $sicoesAlumn->Matricula],
                 "charges" => [
                   [
                     "payment_method" => [
@@ -189,7 +189,7 @@ class DebitController extends Controller
 
         //preparamos los datos.
         $current_user = current_user();
-        $sicoesAlumn = $current_user->getSicoesData();
+        $sicoesAlumn = $current_user->sAlumn;
 
         $debits = getDebitByArray($debitId);
         
@@ -204,9 +204,9 @@ class DebitController extends Controller
                 "customer_info" => [
                   "name" => $current_user->name,
                   "email" => $current_user->email,
-                  "phone" => $sicoesAlumn["Telefono"]!=null?$sicoesAlumn["Telefono"]:"1234234321"
+                  "phone" => $sicoesAlumn->Telefono!=null?$sicoesAlumn->Telefono:"1234234321"
                 ],
-                "metadata" => ["Matricula" => $sicoesAlumn["Matricula"]],
+                "metadata" => ["Matricula" => $sicoesAlumn->Matricula],
                 "charges" => [
                   [
                     "payment_method" => [
@@ -283,7 +283,6 @@ class DebitController extends Controller
 
         //preparamos los datos.
         $current_user = current_user();
-        $sicoesAlumn = $current_user->getSicoesData();
 
         $debits = getDebitByArray($debitId);
 

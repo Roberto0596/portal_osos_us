@@ -2,12 +2,13 @@
 <html>
 <head>
     <title>Sistema portal</title>
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Universidad de la sierra, Unisierra, Universidad sonora, Universidad en la sierra, Moctezuma, Sonora, Moctezuma sonora, Portal de alumnos unisierra, portal de alumnos, portal de inscripciones, alumnos, portal">
     <meta name="description" content="Bienvenido al sistema de inscripciones de la universidad de la sierra.">
     <link rel="icon" type="image/png" href="{{asset('img/temple/unisierra.png')}}" />
-    <!-- estilos -->
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Ionicons -->
@@ -79,10 +80,11 @@
     <!-- html2pdf -->
     <script src="{{asset('plugins/html2pdf/dist/html2pdf.bundle.min.js')}}"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="{{asset('js/broadcast/pusher.js')}}"></script>
+    <script src="{{asset('js/broadcast/notifications.js')}}"></script>
     
     {!! htmlScriptTagJsApi() !!}
 </head>
+
 <body id="body" class="sidebar-mini sidebar-collapse" style="height: auto;">
     <!-- Preloader -->
 
@@ -101,9 +103,9 @@
     @yield('content')
     
     <script>
-        $(document).ready(function () 
-        {
-            @if (session()->get('messages'))
+
+        $(document).ready(function () {
+            @if (session()->get('messages')) 
 
                 <?php
                     $fm = explode('|', session()->get('messages'));
@@ -129,6 +131,9 @@
                         
             @endif
         });
+
     </script>
+
 </body>
+
 </html>

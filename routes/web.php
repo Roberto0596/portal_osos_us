@@ -55,9 +55,9 @@ Route::group(['domain' => $alumnDomain], function() {
 		    ]);
 
 	  		Route::group(['middleware' => ['alumn.user']
-			], function()
-			{
-				Route::post('/notify/show',[
+			], function() {
+
+				Route::get('/notify/show',[
 						'uses'=>'UserController@notify', 
 						'as' => 'notify.show'
 				]);
@@ -67,9 +67,9 @@ Route::group(['domain' => $alumnDomain], function() {
 						'as' => 'notify'
 				]);
 
-				Route::group(['middleware'=>['candidate']
-				], function()
-				{
+				Route::group(['middleware' => ['candidate']
+				], function() {
+					
 					Route::get('/documents',[
 						'uses'=>'PdfController@index', 
 						'as' => 'documents'
@@ -461,7 +461,16 @@ Route::group(['domain' => $alumnDomain], function() {
 					'uses'=>'DebitController@excelGenerate', 
 					'as' => 'excel.generate'
 				]);	
-				
+
+				Route::get('/notify/show',[
+					'uses'=>'UserController@notify', 
+					'as' => 'notify.show'
+				]);	
+
+				Route::get('/notify/{route?}/{id?}',[
+						'uses'=>'UserController@seeNotify', 
+						'as' => 'notify'
+				]);			
 			});
 	  	});
 	});
@@ -829,7 +838,15 @@ Route::group(['domain' => $alumnDomain], function() {
 			        'as' => 'high-averages.delete'
 				]);
 
+				Route::get('/notify/show',[
+					'uses'=>'UserController@notify', 
+					'as' => 'notify.show'
+				]);	
 
+				Route::get('/notify/{route?}/{id?}',[
+						'uses'=>'UserController@seeNotify', 
+						'as' => 'notify'
+				]);	
 			});
 	  	});
 	});
