@@ -3,8 +3,6 @@ const nf = new Intl.NumberFormat('en-US', op);
 
 $(document).ready(function() {
 
-    //$(".toggle-bootstrap").bootstrapToggle();
-
     const filters = {
         status: null,
         period: null,
@@ -475,6 +473,5 @@ $("#showSelectAlumno").click(function() {
 
 $("#select_alumno_id").change(function() {
     var valor = $(this).val();
-    console.log(valor, "hola");
     $("#hidden_id_alumno").val(valor);
 });
