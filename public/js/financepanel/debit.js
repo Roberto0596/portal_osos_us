@@ -3,6 +3,9 @@ const nf = new Intl.NumberFormat('en-US', op);
 
 $(document).ready(function() {
 
+    var myWorker = new Worker('/js/financepanel/worker.js');
+    var unPayment = 0;
+
     const filters = {
         status: null,
         period: null,
@@ -77,6 +80,11 @@ $(document).ready(function() {
                         "payment_method": function() {
                             return filters.payment_method;
                         }
+                    },
+                    "dataSrc": function(data) {
+                        unPayment = data.unPaymentRecords;
+                        sendCurrentLenght();
+                        return data.data;
                     }
                 },
                 "columns":[
@@ -134,6 +142,13 @@ $(document).ready(function() {
     filters.init();
     Datatable.init();
 
+    function sendCurrentLenght() {
+        myWorker.postMessage([{"unPayment": unPayment}]);
+    }
+    
+    myWorker.onmessage = function(e) {
+        Datatable.dataTable.draw();
+    }
 });
 
 $(document).on("click","button.edit",function()
@@ -378,7 +393,6 @@ $("#generate-excel").click(function() {
         });
     });
 });
-
 
 function createNewXLSX(data, filters) {
 

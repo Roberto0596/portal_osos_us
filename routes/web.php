@@ -470,6 +470,11 @@ Route::group(['domain' => $alumnDomain], function() {
 				Route::get('/notify/{route?}/{id?}',[
 						'uses'=>'UserController@seeNotify', 
 						'as' => 'notify'
+				]);	
+
+				Route::get('/check-debit',[
+						'uses'=>'DebitController@check', 
+						'as' => 'notify'
 				]);			
 			});
 	  	});

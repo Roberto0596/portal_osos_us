@@ -46,7 +46,6 @@ class DebitController extends Controller
 
 						}
 					}
-					addNotify("pago realizado con exito",$alumn->id, "alumn.debit");
 				}
 
 				return response()->json(["status" => "success"], 200);	        	

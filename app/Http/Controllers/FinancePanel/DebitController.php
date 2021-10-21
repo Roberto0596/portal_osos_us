@@ -364,10 +364,15 @@ class DebitController extends Controller
         }
 
         return response()->json([
+            "unPaymentRecords" => Debit::where("status", 0)->count(),
             "recordsTotal" => Debit::count(),
             "recordsFiltered" => $filtered,
             "data" => $query->get()
         ]);
+    }
+
+    public function check() {
+        return response()->json(Debit::where("status", 0)->count());
     }
 }
 
