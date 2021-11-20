@@ -24,7 +24,8 @@ class TempUse extends Model
         $this->insertReportRegister([
             "equipment_id" => $equipment->id,
             "alumn_id" => $this->alumn_id,
-            "entry_time" => $this->entry_time
+            "entry_time" => $this->entry_time,
+            "area_id" => current_user("log_auth")->area_id
         ]);
         
         $this->delete();
@@ -35,6 +36,7 @@ class TempUse extends Model
         $report->equipment_id = $array["equipment_id"];
         $report->alumn_id = $array["alumn_id"];
         $report->entry_time = $array["entry_time"];
+        $report->area_id = $array["area_id"];
 
         date_default_timezone_set('America/Hermosillo');
         $report->departure_time = date('H:i:s');

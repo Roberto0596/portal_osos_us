@@ -367,7 +367,7 @@ function validateDocumentInscription($id_alumno, $document_type_id)
 }
 
 function current_user($guard = null) {
-    return \Auth::guard($guard==null?"alumn":$guard)->user();
+    return \Auth::guard( $guard == null ? "alumn" : $guard )->user();
 }
 
 
