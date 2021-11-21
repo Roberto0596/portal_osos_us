@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegisterBitacoraTable extends Migration
+class AddAreaIdInReport extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class CreateRegisterBitacoraTable extends Migration
     public function up()
     {
         Schema::table('report_equipment', function (Blueprint $table) {
-            // $table->bigInteger("area_id")->unsigned()->nullable();
-            // $table->foreign("area_id")->references("id")->on("area")->onDelete("set null");
+            $table->bigInteger("area_id")->unsigned()->nullable();
+            $table->foreign("area_id")->references("id")->on("area")->onDelete("set null");
         });
     }
 
@@ -26,5 +26,8 @@ class CreateRegisterBitacoraTable extends Migration
      */
     public function down()
     {
+        Schema::table('report_equipment', function (Blueprint $table) {
+            //
+        });
     }
 }
