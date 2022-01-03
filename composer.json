@@ -13,6 +13,7 @@
         "beyondcode/laravel-websockets": "^1.12",
         "biscolab/laravel-recaptcha": "^4.1",
         "bkwld/croppa": "^4.11",
+        "carlos-meneses/laravel-mpdf": "^2.1",
         "doctrine/dbal": "2.5.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",

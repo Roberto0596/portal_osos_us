@@ -38,6 +38,7 @@ class AuthController extends Controller
             return redirect()->route('alumn.home');
         }
         session()->flash('messages', 'error|El password es incorrecto');
+        
         return redirect()->back()->withInput();
     }
 
