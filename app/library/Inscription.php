@@ -43,7 +43,6 @@ class Inscription {
 
         if ($inscribir) {
             $user->nextStep(3);
-            addNotify("Pago de colegiatura", $user->id,"alumn.charge");
             insertInscriptionDocuments($user->id);
             $result = (Object) [
                 "status" => "success", 
