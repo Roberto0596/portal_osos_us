@@ -170,6 +170,8 @@
                           <th>F. pago</th>
                           <th>Fecha</th>
                           <th>Carrera</th>
+                          <th>Télefono</th>
+                          <th>Correo</th>
                           <th>Localidad</th>
                           <th>Estado</th>
                        

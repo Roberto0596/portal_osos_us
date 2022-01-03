@@ -52,6 +52,13 @@ class UpdateDebitTable implements ShouldQueue
                         echo "Saving alumn academic data";
                     }
 
+                    if(!$value->phone || !$value->email){
+                        $value->phone = $user->Telefono;
+                        $value->email = User::where('id_alumno', $value->id_alumno)->first()->email;
+                        echo "Saving alumn contact data";
+
+                    }
+
                     $value->save();
                 }             
             } catch(\Exception $e) {

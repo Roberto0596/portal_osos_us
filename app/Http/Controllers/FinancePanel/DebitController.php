@@ -137,6 +137,8 @@ class DebitController extends Controller
             $debit->career = $alumn->PlanEstudio->Carrera->Nombre;
             $debit->location = $alumn->Localidad;
             $debit->state = $alumn->Estado->Nombre;
+            $debit->phone = $alumn->Telefono;
+            $debit->email = User::where('id_alumno', $request->input("id_alumno"))->first()->email;
             $debit->save();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();
@@ -351,6 +353,8 @@ class DebitController extends Controller
                 ->orWhere('location', 'like', '%'. $filter .'%')
                 ->orWhere('state', 'like', '%'. $filter .'%')
                 ->orWhere('career', 'like', '%'. $filter .'%')
+                ->orWhere('phone', 'like', '%'. $filter .'%')
+                ->orWhere('email', 'like', '%'. $filter .'%')
                 ->orWhere('created_at', 'like', '%'. $filter .'%');
             });
         } 
