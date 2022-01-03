@@ -142,7 +142,7 @@ function insertInscriptionDebit(User $user)
     if($validate) {
         $debit_array["status"] = Debit::getStatus(DebitStatus::paid());
         $debit_array["amount"] = 0;
-        $inscription = Inscription::makeRegister($user);
+        $inscription = Inscription::makeRegister($alumnData);
         $message["message"] = "Se procederá al siguiente paso de inscripción";
         $message["type"] = 1;
         $validate->status = 1;
