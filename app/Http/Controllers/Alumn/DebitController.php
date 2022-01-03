@@ -31,7 +31,7 @@ class DebitController extends Controller
 
         //mandamos llamar a la libreria de conekta
         require_once("conekta/Conekta.php");
-        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
         \Conekta\Conekta::setApiVersion("2.0.0");
 
         //preparamos los datos.
@@ -112,7 +112,7 @@ class DebitController extends Controller
 
         //mandamos llamar a la libreria de conekta
         require_once("conekta/Conekta.php");
-        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
         \Conekta\Conekta::setApiVersion("2.0.0");
 
         //preparamos los datos.
@@ -184,7 +184,7 @@ class DebitController extends Controller
 
         //mandamos llamar a la libreria de conekta
         require_once("conekta/Conekta.php");
-        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
         \Conekta\Conekta::setApiVersion("2.0.0");
 
         //preparamos los datos.
@@ -247,7 +247,7 @@ class DebitController extends Controller
     public function note($id_order) {
         $debit = Debit::where("id_order", $id_order)->get();
         require_once("conekta/Conekta.php");
-        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
         \Conekta\Conekta::setApiVersion("2.0.0");
         $order = \Conekta\Order::find($debit[0]->id_order);
         $total = 0;

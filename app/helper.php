@@ -506,3 +506,7 @@ function closeAllSessions($session) {
 function getAlumnPeriods($alumn_id) {
     return Sicoes::getAlumnPeriods($alumn_id);
 }
+
+function getPrivateKeyConekta() {
+    return "key_nrszzobN9bthDRkyq2xrSA";
+}
