@@ -131,6 +131,8 @@ $(document).ready(function() {
                         return moment(data).format("Y-MM-D h:m:s");
                     }},
                     {"data": "career", "orderable": true },
+                    {"data": "phone", "orderable": false },
+                    {"data": "email", "orderable": true },
                     {"data": "location", "orderable": true},
                     {"data": "state", "orderable": true},
                 ],
