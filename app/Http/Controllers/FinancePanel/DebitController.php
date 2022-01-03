@@ -84,7 +84,7 @@ class DebitController extends Controller
 
         $debit = Debit::find($request->input('debit_id'));
         $verification = $request->get('verificacion_adedudo');
-
+        $alumn = $debit->Alumn;
         if (!$debit) {
             session()->flash("messages", "error|No fue posible encontrar el adeudo");
             return redirect()->back();
@@ -94,7 +94,6 @@ class DebitController extends Controller
 
         if ($verification == 1 || $verification == 3) {
             if (!Sicoes::validateLastInscripcionByPeriod($debit->id_alumno)) {
-                $alumn = $debit->Alumn;
                 $register = Inscription::makeRegister($alumn);
             } else {
                 $user = User::where("id_alumno", $alumn->AlumnoId)->first();

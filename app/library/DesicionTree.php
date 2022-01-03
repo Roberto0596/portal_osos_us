@@ -78,6 +78,7 @@ class DesicionTree {
 		return $mergedCharge;
 	}
 
+	
 	private function getAsignaturaSeriada($id_asignatura = 547, $id_alumno =635) {
 		$seriada = $this->getSeriacion($id_asignatura);
 

@@ -181,7 +181,7 @@ class PaymentController extends Controller
             return view('Alumn.payment.others');
         } else  {
             require_once("conekta/Conekta.php");
-            \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+            \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
             \Conekta\Conekta::setApiVersion("2.0.0");
             $order = \Conekta\Order::find($debit[0]->id_order);
 
@@ -261,7 +261,7 @@ class PaymentController extends Controller
 
     private function createOrder($set) {
         require_once("conekta/Conekta.php");
-        \Conekta\Conekta::setApiKey("key_b6GSXASrcJATTGjgSNxWFg");
+        \Conekta\Conekta::setApiKey(getPrivateKeyConekta());
         \Conekta\Conekta::setApiVersion("2.0.0");
         try {
             $order = \Conekta\Order::create($set);

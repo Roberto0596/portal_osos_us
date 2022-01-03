@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DebitType extends Model
 {
-
     protected $table = "debit_type";
 
     protected $fillable = [

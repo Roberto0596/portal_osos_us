@@ -35,7 +35,7 @@ class AcademicChargeController extends Controller
             "dg.AsignaturaId",
             "a.Nombre as Asignatura",
             "a.Semestre",
-            DB::raw("CONCAT_WS(' ', p.Nombre, p.ApellidoPrimero, p.ApellidoSegundo) as profesor")
+            DB::raw("CONCAT(' ', p.Nombre, p.ApellidoPrimero, p.ApellidoSegundo) as profesor")
         ])->leftJoin("DetGrupo as dg", "Carga.DetGrupoId", "dg.DetGrupoId")
         ->leftJoin("Asignatura as a", "a.AsignaturaId", "dg.AsignaturaId")
         ->leftJoin("Profesor as p", "p.ProfesorId", "dg.ProfesorId")
@@ -45,8 +45,6 @@ class AcademicChargeController extends Controller
         ->get();
 
         $view = view('Alumn.academic_charge.table_body', compact('carga'))->render();
-        return response()->json($view);
-        
-        
+        return response()->json($view);       
     }
 }

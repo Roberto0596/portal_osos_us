@@ -142,7 +142,7 @@ function insertInscriptionDebit(User $user)
     if($validate) {
         $debit_array["status"] = Debit::getStatus(DebitStatus::paid());
         $debit_array["amount"] = 0;
-        $inscription = Inscription::makeRegister($user);
+        $inscription = Inscription::makeRegister($alumnData);
         $message["message"] = "Se procederá al siguiente paso de inscripción";
         $message["type"] = 1;
         $validate->status = 1;
@@ -367,7 +367,7 @@ function validateDocumentInscription($id_alumno, $document_type_id)
 }
 
 function current_user($guard = null) {
-    return \Auth::guard($guard==null?"alumn":$guard)->user();
+    return \Auth::guard( $guard == null ? "alumn" : $guard )->user();
 }
 
 
@@ -505,4 +505,8 @@ function closeAllSessions($session) {
 
 function getAlumnPeriods($alumn_id) {
     return Sicoes::getAlumnPeriods($alumn_id);
+}
+
+function getPrivateKeyConekta() {
+    return "key_nrszzobN9bthDRkyq2xrSA";
 }
