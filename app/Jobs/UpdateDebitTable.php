@@ -55,8 +55,7 @@ class UpdateDebitTable implements ShouldQueue
                     if(!$value->phone || !$value->email){
                         $value->phone = $user->Telefono;
                         $value->email = User::where('id_alumno', $value->id_alumno)->first()->email;
-                        echo "Saving alumn contact data";
-
+                        echo "Saving alumn contact data ";
                     }
 
                     $value->save();

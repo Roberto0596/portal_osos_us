@@ -5,6 +5,8 @@ namespace App\Http\Controllers\AdminPanel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUsers\Problem;
+use App\Models\Alumns\User;
+use App\Models\Sicoes\Alumno;
 
 class ProblemController extends Controller
 {
@@ -40,13 +42,13 @@ class ProblemController extends Controller
             	$status = "Corregido";
             }
 
-            $portalUserData = selectTable("users","id",$value->alumn_id,1);
-            $alumnData = selectSicoes("Alumno","AlumnoId", $portalUserData->id_alumno)[0];
+            $portalUserData = User::find($value->alumn_id);
+            $alumnData = $portalUserData->sAlumn;
             array_push($res["data"],[
                 (count($problems)-($key+1)+1),
-                $alumnData["Matricula"],
+                $alumnData->Matricula,
                 $portalUserData->name,
-                $alumnData["Telefono"],
+                $alumnData->Telefono,
                 $portalUserData->email,
                 $status,
                 $value->created_at,
