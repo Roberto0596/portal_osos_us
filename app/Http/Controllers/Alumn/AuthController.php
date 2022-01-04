@@ -58,13 +58,17 @@ class AuthController extends Controller
     {
         //buscamos el usuario por el email
         $user = User::where('email', '=', $request->email)->first();
-        if(!$user)
-        {
+        if(!$user) {
             session()->flash("messages","error|No existe un usuario con este correo");
             return redirect()->back();
-        }     
-        try
-        {            
+        } 
+            
+        try {
+
+            if (PasswordRequest::where("alumn_id", $user->id)->first()) {
+                PasswordRequest::where("alumn_id", $user->id)->delete();
+            }   
+
             $RequestPass = new PasswordRequest();
             $RequestPass->token = uniqid();
             $RequestPass->alumn_id = $user->id;
