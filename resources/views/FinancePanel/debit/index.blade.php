@@ -480,10 +480,7 @@
   <div class="modal-dialog modal-lg">
 
     <div class="modal-content">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">
-
-       
-            
+        <input type="hidden" name="_token" value="{{ csrf_token() }}" id="tokenModal">            
             
             {{ csrf_field() }}
             <input type="hidden" id="DebitIdUpdate" name="DebitId">

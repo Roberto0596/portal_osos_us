@@ -80,6 +80,11 @@ Route::group(['domain' => $alumnDomain], function() {
 						'as' => 'documents.show'
 					]);
 
+					Route::get('/documents/redirectTo',[
+						'uses'=>'PdfController@redirectToDocument', 
+						'as' => 'documents.redirectTo'
+					]);
+
 					Route::get('pdf/cedula/{document?}',[
 						'uses'=>'PdfController@getGenerarCedula', 
 						'as' => 'cedula'

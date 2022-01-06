@@ -130,7 +130,7 @@
             <!-- Tabla de datos personales -->
             <tr>
                 <td style="border-right: none" align="left;font-size: 13px;">LUGAR DE NAC:</td>
-                <td style="border-left:  none;border-right: none;font-size: 13px; padding-left: 0px">{{$lugar_nacimiento['municipio']}}, {{$lugar_nacimiento['estado']}}</td>
+                <td style="border-left:  none;border-right: none;font-size: 13px; padding-left: 0px">{{ $lugar_nacimiento->Nombre}}, {{ $lugar_nacimiento->Estado->Nombre }}</td>
                 <td style="border-left:  none;border-right: none;font-size: 13px;">EDO. CIVIL:</td>
                 <td style="border-left:  none;border-right: none;font-size: 13px;">
                 
@@ -232,11 +232,11 @@
                 <td  colspan="2" style="border-right: none;border-bottom: none; ">MATRICULA</td>
                 <td colspan="1" style="border-left:  none; border-right: none;border-bottom: none;  ">{{$alumno['Matricula']}}</td>
                 <td  style="border-left:  none; border-right: none;border-bottom: none; ">CARRERA: </td>
-                <td  colspan="4" style="border-left:  none; border-right: none;border-bottom: none; ">{{$datos_escolares['carrera']['carrera']}}</td>
+                <td  colspan="4" style="border-left:  none; border-right: none;border-bottom: none; ">{{$datos_escolares['carrera']}}</td>
             </tr>
             <tr>
                 <td  style="border-right: none; width: 15%">PLAN:</td>
-                <td  style="border-left:  none; border-right: none; width: 15%">{{$datos_escolares['carrera']['planDeEstudio']}}</td>
+                <td  style="border-left:  none; border-right: none; width: 15%">{{$alumno->planDeEstudio}}</td>
                 <td  style="border-left:  none; border-right: none; width: 15%">PERIODO:</td>
                 <td  style="border-right: none; border-left: none;border-right: none; width: 15%">{{$datos_escolares['periodo']}}</td>
                 <td  style="border-right: none;border-left: none;width: 15%">SEMESTRE</td>

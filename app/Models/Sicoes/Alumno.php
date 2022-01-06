@@ -99,12 +99,34 @@ class Alumno extends Model {
         return $this->belongsTo("\App\Models\Sicoes\Estado", "EstadoDom", "EstadoId");
     }
 
+    public function MunicipioDomRelation() {
+        return $this->belongsTo("\App\Models\Sicoes\Municipio", "MunicipioDom", "MunicipioId");
+    }
+
+    public function MunicipioNacRelation() {
+        return $this->belongsTo("\App\Models\Sicoes\Municipio", "MunicipioNac", "MunicipioId");
+    }
+
     public function getFullName() {
         return ucwords(strtolower(normalizeChars(join(' ', [$this->Nombre, $this->ApellidoPrimero, $this->ApellidoSegundo]))));
     }
 
     public function getFullNameAttribute() {
         return ucwords(strtolower(normalizeChars(join(' ', [$this->Nombre, $this->ApellidoPrimero, $this->ApellidoSegundo]))));
+    }
+
+    public function getCarrera() {
+        return $this->PlanEstudio->Carrera->Nombre;
+    }
+
+    public function getRecidencia() {
+        return join(", ", [
+            $this->Domicilio, 
+            $this->Colonia,
+            $this->Localidad.' - '.$this->MunicipioDomRelation->Nombre,
+            $this->Estado->Nombre,
+            $this->CodigoPostal
+        ]);
     }
 }
 

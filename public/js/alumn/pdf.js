@@ -15,12 +15,29 @@ function loadTable() {
           type: "POST",
       },
       "columns":[
-          {"data": "#"},
-          {"data": "Nombre"},
-          {"data": "Descripción"},
-          {"data": "Periodo"},
-          {"data": "Fecha de creacion"},
-          {"data": "Acciones"}
+          {"data": null, orderable: false, render:function(data) {
+            return data.document_type.name;
+          }},
+          {"data": "description"},
+          {"data": null, orderable: false, render: function(data) {
+            return data.period.clave;
+          }},
+          {"data": "created_at"},
+          {"data": null, "render": function(data) {
+            console.log(data);
+            var res = "<div class='btn-group'>";
+              if (data.payment == 0) {
+                res += "<button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='"+data.id+"'>"+
+                    "Cancelar</button>"+
+                    "</div>";
+            } else {
+                res += "<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='documents/redirectTo?id="+data.id+"&route="+data.route+"' title='Imprimir'>"+
+                "Imprimir</a>"+
+                "</div>";
+            }
+
+            return res + "</div>";
+          }}
       ],
       "language": {
 

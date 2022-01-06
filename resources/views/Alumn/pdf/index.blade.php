@@ -103,7 +103,6 @@
               <thead>
 
                 <tr>
-                  <th style="width: 10px">#</th>
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Periodo</th>

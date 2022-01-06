@@ -21,5 +21,11 @@ class Municipio extends Model {
         "EstadoId",
     ];
 
+    protected $with = ["Estado"];
+
+    public function Estado() {
+        return $this->belongsTo("\App\Models\Sicoes\Estado", "EstadoId", "EstadoId");
+    }
+
 }
 

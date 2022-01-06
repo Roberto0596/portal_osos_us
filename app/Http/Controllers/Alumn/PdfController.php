@@ -8,10 +8,21 @@ use App\Models\Alumns\Document;
 use App\Models\Alumns\DocumentType;
 use App\Models\PeriodModel;
 use App\Models\Sicoes\Alumno;
+use App\Models\Sicoes\Inscripcion;
+use App\Models\Sicoes\EncGrupo;
+use App\Models\Sicoes\Escuela;
 use Auth;
 
 class PdfController extends Controller
 {
+    private $current_user;
+
+    public function callAction($method, $parameters)
+    {
+        $this->current_user = current_user();
+        return parent::callAction($method, $parameters);
+    }
+
     public function index()
     {
         return view('Alumn.pdf.index');
@@ -22,12 +33,11 @@ class PdfController extends Controller
         $filter = $request->get('search') && isset($request->get('search')['value'])?$request->get('search')['value']:false;
         $start = $request->get('start');
         $length = $request->get('length');
-        $current_user = current_user();
 
-        $query = Document::select('document.*','document_type.name')->join('document_type','document.document_type_id','document_type.id')->where('alumn_id',$current_user->id)->orderByDesc("document.id");
-
-        $total = $query->count();
-        $filtered = $query->count();
+        $query = Document::where('alumn_id',$this->current_user->id)
+                            ->orderByDesc("id")
+                            ->with("documentType")
+                            ->with("period");
 
         if ($filter) {
             $query = $query->where(function($query) use ($filter){
@@ -35,49 +45,26 @@ class PdfController extends Controller
                     ->orWhere('document.description', 'like', '%'. $filter . '%')
                     ->orWhere('document.PeriodoId', 'like', '%'. $filter . '%');
             });
-            $filtered = $query->count();
         }
+
+        $filtered = $query->count();
 
         $query->skip($start)->take($length)->get();
 
-        $documents = $query->get();
-        $res = [];
-        foreach($documents as $key => $value)
-        {
-            $buttons = "";
-            if ($value->payment == 0) {
-                $buttons .= "<div class='btn-group'><button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='".$value->id."'>
-                    Cancelar</button>
-                    </div>";
-            } else {
-                try {
-                    $buttons .= "<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='".route($value->route,$value)."' title='Imprimir'>
-                    Imprimir</a>
-                    </div>";
-                } catch(\Exception $e) {
-                    $buttons .= "<div class='btn-group'><a class='btn btn-primary printDocument' target='_blank' href='/".$value->route."' title='Imprimir'>
-                    Imprimir</a>
-                    </div>";
-                }
-            }
-
-            $period = PeriodModel::find($value->PeriodoId);
-
-            array_push($res,[
-                "#" => ($key+1),
-                "Nombre" => $value->name,
-                "Descripción" => $value->description,
-                "Periodo" => $period->clave,
-                "Fecha de creacion" => $value->created_at,
-                "Acciones" => $buttons
-            ]);
-        }
-
         return response()->json([
-            "recordsTotal" => $total,
+            "recordsTotal" => $query->count(),
             "recordsFiltered" => $filtered,
-            "data" => $res
+            "data" => $query->get()
         ]);
+    }
+
+    public function redirectToDocument(Request $request) {
+        try {
+            $document = Document::find($request->get("id"));
+            return redirect()->route($request->get("route"),$document);
+        } catch(\Exception $e) {
+            return redirect($request->get("route"));
+        }
     }
 
     public function getOfficialDocument(DocumentType $documentType) {
@@ -104,7 +91,6 @@ class PdfController extends Controller
                 return redirect()->back();
             }
         } catch(\Exception $e) {
-            dd($e);
             session()->flash("messages", "error|No fue posible generar el adeudo");
             return redirect()->back();
         }
@@ -112,48 +98,40 @@ class PdfController extends Controller
 
     public function getGenerarCedula(Request $request, $id)
     {
-        $current_user = Auth::guard("alumn")->user();
+        $document = Document::where([["alumn_id","=",$this->current_user->id],["id","=",$id]])->first();
 
-        $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
-        $currentPeriod = selectCurrentPeriod();
-
-        if ($document==null) {
+        if ($document == null) {
             return redirect()->back();
         }
 
         try {
-            $alumno = Alumno::where("AlumnoId", $current_user->id_alumno)->first();
-
-            $inscripcion = Inscripcion::where("AlumnoId", $current_user->id_alumno)
+            $inscripcion = Inscripcion::where("AlumnoId", $this->current_user->id_alumno)
                                         ->orderBy("InscripcionId", "desc")
                                         ->first();
-
-            $group = Grupo::find($inscripcion->EncGrupoId);
+            $group = EncGrupo::find($inscripcion->EncGrupoId);
         } catch(\Exception $e) {
             session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
             return redirect()->back();
         }   
 
-        $localidad_nacimiento = getEstadoMunicipio($alumno['Matricula'], 1);
-        $localidad_residencia = getEstadoMunicipio($alumno['Matricula'], 2);
-
         try {
-            $bachiller = selectSicoes("Escuela","EscuelaId",$alumno['EscuelaProcedenciaId'])[0];        
+            $bachiller = Escuela::find($this->current_user->sAlumn->EscuelaProcedenciaId);
         } catch (\Exception $e) {
-            $bachiller = ['Nombre' => 'Sin dato'];
+            $bachiller = (Object) ['Nombre' => 'Sin dato'];
         }       
 
-        $datos_escolares = array('carrera' => getCarrera($alumno['Matricula']),
-                                 'periodo' => $currentPeriod->clave,
-                                 'semestre' => $inscripcion["Semestre"],
-                                 'escuela_procedencia'=>$bachiller["Nombre"],
-                                 'grupo' => $group["Nombre"]);
-
-
-        $localidad_residencia = $alumno['Domicilio'].', '.$alumno['Colonia'].', '.$alumno['Localidad'].' - '.$localidad_residencia['municipio'].', '.$localidad_residencia['estado'].', '.$alumno['CodigoPostal']; 
-
-        $html = view('Alumn.pdf.generar', ['alumno' => $alumno,'lugar_nacimiento' => $localidad_nacimiento,
-        'direccion' => $localidad_residencia,'datos_escolares' => $datos_escolares])->render();
+        $html = view('Alumn.pdf.generar', [
+            'alumno' => $this->current_user->sAlumn, 
+            "lugar_nacimiento" => $this->current_user->sAlumn->MunicipioNacRelation()->first(),
+            'direccion' => $this->current_user->sAlumn->getRecidencia(),
+            'datos_escolares' => [
+                'carrera' => $this->current_user->sAlumn->getCarrera(),
+                'periodo' => selectCurrentPeriod()->clave,
+                'semestre' => $inscripcion->Semestre,
+                'escuela_procedencia' => $bachiller->Nombre,
+                'grupo' => $group->Nombre
+            ]
+        ])->render();
         
         $namefile = 'CEDULA'.time().'.pdf'; 
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
@@ -174,25 +152,13 @@ class PdfController extends Controller
 
     public function getGenerarConstancia(Request $request, $id)
     {      
-        $current_user = current_user();
+        $document = Document::where([["alumn_id","=",$this->current_user->id],["id","=",$id]])->first();
 
-        $document = Document::where([["alumn_id","=",$current_user->id],["id","=",$id]])->first();
-
-        if ($document==null) {
-            return redirect()->back();
-        }
-
-        try
-        {
-            $alumno = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
-        }
-        catch(\Exception $e)
-        {
-            session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
+        if ($document == null) {
             return redirect()->back();
         }
  
-        $html = view('Alumn.pdf.constancia')->with('alumno', $alumno)->render();
+        $html = view('Alumn.pdf.constancia')->with('alumno', $this->current_user->sAlumn)->render();
         $namefile = 'CONSTANCIA'.time().'.pdf';
 
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
@@ -206,16 +172,13 @@ class PdfController extends Controller
 
     public function getGenerarFicha(Request $request, $tipo, $accion, $pago)
     {
-        $query = [["id_alumno","=",Auth::guard("alumn")->user()->id_alumno],["status","=","0"]];
+        $query = [["id_alumno","=", $this->current_user->id_alumno],["status","=","0"]];
         $total = Debit::where($query)->get()->sum("amount");        
-        $current_user = current_user();
-
-        $alumno = Alumno::find($current_user->id_alumno);
         
         $data['tipo'] = $tipo;                   
 
         $html = view('Alumn.pdf.ficha',[
-            'alumno' => $alumno,
+            'alumno' => $this->current_user->sAlumn,
             'deuda_total' => $total
         ])->render();
 
