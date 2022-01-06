@@ -73,6 +73,8 @@ class Debit extends Model
         $this->career = $this->Alumn->PlanEstudio->Carrera->Nombre;
         $this->location = $this->Alumn->Localidad;
         $this->state = $this->Alumn->Estado->Nombre;
+        $this->phone = $this->Alumn->Telefono;
+        $this->email = User::where('id_alumno', $this->id_alumno)->first()->email;
         $this->save();
     }
 

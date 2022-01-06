@@ -129,16 +129,8 @@ class DebitController extends Controller
             $debit->id_alumno = $request->input("id_alumno");
             $debit->admin_id = current_user("finance")->id;
             $debit->period_id = selectCurrentPeriod()->id;
-            $debit->enrollment = $alumn->Matricula;
-            $debit->alumn_name = $alumn->Nombre;
-            $debit->alumn_last_name = $alumn->ApellidoPrimero;
-            $debit->alumn_second_last_name = (isset($alumn->ApellidoSegundo) ? $alumn->ApellidoSegundo : '');
-            $debit->career = $alumn->PlanEstudio->Carrera->Nombre;
-            $debit->location = $alumn->Localidad;
-            $debit->state = $alumn->Estado->Nombre;
-            $debit->phone = $alumn->Telefono;
-            $debit->email = User::where('id_alumno', $request->input("id_alumno"))->first()->email;
             $debit->save();
+            $debit->setForeignValues();
             session()->flash("messages","success|El alumno tiene un nuevo adeudo");
             return redirect()->back();
         } catch (\Exception $th) {
