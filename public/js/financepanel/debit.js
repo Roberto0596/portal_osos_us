@@ -188,6 +188,8 @@ $(document).on("click","button.btnValidate", function() {
         method: 'POST'
     }).then((response) => {
 
+        $(".receipt").empty();
+        
         $('.loader-modal').hide();  
 
         if (response.id_order == null) {

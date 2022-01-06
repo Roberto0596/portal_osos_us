@@ -121,14 +121,15 @@ class PdfController extends Controller
             return redirect()->back();
         }
 
-        try
-        {
-            $alumno = selectSicoes("Alumno","AlumnoId",$current_user->id_alumno)[0];
-            $inscripcion = getInscription($current_user->id_alumno);
-            $group = selectSicoes("EncGrupo","EncGrupoId",$inscripcion["EncGrupoId"])[0];
-        }
-        catch(\Exception $e)
-        {
+        try {
+            $alumno = Alumno::where("AlumnoId", $current_user->id_alumno)->first();
+
+            $inscripcion = Inscripcion::where("AlumnoId", $current_user->id_alumno)
+                                        ->orderBy("InscripcionId", "desc")
+                                        ->first();
+
+            $group = Grupo::find($inscripcion->EncGrupoId);
+        } catch(\Exception $e) {
             session()->flash("messages","error|Ocurrio un problema, no se encontro tu registro de sicoes");
             return redirect()->back();
         }   
