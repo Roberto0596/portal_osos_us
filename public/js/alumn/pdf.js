@@ -26,14 +26,17 @@ function loadTable() {
           {"data": null, "render": function(data) {
             console.log(data);
             var res = "<div class='btn-group'>";
-              if (data.payment == 0) {
+            if (data.payment == 0) {
                 res += "<button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='"+data.id+"'>"+
                     "Cancelar</button>"+
                     "</div>";
-            } else {
-                res += "<div class='btn-group'><a class='btn btn-primary reload' target='_blank' href='documents/redirectTo?id="+data.id+"&route="+data.route+"' title='Imprimir'>"+
+            } else if (data.route != null || data.route != "") {
+                res += "<a class='btn btn-primary reload' target='_blank' href='documents/redirectTo?id="+data.id+"&route="+data.route+"' title='Imprimir'>"+
                 "Imprimir</a>"+
                 "</div>";
+            } else {
+                res += "<button class='btn btn-default'>"+
+                    "En proceso</button>";
             }
 
             return res + "</div>";

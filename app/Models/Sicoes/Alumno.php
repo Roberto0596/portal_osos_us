@@ -87,10 +87,6 @@ class Alumno extends Model {
 
     protected $appends = ['FullName'];
 
-    public function pAlumn() {
-        return $this->belongsTo("\App\Models\Alumns\User", "AlumnoId", "id_alumno");
-    }
-
     public function PlanEstudio() {
         return $this->belongsTo("\App\Models\Sicoes\PlanEstudio", "PlanEstudioId", "PlanEstudioId");
     }
