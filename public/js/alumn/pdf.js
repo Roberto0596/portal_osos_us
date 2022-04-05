@@ -30,7 +30,7 @@ function loadTable() {
                 res += "<button class='btn btn-danger btnCancelDocument' title='Imprimir' id_document='"+data.id+"'>"+
                     "Cancelar</button>"+
                     "</div>";
-            } else if (data.route != null || data.route != "") {
+            } else if (data.route != null && data.route != "") {
                 res += "<a class='btn btn-primary reload' target='_blank' href='documents/redirectTo?id="+data.id+"&route="+data.route+"' title='Imprimir'>"+
                 "Imprimir</a>"+
                 "</div>";
