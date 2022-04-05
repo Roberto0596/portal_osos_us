@@ -42,7 +42,9 @@ class insertTickets implements ShouldQueue
                 $ticket = Ticket::where("debit_id", $value->id)->first();
 
                 if (!$ticket) {
-                    TicketLibrary::build($value);
+                    if ($value->status == Debit::getStatus(DebitStatus::paid())) {
+                        TicketLibrary::build($value);
+                    }
                 } else {
                     if ($value->status == 0) {
                        $ticket->delete();
