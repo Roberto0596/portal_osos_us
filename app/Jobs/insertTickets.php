@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Alumns\Debit;
 use App\Models\Alumns\Ticket;
 use App\Library\Ticket as TicketLibrary;
+use App\Enum\DebitStatus;
 
 
 class insertTickets implements ShouldQueue
