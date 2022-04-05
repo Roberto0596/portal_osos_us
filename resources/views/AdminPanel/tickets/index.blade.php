@@ -2,6 +2,17 @@
 
 @section('content-admin')
 
+<style>
+    .select2-container {
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 0;
+        position: relative;
+        vertical-align: middle;
+        width: 90% !important;
+    }
+</style>
+
 <div class="content-wrapper">
 
     <section class="content-header">
