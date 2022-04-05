@@ -857,6 +857,23 @@ Route::group(['domain' => $alumnDomain], function() {
 						'uses'=>'UserController@seeNotify', 
 						'as' => 'notify'
 				]);	
+
+				Route::group(["prefix" => "ticket"], function() {
+					Route::get("/", [
+						"uses" => "TicketsController@index",
+						"as" => "ticket.index"
+					]);
+
+					Route::post("/datatable", [
+						"uses" => "TicketsController@datatable",
+						"as" => "ticket.datatable"
+					]);
+				});
+
+				Route::get('/search-alumn', [
+			        'uses' => '\App\Http\Controllers\FinancePanel\DebitController@searchAlumn', 
+			        'as' => 'debit.search.alumn'
+				]);
 			});
 	  	});
 	});

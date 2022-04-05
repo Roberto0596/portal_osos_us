@@ -103,14 +103,14 @@
                     </a>
                 </li>
 
-                {{--<li class="nav-item">
-                    <a href="{{route('admin.reset-pass')}}" class="nav-link">
-                        <i class="nav-icon fas fa-key"></i>
+                <li class="nav-item">
+                    <a href="{{route('admin.ticket.index')}}" class="nav-link">
+                        <i class="nav-icon fa fa-file"></i>
                         <p>
-                            Restaurar Contraseñas
+                            Visualizador de tickets
                         </p>
                     </a>
-                </li>--}}
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('admin.debit-type') }}" class="nav-link">

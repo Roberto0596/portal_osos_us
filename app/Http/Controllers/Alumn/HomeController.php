@@ -10,12 +10,22 @@ use App\Models\Alumns\Document;
 use App\Models\AdminUsers\Problem;
 use App\Http\Controllers\Controller;
 use App\Models\Sicoes\Alumno;
+use App\Library\Log;
 use DB;
 
 class HomeController extends Controller
 {
+    private $logger;
+
+    public function callAction($method, $parameters)
+    {
+        $this->logger = new Log(App\Http\Controllers\Alumn\HomeController::class);
+        return parent::callAction($method, $parameters);
+    }
+
     public function index()
     {
+        $this->logger->info("Hola mundo logger");
         $user = current_user();
 
         switch ($user->inscripcion) {

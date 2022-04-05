@@ -3,12 +3,10 @@
 namespace App\Library;
 
 use App\Models\Alumns\User;
-use App\Models\Sicoes\Alumno;
 use App\Models\Sicoes\Asignatura;
 use App\Models\Sicoes\DetGrupo;
 use App\Models\Sicoes\Seriacions;
 use App\Models\Sicoes\Carga;
-use Illuminate\Database\Eloquent\Collection;
 
 class DesicionTree {
 
@@ -134,68 +132,40 @@ class DesicionTree {
 				switch ($node) {
 					case 0:
 						if ($this->current_period->semestre == "1") {
-							if (in_array(intval($value->semestre), $pair)) {
-								$node = 2;
-      						} else {
-      							$node = 1;
-      						}
+							$node = in_array(intval($value->semestre), $pair) ? 2 : 1;
 						} else {
-							if (in_array(intval($value->semestre), $odd)) {
-								$node = 2;
-      						} else {
-      							$node = 1;
-      						}
+							$node = in_array(intval($value->semestre), $odd) ? 2 : 1;
 						}
 						break;
 					case 1:
 						$status = false;
 						break;
 					case 2:
-						if(intval($value->semestre) <= intval($current_semester)) {
-							$node = 4;
-						} else {
-							$node = 3;
-						}
+						$node = (intval($value->semestre) <= intval($current_semester)) ? 4 : 3;
 						break;
 					case 3:
 						$status = false;
 						break;
 					case 4: 
-						if(intval($value->haySeriacion) == 1) {
-							$node = 5;
-						} else {
-							$node = 6;
-						}
+						$node = (intval($value->haySeriacion) == 1) ? 5 : 6;
 						break;
 					case 5: 
 						$seriacion = $this->getAsignaturaSeriada($value->asignaturaId, $user->id_alumno);
 
 						if (isset($seriacion->Calificacion)) {
-							if(intval($seriacion->Calificacion) >= 70) {
-								$node = 8;
-							} else {
-								$node = 7;
-							}
+							$node = (intval($seriacion->Calificacion) >= 70) ? 8 : 7;
 						} else {
 							$status = false;
 						}
 						break;
 					case 6:
-						if($value->calificacion == null || intval($value->calificacion) < 70) {
-							$node = 10;
-						} else {
-							$node = 9;
-						}
+						$node = ($value->calificacion == null || intval($value->calificacion) < 70) ? 10 : 9;
 						break;
 					case 7:
 						$status = false;
 						break;
 					case 8:
-						if($value->calificacion == null || intval($value->calificacion) < 70) {
-							$node = 12;
-						} else {
-							$node = 11;
-						}
+						$node = ($value->calificacion == null || intval($value->calificacion) < 70) ? 12 : 11;
 						break;
 					case 9:
 						$status = false;
